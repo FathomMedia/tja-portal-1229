@@ -17,13 +17,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import Link from "next/link";
-
-const formSchema = z.object({
-  email: z.string().email().min(1),
-  password: z.string().min(2),
-});
+import { useLocale, useTranslations } from "next-intl";
+import { apiReq } from "@/lib/utils";
+import { cookies } from "next/headers";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export const SignInWithPassword = () => {
+  const { push } = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("SignInWithPassword");
+  const formSchema = z.object({
+    email: z
+      .string()
+      .email(t("email.errors.invalid"))
+      .min(1, t("email.errors.required")),
+    password: z.string().min(2, t("password.errors.required")),
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // 1. Define your form.
@@ -39,13 +49,44 @@ export const SignInWithPassword = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
-
     setIsLoading(true);
 
-    setTimeout(() => {
+    const response = await fetch(
+      `/api/authentication/sign-in-with-email-password`,
+      {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      }
+    ).finally(() => {
       setIsLoading(false);
-    }, 3000);
+    });
+
+    const res = await response.json();
+    console.log(
+      "🚀 ~ file: sign-in-with-password.tsx:72 ~ onSubmit ~ res:",
+      res
+    );
+    const user = res.data;
+    console.log(
+      "🚀 ~ file: sign-in-with-password.tsx:54 ~ onSubmit ~ user:",
+      user
+    );
+
+    if (response.ok) {
+      toast.success(res.message);
+      push("/");
+    } else {
+      toast.error(res.message);
+    }
+
+    // TODO: toast for errors
   }
 
   return (
@@ -59,10 +100,10 @@ export const SignInWithPassword = () => {
           name="email"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>{t("email.title")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="name@example.com"
+                  placeholder={t("email.placeholder")}
                   className=" border-primary"
                   type="email"
                   {...field}
@@ -77,10 +118,10 @@ export const SignInWithPassword = () => {
           name="password"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("password.title")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="*******"
+                  placeholder={t("password.placeholder")}
                   className=" border-primary"
                   type="password"
                   {...field}
@@ -96,13 +137,13 @@ export const SignInWithPassword = () => {
           type="submit"
         >
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Sign In
+          {t("signIn")}
         </Button>
         <Link
           className="text-sm text-primary"
-          href={"/authentication/forgot-password"}
+          href={"authentication/forgot-password"}
         >
-          Lost your password?
+          {t("lostPassword")}
         </Link>
       </form>
     </Form>

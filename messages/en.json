@@ -1,0 +1,29 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "SignInWithPassword": {
+    "email": {
+      "errors": {
+        "invalid": "Invalid email",
+        "required": "Email is requierd"
+      },
+      "placeholder": "name@example.com",
+      "title": "Email Address"
+    },
+    "password": {
+      "errors": {
+        "invalid": "Invalid password",
+        "required": "Password is requierd"
+      },
+      "placeholder": "*******",
+      "title": "Password"
+    },
+    "signIn": "Sign In",
+    "lostPassword": "Lost your password?"
+  },
+  "logout": "Logout",
+  "Home": {
+    "logout": "Logout"
+  }
+}

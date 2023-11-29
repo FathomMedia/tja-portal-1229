@@ -32,8 +32,8 @@ const formSchema = z
     dob: z.date().max(dayjs().subtract(minAge, "year").toDate()),
     firstName: z.string().min(2),
     lastName: z.string().min(2),
-    password: z.string().min(6),
-    confirmPassword: z.string().min(6),
+    password: z.string().min(8),
+    confirmPassword: z.string().min(8),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

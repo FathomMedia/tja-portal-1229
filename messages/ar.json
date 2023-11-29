@@ -1,0 +1,29 @@
+{
+  "Index": {
+    "title": "اهلا بالعالم"
+  },
+  "SignInWithPassword": {
+    "email": {
+      "errors": {
+        "invalid": "البريد الالكتروني غير صحيح",
+        "required": "البريد الالكتروني مطلوب"
+      },
+      "placeholder": "name@example.com",
+      "title": "البريد الالكتروني"
+    },
+    "password": {
+      "errors": {
+        "invalid": "كلمة المرور غير صحيحة",
+        "required": "كلمة المرور مطلوبة"
+      },
+      "placeholder": "*******",
+      "title": "كلمة المرور"
+    },
+    "signIn": "تسجيل دخول",
+    "lostPassword": "فقدت كلمة المرور الخاصة بك؟"
+  },
+  "logout": "تسجيل خروج",
+  "Home": {
+    "logout": "تسجيل خروج"
+  }
+}

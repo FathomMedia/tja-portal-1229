@@ -3,11 +3,18 @@ import { SignInWithPassword } from "@/components/auth/sign-in-with-password";
 import { SignInWithEmailOTP } from "@/components/auth/sign-in-with-email-otp";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignUp } from "@/components/auth/sign-up";
+import { useLocale } from "next-intl";
+import { isRtlLang } from "rtl-detect";
 
 export function UserAuthForm() {
+  const locale = useLocale();
   return (
     <div className={cn("grid gap-6", "w-full")}>
-      <Tabs defaultValue="login" className="">
+      <Tabs
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
+        defaultValue="login"
+        className=""
+      >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger
             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
