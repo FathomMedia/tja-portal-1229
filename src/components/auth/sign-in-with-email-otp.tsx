@@ -16,17 +16,26 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
+import { useTranslations } from "next-intl";
+
+
+
+
+export const SignInWithEmailOTP = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOTPSent, setOTPSent] = useState<boolean>(false);
+
+  // const t= useTranslations("Auth");
+
+  const t = useTranslations("SignUp");
 
 const formSchema = z.object({
-  email: z.string().email().min(1),
+  email: z.string().email(t("email.errors.invalid")).min(1,  t("email.errors.required")),
 });
 const formSchemaOTP = z.object({
   otp: z.string().min(4),
 });
 
-export const SignInWithEmailOTP = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOTPSent, setOTPSent] = useState<boolean>(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,7 +44,6 @@ export const SignInWithEmailOTP = () => {
       email: "",
     },
   });
-
   const formOTP = useForm<z.infer<typeof formSchemaOTP>>({
     resolver: zodResolver(formSchemaOTP),
     defaultValues: {
@@ -82,7 +90,7 @@ export const SignInWithEmailOTP = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>{t("emailAddress")}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="name@example.com"
@@ -103,7 +111,7 @@ export const SignInWithEmailOTP = () => {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Send Email
+              {t("sendEmail")}
             </Button>
           </form>
         </Form>
@@ -122,7 +130,7 @@ export const SignInWithEmailOTP = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>{t("emailAddress")}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="name@example.com"
@@ -139,10 +147,10 @@ export const SignInWithEmailOTP = () => {
               name="otp"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>OTP</FormLabel>
+                  <FormLabel>{t("OTP")}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="OTP sent to the above email"
+                      placeholder={t("OTPSentToTheAboveEmail")}
                       className=" border-primary"
                       type="text"
                       {...field}
@@ -160,7 +168,7 @@ export const SignInWithEmailOTP = () => {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Submit
+              {t("submit")}
             </Button>
           </form>
         </Form>

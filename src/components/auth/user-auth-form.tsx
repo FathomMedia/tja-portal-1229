@@ -3,11 +3,12 @@ import { SignInWithPassword } from "@/components/auth/sign-in-with-password";
 import { SignInWithEmailOTP } from "@/components/auth/sign-in-with-email-otp";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignUp } from "@/components/auth/sign-up";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 
 export function UserAuthForm() {
   const locale = useLocale();
+  const t= useTranslations("Auth");
   return (
     <div className={cn("grid gap-6", "w-full")}>
       <Tabs
@@ -20,13 +21,13 @@ export function UserAuthForm() {
             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             value="login"
           >
-            Login
+            {t("login")}
           </TabsTrigger>
           <TabsTrigger
             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             value="register"
           >
-            Register
+            {t("Register")}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="login" className="pt-6">
@@ -37,7 +38,7 @@ export function UserAuthForm() {
             </div>
             <div className="relative flex justify-center text-xs py-3 uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or
+                {t("Or")}
               </span>
             </div>
           </div>

@@ -25,5 +25,55 @@
   "logout": "تسجيل خروج",
   "Home": {
     "logout": "تسجيل خروج"
+  },
+  "SignUp": {
+    "email": {
+      "errors": {
+        "invalid": "البريد الإلكتروني غير صالح",
+        "required": "البريد الالكتروني مطلوب"
+      }
+    },
+    "name": {
+      "errors": {
+        "required": "لإسم مطلوب"
+      }
+    },
+    "phone": {
+      "errors": {
+        "required": "رقم الهاتف مطلوب"
+      }
+    },
+    "password": {
+      "errors": {
+        "required": "كلمة المرور مطلوبة",
+        "confirm": "كلمة المرور غير متطابقة"
+      }
+    },
+    "Enter your name": "أدخل أسمك",
+    "Phone": "رقم الهاتف",
+    "Name": "الإسم",
+    "emailAddress": "البريد الإلكتروني",
+    "dateOfBirth": "تاريخ الميلاد",
+    "pickaDate": "إختر التاريخ",
+    "gender": "الجنس",
+    "Password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "Register": "تسجيل",
+    "Select gender": "إختر الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "OTP": "رمز التحقق",
+    "OTPSentToTheAboveEmail": "تم إرسال رمز التحقق على بريدك الإلكتروني",
+    "submit": "تقديم",
+    "sendEmail": "إرسال"
+  },
+  "Auth": {
+    "login": "تسجيل الدخول",
+    "Register": "التسجيل",
+    "emailAddress": "البريد الإلكتروني",
+    "OTP": "رمز التحقق",
+    "OTPSentToTheAboveEmail": "تم إرسال رمز التحقق الى بريدك الإلكتروني",
+    "submit": "إرسال",
+    "Or": "أو"
   }
 }

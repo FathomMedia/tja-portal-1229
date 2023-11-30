@@ -22,7 +22,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { ReCaptchaProvider, useReCaptcha } from "next-recaptcha-v3";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -36,27 +36,31 @@ import toast from "react-hot-toast";
 const minAge = 5;
 const maxAge = 95;
 
-const formSchema = z
+
+
+export const SignUp = () => {
+const t = useTranslations("SignUp");
+
+  const formSchema = z
   .object({
-    email: z.string().email().min(1),
+    email: z.string().email(t("email.errors.invalid")).min(1,  t("email.errors.required")),
     date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
-    name: z.string().min(2),
-    phone: z.string().min(2),
+    name: z.string().min(2, t("name.errors.required")),
+    phone: z.string().min(2, t("phone.errors.required")),
     gender: z.string().min(1).max(1),
-    password: z.string().min(8),
+    password: z.string().min(8, t("password.errors.required")),
     password_confirmation: z.string().min(8),
   })
   .superRefine(({ password_confirmation, password }, ctx) => {
     if (password_confirmation !== password) {
       ctx.addIssue({
         code: "custom",
-        message: "The passwords did not match",
+        message: t("password.errors.confirm"),
         path: ["password_confirmation"],
       });
     }
   });
 
-export const SignUp = () => {
   const { executeRecaptcha } = useReCaptcha();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const locale = useLocale();
@@ -117,10 +121,10 @@ export const SignUp = () => {
             name="name"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("Name")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter your name"
+                    placeholder={t("Enter your name")}
                     className=" border-primary"
                     type="text"
                     {...field}
@@ -135,10 +139,10 @@ export const SignUp = () => {
             name="phone"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>Phone</FormLabel>
+                <FormLabel>{t("Phone")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Phone"
+                    placeholder={t("Phone")}
                     className=" border-primary"
                     type="text"
                     {...field}
@@ -154,7 +158,7 @@ export const SignUp = () => {
           name="email"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel>{t("emailAddress")}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="name@example.com"
@@ -173,7 +177,7 @@ export const SignUp = () => {
             name="date_of_birth"
             render={({ field }) => (
               <FormItem className="flex flex-col w-full">
-                <FormLabel>Date of birth</FormLabel>
+                <FormLabel>{t("dateOfBirth")}</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl className="w-full flex">
@@ -187,7 +191,7 @@ export const SignUp = () => {
                         {field.value ? (
                           format(field.value, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>{t("pickaDate")}</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -218,19 +222,19 @@ export const SignUp = () => {
             name="gender"
             render={({ field }) => (
               <FormItem className=" w-full mb-2">
-                <FormLabel>Gender</FormLabel>
+                <FormLabel>{t("gender")}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="rounded-full border-primary">
-                      <SelectValue placeholder="Select gender" />
+                      <SelectValue placeholder={t("Select gender")} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="M">Male</SelectItem>
-                    <SelectItem value="F">Female</SelectItem>
+                    <SelectItem value="M">{t("male")}</SelectItem>
+                    <SelectItem value="F">{t("female")}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -244,7 +248,7 @@ export const SignUp = () => {
           name="password"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{t("Password")}</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Password"
@@ -262,10 +266,10 @@ export const SignUp = () => {
           name="password_confirmation"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>{t("confirmPassword")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Password"
+                  placeholder={t("Password")}
                   className=" border-primary"
                   type="password"
                   {...field}
@@ -281,7 +285,7 @@ export const SignUp = () => {
           type="submit"
         >
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Register
+          {t("Register")}
         </Button>
       </form>
     </Form>

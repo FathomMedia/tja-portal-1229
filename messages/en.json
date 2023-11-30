@@ -25,5 +25,55 @@
   "logout": "Logout",
   "Home": {
     "logout": "Logout"
+  },
+  "SignUp": {
+    "email": {
+      "errors": {
+        "invalid": "Email is invalid",
+        "required": "Email is required"
+      }
+    },
+    "name": {
+      "errors": {
+        "required": "Name is required"
+      }
+    },
+    "phone": {
+      "errors": {
+        "required": "Phone number is required"
+      }
+    },
+    "password": {
+      "errors": {
+        "required": "Password is required",
+        "confirm": "Password does not match"
+      }
+    },
+    "Enter your name": "Enter your name",
+    "Phone": "Phone number",
+    "Name": "Name",
+    "emailAddress": "Email Address",
+    "dateOfBirth": "Date of birth",
+    "pickaDate": "Pick a date",
+    "gender": "Gender",
+    "Password": "Password",
+    "confirmPassword": "Confirm password",
+    "Register": "Register",
+    "Select gender": "Select gender",
+    "male": "Male",
+    "female": "Female",
+    "OTP": "OTP",
+    "OTPSentToTheAboveEmail": "OTP sent to your email",
+    "submit": "Submit",
+    "sendEmail": "Send Email"
+  },
+  "Auth": {
+    "login": "Login",
+    "Register": "Regstire",
+    "emailAddress": "Email Address",
+    "OTP": "OTP",
+    "OTPSentToTheAboveEmail": "OTP sent to the above email",
+    "submit": "Submit",
+    "Or": "Or"
   }
 }
