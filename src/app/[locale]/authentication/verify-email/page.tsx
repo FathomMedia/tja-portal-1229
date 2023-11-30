@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,15 +16,39 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
+import { useLocale } from "next-intl";
+import toast from "react-hot-toast";
 
 export default function Page() {
+  const locale = useLocale();
   const searchParams = useSearchParams();
+  const { push } = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOTPSent, setOTPSent] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    async function getUser() {
+      const res = await fetch("/api/user/get-user", {
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const { data } = await res.json();
+
+      setEmail(data.email);
+    }
+
+    getUser();
+
+    return () => {};
+  }, [locale]);
 
   const formSchemaOTP = z.object({
     otp: z.string().min(6).max(6),
@@ -36,16 +60,29 @@ export default function Page() {
       otp: "",
     },
   });
+
   async function onSubmitOTP(values: z.infer<typeof formSchemaOTP>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     setIsLoading(true);
-
-    setTimeout(() => {
+    const response = await fetch(`/api/authentication/verify-email`, {
+      method: "POST",
+      headers: {
+        "Accept-Language": locale,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        otp: values.otp,
+      }),
+    }).finally(() => {
       setIsLoading(false);
-    }, 3000);
+    });
+    const { data, message } = await response.json();
+    console.log("data", data);
+    if (response.ok) {
+      toast.success(message);
+      push(`/${locale}`);
+    } else {
+      toast.error(message);
+    }
   }
   return (
     <div>
@@ -57,10 +94,7 @@ export default function Page() {
           >
             <div className="w-full flex flex-col gap-2">
               <Label className="w-full">An email is sent to</Label>
-              <Input
-                disabled
-                value={searchParams.get("email") ?? "undefined"}
-              />
+              <Input disabled value={email} />
             </div>
             <FormField
               control={formOTP.control}
@@ -69,12 +103,6 @@ export default function Page() {
                 <FormItem className=" w-full">
                   <FormLabel>OTP</FormLabel>
                   <FormControl>
-                    {/* <Input
-                    placeholder="OTP sent to the above email"
-                    className=" border-primary"
-                    type="text"
-                    {...field}
-                  /> */}
                     <OtpInput
                       containerStyle={{
                         width: "100%",
@@ -86,7 +114,7 @@ export default function Page() {
                       renderInput={(props) => (
                         <Input
                           {...props}
-                          className=" rounded-md !w-12 h-"
+                          className=" rounded-md !w-12"
                           type="text"
                         />
                       )}

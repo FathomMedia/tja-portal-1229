@@ -69,15 +69,8 @@ export const SignInWithPassword = () => {
     });
 
     const res = await response.json();
-    console.log(
-      "🚀 ~ file: sign-in-with-password.tsx:72 ~ onSubmit ~ res:",
-      res
-    );
+
     const user = res.data;
-    console.log(
-      "🚀 ~ file: sign-in-with-password.tsx:54 ~ onSubmit ~ user:",
-      user
-    );
 
     if (response.ok) {
       toast.success(res.message);
