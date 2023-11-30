@@ -7,6 +7,7 @@ import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
+import { ReCaptchaProvider } from "next-recaptcha-v3";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,13 +33,15 @@ export default function RootLayout({
   return (
     <html dir={isRtlLang(locale) ? "rtl" : "ltr"} lang={locale}>
       <body className={cn(inter.className)}>
-        <NextIntlClientProvider
-          timeZone={timezone}
-          locale={locale}
-          messages={messages}
-        >
-          {children}
-        </NextIntlClientProvider>
+        <ReCaptchaProvider>
+          <NextIntlClientProvider
+            timeZone={timezone}
+            locale={locale}
+            messages={messages}
+          >
+            {children}
+          </NextIntlClientProvider>
+        </ReCaptchaProvider>
         <Toaster position="top-center" />
       </body>
     </html>

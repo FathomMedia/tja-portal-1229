@@ -35,6 +35,7 @@ export const SignInWithEmailOTP = () => {
       email: "",
     },
   });
+
   const formOTP = useForm<z.infer<typeof formSchemaOTP>>({
     resolver: zodResolver(formSchemaOTP),
     defaultValues: {

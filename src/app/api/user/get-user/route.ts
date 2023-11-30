@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(error, { status: 401 });
     });
 
-  console.log(user);
+  console.log("🚀 ~ file: get-user ~ route.ts:17 ~ GET ~ user:", user);
 
   return NextResponse.json(user, { status: 200 });
 }

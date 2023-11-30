@@ -17,10 +17,20 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import dayjs from "dayjs";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { cn } from "@/lib/utils";
+import { apiReq, cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
+import { ReCaptchaProvider, useReCaptcha } from "next-recaptcha-v3";
+import { useLocale } from "next-intl";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import toast from "react-hot-toast";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -29,50 +39,116 @@ const maxAge = 95;
 const formSchema = z
   .object({
     email: z.string().email().min(1),
-    dob: z.date().max(dayjs().subtract(minAge, "year").toDate()),
-    firstName: z.string().min(2),
-    lastName: z.string().min(2),
+    date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
+    name: z.string().min(2),
+    phone: z.string().min(2),
+    gender: z.string().min(1).max(1),
     password: z.string().min(8),
-    confirmPassword: z.string().min(8),
+    password_confirmation: z.string().min(8),
   })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
+  .superRefine(({ password_confirmation, password }, ctx) => {
+    if (password_confirmation !== password) {
       ctx.addIssue({
         code: "custom",
         message: "The passwords did not match",
-        path: ["confirmPassword"],
+        path: ["password_confirmation"],
       });
     }
   });
 
 export const SignUp = () => {
+  const { executeRecaptcha } = useReCaptcha();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const locale = useLocale();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      password_confirmation: "",
+      date_of_birth: undefined,
+      name: "",
+      phone: "",
+      gender: "",
     },
   });
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    const recaptcha_token = await executeRecaptcha("sign_up");
+
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+    // console.log(values);
 
-    setIsLoading(true);
+    const dataToSend = {
+      ...values,
+      date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
+      recaptcha_token,
+    };
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    // TODO: move this to api route and set the token in the cookies
+    const res = await apiReq({
+      endpoint: "/auth/register",
+      method: "POST",
+      locale,
+      values: dataToSend,
+    }).finally(() => setIsLoading(false));
+
+    const { data, message } = await res.json();
+    console.log("🚀 ~ file: sign-up.tsx:99 ~ onSubmit ~ data:", data);
+
+    if (res.ok) {
+      toast.success(message, { duration: 6000 });
+    } else {
+      toast.error(message);
+    }
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center"
+        className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
       >
+        <div className="flex flex-col sm:flex-row w-full gap-3 items-center justify-between">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter your name"
+                    className=" border-primary"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>Phone</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Phone"
+                    className=" border-primary"
+                    type="text"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -91,89 +167,78 @@ export const SignUp = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="dob"
-          render={({ field }) => (
-            <FormItem className="flex flex-col w-full">
-              <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl className="w-full flex">
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal border-primary",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    captionLayout={"dropdown"}
-                    fromYear={dayjs().subtract(maxAge, "year").year()}
-                    toYear={dayjs().subtract(minAge, "year").year()}
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > dayjs().subtract(minAge, "year").toDate() ||
-                      date < dayjs().subtract(maxAge, "year").toDate()
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex gap-3 items-center justify-between">
+        <div className="flex gap-3 flex-col sm:flex-row items-center w-full justify-between">
           <FormField
             control={form.control}
-            name="firstName"
+            name="date_of_birth"
             render={({ field }) => (
-              <FormItem className=" w-full">
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="First Name"
-                    className=" border-primary"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
+              <FormItem className="flex flex-col w-full">
+                <FormLabel>Date of birth</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl className="w-full flex">
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal border-primary",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      captionLayout={"dropdown"}
+                      fromYear={dayjs().subtract(maxAge, "year").year()}
+                      toYear={dayjs().subtract(minAge, "year").year()}
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > dayjs().subtract(minAge, "year").toDate() ||
+                        date < dayjs().subtract(maxAge, "year").toDate()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="lastName"
+            name="gender"
             render={({ field }) => (
-              <FormItem className=" w-full">
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Last Name"
-                    className=" border-primary"
-                    type="text"
-                    {...field}
-                  />
-                </FormControl>
+              <FormItem className=" w-full mb-2">
+                <FormLabel>Gender</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="rounded-full border-primary">
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="M">Male</SelectItem>
+                    <SelectItem value="F">Female</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
+
         <FormField
           control={form.control}
           name="password"
@@ -194,7 +259,7 @@ export const SignUp = () => {
         />
         <FormField
           control={form.control}
-          name="confirmPassword"
+          name="password_confirmation"
           render={({ field }) => (
             <FormItem className=" w-full">
               <FormLabel>Confirm Password</FormLabel>

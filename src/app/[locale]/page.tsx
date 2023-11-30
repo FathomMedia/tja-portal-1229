@@ -6,7 +6,7 @@ import { useLocale, useMessages, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
-import toast, { useToaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function Index() {
   const locale = useLocale();
