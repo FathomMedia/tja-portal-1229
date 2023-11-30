@@ -18,14 +18,17 @@ export async function middleware(request: NextRequest) {
         locale,
         token: token.value,
       });
+
       if (resUserProfile.ok) {
         const { data } = await resUserProfile.json();
+        console.log("🚀 ~ file: middleware.ts:24 ~ middleware ~ data:", data);
         if (!data.verified) {
           request.nextUrl.pathname = `${locale}/${authPath}/verify-email`;
           request.nextUrl.searchParams.set("email", data.email);
         }
       } else {
         request.cookies.delete("authToken");
+        request.nextUrl.pathname = `${locale}/${authPath}`;
       }
     }
   }
