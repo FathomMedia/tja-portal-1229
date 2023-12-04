@@ -73,3 +73,25 @@ export interface TPaginatedAdventures {
   links: Links;
   meta: Meta;
 }
+
+export enum OrderType {
+  adventure,
+  consultation,
+}
+
+export type TConsultation = {
+  id: number;
+  tier: string;
+  numberOfDays: number;
+  price: string;
+};
+
+export type TOrders = {
+  data: TOrder[];
+};
+
+export type TOrder = {
+  type: string;
+  dateBooked: string;
+  details: TAdventure | TConsultation;
+};
