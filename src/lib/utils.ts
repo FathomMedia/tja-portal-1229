@@ -23,11 +23,16 @@ export async function apiReq({
 }: TApiReq) {
   return fetch(`${api}${endpoint}`, {
     method: method ?? "GET",
-    headers: {
-      "Accept-Language": locale,
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers: token
+      ? {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      : {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
     body: values ? JSON.stringify(values) : undefined,
   });
 }

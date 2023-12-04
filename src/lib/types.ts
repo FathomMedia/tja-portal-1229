@@ -5,7 +5,11 @@ export type TUser = {
   gender: string;
   avatar: string | null;
   status: string;
-  level: string;
+  level: {
+    id: number;
+    name: string;
+    badge: string;
+  };
   points: number;
   age: number;
   dateOfBirth: string;
