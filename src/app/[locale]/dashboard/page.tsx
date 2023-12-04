@@ -25,7 +25,7 @@ export default function Page() {
             <div className=" flex p-4 flex-col">
               <p className="text-sm text-muted-foreground">Current Tier</p>
               <h2 className="text-2xl text-primary font-semibold">
-                {user?.level}
+                {user?.level.name}
               </h2>
             </div>
             {/* Days Travelled */}

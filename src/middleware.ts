@@ -35,45 +35,11 @@ export async function middleware(request: NextRequest) {
           availableLocales.some((someLocale) => {
             const isMatching = locale === someLocale;
             if (isMatching) {
-              console.log("someLocale", someLocale);
               // sets the someLocale found in the URL
               currentLocale = someLocale;
             }
             return isMatching;
           });
-
-          console.log({ pathname, locale, nextUrl: request.nextUrl });
-
-          // if (
-          //   pathname === null ||
-          //   pathname === "" ||
-          //   pathname === "/" ||
-          //   pathname === undefined
-          // ) {
-          //   if (data.role === "Admin") {
-          //     return NextResponse.redirect(
-          //       new URL(
-          //         `/${currentLocale ?? availableLocales[0]}/admin`,
-          //         request.nextUrl
-          //       )
-          //     );
-          //   } else {
-          //     return NextResponse.redirect(
-          //       new URL(
-          //         `/${currentLocale ?? availableLocales[0]}/dashboard`,
-          //         request.nextUrl
-          //       )
-          //     );
-          //   }
-          // } else if (pathname === "admin" && data.role !== "Admin") {
-          //   return NextResponse.redirect(
-          //     new URL(
-          //       `/${currentLocale ?? availableLocales[0]}/dashboard`,
-          //       request.nextUrl
-          //     )
-          //   );
-          // }
-          console.log("pathname", pathname);
 
           if (!currentLocale || currentLocale === "") {
             currentLocale = availableLocales[0];
