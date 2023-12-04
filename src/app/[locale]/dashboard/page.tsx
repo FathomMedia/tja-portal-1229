@@ -23,14 +23,14 @@ export default function Page() {
           <div className="flex border-b divide-x">
             {/* Current Tier */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Current Tier</p>
+              <p className="text-sm text-muted-foreground">{t("currentTier")}</p>
               <h2 className="text-2xl text-primary font-semibold">
                 {user?.level.name}
               </h2>
             </div>
             {/* Days Travelled */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Days Travelled</p>
+              <p className="text-sm text-muted-foreground">{t("daysTravelled")}</p>
               <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
             </div>
           </div>

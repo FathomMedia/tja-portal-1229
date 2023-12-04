@@ -26,7 +26,9 @@
   "Home": {
     "logout": "تسجيل خروج",
     "upComingAdventures": "المغامرات القادمة",
-    "latestsOrders": "أحدث الطلبات"
+    "latestsOrders": "أحدث الطلبات",
+    "currentTier": "المستوى الحالي",
+    "daysTravelled": "الأيام المُسافرة"
   },
   "SignUp": {
     "email": {
@@ -76,7 +78,8 @@
     "OTP": "رمز التحقق",
     "OTPSentToTheAboveEmail": "تم إرسال رمز التحقق الى بريدك الإلكتروني",
     "submit": "إرسال",
-    "Or": "أو"
+    "Or": "أو",
+    "forgetPassword": "نسيت كلمة المرور"
   },
   "Dashboard": {
     "MyAchievements": "انجازاتي",
@@ -86,7 +89,8 @@
     "journeysMiles": "جورني مايلز",
     "myAchievements": "انجازاتي",
     "accountDetails": "تفاصيل الحساب",
-    "level": "المستوى"
+    "level": "المستوى",
+    "hello": "مرحبًا،"
   },
   "MyAchievements": "انجازاتي"
 }

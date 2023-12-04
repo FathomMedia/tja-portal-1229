@@ -19,7 +19,7 @@ import { Icons } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 import { getUser } from "@/lib/apiHelpers";
 
@@ -29,6 +29,8 @@ export default function Page() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState("");
+
+  const t = useTranslations("Auth")
 
   useEffect(() => {
     getUser({ locale }).then((user) => {
@@ -122,7 +124,7 @@ export default function Page() {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Submit
+              {t("submit")}
             </Button>
           </form>
         </Form>
