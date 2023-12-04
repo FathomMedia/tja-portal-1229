@@ -17,3 +17,11 @@ export type TUser = {
   joinedAt: string;
   verified: boolean;
 };
+
+export type TAchievement = {
+  id: number;
+  title: string;
+  description: string;
+  badge: string;
+  achieved: boolean;
+};

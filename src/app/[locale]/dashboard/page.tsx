@@ -1,43 +1,43 @@
-"use client";
-
 import { DashboardSection } from "@/components/DashboardSection";
+import { DashboardHome } from "@/components/dashboard/DashboardHome";
 import { Button } from "@/components/ui/button";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 import { useAppContext } from "@/contexts/AppContext";
+import { getUser } from "@/lib/apiHelpers";
+import { apiReq } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
+import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 
 import toast from "react-hot-toast";
 
-export default function Page() {
+export default async function Page() {
   const locale = useLocale();
-  const { refresh } = useRouter();
-  const t = useTranslations("Home");
+  const cookieStore = cookies();
+  const token = cookieStore.get("authToken");
 
-  const { user } = useAppContext();
+  const user = await apiReq({
+    endpoint: "/users/profile",
+    locale,
+    token: token?.value,
+  }).then(async (val) => {
+    const { data } = await val.json();
+    return data;
+  });
+
+  // const latestOrders = await apiReq({
+  //   endpoint: "/profile/bookings",
+  //   locale,
+  //   token: token?.value,
+  // }).then(async (val) => {
+  //   const { data } = await val.json();
+  //   return data;
+  // });
+  // console.log("🚀 ~ file: page.tsx:36 ~ Page ~ latestOrders:", latestOrders);
 
   return (
-    <DashboardSection title={"My Account"}>
-      <div className=" flex flex-col gap-4">
-        <div className="flex gap-3">
-          <div className="flex border-b divide-x">
-            {/* Current Tier */}
-            <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Current Tier</p>
-              <h2 className="text-2xl text-primary font-semibold">
-                {user?.level.name}
-              </h2>
-            </div>
-            {/* Days Travelled */}
-            <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Days Travelled</p>
-              <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
-            </div>
-          </div>
-          {/* Badge */}
-          <div></div>
-        </div>
-      </div>
-    </DashboardSection>
+    <div>
+      <DashboardHome user={user} />
+    </div>
   );
 }

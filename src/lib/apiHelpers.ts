@@ -1,3 +1,4 @@
+import { TUser } from "./types";
 import { apiReq } from "./utils";
 
 export async function getUser({ locale }: { locale: string }) {
@@ -9,8 +10,8 @@ export async function getUser({ locale }: { locale: string }) {
   });
 
   const { data } = await res.json();
-
-  return data;
+  const user: TUser = data;
+  return user;
 }
 
 export async function getMyAchievements({

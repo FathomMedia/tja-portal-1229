@@ -1,8 +1,8 @@
-import { TAchievement } from "@/app/[locale]/dashboard/achievements/page";
 import Image from "next/image";
 import React, { FC } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
+import { TAchievement } from "@/lib/types";
 type TMyAchievements = {
   achievements: TAchievement[];
 };
