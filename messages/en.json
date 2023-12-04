@@ -26,7 +26,9 @@
   "Home": {
     "logout": "Logout",
     "upComingAdventures": "Up coming adventures",
-    "latestsOrders": "Latest orders"
+    "latestsOrders": "Latest orders",
+    "currentTier": "Current Tier",
+    "daysTravelled": "Days Travelled"
   },
   "SignUp": {
     "email": {
@@ -76,7 +78,8 @@
     "OTP": "OTP",
     "OTPSentToTheAboveEmail": "OTP sent to the above email",
     "submit": "Submit",
-    "Or": "Or"
+    "Or": "Or",
+    "forgetPassword": "Forgot Password"
   },
   "Dashboard": {
     "MyAchievements": "My Achievements",
@@ -86,7 +89,8 @@
     "journeysMiles": "Journeys Miles",
     "myAchievements": "My Achievements",
     "accountDetails": "Account Details ",
-    "level": "Level"
+    "level": "Level",
+    "hello": "Hello,"
   },
   "MyAchievements": "My Achievements ",
   "upComingAdventures": "Up Coming Adventures",

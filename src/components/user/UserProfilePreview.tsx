@@ -1,12 +1,16 @@
 import { TUser } from "@/lib/types";
 import React, { FC } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useTranslations } from "next-intl";
 
 type TUserProfilePreview = {
   user: TUser;
 };
 
+
 export const UserProfilePreview: FC<TUserProfilePreview> = ({ user }) => {
+  const t = useTranslations("Dashboard");
+
   return (
     <div className="p-6 text-primary rounded-lg flex flex-col gap-2">
       {/* profile avatar */}
@@ -18,7 +22,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ user }) => {
           </AvatarFallback>
         </Avatar>
         <div>
-          <h2>Hello,</h2>
+          <h2>{t("hello")}</h2>
           <h2 className="text-xl font-semibold">{user.name}</h2>
         </div>
       </div>
