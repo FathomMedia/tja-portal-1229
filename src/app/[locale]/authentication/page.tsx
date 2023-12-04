@@ -1,12 +1,6 @@
 import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import { UserAuthForm } from "@/components/auth/user-auth-form";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 export const metadata: Metadata = {
   title: "Authentication",
@@ -14,9 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  async function handleSubmit(formData: FormData) {
-    "use server";
-  }
+
 
   return (
     <div className=" w-full bg-background">

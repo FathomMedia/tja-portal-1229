@@ -74,7 +74,7 @@ export const SignInWithPassword = () => {
 
     if (response.ok) {
       toast.success(res.message);
-      push("/");
+      push(`/${locale}/dashboard`);
     } else {
       toast.error(res.message);
     }

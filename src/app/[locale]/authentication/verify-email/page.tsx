@@ -16,36 +16,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
 import { useLocale } from "next-intl";
 import toast from "react-hot-toast";
+import { getUser } from "@/lib/apiHelpers";
 
 export default function Page() {
   const locale = useLocale();
-  const searchParams = useSearchParams();
   const { push } = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOTPSent, setOTPSent] = useState<boolean>(false);
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    async function getUser() {
-      const res = await fetch("/api/user/get-user", {
-        headers: {
-          "Accept-Language": locale,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const { data } = await res.json();
-
-      setEmail(data.email);
-    }
-
-    getUser();
+    getUser({ locale }).then((user) => {
+      setEmail(user.email);
+    });
 
     return () => {};
   }, [locale]);
@@ -75,8 +63,7 @@ export default function Page() {
     }).finally(() => {
       setIsLoading(false);
     });
-    const { data, message } = await response.json();
-    console.log("data", data);
+    const { message } = await response.json();
     if (response.ok) {
       toast.success(message);
       push(`/${locale}`);
@@ -120,23 +107,6 @@ export default function Page() {
                       )}
                       inputType="number"
                       shouldAutoFocus={true}
-                      inputStyle={
-                        {
-                          // border: "1px solid transparent",
-                          // borderRadius: "8px",
-                          // width: "54px",
-                          // height: "54px",
-                          // fontSize: "12px",
-                          // color: "#000",
-                          // fontWeight: "400",
-                          // caretColor: "blue",
-                        }
-                      }
-
-                      // focusStyle={{
-                      //   border: "1px solid #CFD3DB",
-                      //   outline: "none"
-                      // }}
                     />
                   </FormControl>
                   <FormMessage />

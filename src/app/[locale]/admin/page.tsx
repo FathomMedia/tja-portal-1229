@@ -22,5 +22,5 @@ export default function Index() {
   //   }
   // }
 
-  return <div className="p-6 flex flex-col gap-4">Index Page</div>;
+  return <div className="p-6 flex flex-col gap-4">Admin Page</div>;
 }

@@ -18,9 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useTranslations } from "next-intl";
 
-
-
-
 export const SignInWithEmailOTP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOTPSent, setOTPSent] = useState<boolean>(false);
@@ -29,13 +26,15 @@ export const SignInWithEmailOTP = () => {
 
   const t = useTranslations("SignUp");
 
-const formSchema = z.object({
-  email: z.string().email(t("email.errors.invalid")).min(1,  t("email.errors.required")),
-});
-const formSchemaOTP = z.object({
-  otp: z.string().min(4),
-});
-
+  const formSchema = z.object({
+    email: z
+      .string()
+      .email(t("email.errors.invalid"))
+      .min(1, t("email.errors.required")),
+  });
+  const formSchemaOTP = z.object({
+    otp: z.string().min(4),
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,7 +60,9 @@ const formSchemaOTP = z.object({
 
     setTimeout(() => {
       setIsLoading(false);
+
       setOTPSent(true);
+      throw new Error("Unimplemented Error");
     }, 3000);
   }
   // 2. Define a submit handler.
@@ -74,6 +75,7 @@ const formSchemaOTP = z.object({
 
     setTimeout(() => {
       setIsLoading(false);
+      throw new Error("Unimplemented Error");
     }, 3000);
   }
 
