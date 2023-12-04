@@ -3,31 +3,34 @@ import { SidebarNav } from "@/components/SideNav";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 import { useAppContext } from "@/contexts/AppContext";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+   
+  const t = useTranslations("Dashboard");
   const { user } = useAppContext();
   const locale = useLocale();
+ 
 
-  const sidebarNavItems = [
+  var sidebarNavItems = [
     {
-      title: "My Account",
+      title: t("myAccount"),
       href: `/${locale}/dashboard`,
     },
     {
-      title: "My Journeys",
+      title: t("myJourneys"),
       href: `/${locale}/dashboard/journeys`,
     },
     {
-      title: "Journeys Miles",
+      title: t("journeysMiles"),
       href: `/${locale}/dashboard/journeys-miles`,
     },
     {
-      title: "My Achievements",
+      title: t("myAchievements"),
       href: `/${locale}/dashboard/achievements`,
     },
     {
-      title: "Account Details",
+      title: t("accountDetails"),
       href: `/${locale}/dashboard/account-details`,
     },
   ];

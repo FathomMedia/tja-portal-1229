@@ -21,6 +21,7 @@ export type TAchievement = {
 
 export default async function Page() {
   const locale = useLocale();
+  const t = useTranslations("Dashboard")
 
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
@@ -31,7 +32,7 @@ export default async function Page() {
   });
 
   return (
-    <DashboardSection title={"My Achievements"}>
+    <DashboardSection title={t("MyAchievements")}>
       <MyAchievements achievements={achievements} />
     </DashboardSection>
   );

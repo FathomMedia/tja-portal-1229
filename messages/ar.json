@@ -24,7 +24,9 @@
   },
   "logout": "تسجيل خروج",
   "Home": {
-    "logout": "تسجيل خروج"
+    "logout": "تسجيل خروج",
+    "upComingAdventures": "المغامرات القادمة",
+    "latestsOrders": "أحدث الطلبات"
   },
   "SignUp": {
     "email": {
@@ -75,5 +77,14 @@
     "OTPSentToTheAboveEmail": "تم إرسال رمز التحقق الى بريدك الإلكتروني",
     "submit": "إرسال",
     "Or": "أو"
+  },
+  "Dashboard": {
+    "MyAchievements": "انجازاتي",
+    "availablePoints": "النقاط المتوفرة",
+    "myAccount": "حسابي",
+    "myJourneys": "رحلاتي",
+    "journeysMiles": "جورني مايلز",
+    "myAchievements": "انجازاتي",
+    "accountDetails": "تفاصيل الحساب"
   }
 }

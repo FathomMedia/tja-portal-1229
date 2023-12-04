@@ -24,7 +24,9 @@
   },
   "logout": "Logout",
   "Home": {
-    "logout": "Logout"
+    "logout": "Logout",
+    "upComingAdventures": "Up coming adventures",
+    "latestsOrders": "Latest orders"
   },
   "SignUp": {
     "email": {
@@ -75,5 +77,14 @@
     "OTPSentToTheAboveEmail": "OTP sent to the above email",
     "submit": "Submit",
     "Or": "Or"
+  },
+  "Dashboard": {
+    "MyAchievements": "My Achievements",
+    "availablePoints": "Available points",
+    "myAccount": "My Account",
+    "myJourneys": "My Journeys",
+    "journeysMiles": "Journeys Miles",
+    "myAchievements": "My Achievements",
+    "accountDetails": "Account Details "
   }
 }
