@@ -8,7 +8,7 @@ import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
-import { AppProvider, useAppContext } from "@/contexts/AppContext";
+import { AppProvider } from "@/contexts/AppContext";
 
 const inter = Inter({ subsets: ["latin"] });
 

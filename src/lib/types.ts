@@ -25,3 +25,51 @@ export type TAchievement = {
   badge: string;
   achieved: boolean;
 };
+
+export type TAdventure = {
+  id: number;
+  title: string;
+  description: null;
+  country: string;
+  continent: string;
+  price: number;
+  capacity: number;
+  slug: string;
+  startDate: string;
+  endDate: string;
+  giftPoints: number;
+  gender: string;
+  isFull: boolean;
+  isUpcoming: boolean;
+  addOns: any[];
+};
+
+export interface Links {
+  first: string;
+  last: string;
+  prev: null;
+  next: null;
+}
+
+export interface Meta {
+  current_page: number;
+  from: number;
+  last_page: number;
+  links: Link[];
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+}
+
+export interface Link {
+  url: null | string;
+  label: string;
+  active: boolean;
+}
+
+export interface TPaginatedAdventures {
+  data: TAdventure[];
+  links: Links;
+  meta: Meta;
+}

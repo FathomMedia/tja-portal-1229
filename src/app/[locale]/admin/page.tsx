@@ -1,26 +1,30 @@
-"use client";
+import { DashboardHome } from "@/components/dashboard/DashboardHome";
+import { getToken } from "@/lib/serverUtils";
+import { apiReq } from "@/lib/utils";
+import { useLocale } from "next-intl";
 
-export default function Index() {
-  // const locale = useLocale();
-  // const { refresh } = useRouter();
-  // const t = useTranslations("Home");
+export default async function Page() {
+  const locale = useLocale();
+  const token = getToken();
 
-  // const { user } = useAppContext();
+  const user = await apiReq({
+    endpoint: "/users/profile",
+    locale,
+    token: token,
+  }).then(async (val) => {
+    const { data } = await val.json();
+    return data;
+  });
 
-  // async function LogOut() {
-  //   const res = await fetch("/api/authentication/logout", {
-  //     headers: {
-  //       "Accept-Language": locale,
-  //     },
-  //   });
-  //   const data = await res.json();
-  //   if (res.ok) {
-  //     toast.success(data.message);
-  //     refresh();
-  //   } else {
-  //     toast.error(data.message);
-  //   }
-  // }
+  // const latestOrders = await apiReq({
+  //   endpoint: "/profile/bookings",
+  //   locale,
+  //   token: token?.value,
+  // }).then(async (val) => {
+  //   const { data } = await val.json();
+  //   return data;
+  // });
+  // console.log("🚀 ~ file: page.tsx:36 ~ Page ~ latestOrders:", latestOrders);
 
-  return <div className="p-6 flex flex-col gap-4">Admin Page</div>;
+  return <div>Admin</div>;
 }

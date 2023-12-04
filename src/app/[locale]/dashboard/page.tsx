@@ -1,25 +1,16 @@
-import { DashboardSection } from "@/components/DashboardSection";
 import { DashboardHome } from "@/components/dashboard/DashboardHome";
-import { Button } from "@/components/ui/button";
-import { UserProfilePreview } from "@/components/user/UserProfilePreview";
-import { useAppContext } from "@/contexts/AppContext";
-import { getUser } from "@/lib/apiHelpers";
+import { getToken } from "@/lib/serverUtils";
 import { apiReq } from "@/lib/utils";
-import { useLocale, useTranslations } from "next-intl";
-import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
-
-import toast from "react-hot-toast";
+import { useLocale } from "next-intl";
 
 export default async function Page() {
   const locale = useLocale();
-  const cookieStore = cookies();
-  const token = cookieStore.get("authToken");
+  const token = getToken();
 
   const user = await apiReq({
     endpoint: "/users/profile",
     locale,
-    token: token?.value,
+    token: token,
   }).then(async (val) => {
     const { data } = await val.json();
     return data;

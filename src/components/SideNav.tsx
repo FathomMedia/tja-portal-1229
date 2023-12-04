@@ -43,13 +43,15 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       )}
       {...props}
     >
-      {items.map((item) => (
+      {items.map((item, i) => (
         <Link
           key={item.href}
           href={item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.href
+            pathname.startsWith(item.href) && i != 0
+              ? "bg-muted hover:bg-muted"
+              : pathname === item.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start"

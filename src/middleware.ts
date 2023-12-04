@@ -24,7 +24,6 @@ export async function middleware(request: NextRequest) {
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
         const { data } = await resUserProfile.json();
-        console.log("🚀 ~ file: middleware.ts:24 ~ middleware ~ data:", data);
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
@@ -72,6 +71,13 @@ export async function middleware(request: NextRequest) {
             );
           }
         }
+        console.log("middleware", {
+          user: data,
+          pathname,
+          href: request.nextUrl.href,
+          locale,
+          token: token.value,
+        });
       } else {
         // delete the token and redirect to auth page if the token is wrong
         request.cookies.delete("authToken");

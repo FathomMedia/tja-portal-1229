@@ -1,6 +1,5 @@
 import { api } from "@/config";
 import { type ClassValue, clsx } from "clsx";
-import { error } from "console";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
