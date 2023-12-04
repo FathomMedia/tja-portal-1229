@@ -42,8 +42,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {user && <UserProfilePreview user={user} />}
         </div>
         <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 lg:w-1/5 overflow-x-scroll">
+        <div className="flex flex-col space-y-8 lg:flex-row lg:gap-6 lg:space-y-0">
+          <aside className="-px-4 lg:w-1/5 overflow-x-scroll">
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-4xl">{children}</div>

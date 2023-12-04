@@ -85,6 +85,8 @@
     "myJourneys": "My Journeys",
     "journeysMiles": "Journeys Miles",
     "myAchievements": "My Achievements",
-    "accountDetails": "Account Details "
-  }
+    "accountDetails": "Account Details ",
+    "level": "Level"
+  },
+  "MyAchievements": "My Achievements "
 }

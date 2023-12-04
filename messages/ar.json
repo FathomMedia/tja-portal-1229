@@ -85,6 +85,8 @@
     "myJourneys": "رحلاتي",
     "journeysMiles": "جورني مايلز",
     "myAchievements": "انجازاتي",
-    "accountDetails": "تفاصيل الحساب"
-  }
+    "accountDetails": "تفاصيل الحساب",
+    "level": "المستوى"
+  },
+  "MyAchievements": "انجازاتي"
 }

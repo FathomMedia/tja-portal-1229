@@ -3,6 +3,7 @@ import { MyAchievements } from "@/components/user/MyAchievements";
 import { useAppContext } from "@/contexts/AppContext";
 import { getMyAchievements } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,7 @@ export type TAchievement = {
 
 export default async function Page() {
   const locale = useLocale();
-  const t = useTranslations("Dashboard")
+  const t = await getTranslations("Dashboard");
 
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");

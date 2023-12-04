@@ -37,7 +37,7 @@ export default function Page() {
               )}
             </div>
             <div className="flex flex-col">
-              <p className="w-full text-sm text-primary">Level</p>
+              <p className="w-full text-sm text-primary">{t("level")}</p>
               <p className="w-full text-sm text-muted-foreground">
                 {user?.level.name}
               </p>
