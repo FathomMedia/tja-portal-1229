@@ -42,7 +42,11 @@ export const LanguageSwitcher: FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size={"icon"} className="border-primary">
+        <Button
+          variant="outline"
+          size={"icon"}
+          className="border-primary min-w-fit"
+        >
           <Globe />
         </Button>
       </DropdownMenuTrigger>
