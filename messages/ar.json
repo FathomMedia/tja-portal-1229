@@ -106,7 +106,10 @@
     "myOrders": "حجوزاتي",
     "adventures": "المغامرات",
     "consultations": "الإستشارات",
-    "help": "مساعدة"
+    "help": "مساعدة",
+    "theJourneyMilesLevels": "مستويات ذا جورني مايلز",
+    "minimumDays": "الحد الأدنى من الأيام",
+    "maximumDays": "الحد الأقصى للأيام"
   },
   "MyAchievements": "انجازاتي",
   "upComingAdventures": "المغامرات القادمة",
@@ -125,5 +128,6 @@
   },
   "country": "البلد",
   "continent": "القارة",
-  "price": "السعر"
+  "price": "السعر",
+  "nothingFound": "لم يتم العثور على شيء"
 }

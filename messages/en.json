@@ -106,13 +106,16 @@
     "myOrders": "My Orders",
     "adventures": "Adventures",
     "consultations": "Consultations",
-    "help": "Help"
+    "help": "Help",
+    "theJourneyMilesLevels": "The Journey Miles Levels",
+    "minimumDays": "Minimum Days",
+    "maximumDays": "Maximum Days"
   },
   "MyAchievements": "My Achievements ",
   "upComingAdventures": "Up Coming Adventures",
   "latestsOrders": "Latests Orders",
-  "startDate": "Start Date:",
-  "endDate": "End Date:",
+  "startDate": "Start Date",
+  "endDate": "End Date",
   "Adventures": {
     "country": "Country",
     "continent": "Continent",
@@ -126,5 +129,6 @@
   "country": "Country",
   "continent": "Continent",
   "price": "Price",
-  "bookNow": "Book now"
+  "bookNow": "Book now",
+  "nothingFound": "Nothing Found"
 }

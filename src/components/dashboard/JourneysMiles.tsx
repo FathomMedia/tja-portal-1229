@@ -28,7 +28,7 @@ export const JourneysMiles: FC<TJourneysMiles> = ({ user, levels }) => {
   console.log(levels);
 
   return (
-    <DashboardSection className="flex flex-col gap-4" title={"Journeys Miles"}>
+    <DashboardSection className="flex flex-col gap-4" title={t("journeysMiles")}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
           <p className="text-sm">{t("availablePoints")}</p>
@@ -70,17 +70,20 @@ export const LevelsTable = ({
   levels: TLevel[];
   userLevelId: number;
 }) => {
+
+  const t = useTranslations("Dashboard");
+  
   return (
     <Table className="bg-card rounded-2xl overflow-clip">
-      <TableCaption>The Journey miles levels</TableCaption>
+      <TableCaption>{t("theJourneyMilesLevels")}</TableCaption>
       <TableHeader>
         <TableRow className="hover:bg-card">
-          <TableHead className="w-fit text-start text-primary">Level</TableHead>
+          <TableHead className="w-fit text-start text-primary">{t("level")}</TableHead>
           <TableHead className=" text-center text-primary">
-            Minimum Days
+            {t("minimumDays")}
           </TableHead>
           <TableHead className=" text-center text-primary">
-            Maximum Days
+            {t("maximumDays")}
           </TableHead>
         </TableRow>
       </TableHeader>
