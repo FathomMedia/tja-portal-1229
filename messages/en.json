@@ -35,7 +35,9 @@
     "bookedAt": "Booked At",
     "adventure": "Adventure",
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "noOrdersFound": "No orders found",
+    "myAccount": "My Account"
   },
   "SignUp": {
     "email": {
@@ -76,7 +78,9 @@
     "OTP": "OTP",
     "OTPSentToTheAboveEmail": "OTP sent to your email",
     "submit": "Submit",
-    "sendEmail": "Send Email"
+    "sendEmail": "Send Email",
+    "verifyOTP": "Verify OTP",
+    "resetPassword": "Reset Password"
   },
   "Auth": {
     "login": "Login",

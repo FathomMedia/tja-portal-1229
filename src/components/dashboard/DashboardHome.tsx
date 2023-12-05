@@ -23,7 +23,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
   );
   const t = useTranslations("Home");
   return (
-    <DashboardSection title={"My Account"}>
+    <DashboardSection title={t("myAccount")}>
       <div className=" flex flex-col gap-4">
         <div className="flex gap-3">
           <div className="flex border-b">
@@ -84,7 +84,11 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
                     )}
                   </div>
                 );
-              })}
+              })):
+              <div>
+              <p>{t("noOrdersFound")}</p>
+            </div>
+              }
             </div>
           </div>
         </div>
