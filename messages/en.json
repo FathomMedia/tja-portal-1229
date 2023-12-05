@@ -6,7 +6,7 @@
     "email": {
       "errors": {
         "invalid": "Invalid email",
-        "required": "Email is requierd"
+        "required": "Email is required"
       },
       "placeholder": "name@example.com",
       "title": "Email Address"
@@ -14,7 +14,7 @@
     "password": {
       "errors": {
         "invalid": "Invalid password",
-        "required": "Password is requierd"
+        "required": "Password is required"
       },
       "placeholder": "*******",
       "title": "Password"
@@ -25,7 +25,7 @@
   "logout": "Logout",
   "Home": {
     "logout": "Logout",
-    "upComingAdventures": "Up coming adventures",
+    "upComingAdventures": "Upcoming adventures",
     "latestsOrders": "Latest orders",
     "currentTier": "Current Tier",
     "daysTravelled": "Days Travelled",
@@ -84,7 +84,7 @@
   },
   "Auth": {
     "login": "Login",
-    "Register": "Regstire",
+    "Register": "Register",
     "emailAddress": "Email Address",
     "OTP": "OTP",
     "OTPSentToTheAboveEmail": "OTP sent to the above email",

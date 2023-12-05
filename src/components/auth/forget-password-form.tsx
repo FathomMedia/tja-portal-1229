@@ -23,8 +23,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const ForgetPasswordForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const t = useTranslations("SignUp");
+
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
