@@ -18,7 +18,7 @@ type TDashboardHome = {
 };
 
 export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
-  const upComingAdventures = latestOrders.filter(
+  const upComingAdventures = latestOrders?.filter(
     (order: any) => order.type === "adventure" && order.details.isUpcoming
   );
   const t = useTranslations("Home");
@@ -43,7 +43,9 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
               <p className="text-sm text-muted-foreground">
                 {t("daysTravelled")}
               </p>
-              <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
+              <h2 className="text-2xl text-primary font-semibold">{`${
+                user?.daysTravelled
+              } ${t("days")}`}</h2>
             </div>
           </div>
           {/* Badge */}

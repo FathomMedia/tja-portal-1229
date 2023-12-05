@@ -1,22 +1,34 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, use } from "react";
 import { DashboardSection } from "@/components/DashboardSection";
 
 import { useLocale, useTranslations } from "next-intl";
 
-import { TUser } from "@/lib/types";
+import { TLevel, TUser } from "@/lib/types";
 import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 type TJourneysMiles = {
   user: TUser;
+  levels: TLevel[];
 };
 
-export const JourneysMiles: FC<TJourneysMiles> = ({ user }) => {
+export const JourneysMiles: FC<TJourneysMiles> = ({ user, levels }) => {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
+  console.log(levels);
 
   return (
-    <DashboardSection title={"Journeys Miles"}>
+    <DashboardSection className="flex flex-col gap-4" title={"Journeys Miles"}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
           <p className="text-sm">{t("availablePoints")}</p>
@@ -46,6 +58,47 @@ export const JourneysMiles: FC<TJourneysMiles> = ({ user }) => {
           </div>
         </div>
       </div>
+      <LevelsTable levels={levels} userLevelId={user.level.id} />
     </DashboardSection>
+  );
+};
+
+export const LevelsTable = ({
+  levels,
+  userLevelId,
+}: {
+  levels: TLevel[];
+  userLevelId: number;
+}) => {
+  return (
+    <Table className="bg-card rounded-2xl overflow-clip">
+      <TableCaption>The Journey miles levels</TableCaption>
+      <TableHeader>
+        <TableRow className="hover:bg-card">
+          <TableHead className="w-fit text-start text-primary">Level</TableHead>
+          <TableHead className=" text-center text-primary">
+            Minimum Days
+          </TableHead>
+          <TableHead className=" text-center text-primary">
+            Maximum Days
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {levels.map((level, i) => (
+          <TableRow
+            key={i}
+            className={cn(
+              level.id === userLevelId &&
+                "bg-primary text-primary-foreground hover:bg-primary/80"
+            )}
+          >
+            <TableCell className="font-medium">{level.name}</TableCell>
+            <TableCell className="text-center">{level.minDays}</TableCell>
+            <TableCell className="text-center">{level.maxDays}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };

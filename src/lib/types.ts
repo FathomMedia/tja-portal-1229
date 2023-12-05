@@ -95,3 +95,17 @@ export type TOrder = {
   dateBooked: string;
   details: TAdventure | TConsultation;
 };
+
+export type TLevels = {
+  data: TLevel[];
+  links: Links;
+  meta: Meta;
+};
+
+export type TLevel = {
+  id: number;
+  name: string;
+  minDays: number;
+  maxDays: number;
+  badge: string;
+};

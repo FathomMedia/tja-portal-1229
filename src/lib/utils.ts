@@ -26,11 +26,13 @@ export async function apiReq({
       ? {
           "Accept-Language": locale,
           "Content-Type": "application/json",
+          Accept: "application/json",
           Authorization: `Bearer ${token}`,
         }
       : {
           "Accept-Language": locale,
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
     body: values ? JSON.stringify(values) : undefined,
   });
