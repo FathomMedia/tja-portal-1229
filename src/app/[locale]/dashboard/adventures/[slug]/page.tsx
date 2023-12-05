@@ -1,9 +1,10 @@
 import { getToken } from "@/lib/serverUtils";
 import { TAdventure } from "@/lib/types";
 import { apiReq } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
 export default async function Page({
   params: { slug },
@@ -12,6 +13,7 @@ export default async function Page({
 }) {
   const locale = useLocale();
   const token = getToken();
+  const  t = await getTranslations("Adventures");
 
   const adventure = await apiReq({
     endpoint: `/adventures/${slug}`,
@@ -69,23 +71,23 @@ export default async function Page({
 
           <div className="flex mb-4">
             <p className="text-gray-600 mr-4">
-              <span className="font-bold">Start Date:</span> {adventure.startDate}
+              <span className="font-bold">{t("startDate")}</span> {adventure.startDate}
             </p>
             <p className="text-gray-600">
-              <span className="font-bold">End Date:</span> {adventure.endDate}
+              <span className="font-bold">{t("endDate")}</span> {adventure.endDate}
             </p>
           </div>
 
           <p className="text-gray-600 mb-4">
-            <span className="font-bold">Country:</span> {adventure.country}
+            <span className="font-bold">{t("country")}</span> {adventure.country}
           </p>
 
           <p className="text-gray-600 mb-4">
-            <span className="font-bold">Continent:</span> {adventure.continent}
+            <span className="font-bold">{t("continent")}:</span> {adventure.continent}
           </p>
 
           <p className="text-gray-600 mb-4">
-            <span className="font-bold">Price:</span> {adventure.price}
+            <span className="font-bold">{t("price")}:</span> {adventure.price}
           </p>
 
           <button
@@ -96,7 +98,7 @@ export default async function Page({
             //   console.log('Book now!');
             // }}
           >
-            Book now
+            {t("bookNow")}
           </button>
         </div>
       </div>
@@ -105,7 +107,7 @@ export default async function Page({
     
   ) : (
     <div>
-      <p>Not Found</p>
+      <p>{t("nothingFound")}</p>
     </div>
   );
 }

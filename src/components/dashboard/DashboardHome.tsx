@@ -26,14 +26,14 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
           <div className="flex border-b divide-x">
             {/* Current Tier */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Current Tier</p>
+              <p className="text-sm text-muted-foreground">{t("currentTier")}</p>
               <h2 className="text-2xl text-primary font-semibold">
                 {user?.level.name}
               </h2>
             </div>
             {/* Days Travelled */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">Days Travelled</p>
+              <p className="text-sm text-muted-foreground">{t("daysTravelled")}</p>
               <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
             </div>
           </div>
@@ -75,6 +75,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
 };
 
 const Consultation = ({ order }: { order: TOrder }) => {
+  const t = useTranslations("Home");
   const consultation = order.details as TConsultation;
   return (
     <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
@@ -91,21 +92,21 @@ const Consultation = ({ order }: { order: TOrder }) => {
         <div className="flex flex-col gap-2">
           <div className="flex justify-between item-center">
             <p className="text-gray-500 font-medium hidden md:block">
-              Consultation
+              {t("consultation")}
             </p>
             <div className="flex flex-wrap md:flex-row gap-2">
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                Tier:
+                {t("tier")}:
                 <p>{consultation.tier}</p>
               </div>
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                Days:
+                {t("days")}:
                 <p>{consultation.numberOfDays}</p>
               </div>
             </div>
           </div>
           <div className="text-xs font-medium text-foreground flex gap-1">
-            Booked At:
+            {t("bookedAt")}:
             <p>{order.dateBooked}</p>
           </div>
         </div>
@@ -119,6 +120,7 @@ const Consultation = ({ order }: { order: TOrder }) => {
 };
 const Adventure = ({ order }: { order: TOrder }) => {
   const adventure = order.details as TAdventure;
+  const t = useTranslations("Home");
   return (
     <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
       <div className="w-full md:w-1/3 aspect-video md:aspect-square bg-white relative grid place-items-center">
@@ -134,15 +136,15 @@ const Adventure = ({ order }: { order: TOrder }) => {
         <div className="flex flex-col gap-2">
           <div className="flex justify-between item-center">
             <p className="text-gray-500 font-medium hidden md:block">
-              Adventure
+              {t("adventure")}
             </p>
             <div className="flex flex-wrap md:flex-row gap-2">
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                Start:
+                {t("startDate")}:
                 <p>{adventure.startDate}</p>
               </div>
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                End:
+                {t("endDate")}:
                 <p>{adventure.endDate}</p>
               </div>
             </div>
@@ -151,7 +153,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
             {adventure.title}
           </h3>
           <div className="text-xs font-medium text-foreground flex gap-1">
-            Booked At:
+            {t("bookedAt")}:
             <p>{order.dateBooked}</p>
           </div>
           <p className="md:text-lg text-gray-500 text-base">

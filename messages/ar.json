@@ -28,7 +28,14 @@
     "upComingAdventures": "المغامرات القادمة",
     "latestsOrders": "أحدث الطلبات",
     "currentTier": "المستوى الحالي",
-    "daysTravelled": "الأيام المُسافرة"
+    "daysTravelled": "الأيام المُسافرة",
+    "consultation": "إستشارة",
+    "tier": "الفئة",
+    "days": "الأيام",
+    "bookedAt": "حُجزت في",
+    "adventure": "مغامرة",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء"
   },
   "SignUp": {
     "email": {
@@ -90,9 +97,28 @@
     "myAchievements": "انجازاتي",
     "accountDetails": "تفاصيل الحساب",
     "level": "المستوى",
-    "hello": "مرحبًا،"
+    "hello": "مرحبًا،",
+    "myOrders": "حجوزاتي",
+    "adventures": "المغامرات",
+    "consultations": "الإستشارات",
+    "help": "مساعدة"
   },
   "MyAchievements": "انجازاتي",
   "upComingAdventures": "المغامرات القادمة",
-  "latestsOrders": "أحدث الطلبات"
+  "latestsOrders": "أحدث الطلبات",
+  "startDate": "تاريخ البدء:",
+  "endDate": "تاريخ الانتهاء:",
+  "Adventures": {
+    "country": "البلد",
+    "continent": "القارة",
+    "price": "السعر",
+    "bookNow": "إحجز الآن",
+    "nothingFound": "لم يتم العثور على شيء",
+    "discover": "إكتشف",
+    "startDate": "تاريخ البدء:",
+    "endDate": "تاريخ الانتهاء:"
+  },
+  "country": "البلد",
+  "continent": "القارة",
+  "price": "السعر"
 }
