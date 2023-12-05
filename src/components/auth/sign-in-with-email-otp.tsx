@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,15 +16,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { apiReq } from "@/lib/utils";
 
 export const SignInWithEmailOTP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOTPSent, setOTPSent] = useState<boolean>(false);
-
-  // const t= useTranslations("Auth");
 
   const t = useTranslations("SignUp");
+
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams()!;
+
+  // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  const createQueryString = useCallback(
+    (pairs: { name: string; value: string }[]) => {
+      const params = new URLSearchParams(searchParams);
+      pairs.forEach(({ name, value }) => {
+        params.set(name, value);
+      });
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   const formSchema = z.object({
     email: z
@@ -52,36 +72,65 @@ export const SignInWithEmailOTP = () => {
 
   // 2. Define a submit handler.
   async function onSubmitEmail(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     setIsLoading(true);
+    const res = await apiReq({
+      endpoint: "/auth/login-otp/send",
+      locale,
+      method: "POST",
+      values: {
+        email: values.email,
+      },
+    }).finally(() => setIsLoading(false));
 
-    setTimeout(() => {
-      setIsLoading(false);
+    if (res.ok) {
+      const { message } = await res.json();
 
-      setOTPSent(true);
-      throw new Error("Unimplemented Error");
-    }, 3000);
+      router.push(
+        pathname +
+          "?" +
+          createQueryString([
+            { name: "email", value: values.email },
+            { name: "otpSent", value: "true" },
+          ])
+      );
+
+      toast.success(message, { duration: 6000 });
+    } else {
+      const { message } = await res.json();
+      toast.error(message, { duration: 6000 });
+    }
   }
   // 2. Define a submit handler.
   async function onSubmitOTP(values: z.infer<typeof formSchemaOTP>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     setIsLoading(true);
 
-    setTimeout(() => {
+    const response = await fetch(`/api/authentication/sign-in-with-email-otp`, {
+      method: "POST",
+      headers: {
+        "Accept-Language": locale,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: searchParams.get("email"),
+        otp: values.otp,
+      }),
+    }).finally(() => {
       setIsLoading(false);
-      throw new Error("Unimplemented Error");
-    }, 3000);
+    });
+
+    const res = await response.json();
+
+    if (response.ok) {
+      toast.success(res.message);
+      router.push(`/${locale}/dashboard`);
+    } else {
+      toast.error(res.message);
+    }
   }
 
   return (
     <div>
-      {!isOTPSent && (
+      {!Boolean(searchParams.get("otpSent")) && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitEmail)}
@@ -120,7 +169,7 @@ export const SignInWithEmailOTP = () => {
       )}
 
       {/* OTP */}
-      {isOTPSent && (
+      {Boolean(searchParams.get("otpSent")) && (
         <Form {...formOTP}>
           <form
             onSubmit={formOTP.handleSubmit(onSubmitOTP)}

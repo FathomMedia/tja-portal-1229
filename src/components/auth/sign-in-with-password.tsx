@@ -70,16 +70,12 @@ export const SignInWithPassword = () => {
 
     const res = await response.json();
 
-    const user = res.data;
-
     if (response.ok) {
       toast.success(res.message);
       push(`/${locale}/dashboard`);
     } else {
       toast.error(res.message);
     }
-
-    // TODO: toast for errors
   }
 
   return (
