@@ -23,17 +23,23 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
     <DashboardSection title={"My Account"}>
       <div className=" flex flex-col gap-4">
         <div className="flex gap-3">
-          <div className="flex border-b divide-x">
+          <div className="flex border-b">
             {/* Current Tier */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">{t("currentTier")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("currentTier")}
+              </p>
               <h2 className="text-2xl text-primary font-semibold">
                 {user?.level.name}
               </h2>
             </div>
+            {/* divider */}
+            <div className="w-[1px] h-full bg-border"></div>
             {/* Days Travelled */}
             <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">{t("daysTravelled")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("daysTravelled")}
+              </p>
               <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
             </div>
           </div>
@@ -42,27 +48,28 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
         </div>
         <div className="p-6 flex flex-col gap-4">
           {/* Up coming adventures */}
-          <div className="bg-muted flex p-3 rounded-lg">
-            <h1>{t("upComingAdventures")}</h1>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-xl text-primary">{t("upComingAdventures")}</h1>
           </div>
           {/* Up coming adventures */}
-          <div className="bg-muted flex p-3 rounded-lg">
-            <h1>{t("latestsOrders")}</h1>
-          </div>
-          <div className="grid grid-cols-1 gap-3">
-            {latestOrders.map((order, i) => {
-              const adventure: TAdventure = order.details as TAdventure;
-              const consultation: TConsultation =
-                order.details as TConsultation;
-              return (
-                <div className="min-h-[10rem] " key={i}>
-                  {order.type === "adventure" && <Adventure order={order} />}
-                  {order.type === "consultation" && (
-                    <Consultation order={order} />
-                  )}
-                </div>
-              );
-            })}
+
+          <div className="flex flex-col gap-2">
+            <h1 className="text-xl text-primary">{t("latestsOrders")}</h1>
+            <div className="grid grid-cols-1 gap-3">
+              {latestOrders.map((order, i) => {
+                const adventure: TAdventure = order.details as TAdventure;
+                const consultation: TConsultation =
+                  order.details as TConsultation;
+                return (
+                  <div className="min-h-[10rem] " key={i}>
+                    {order.type === "adventure" && <Adventure order={order} />}
+                    {order.type === "consultation" && (
+                      <Consultation order={order} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -93,18 +100,15 @@ const Consultation = ({ order }: { order: TOrder }) => {
             </p>
             <div className="flex flex-wrap md:flex-row gap-2">
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("tier")}:
-                <p>{consultation.tier}</p>
+                {t("tier")}:<p>{consultation.tier}</p>
               </div>
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("days")}:
-                <p>{consultation.numberOfDays}</p>
+                {t("days")}:<p>{consultation.numberOfDays}</p>
               </div>
             </div>
           </div>
           <div className="text-xs font-medium text-foreground flex gap-1">
-            {t("bookedAt")}:
-            <p>{order.dateBooked}</p>
+            {t("bookedAt")}:<p>{order.dateBooked}</p>
           </div>
         </div>
         <p className="text-xl font-black text-gray-800 ">
@@ -137,12 +141,10 @@ const Adventure = ({ order }: { order: TOrder }) => {
             </p>
             <div className="flex flex-wrap md:flex-row gap-2">
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("startDate")}:
-                <p>{adventure.startDate}</p>
+                {t("startDate")}:<p>{adventure.startDate}</p>
               </div>
               <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("endDate")}:
-                <p>{adventure.endDate}</p>
+                {t("endDate")}:<p>{adventure.endDate}</p>
               </div>
             </div>
           </div>
@@ -150,8 +152,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
             {adventure.title}
           </h3>
           <div className="text-xs font-medium text-foreground flex gap-1">
-            {t("bookedAt")}:
-            <p>{order.dateBooked}</p>
+            {t("bookedAt")}:<p>{order.dateBooked}</p>
           </div>
           <p className="md:text-lg text-gray-500 text-base">
             {adventure.description}

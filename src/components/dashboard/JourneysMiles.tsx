@@ -14,6 +14,7 @@ type TJourneysMiles = {
 export const JourneysMiles: FC<TJourneysMiles> = ({ user }) => {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
+
   return (
     <DashboardSection title={"Journeys Miles"}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
