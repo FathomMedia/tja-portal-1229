@@ -28,7 +28,14 @@
     "upComingAdventures": "Up coming adventures",
     "latestsOrders": "Latest orders",
     "currentTier": "Current Tier",
-    "daysTravelled": "Days Travelled"
+    "daysTravelled": "Days Travelled",
+    "consultation": "Consultation",
+    "tier": "Tier",
+    "days": "Days",
+    "bookedAt": "Booked At",
+    "adventure": "Adventure",
+    "startDate": "Start Date",
+    "endDate": "End Date"
   },
   "SignUp": {
     "email": {
@@ -90,9 +97,29 @@
     "myAchievements": "My Achievements",
     "accountDetails": "Account Details ",
     "level": "Level",
-    "hello": "Hello,"
+    "hello": "Hello,",
+    "myOrders": "My Orders",
+    "adventures": "Adventures",
+    "consultations": "Consultations",
+    "help": "Help"
   },
   "MyAchievements": "My Achievements ",
   "upComingAdventures": "Up Coming Adventures",
-  "latestsOrders": "Latests Orders"
+  "latestsOrders": "Latests Orders",
+  "startDate": "Start Date:",
+  "endDate": "End Date:",
+  "Adventures": {
+    "country": "Country",
+    "continent": "Continent",
+    "price": "Price",
+    "bookNow": "Book now",
+    "nothingFound": "Nothing Found",
+    "discover": "Discover",
+    "startDate": "Start Date:",
+    "endDate": "End Date:"
+  },
+  "country": "Country",
+  "continent": "Continent",
+  "price": "Price",
+  "bookNow": "Book now"
 }
