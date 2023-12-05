@@ -89,7 +89,6 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
                   <p>{t("noOrdersFound")}</p>
                 </div>
               )}
-              
             </div>
           </div>
         </div>
