@@ -294,7 +294,7 @@ export const ForgetPasswordForm = () => {
                   <FormLabel>{t("Password")}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Password"
+                      placeholder={t("Password")}
                       className=" border-primary"
                       type="password"
                       {...field}

@@ -31,11 +31,13 @@
     "daysTravelled": "الأيام المُسافرة",
     "consultation": "إستشارة",
     "tier": "الفئة",
-    "days": "الأيام",
+    "days": "أيام",
     "bookedAt": "حُجزت في",
     "adventure": "مغامرة",
     "startDate": "تاريخ البدء",
-    "endDate": "تاريخ الانتهاء"
+    "endDate": "تاريخ الانتهاء",
+    "noOrdersFound": "لم يتم العثور على أية طلبات",
+    "myAccount": "حسابي"
   },
   "SignUp": {
     "email": {
@@ -76,7 +78,9 @@
     "OTP": "رمز التحقق",
     "OTPSentToTheAboveEmail": "تم إرسال رمز التحقق على بريدك الإلكتروني",
     "submit": "تقديم",
-    "sendEmail": "إرسال"
+    "sendEmail": "إرسال",
+    "verifyOTP": "تأكيد رمز التحقق",
+    "resetPassword": "إعادة تعيين كلمة المرور"
   },
   "Auth": {
     "login": "تسجيل الدخول",

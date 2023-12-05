@@ -20,7 +20,7 @@ type TDashboardHome = {
 export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
   const t = useTranslations("Home");
   return (
-    <DashboardSection title={"My Account"}>
+    <DashboardSection title={t("myAccount")}>
       <div className=" flex flex-col gap-4">
         <div className="flex gap-3">
           <div className="flex border-b">
@@ -40,7 +40,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
               <p className="text-sm text-muted-foreground">
                 {t("daysTravelled")}
               </p>
-              <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled} Days`}</h2>
+              <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled +" "+t("days")} `}</h2>
             </div>
           </div>
           {/* Badge */}
@@ -56,7 +56,9 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
           <div className="flex flex-col gap-2">
             <h1 className="text-xl text-primary">{t("latestsOrders")}</h1>
             <div className="grid grid-cols-1 gap-3">
-              {latestOrders.map((order, i) => {
+              {
+              latestOrders?(
+              latestOrders.map((order, i) => {
                 const adventure: TAdventure = order.details as TAdventure;
                 const consultation: TConsultation =
                   order.details as TConsultation;
@@ -68,7 +70,11 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
                     )}
                   </div>
                 );
-              })}
+              })):
+              <div>
+              <p>{t("noOrdersFound")}</p>
+            </div>
+              }
             </div>
           </div>
         </div>
