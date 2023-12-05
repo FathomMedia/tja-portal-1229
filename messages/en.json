@@ -37,7 +37,8 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "noOrdersFound": "No orders found",
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "noUpcoming": "You don't have any upcoming adventures"
   },
   "SignUp": {
     "email": {

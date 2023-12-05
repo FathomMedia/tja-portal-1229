@@ -37,7 +37,8 @@
     "startDate": "تاريخ البدء",
     "endDate": "تاريخ الانتهاء",
     "noOrdersFound": "لم يتم العثور على أية طلبات",
-    "myAccount": "حسابي"
+    "myAccount": "حسابي",
+    "noUpcoming": "ليس لديك أي مغامرات قادمة"
   },
   "SignUp": {
     "email": {
