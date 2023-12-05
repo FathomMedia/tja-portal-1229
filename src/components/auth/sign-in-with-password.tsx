@@ -134,7 +134,7 @@ export const SignInWithPassword = () => {
         </Button>
         <Link
           className="text-sm text-primary"
-          href={`${locale}/authentication/forgot-password`}
+          href={`authentication/forgot-password`}
         >
           {t("lostPassword")}
         </Link>

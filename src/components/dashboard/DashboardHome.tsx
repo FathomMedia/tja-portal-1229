@@ -55,10 +55,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
               const consultation: TConsultation =
                 order.details as TConsultation;
               return (
-                <div
-                  className="min-h-[10rem] rounded-md  overflow-clip"
-                  key={i}
-                >
+                <div className="min-h-[10rem] " key={i}>
                   {order.type === "adventure" && <Adventure order={order} />}
                   {order.type === "consultation" && (
                     <Consultation order={order} />

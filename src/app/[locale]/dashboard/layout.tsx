@@ -67,7 +67,7 @@ export default async function Layout({
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:gap-6 lg:space-y-0">
-          <aside className="-px-4 lg:w-1/5 max-w-xs overflow-x-scroll">
+          <aside className="-px-4 lg:w-1/5 overflow-x-scroll">
             <SidebarNav items={sidebarNavItems} />
           </aside>
           <div className="flex-1 lg:max-w-4xl">{children}</div>
