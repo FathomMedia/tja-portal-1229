@@ -130,5 +130,6 @@
   "continent": "Continent",
   "price": "Price",
   "bookNow": "Book now",
-  "nothingFound": "Nothing Found"
+  "nothingFound": "Nothing Found",
+  "discover": "Discover"
 }
