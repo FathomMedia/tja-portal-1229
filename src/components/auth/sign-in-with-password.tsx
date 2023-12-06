@@ -125,7 +125,7 @@ export const SignInWithPassword = () => {
           variant={"secondary"}
           type="submit"
         >
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
           {t("signIn")}
         </Button>
         <Link

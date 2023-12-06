@@ -30,7 +30,7 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState("");
 
-  const t = useTranslations("Auth")
+  const t = useTranslations("Auth");
 
   useEffect(() => {
     getUser({ locale }).then((user) => {
@@ -122,7 +122,7 @@ export default function Page() {
               type="submit"
             >
               {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
               {t("submit")}
             </Button>

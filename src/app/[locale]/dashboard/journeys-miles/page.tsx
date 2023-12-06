@@ -27,7 +27,7 @@ export default async function Page() {
   });
 
   return (
-    <div>
+    <div className="max-w-4xl">
       <JourneysMiles user={user} levels={levels} />
     </div>
   );

@@ -28,7 +28,7 @@ export default async function Page() {
   console.log("🚀 ~ file: page.tsx:36 ~ Page ~ latestOrders:", latestOrders);
 
   return (
-    <div>
+    <div className="max-w-4xl">
       <DashboardHome user={user} latestOrders={latestOrders} />
     </div>
   );

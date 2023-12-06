@@ -29,6 +29,10 @@ module.exports = {
           DEFAULT: "#FF7373",
           foreground: "##F4F3F0",
         },
+        info: {
+          DEFAULT: "#65D0E7",
+          foreground: "#1B1B1B",
+        },
         muted: {
           DEFAULT: "#E5E3DD",
           foreground: "#64748B",
@@ -67,5 +71,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/container-queries"),
+  ],
 };

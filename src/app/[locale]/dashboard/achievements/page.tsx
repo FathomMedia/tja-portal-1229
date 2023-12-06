@@ -16,7 +16,7 @@ export default async function Page() {
   });
 
   return (
-    <DashboardSection title={t("MyAchievements")}>
+    <DashboardSection className="max-w-4xl" title={t("MyAchievements")}>
       <MyAchievements achievements={achievements} />
     </DashboardSection>
   );

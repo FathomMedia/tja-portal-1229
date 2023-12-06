@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type TUser = {
   name: string;
   email: string;
@@ -26,13 +28,26 @@ export type TAchievement = {
   achieved: boolean;
 };
 
+export type TCoupon = {
+  id: number;
+  code: string;
+  type: "percentage" | "fixed";
+  percentOff?: number;
+  value?: number;
+  minPoints: number;
+  maxPoints: number;
+  applyTo: string;
+  isUsed?: number;
+};
+
 export type TAdventure = {
   id: number;
   title: string;
-  description: null;
+  description: string | null;
   country: string;
   continent: string;
   price: number;
+  priceWithCurrency: string;
   capacity: number;
   slug: string;
   startDate: string;
@@ -41,7 +56,13 @@ export type TAdventure = {
   gender: string;
   isFull: boolean;
   isUpcoming: boolean;
-  addOns: any[];
+  addOns: TAddon[];
+};
+
+export type TAddon = {
+  id: number;
+  title: string;
+  price: number;
 };
 
 export interface Links {

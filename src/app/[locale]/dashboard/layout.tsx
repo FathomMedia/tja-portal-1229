@@ -70,7 +70,7 @@ export default async function Layout({
           <aside className="-px-4 lg:w-1/5 overflow-x-scroll">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-4xl">{children}</div>
+          <div className="flex-1">{children}</div>
         </div>
       </div>
     </div>

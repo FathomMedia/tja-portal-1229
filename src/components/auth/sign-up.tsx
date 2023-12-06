@@ -36,30 +36,31 @@ import toast from "react-hot-toast";
 const minAge = 5;
 const maxAge = 95;
 
-
-
 export const SignUp = () => {
-const t = useTranslations("SignUp");
+  const t = useTranslations("SignUp");
 
   const formSchema = z
-  .object({
-    email: z.string().email(t("email.errors.invalid")).min(1,  t("email.errors.required")),
-    date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
-    name: z.string().min(2, t("name.errors.required")),
-    phone: z.string().min(2, t("phone.errors.required")),
-    gender: z.string().min(1).max(1),
-    password: z.string().min(8, t("password.errors.required")),
-    password_confirmation: z.string().min(8),
-  })
-  .superRefine(({ password_confirmation, password }, ctx) => {
-    if (password_confirmation !== password) {
-      ctx.addIssue({
-        code: "custom",
-        message: t("password.errors.confirm"),
-        path: ["password_confirmation"],
-      });
-    }
-  });
+    .object({
+      email: z
+        .string()
+        .email(t("email.errors.invalid"))
+        .min(1, t("email.errors.required")),
+      date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
+      name: z.string().min(2, t("name.errors.required")),
+      phone: z.string().min(2, t("phone.errors.required")),
+      gender: z.string().min(1).max(1),
+      password: z.string().min(8, t("password.errors.required")),
+      password_confirmation: z.string().min(8),
+    })
+    .superRefine(({ password_confirmation, password }, ctx) => {
+      if (password_confirmation !== password) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("password.errors.confirm"),
+          path: ["password_confirmation"],
+        });
+      }
+    });
 
   const { executeRecaptcha } = useReCaptcha();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -284,7 +285,7 @@ const t = useTranslations("SignUp");
           variant={"secondary"}
           type="submit"
         >
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
           {t("Register")}
         </Button>
       </form>
