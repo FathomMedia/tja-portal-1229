@@ -129,5 +129,6 @@
   "country": "البلد",
   "continent": "القارة",
   "price": "السعر",
-  "nothingFound": "لم يتم العثور على شيء"
+  "nothingFound": "لم يتم العثور على شيء",
+  "discover": "إكتشف"
 }
