@@ -41,32 +41,32 @@ export const ConsultationForm = () => {
 
   const budgetIncludes = [
     {
-      id: "internationalflighttickets",
-      label: "International flight tickets",
+      id: "international-flight-tickets",
+      label: t("internationalFlightTickets"),
     },
     {
       id: "accommodation",
-      label: "Accommodation",
+      label: t("accommodation"),
     },
     {
-      id: "transportandfuel",
-      label: "Transport & Fuel",
+      id: "transport-and-fuel",
+      label: t("transportAndFuel"),
     },
     {
       id: "activities",
-      label: "Activities",
+      label: t("activities"),
     },
     {
-      id: "attractionsfees",
-      label: "Sightseeing/ Attractions fees",
+      id: "attractions-fees",
+      label: t("sightseeingAndAttractionsFees"),
     },
     {
-      id: "travelinsurance",
-      label: "Travel Insurance",
+      id: "travel-insurance",
+      label: t("travelInsurance"),
     },
     {
-      id: "travelconsultationfees",
-      label: "Travel consultation fees",
+      id: "travel-consultation-fees",
+      label: t("travelConsultationFees"),
     },
   ] as const;
 
@@ -108,7 +108,7 @@ export const ConsultationForm = () => {
   });
 
   return (
-    <div>
+    <div className="">
       {step === 1 && (
         <Form {...form}>
           <form
@@ -131,11 +131,9 @@ export const ConsultationForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Economy">{t("silver")}</SelectItem>
-                      <SelectItem value="Business">{t("gold")}</SelectItem>
-                      <SelectItem value="First Class">
-                        {t("platinum")}
-                      </SelectItem>
+                      <SelectItem value="silver">{t("silver")}</SelectItem>
+                      <SelectItem value="gold">{t("gold")}</SelectItem>
+                      <SelectItem value="platinum">{t("platinum")}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -237,7 +235,7 @@ export const ConsultationForm = () => {
         <div className="container mx-auto mt-8">
           <Form {...form}>
             <form
-              onSubmit={() => setStep(2)}
+              onSubmit={() => setStep(3)}
               className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
             >
               <FormField
@@ -245,10 +243,10 @@ export const ConsultationForm = () => {
                 name="destination"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("Name")}</FormLabel>
+                    <FormLabel>{t("whereareyoutraveling")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("Enter your name")}
+                        placeholder={t("yourDestination")}
                         className=" border-primary"
                         type="text"
                         {...field}
@@ -263,7 +261,7 @@ export const ConsultationForm = () => {
                 name="class"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
-                    <FormLabel>{t("packageType")}</FormLabel>
+                    <FormLabel>{t("travelClass")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -292,10 +290,10 @@ export const ConsultationForm = () => {
                 name="airport"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("Name")}</FormLabel>
+                    <FormLabel>{t("whichAirport")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("Enter your name")}
+                        placeholder={t("airportName")}
                         className=" border-primary"
                         type="text"
                         {...field}
@@ -310,10 +308,10 @@ export const ConsultationForm = () => {
                 name="plus"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("Name")}</FormLabel>
+                    <FormLabel>{t("plusOne")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("Enter your name")}
+                        placeholder={t("numberOfcompanions")}
                         className=" border-primary"
                         type="text"
                         {...field}
@@ -328,10 +326,10 @@ export const ConsultationForm = () => {
                 name="budget"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("Name")}</FormLabel>
+                    <FormLabel>{t("budgetAmount")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("Enter your name")}
+                        placeholder={t("budgetexample")}
                         className=" border-primary"
                         type="text"
                         {...field}
@@ -346,14 +344,14 @@ export const ConsultationForm = () => {
                 name="bPriority"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
-                    <FormLabel>{t("packageType")}</FormLabel>
+                    <FormLabel>{t("budgetPriority")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger className="rounded-full border-primary">
-                          <SelectValue placeholder={t("selectClass")} />
+                          <SelectValue placeholder={t("selectOne")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -379,10 +377,9 @@ export const ConsultationForm = () => {
                 render={() => (
                   <FormItem>
                     <div className="mb-4">
-                      <FormLabel className="text-base">Sidebar</FormLabel>
-                      <FormDescription>
-                        Select the items you want to display in the sidebar.
-                      </FormDescription>
+                      <FormLabel className="text-base">
+                        {t("budgetToInclude")}
+                      </FormLabel>
                     </div>
                     {budgetIncludes.map((item) => (
                       <FormField
@@ -434,223 +431,65 @@ export const ConsultationForm = () => {
               </Button>
             </form>
           </Form>
-
-          {/* <form className="max-w-full mx-auto">
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      1. Hello, our name is The Journey Adventures... What about you?
-                    </label>
-                    <input
-                    title="Name"
-                      type="text"
-                      name="name"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      {`2. What's your email?`}
-                    </label>
-                    <Input
-                     title="Email"
-                      type="email"
-                      name="email"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      3. How about your phone number (With the country code please)?
-                    </label>
-                    <Input
-                      title="Phone"
-                      type="tel"
-                      name="phoneNumber"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      4. Where are you planning to travel?
-                    </label>
-                    <Input
-                      title="Destination"
-                      type="text"
-                      name="destination"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      5. How do you want to travel?
-                    </label>
-                    <select
-                      title="Class"
-                      name="travelClass"
-                      className=" border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    >
-                      <option value="Economy">Economy</option>
-                      <option value="Business">Business</option>
-                      <option value="FirstClass">First Class</option>
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      6. Which airport are you departing from?
-                    </label>
-                    <input
-                      title="Airport"
-                      type="text"
-                      name="departureAirport"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      7. Bringing a plus one (or plus five)?
-                    </label>
-                    <Input
-                    title="plus one"
-                      type="text"
-                      name="budget"
-                      className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      8. What is your trip budget (in your preferred currency)?
-                    </label>
-                    <Input
-                    title="budget"
-                      type="text"
-                      name="budget"
-                      required
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      9. When it comes to budget priority, how would you like to allocate it?
-                    </label>
-                    <Select
-                      name="budgetPriority"
-                      required
-                    >
-                      <option value="">
-                        Select one...
-                      </option>
-                      <option value="BusinessClass">
-                        Business class ticket is a must, so more budget for the tickets, less in accommodation and activities.
-                      </option>
-                      <option value="EconomicalTickets">
-                        {`I don't mind economical flight tickets, as long as all my accommodation is five stars standard.`}
-                      </option>
-                      <option value="ActivitiesPriority">
-                        Activities and sightseeing are a priority, I would love to spend more on adventures and programs.
-                      </option>
-                    </Select>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      10. What do you want to include in the budget?
-                    </label>
-                    <div>
-                      <label className="flex items-center">
-                        <Input
-                          type="checkbox"
-                          name="flightTickets"
-                        />
-                        <span className="text-gray-700">International flight tickets</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="accommodation"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Accommodation</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="transportAndFuel"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Transport & Fuel</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="Activities"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Activities</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="sightseeingAndAttractionsFees"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Sightseeing/ Attractions fees</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="travelInsurance"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Travel Insurance</span>
-                      </label>
-                      <label className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="travelConsultationFees"
-                          className="mr-2"
-                        />
-                        <span className="text-gray-700">Travel consultation fees</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
-                      11. What type of vacation are you looking for?
-                    </label>
-                    <select
-                      title="Vacation Type"
-                      name="vacationType"
-                      className=" border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                     
-                      required
-                    >
-                      <option value="">
-                        Select one...
-                      </option>
-                      <option value="DiscoveringCityHopping">More of discovering and city hopping with some adventurous activities between</option>
-                      <option value="VeryAdventurous">Very adventurous</option>
-                      <option value="MixtureAB">A mixture of A & B</option>
-                      <option value="RelaxingAndRomantic">Very relaxing and romantic, more of sightseeing, culture, and shopping</option>
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <button
-                      type="submit"
-                      className=" bg-[#1E473F] hover:bg-black text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Next 
-                    </button>
-                  </div>
-                </form> */}
         </div>
       )}
 
-      {step === 3 && <div></div>}
+      {step === 3 && (
+        <div className="container mx-auto mt-8">
+          <Form {...form}>
+            <form
+              onSubmit={() => setStep(3)}
+              className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
+            >
+              <FormField
+                control={form.control}
+                name="class"
+                render={({ field }) => (
+                  <FormItem className=" w-full mb-2">
+                    <FormLabel>{t("travelClass")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-full border-primary">
+                          <SelectValue placeholder={t("selectOne")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="More-Discovering">
+                          {t("moreDiscovering ")}
+                        </SelectItem>
+                        <SelectItem value="More-Adventurous">
+                          {t("veryAdventurous")}
+                        </SelectItem>
+                        <SelectItem value="Mix-of-A-B">
+                          {t("mixofAandB")}
+                        </SelectItem>
+                        <SelectItem value="Very-Relaxing">
+                          {t("veryRelaxing")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* Accommodation Type Here */}
+              <FormField
+                control={form.control}
+                name="class"
+                render={({ field }) => (
+                  <FormItem className=" w-full mb-2">
+                    <FormLabel></FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        </div>
+      )}
     </div>
   );
 };
