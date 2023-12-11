@@ -1,4 +1,4 @@
-import { ConsultationForm } from "@/components/dashboard/Consultations/ConsultationForm";
+import { ConsultationForm } from "@/components/dashboard/consultations/ConsultationForm";
 import { getToken } from "@/lib/serverUtils";
 import { TPaginatedAdventures } from "@/lib/types";
 import { apiReq } from "@/lib/utils";

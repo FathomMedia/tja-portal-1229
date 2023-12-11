@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import SelectableCard from "./cardSelection";
 
 export const ConsultationForm = () => {
   const [step, setStep] = useState(1);
@@ -70,23 +71,102 @@ export const ConsultationForm = () => {
     },
   ] as const;
 
+  const adventureToYouIs = [
+    {
+      id: "visiting-a-stunning-place-and-try-hard-to-climb-a-challenging-mountain-to-enjoy-a-panoramic-view-at-the-end",
+      label: t("visitingAStunningPlace"),
+    },
+    {
+      id: "being-out-in-wild-nature",
+      label: t("beingOutInWildNature"),
+    },
+    {
+      id: "over-coming-a-fear",
+      label: t("overComingAFear"),
+    },
+    {
+      id: "extreme-sports",
+      label: t("extremeSports"),
+    },
+    {
+      id: "beaches-and-water-sports",
+      label: t("BeachesAndWaterSports"),
+    },
+    {
+      id: "camping-outdoors",
+      label: t("campingOutdoors"),
+    },
+    {
+      id: "sightseeing-and-learning-about-new-cultures",
+      label: t("sightseeingAndLearning"),
+    },
+    {
+      id: "get-lost-somewhere-with-no-connection",
+      label: t("getLostSomewhere"),
+    },
+    {
+      id: "trying-new-activities-in-new-places",
+      label: t("TryingNewActivities"),
+    },
+    {
+      id: "national-parks-animals-and-wild-life",
+      label: t("nationalParksAndAnimals"),
+    },
+  ] as const;
+
+  const accommodationTypes = [
+    { title: t("aResortWith"), imageUrl: "/asset/images/resort.jpg" },
+    {
+      title: t("fiveStarHotel"),
+      imageUrl: "/assets/images/5-star-hotel.jpg",
+    },
+    { title: t("romanticCabins"), imageUrl: "/assets/images/cabins.jpg" },
+    {
+      title: t("bedAndBreakfast"),
+      imageUrl: "/assets/images/bedAndBreakfast.jpg",
+    },
+    { title: t("holidayHomes"), imageUrl: "/assets/images/holidayHomes.jpg" },
+    {
+      title: t("servicedApartments"),
+      imageUrl: "/assets/images/servicedApartments.jpg",
+    },
+    { title: t("glamping"), imageUrl: "/assets/images/glamping.jpg" },
+    { title: t("tents"), imageUrl: "/assets/images/tents.jpg" },
+    { title: t("caravans"), imageUrl: "/assets/images/caravans.jpg" },
+    { title: t("hostels"), imageUrl: "/assets/images/hostels.jpg" },
+    { title: t("homestays"), imageUrl: "/assets/images/homestays.jpg" },
+    // Add more items as needed
+  ];
+
+  const itemsPerRow = 4;
+
+  // Calculate the number of rows based on the items and itemsPerRow
+  const numRows = Math.ceil(accommodationTypes.length / itemsPerRow);
+
+  // Generate an array of row indices
+  const rowIndices = Array.from({ length: numRows }, (_, index) => index);
+
   const formSchema = z.object({
     package: z.string().min(1).max(1),
     start_date: z.date(),
     end_date: z.date(),
-    destination: z.string().min(2, t("name.errors.required")),
+    destination: z.string().min(2, t("destination.errors.required")),
     class: z.string().min(1).max(1),
-    airport: z.string().min(2, t("phone.errors.required")),
+    airport: z.string().min(2, t("airport.errors.required")),
     plus: z.string(),
-    budget: z.string().min(2, t("phone.errors.required")),
+    budget: z.string().min(2, t("budget.errors.required")),
     bPriority: z.string(),
     budgetIncludes: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
-        message: "You have to select at least one item.",
+        message: t("youHaveYoSelectAtLeastOneItem"),
       }),
     vType: z.string(),
-    password_confirmation: z.string().min(8),
+    adventureToYouIs: z
+      .array(z.string())
+      .refine((value) => value.some((item) => item), {
+        message: t("youHaveYoSelectAtLeastOneItem"),
+      }),
   });
 
   // 1. Define your form.
@@ -104,6 +184,7 @@ export const ConsultationForm = () => {
       bPriority: undefined,
       budgetIncludes: [],
       vType: "",
+      adventureToYouIs: [],
     },
   });
 
@@ -438,7 +519,7 @@ export const ConsultationForm = () => {
         <div className="container mx-auto mt-8">
           <Form {...form}>
             <form
-              onSubmit={() => setStep(3)}
+              onSubmit={() => setStep(4)}
               className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
             >
               <FormField
@@ -475,7 +556,6 @@ export const ConsultationForm = () => {
                   </FormItem>
                 )}
               />
-              {/* Accommodation Type Here */}
               <FormField
                 control={form.control}
                 name="class"
@@ -486,6 +566,117 @@ export const ConsultationForm = () => {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="class"
+                render={({ field }) => (
+                  <FormItem className=" w-full mb-2">
+                    <FormLabel>{t("whichTypeOfAccomidation")}</FormLabel>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(4, 1fr)",
+                        gap: "16px",
+                      }}
+                    >
+                      {rowIndices.map((rowIndex) => (
+                        <React.Fragment key={rowIndex}>
+                          {accommodationTypes
+                            .slice(
+                              rowIndex * itemsPerRow,
+                              (rowIndex + 1) * itemsPerRow
+                            )
+                            .map((item, index) => (
+                              <SelectableCard
+                                key={index}
+                                title={item.title}
+                                imageUrl={item.imageUrl}
+                              />
+                            ))}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <Button
+                className="w-full max-w-[268px] "
+                variant={"secondary"}
+                type="submit"
+              >
+                {t("next")}
+              </Button>
+            </form>
+          </Form>
+        </div>
+      )}
+
+      {step === 4 && (
+        <div className="container mx-auto mt-8">
+          <Form {...form}>
+            <form
+              onSubmit={() => setStep(5)}
+              className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
+            >
+              <FormField
+                control={form.control}
+                name="adventureToYouIs"
+                render={() => (
+                  <FormItem>
+                    <div className="mb-4">
+                      <FormLabel className="text-base">
+                        {t("ToyouAdventureIs" + ":")}
+                      </FormLabel>
+                    </div>
+                    {adventureToYouIs.map((item) => (
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name="adventureToYouIs"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([
+                                          ...field.value,
+                                          item.id,
+                                        ])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== item.id
+                                          )
+                                        );
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {item.label}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    ))}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                className="w-full max-w-[268px] "
+                variant={"secondary"}
+                type="submit"
+              >
+                {t("next")}
+              </Button>
             </form>
           </Form>
         </div>
