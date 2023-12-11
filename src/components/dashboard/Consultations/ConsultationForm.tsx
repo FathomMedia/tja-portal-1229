@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import SelectableCard from "./cardSelection";
+import { RadioGroup, RadioItem } from "@/components/ui/radio-group";
 
 export const ConsultationForm = () => {
   const [step, setStep] = useState(1);
@@ -167,6 +168,16 @@ export const ConsultationForm = () => {
       .refine((value) => value.some((item) => item), {
         message: t("youHaveYoSelectAtLeastOneItem"),
       }),
+    type: z.enum(
+      [
+        t("Seeing-one-of-the-worlds-7-wonders"),
+        t("hot-air-balloon-experience"),
+        t("i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch"),
+      ],
+      {
+        required_error: t("youHaveYoSelectAtLeastOneItem"),
+      }
+    ),
   });
 
   // 1. Define your form.
@@ -670,6 +681,50 @@ export const ConsultationForm = () => {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Notify me about...</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioItem value="all" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t(`Seeing-one-of-the-worlds-7-wonders`)}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="mentions" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t("hot-air-balloon-experience")}
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioItem value="none" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {t(
+                              "i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch"
+                            )}
+                          </FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
