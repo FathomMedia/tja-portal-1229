@@ -26,31 +26,23 @@ export default async function Page() {
     <div className="flex flex-col gap-2">
       {paginatedAdventures &&
         paginatedAdventures.data.map((adventure, i) => (
-          <Link
-            href={`adventures/${adventure.slug}`}
-            // className="bg-primary p-3 text-primary-foreground"
-            key={i}
-          >
+          <Link href={`adventures/${adventure.slug}`} key={i}>
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              {/* <img className="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" /> */}
               <div className="p-5">
-                <a href="#">
+                <div>
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     <p>{adventure.title}</p>
                   </h5>
-                </a>
+                </div>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                   {adventure.description}
                 </p>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                   {adventure.country}
                 </p>
-                <a
-                  href={`adventures/${adventure.slug}`}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#1E473F] rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
+                <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#1E473F] rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                   {t("discover")}
-                </a>
+                </div>
               </div>
             </div>
           </Link>

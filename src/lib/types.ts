@@ -56,6 +56,7 @@ export type TAdventure = {
   gender: string;
   isFull: boolean;
   isUpcoming: boolean;
+  isPartialAllowed: boolean;
   addOns: TAddon[];
 };
 

@@ -26,6 +26,7 @@ import { Icons } from "../ui/icons";
 import { CouponsSelect } from "./CouponsSelect";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { PaymentTypeSelect } from "./PaymentTypeSelect";
 
 type TAdventureCheckoutForm = {
   adventure: TAdventure;
@@ -63,6 +64,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         isUsed: z.number(),
       })
       .optional(),
+    isPartialPayment: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,6 +72,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
     defaultValues: {
       why: "",
       addOns: [],
+      isPartialPayment: adventure.isPartialAllowed ? true : false,
     },
   });
 
@@ -168,27 +171,29 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
             </FormItem>
           )}
         />
-        <Separator className="bg-muted/50" />
-        <FormField
-          control={form.control}
-          name="addOns"
-          render={({ field }) => (
-            <FormItem className=" w-full">
-              <FormLabel>{"Addons"}</FormLabel>
-              <FormControl>
-                <AddonsSelect
-                  addons={adventure.addOns}
-                  defaultSelected={field.value}
-                  onSelect={(selected) => {
-                    console.log("AddonsSelected", selected);
-                    field.onChange(selected);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {adventure.addOns.length > 0 && <Separator className="bg-muted/50" />}
+        {adventure.addOns.length > 0 && (
+          <FormField
+            control={form.control}
+            name="addOns"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{"Addons"}</FormLabel>
+                <FormControl>
+                  <AddonsSelect
+                    addons={adventure.addOns}
+                    defaultSelected={field.value}
+                    onSelect={(selected) => {
+                      console.log("AddonsSelected", selected);
+                      field.onChange(selected);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Separator className="bg-muted/50" />
         <FormField
           control={form.control}
@@ -207,16 +212,50 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   Get Coupons
                 </Link>
               </div>
+              {myCoupons && myCoupons.length > 0 && (
+                <FormControl>
+                  <CouponsSelect
+                    coupons={myCoupons}
+                    defaultSelected={field.value}
+                    onSelect={(selected) => {
+                      console.log("CouponSelected", selected);
+                      field.onChange(selected);
+                    }}
+                  />
+                </FormControl>
+              )}
+              {/* if user have no redeemed coupons  */}
+              {!myCoupons ||
+                (myCoupons.length === 0 && (
+                  <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center cursor-pointer min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
+                    <p className="text-sm font-medium">
+                      {"You don't have any redeemed coupons"}
+                    </p>
+                  </div>
+                ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Separator className="bg-muted/50" />
+        <FormField
+          control={form.control}
+          name="isPartialPayment"
+          render={({ field }) => (
+            <FormItem className=" w-full">
+              <div className="flex items-center justify-between flex-wrap">
+                <FormLabel>{"Payment type"}</FormLabel>
+              </div>
               <FormControl>
-                <CouponsSelect
-                  coupons={myCoupons ?? []}
+                <PaymentTypeSelect
                   defaultSelected={field.value}
                   onSelect={(selected) => {
-                    console.log("CouponSelected", selected);
+                    console.log("isPartialSelected", selected);
                     field.onChange(selected);
                   }}
                 />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -231,6 +270,18 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Billing Info */}
           <div className="order-2 lg:order-1 bg-background text-foreground p-4">
+            <div>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+              <p>Billing</p>
+            </div>
             <div className="flex flex-col gap-4">
               <Button type="submit" className="w-fit">
                 {isLoading && (

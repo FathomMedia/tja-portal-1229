@@ -33,8 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import SelectableCard from "./cardSelection";
-import { RadioGroup, RadioItem } from "@/components/ui/radio-group";
+import SelectableCard from "@/components/dashboard/Consultations/cardSelection";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const ConsultationForm = () => {
   const [step, setStep] = useState(1);
@@ -695,7 +695,7 @@ export const ConsultationForm = () => {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioItem value="all" />
+                            <RadioGroupItem value="all" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {t(`Seeing-one-of-the-worlds-7-wonders`)}
@@ -711,7 +711,7 @@ export const ConsultationForm = () => {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioItem value="none" />
+                            <RadioGroupItem value="none" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {t(

@@ -60,6 +60,7 @@ export default async function Page({
   if (adventure.isFull || !adventure.isUpcoming) {
     redirect(`/${locale}/dashboard/checkout/adventures/not-bookable`);
   }
+  console.log(adventure);
 
   return (
     <AdventureCheckoutForm
