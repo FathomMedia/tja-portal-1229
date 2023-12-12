@@ -1,10 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, CalendarClock } from "lucide-react";
 import React, { FC, useState } from "react";
 
 type TPaymentTypeSelect = {
+  fullPrice: string;
+  partialPrice: string;
+  partialRemaining: string;
   defaultSelected: boolean;
   onSelect: (isPartialPayment: boolean) => void;
 };
@@ -12,6 +15,9 @@ type TPaymentTypeSelect = {
 export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
   onSelect,
   defaultSelected,
+  fullPrice,
+  partialPrice,
+  partialRemaining,
 }) => {
   const [isPartialPayment, setIsPartialPayment] =
     useState<boolean>(defaultSelected);
@@ -34,7 +40,14 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
               Partial Payment
             </p>
           </div>
-          <p className="text-sm font-bold">$$$</p>
+          <div className="flex items-start text-muted-foreground gap-2">
+            <CalendarClock className="w-4 h-4" />
+            <p className="text-xs">{`Pay Later - ${partialRemaining}`}</p>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-secondary">Pay Now</p>
+            <p className="text-sm font-bold text-secondary">{`${partialPrice}`}</p>
+          </div>
         </div>
         {/* select icon */}
         <div className={cn("duration-150 h-fit w-fit")}>
@@ -59,7 +72,7 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
           <div>
             <p className="text-sm font-medium whitespace-pre">Full Payment</p>
           </div>
-          <p className="text-sm font-bold">$$$$$</p>
+          <p className="text-sm font-bold text-secondary">{fullPrice}</p>
         </div>
         {/* select icon */}
         <div className={cn("duration-150 h-fit w-fit")}>

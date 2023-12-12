@@ -6,6 +6,7 @@ export async function getUser({ locale }: { locale: string }) {
     headers: {
       "Accept-Language": locale,
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
   });
 

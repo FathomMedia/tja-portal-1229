@@ -1,7 +1,7 @@
 "use client";
 
 import { TAddon, TAdventure, TCoupon, TUser } from "@/lib/types";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 // import { AdventureChoices } from "./AdventureChoices";
 import { string, z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
@@ -43,6 +43,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
   const t = useTranslations("Checkout");
 
   const formSchema = z.object({
+    // Adventures choices
     why: z.string().min(1, t("why.errors.required")),
     addOns: z.array(
       z.object({
@@ -65,6 +66,13 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       })
       .optional(),
     isPartialPayment: z.boolean(),
+    // Billing Info
+    customerName: z.string().min(1),
+    address: z.string().min(1),
+    city: z.string().min(1),
+    country: z.string().min(1),
+    email: z.string().email().min(1),
+    phone: z.string().min(1),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -73,8 +81,39 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       why: "",
       addOns: [],
       isPartialPayment: adventure.isPartialAllowed ? true : false,
+      customerName: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: "",
+      city: "",
+      country: "",
     },
   });
+
+  const [addonsTotal, setAddonsTotal] = useState(0);
+  const [totalAdventureWithAddons, setTotalAdventureWithAddons] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [totalFullPrice, setTotalFullPrice] = useState(0);
+  const [partialPrice, setPartialPrice] = useState(0);
+  const [partialRemaining, setPartialRemaining] = useState(0);
+
+  useEffect(() => {
+    setTotalAdventureWithAddons(adventure.price + addonsTotal);
+
+    setTotalFullPrice(totalAdventureWithAddons - discount);
+
+    setPartialPrice(totalFullPrice * 0.3);
+
+    setPartialRemaining(totalFullPrice * 0.7);
+
+    return () => {};
+  }, [
+    addonsTotal,
+    adventure.price,
+    discount,
+    totalAdventureWithAddons,
+    totalFullPrice,
+  ]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -88,12 +127,20 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
     adventure: TAdventure;
     myCoupons: TCoupon[] | null;
     form: typeof form;
+    payment: {
+      setAddonsTotal: typeof setAddonsTotal;
+      setDiscount: typeof setDiscount;
+      totalFullPrice: number;
+      partialPrice: number;
+      partialRemaining: number;
+    };
   };
 
   const AdventureChoices: FC<TAdventureChoices> = ({
     adventure,
     form,
     myCoupons,
+    payment,
   }) => {
     const t = useTranslations("Adventures");
     const locale = useLocale();
@@ -184,7 +231,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     addons={adventure.addOns}
                     defaultSelected={field.value}
                     onSelect={(selected) => {
-                      console.log("AddonsSelected", selected);
+                      payment.setAddonsTotal(
+                        selected.reduce((sum, addon) => sum + addon.price, 0)
+                      );
                       field.onChange(selected);
                     }}
                   />
@@ -205,7 +254,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 <Link
                   className={cn(
                     buttonVariants({ variant: "link" }),
-                    "text-sm text-primary-foreground"
+                    "text-sm text-secondary"
                   )}
                   href={`/${locale}/dashboard/journeys-miles`}
                 >
@@ -215,10 +264,20 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               {myCoupons && myCoupons.length > 0 && (
                 <FormControl>
                   <CouponsSelect
+                    applyTo="adventure"
                     coupons={myCoupons}
                     defaultSelected={field.value}
                     onSelect={(selected) => {
-                      console.log("CouponSelected", selected);
+                      if (selected?.type === "percentage") {
+                        payment.setDiscount(
+                          (totalAdventureWithAddons *
+                            (selected.percentOff || 0)) /
+                            100
+                        );
+                      } else {
+                        payment.setDiscount(selected?.value || 0);
+                      }
+
                       field.onChange(selected);
                     }}
                   />
@@ -248,9 +307,20 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               </div>
               <FormControl>
                 <PaymentTypeSelect
+                  fullPrice={Intl.NumberFormat(locale, {
+                    currency: "BHD",
+                    style: "currency",
+                  }).format(payment.totalFullPrice)}
+                  partialPrice={Intl.NumberFormat(locale, {
+                    currency: "BHD",
+                    style: "currency",
+                  }).format(payment.partialPrice)}
+                  partialRemaining={Intl.NumberFormat(locale, {
+                    currency: "BHD",
+                    style: "currency",
+                  }).format(payment.partialRemaining)}
                   defaultSelected={field.value}
                   onSelect={(selected) => {
-                    console.log("isPartialSelected", selected);
                     field.onChange(selected);
                   }}
                 />
@@ -264,39 +334,163 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
     );
   };
 
+  type TBillingInfo = {
+    form: typeof form;
+  };
+
+  const BillingInfo: FC<TBillingInfo> = ({ form }) => {
+    const t = useTranslations("Adventures");
+    const locale = useLocale();
+
+    return (
+      <div className="flex flex-col gap-4 @container">
+        <h3 className="font-bold md:text-2xl text-primary text-xl">
+          Billing Details
+        </h3>
+        <FormField
+          control={form.control}
+          name="customerName"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>
+                {"Name"}
+                <span className="text-destructive ms-1">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Full Name" className=" " {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="@container flex-col @md:flex-row gap-3 flex">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>
+                  {"Email"}
+                  <span className="text-destructive ms-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" className=" " {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>
+                  {"Phone"}
+                  <span className="text-destructive ms-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Phone" className=" " {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem className=" w-full">
+              <FormLabel>
+                {"Address"}
+                <span className="text-destructive ms-1">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Address" className=" " {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="@container flex-col @md:flex-row gap-3 flex">
+          <FormField
+            control={form.control}
+            name="city"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>
+                  {"Town/City"}
+                  <span className="text-destructive ms-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Town/City" className=" " {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>
+                  {"Country"}
+                  <span className="text-destructive ms-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="Country" className=" " {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <Separator className="bg-muted/50" />
+        {/* Payment summary */}
+        <div className="flex flex-col gap-3">
+          <h3 className="font-bold md:text-2xl text-xl">Total</h3>
+          <p>{`${adventure.price} BHD`}</p>
+          <p>{`Partial Payment: ${adventure.partialPrice} BHD`}</p>
+
+          <p>{`Addons Total: ${addonsTotal} BHD`}</p>
+          <p>{`Discount: ${discount} BHD`}</p>
+          {/* <p>{`Total: ${total} BHD (with ${discount} BHD discount)`}</p> */}
+        </div>
+        <Button
+          type="submit"
+          disabled={!form.formState.isValid}
+          className="w-fit"
+        >
+          {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
+          Place Order
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="">
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center lg:place-items-start">
           {/* Billing Info */}
-          <div className="order-2 lg:order-1 bg-background text-foreground p-4">
-            <div>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-              <p>Billing</p>
-            </div>
-            <div className="flex flex-col gap-4">
-              <Button type="submit" className="w-fit">
-                {isLoading && (
-                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                )}
-                Place Order
-              </Button>
-            </div>
+          <div className="order-2 lg:order-1 bg-background w-full text-foreground p-4 max-w-3xl">
+            <BillingInfo form={form} />
           </div>
           {/* Checkout choices */}
-          <div className="order-1 lg:order-2 bg-primary rounded-xl text-primary-foreground p-4">
+          <div className="order-1 lg:order-2 bg-primary rounded-xl w-full text-primary-foreground max-w-3xl p-4 md:p-6">
             <AdventureChoices
               form={form}
               adventure={adventure}
               myCoupons={myCoupons}
+              payment={{
+                totalFullPrice: totalAdventureWithAddons,
+                partialPrice: partialPrice,
+                partialRemaining: partialRemaining,
+                setAddonsTotal: setAddonsTotal,
+                setDiscount: setDiscount,
+              }}
             />
           </div>
         </div>
