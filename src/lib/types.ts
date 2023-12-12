@@ -47,7 +47,9 @@ export type TAdventure = {
   country: string;
   continent: string;
   price: number;
+  partialPrice: number;
   priceWithCurrency: string;
+  partialPriceWithCurrency: string;
   capacity: number;
   slug: string;
   startDate: string;

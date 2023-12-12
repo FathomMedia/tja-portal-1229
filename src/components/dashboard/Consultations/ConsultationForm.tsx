@@ -4,6 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -148,11 +149,11 @@ export const ConsultationForm = () => {
   const rowIndices = Array.from({ length: numRows }, (_, index) => index);
 
   const formSchema = z.object({
-    package: z.string().min(1).max(1),
+    package: z.string().min(1),
     start_date: z.date(),
     end_date: z.date(),
     destination: z.string().min(2, t("destination.errors.required")),
-    class: z.string().min(1).max(1),
+    class: z.string().min(1),
     airport: z.string().min(2, t("airport.errors.required")),
     plus: z.string(),
     budget: z.string().min(2, t("budget.errors.required")),
@@ -163,6 +164,7 @@ export const ConsultationForm = () => {
         message: t("youHaveYoSelectAtLeastOneItem"),
       }),
     vType: z.string(),
+    accommodationTypes: z.array(z.string()),
     adventureToYouIs: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
@@ -170,15 +172,53 @@ export const ConsultationForm = () => {
       }),
     type: z.enum(
       [
-        t("Seeing-one-of-the-worlds-7-wonders"),
-        t("hot-air-balloon-experience"),
-        t("i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch"),
+        "Seeing-one-of-the-worlds-7-wonders",
+        "hot-air-balloon-experience",
+        "i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch",
       ],
       {
         required_error: t("youHaveYoSelectAtLeastOneItem"),
       }
     ),
+    groupOfCheckbox: z.array(z.string()),
   });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(
+      "🚀 ~ file: ConsultationForm.tsx:186 ~ onSubmit ~ values:",
+      values
+    );
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+  }
+
+  const cardOptionsSelect: {
+    image: string;
+    title: string;
+    options: {
+      id: string;
+      label: string;
+    }[];
+  }[] = [
+    {
+      image: "/assets/images/holidayHomes.jpg",
+      title: "todo",
+      options: [
+        { id: "ss", label: "sdd" },
+        { id: "bb", label: "bbb" },
+        { id: "tt", label: "ttt" },
+      ],
+    },
+    {
+      image: "/assets/images/resort.jpg",
+      title: "Adventure",
+      options: [
+        { id: "qq", label: "qqq" },
+        { id: "wwww", label: "wwwww" },
+        { id: "rrr", label: "rrrrr" },
+      ],
+    },
+  ];
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -195,141 +235,140 @@ export const ConsultationForm = () => {
       bPriority: undefined,
       budgetIncludes: [],
       vType: "",
+      accommodationTypes: [],
       adventureToYouIs: [],
+      groupOfCheckbox: [],
     },
   });
 
   return (
     <div className="">
-      {step === 1 && (
-        <Form {...form}>
-          <form
-            onSubmit={() => setStep(2)}
-            className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
-          >
-            <FormField
-              control={form.control}
-              name="package"
-              render={({ field }) => (
-                <FormItem className=" w-full mb-2">
-                  <FormLabel>{t("packageType")}</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="rounded-full border-primary">
-                        <SelectValue placeholder={t("selectPackage")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="silver">{t("silver")}</SelectItem>
-                      <SelectItem value="gold">{t("gold")}</SelectItem>
-                      <SelectItem value="platinum">{t("platinum")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-3 flex-col sm:flex-row items-center w-full justify-between">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
+        >
+          {step === 1 && (
+            <div>
               <FormField
                 control={form.control}
-                name="start_date"
+                name="package"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col w-full">
-                    <FormLabel>{t("startDate")}</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl className="w-full flex">
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal border-primary",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>{t("pickaDate")}</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          captionLayout={"dropdown"}
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                  <FormItem className=" w-full mb-2">
+                    <FormLabel>{t("packageType")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-full border-primary">
+                          <SelectValue placeholder={t("selectPackage")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="silver">{t("silver")}</SelectItem>
+                        <SelectItem value="gold">{t("gold")}</SelectItem>
+                        <SelectItem value="platinum">
+                          {t("platinum")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col w-full">
-                    <FormLabel>{t("endDate")}</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl className="w-full flex">
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal border-primary",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>{t("pickaDate")}</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          captionLayout={"dropdown"}
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-3 flex-col sm:flex-row items-center w-full justify-between">
+                <FormField
+                  control={form.control}
+                  name="start_date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>{t("startDate")}</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl className="w-full flex">
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal border-primary",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>{t("pickaDate")}</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            captionLayout={"dropdown"}
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="end_date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col w-full">
+                      <FormLabel>{t("endDate")}</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl className="w-full flex">
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal border-primary",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>{t("pickaDate")}</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            captionLayout={"dropdown"}
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <Button
+                className="w-full max-w-[268px] "
+                variant={"secondary"}
+                onClick={() => setStep(2)}
+              >
+                {t("proceed")}
+              </Button>
             </div>
-            <Button
-              className="w-full max-w-[268px] "
-              variant={"secondary"}
-              type="submit"
-            >
-              {t("proceed")}
-            </Button>
-          </form>
-        </Form>
-      )}
+          )}
 
-      {step === 2 && (
-        <div className="container mx-auto mt-8">
-          <Form {...form}>
-            <form
-              onSubmit={() => setStep(3)}
-              className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
-            >
+          {step === 2 && (
+            <div className="container mx-auto mt-8">
               <FormField
                 control={form.control}
                 name="destination"
@@ -517,25 +556,18 @@ export const ConsultationForm = () => {
               <Button
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
-                type="submit"
+                onClick={() => setStep(3)}
               >
                 {t("next")}
               </Button>
-            </form>
-          </Form>
-        </div>
-      )}
+            </div>
+          )}
 
-      {step === 3 && (
-        <div className="container mx-auto mt-8">
-          <Form {...form}>
-            <form
-              onSubmit={() => setStep(4)}
-              className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
-            >
+          {step === 3 && (
+            <div className="container mx-auto mt-8">
               <FormField
                 control={form.control}
-                name="class"
+                name="vType"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
                     <FormLabel>{t("travelClass")}</FormLabel>
@@ -567,20 +599,20 @@ export const ConsultationForm = () => {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
-                name="class"
+                name="vType"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
                     <FormLabel></FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
 
               <FormField
                 control={form.control}
-                name="class"
+                name="accommodationTypes"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
                     <FormLabel>{t("whichTypeOfAccomidation")}</FormLabel>
@@ -603,6 +635,18 @@ export const ConsultationForm = () => {
                                 key={index}
                                 title={item.title}
                                 imageUrl={item.imageUrl}
+                                onSelect={(isSelected) =>
+                                  isSelected
+                                    ? field.onChange([
+                                        ...field.value,
+                                        item.title,
+                                      ])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.title
+                                        )
+                                      )
+                                }
                               />
                             ))}
                         </React.Fragment>
@@ -614,22 +658,15 @@ export const ConsultationForm = () => {
               <Button
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
-                type="submit"
+                onClick={() => setStep(4)}
               >
                 {t("next")}
               </Button>
-            </form>
-          </Form>
-        </div>
-      )}
+            </div>
+          )}
 
-      {step === 4 && (
-        <div className="container mx-auto mt-8">
-          <Form {...form}>
-            <form
-              onSubmit={() => setStep(5)}
-              className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
-            >
+          {step === 4 && (
+            <div className="container mx-auto mt-8">
               <FormField
                 control={form.control}
                 name="adventureToYouIs"
@@ -683,6 +720,54 @@ export const ConsultationForm = () => {
 
               <FormField
                 control={form.control}
+                name="groupOfCheckbox"
+                render={({ field }) => {
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {cardOptionsSelect.map((card, i) => (
+                        <div className="flex flex-col gap-2" key={i}>
+                          <div className="relative w-10 h-10">
+                            <Image
+                              alt="image"
+                              className="w-full h-full"
+                              fill
+                              src={card.image}
+                            ></Image>
+                          </div>
+                          <p>{card.title}</p>
+                          <div className="flex flex-col gap-3">
+                            {card.options.map((option, j) => (
+                              <div key={j}>
+                                <Checkbox
+                                  checked={field.value?.includes(option.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([
+                                          ...field.value,
+                                          option.id,
+                                        ])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== option.id
+                                          )
+                                        );
+                                  }}
+                                />
+                                <FormLabel className="font-normal">
+                                  {option.label}
+                                </FormLabel>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                }}
+              />
+
+              <FormField
+                control={form.control}
                 name="type"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
@@ -695,7 +780,7 @@ export const ConsultationForm = () => {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="all" />
+                            <RadioGroupItem value="Seeing-one-of-the-worlds-7-wonders" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {t(`Seeing-one-of-the-worlds-7-wonders`)}
@@ -703,7 +788,7 @@ export const ConsultationForm = () => {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="mentions" />
+                            <RadioGroupItem value="hot-air-balloon-experience" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {t("hot-air-balloon-experience")}
@@ -711,7 +796,7 @@ export const ConsultationForm = () => {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="none" />
+                            <RadioGroupItem value="i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {t(
@@ -732,10 +817,10 @@ export const ConsultationForm = () => {
               >
                 {t("next")}
               </Button>
-            </form>
-          </Form>
-        </div>
-      )}
+            </div>
+          )}
+        </form>
+      </Form>
     </div>
   );
 };

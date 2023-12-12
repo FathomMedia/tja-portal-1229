@@ -5,13 +5,20 @@ import Image from "next/image";
 interface SelectableCardProps {
   title: string;
   imageUrl: string;
+  onSelect: (isSelected: boolean) => void;
 }
 
-const SelectableCard: React.FC<SelectableCardProps> = ({ title, imageUrl }) => {
+const SelectableCard: React.FC<SelectableCardProps> = ({
+  title,
+  imageUrl,
+  onSelect,
+}) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const toggleSelection = () => {
-    setIsSelected(!isSelected);
+    const toBe = !isSelected;
+    onSelect(toBe);
+    setIsSelected(toBe);
   };
 
   return (

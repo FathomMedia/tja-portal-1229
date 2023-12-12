@@ -1,9 +1,7 @@
 "use client";
 
-import { TAddon, TCoupon } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import React, { FC, useState } from "react";
 
 type TPaymentTypeSelect = {
