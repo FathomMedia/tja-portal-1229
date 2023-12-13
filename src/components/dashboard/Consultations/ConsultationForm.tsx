@@ -34,8 +34,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import SelectableCard from "@/components/dashboard/consultations/cardSelection";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import SelectableCard from "@/components/dashboard/consultations/CardSelection";
 
 export const ConsultationForm = () => {
   const [step, setStep] = useState(1);
