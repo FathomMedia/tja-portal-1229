@@ -3,6 +3,7 @@ import { getToken } from "@/lib/serverUtils";
 import { TOrders } from "@/lib/types";
 import { apiReq } from "@/lib/utils";
 import { useLocale } from "next-intl";
+import { notFound } from "next/navigation";
 
 export default async function Page() {
   const locale = useLocale();
@@ -13,8 +14,12 @@ export default async function Page() {
     locale,
     token: token,
   }).then(async (val) => {
-    const { data } = await val.json();
-    return data;
+    if (val.ok) {
+      const { data } = await val.json();
+      return data;
+    } else {
+      notFound();
+    }
   });
 
   const latestOrders = await apiReq({

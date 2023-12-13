@@ -41,3 +41,16 @@ export async function apiReq({
     return NextResponse.json({ data: null, error: error }, { status: 503 });
   });
 }
+
+export function formatePrice({
+  locale,
+  price,
+}: {
+  locale: string;
+  price: number;
+}) {
+  return Intl.NumberFormat(locale, {
+    currency: "BHD",
+    style: "currency",
+  }).format(price);
+}

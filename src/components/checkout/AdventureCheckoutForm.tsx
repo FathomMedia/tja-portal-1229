@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   Form,
   FormControl,
@@ -15,17 +15,36 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
-import { Textarea } from "../ui/textarea";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { AddonsSelect } from "./AddonsSelect";
-import { Button, buttonVariants } from "../ui/button";
-import { Icons } from "../ui/icons";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icons";
 import { CouponsSelect } from "./CouponsSelect";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { apiReq, cn, formatePrice } from "@/lib/utils";
 import { PaymentTypeSelect } from "./PaymentTypeSelect";
+import { useRouter } from "next/navigation";
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import toast from "react-hot-toast";
 
 type TAdventureCheckoutForm = {
   adventure: TAdventure;
@@ -40,54 +59,144 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const t = useTranslations("Checkout");
+  const locale = useLocale();
+  const { push } = useRouter();
 
-  const formSchema = z.object({
-    // Adventures choices
-    why: z.string().min(1, t("why.errors.required")),
-    addOns: z.array(
-      z.object({
-        id: z.number(),
-        title: z.string(),
-        price: z.number(),
-      })
-    ),
-    coupon: z
-      .object({
-        id: z.number(),
-        code: z.string(),
-        type: z.enum(["percentage", "fixed"]),
-        value: z.number().optional(),
-        percentOff: z.number().optional(),
-        minPoints: z.number(),
-        maxPoints: z.number(),
-        applyTo: z.string(),
-        isUsed: z.number(),
-      })
-      .optional(),
-    isPartialPayment: z.boolean(),
-    // Billing Info
-    customerName: z.string().min(1),
-    address: z.string().min(1),
-    city: z.string().min(1),
-    country: z.string().min(1),
-    email: z.string().email().min(1),
-    phone: z.string().min(1),
-  });
+  const formSchema = z
+    .object({
+      // Adventures choices
+      why: z.string().min(1, t("why.errors.required")),
+      addOns: z.array(
+        z.object({
+          id: z.number(),
+          title: z.string(),
+          price: z.number(),
+        })
+      ),
+      coupon: z
+        .object({
+          id: z.number(),
+          code: z.string(),
+          type: z.enum(["percentage", "fixed"]),
+          value: z.number().optional(),
+          percentOff: z.number().optional(),
+          minPoints: z.number(),
+          maxPoints: z.number(),
+          applyTo: z.string(),
+          isUsed: z.number(),
+        })
+        .nullable(),
+      isPartialPayment: z.boolean(),
+      // Billing Info
+      // customerName: z.string().min(1),
+      // address: z.string().min(1),
+      // city: z.string().min(1),
+      // country: z.string().min(1),
+      // email: z.string().email().min(1),
+      // phone: z.string().min(1),
+      // Payment method
+      paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+      cardName: z.string().optional(),
+      cardNumber: z.string().optional(),
+      cardExpMonth: z.string().optional(),
+      cardExpYear: z.string().optional(),
+      cardCVC: z.string().optional(),
+    })
+    .superRefine(
+      (
+        {
+          paymentMethod,
+          cardName,
+          cardNumber,
+          cardExpMonth,
+          cardExpYear,
+          cardCVC,
+        },
+        ctx
+      ) => {
+        if (paymentMethod === "card" && cardName === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card name is required",
+            path: ["cardName"],
+          });
+        }
+        if (paymentMethod === "card" && cardNumber === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card number is required",
+            path: ["cardNumber"],
+          });
+        }
+        if (paymentMethod === "card" && cardExpMonth === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card expiry month is required",
+            path: ["cardExpMonth"],
+          });
+        }
+        if (paymentMethod === "card" && cardExpYear === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card expiry year is required",
+            path: ["cardExpYear"],
+          });
+        }
+        if (paymentMethod === "card" && cardCVC === undefined) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card CVC is required",
+            path: ["cardCVC"],
+          });
+        }
+        if (
+          paymentMethod === "card" &&
+          ((cardCVC ?? []).length < 3 || (cardCVC ?? []).length > 3)
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card CVC is invalid",
+            path: ["cardCVC"],
+          });
+        }
+        if (
+          paymentMethod === "card" &&
+          ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            message: "Card number is invalid",
+            path: ["cardCVC"],
+          });
+        }
+      }
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       why: "",
       addOns: [],
+      coupon: null,
       isPartialPayment: adventure.isPartialAllowed ? true : false,
-      customerName: user.name,
-      email: user.email,
-      phone: user.phone,
-      address: "",
-      city: "",
-      country: "",
+      // customerName: user.name,
+      // email: user.email,
+      // phone: user.phone,
+      // address: "",
+      // city: "",
+      // country: "",
+      paymentMethod: "card",
+      cardName: "",
+      cardNumber: "",
+      cardExpMonth: "",
+      cardExpYear: "",
+      cardCVC: "",
     },
   });
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    string | undefined
+  >(form.formState.defaultValues?.paymentMethod);
 
   const [addonsTotal, setAddonsTotal] = useState(0);
   const [totalAdventureWithAddons, setTotalAdventureWithAddons] = useState(0);
@@ -116,10 +225,48 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    console.log("values", values);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+
+    var dataToRequest = {
+      reason: values.why,
+      is_partial: values.isPartialPayment,
+      payment_method: values.paymentMethod,
+      ...(values.coupon && { coupon: values.coupon.code }),
+      ...(values.addOns.length > 0 && {
+        addons: values.addOns.map((addon) => addon.id),
+      }),
+    };
+
+    const response = await fetch(`/api/book/adventure`, {
+      method: "POST",
+      body: JSON.stringify({
+        slug: adventure.slug,
+        dataToRequest: dataToRequest,
+      }),
+      headers: {
+        "Accept-Language": locale,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(async (paymentSessionRes) => {
+        if (paymentSessionRes.ok) {
+          const paymentSession = await paymentSessionRes.json();
+
+          push(paymentSession.session.PaymentURL);
+        } else {
+          toast.error("Failed to create a payment session.");
+        }
+      })
+      .catch((err) => {
+        console.log(
+          "🚀 ~ file: AdventureCheckoutForm.tsx:265 ~ .then ~ err:",
+          err
+        );
+        toast.error(err.message);
+      })
+
+      .finally(() => setIsLoading(false));
+
+    console.log(response);
   }
 
   type TAdventureChoices = {
@@ -150,6 +297,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         <div className="flex flex-col @xl:flex-row items-start gap-6">
           <div className="relative aspect-[13/5] @xl:aspect-square w-full @xl:w-1/4 rounded-lg overflow-clip">
             <Image
+              priority
               src={"/assets/images/adventure.jpg"}
               className="object-cover w-full h-full bg-muted/25"
               width={300}
@@ -217,8 +365,8 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
             </FormItem>
           )}
         />
-        {adventure.addOns.length > 0 && <Separator className="bg-muted/50" />}
-        {adventure.addOns.length > 0 && (
+        {adventure.addOns?.length > 0 && <Separator className="bg-muted/50" />}
+        {adventure.addOns?.length > 0 && (
           <FormField
             control={form.control}
             name="addOns"
@@ -306,18 +454,18 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               </div>
               <FormControl>
                 <PaymentTypeSelect
-                  fullPrice={Intl.NumberFormat(locale, {
-                    currency: "BHD",
-                    style: "currency",
-                  }).format(payment.totalFullPrice)}
-                  partialPrice={Intl.NumberFormat(locale, {
-                    currency: "BHD",
-                    style: "currency",
-                  }).format(payment.partialPrice)}
-                  partialRemaining={Intl.NumberFormat(locale, {
-                    currency: "BHD",
-                    style: "currency",
-                  }).format(payment.partialRemaining)}
+                  fullPrice={formatePrice({
+                    locale,
+                    price: payment.totalFullPrice,
+                  })}
+                  partialPrice={formatePrice({
+                    locale,
+                    price: payment.partialPrice,
+                  })}
+                  partialRemaining={formatePrice({
+                    locale,
+                    price: payment.partialRemaining,
+                  })}
                   defaultSelected={field.value}
                   onSelect={(selected) => {
                     field.onChange(selected);
@@ -335,15 +483,248 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
 
   type TBillingInfo = {
     form: typeof form;
+    payment: {
+      addonsTotal: number;
+      discount: number;
+      totalFullPrice: number;
+      partialPrice: number;
+      partialRemaining: number;
+    };
   };
 
-  const BillingInfo: FC<TBillingInfo> = ({ form }) => {
+  type TPaymentMethod = {
+    form: typeof form;
+  };
+
+  const PaymentMethod: FC<TPaymentMethod> = ({ form }) => {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Payment Method</CardTitle>
+          {/* <CardDescription>
+            Add a new payment method to your account.
+          </CardDescription> */}
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          <FormField
+            control={form.control}
+            name="paymentMethod"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={(val) => {
+                      setSelectedPaymentMethod(val);
+                      field.onChange(val);
+                    }}
+                    defaultValue={field.value}
+                    className="grid grid-cols-3 gap-4"
+                  >
+                    <div>
+                      <RadioGroupItem
+                        value="card"
+                        id="card"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="card"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      >
+                        <Icons.card className="h-6 w-6" />
+                        Card
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="benefitpay"
+                        id="benefitpay"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="benefitpay"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      >
+                        <div className="mb-3">
+                          <Icons.benefitPay className="h-6 w-6" />
+                        </div>
+                        Benefit Pay
+                      </Label>
+                    </div>
+                    <div>
+                      <RadioGroupItem
+                        value="applepay"
+                        id="applepay"
+                        className="peer sr-only"
+                      />
+                      <Label
+                        htmlFor="applepay"
+                        className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                      >
+                        <Icons.apple className="mb-3 h-6 w-6" />
+                        Apple
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* card details */}
+          {selectedPaymentMethod === "card" && (
+            <div className={cn("grid gap-6")}>
+              <FormField
+                control={form.control}
+                name="cardName"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2 w-full">
+                    <FormLabel>
+                      {"Name"}
+                      <span className="text-destructive ms-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Name on card"
+                        className=" "
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cardNumber"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2 w-full">
+                    <FormLabel>
+                      {"Card Number"}
+                      <span className="text-destructive ms-1">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="" className=" " {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-3 gap-4">
+                <FormField
+                  control={form.control}
+                  name="cardExpMonth"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2 w-full">
+                      <FormLabel>
+                        {"Expires"}
+                        <span className="text-destructive ms-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          defaultValue={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="rounded-full" id="month">
+                            <SelectValue placeholder="Month" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">January</SelectItem>
+                            <SelectItem value="2">February</SelectItem>
+                            <SelectItem value="3">March</SelectItem>
+                            <SelectItem value="4">April</SelectItem>
+                            <SelectItem value="5">May</SelectItem>
+                            <SelectItem value="6">June</SelectItem>
+                            <SelectItem value="7">July</SelectItem>
+                            <SelectItem value="8">August</SelectItem>
+                            <SelectItem value="9">September</SelectItem>
+                            <SelectItem value="10">October</SelectItem>
+                            <SelectItem value="11">November</SelectItem>
+                            <SelectItem value="12">December</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cardExpYear"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2 w-full">
+                      <FormLabel>
+                        {"Year"}
+                        <span className="text-destructive ms-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          defaultValue={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="rounded-full" id="year">
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Array.from({ length: 10 }, (_, i) => (
+                              <SelectItem
+                                key={i}
+                                value={`${new Date().getFullYear() + i}`}
+                              >
+                                {new Date().getFullYear() + i}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cardCVC"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2 w-full">
+                      <FormLabel>
+                        {"CVC"}
+                        <span className="text-destructive ms-1">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="CVC" className=" " {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
+        </CardContent>
+        <CardFooter>
+          <Button
+            type="submit"
+            // disabled={!form.formState.isValid}
+            className="w-full mt-4"
+          >
+            {isLoading && (
+              <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+            )}
+            Place Order
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  };
+
+  const BillingInfo: FC<TBillingInfo> = ({ form, payment }) => {
     const t = useTranslations("Adventures");
     const locale = useLocale();
 
     return (
       <div className="flex flex-col gap-4 @container">
-        <h3 className="font-bold md:text-2xl text-primary text-xl">
+        {/* <h3 className="font-bold md:text-2xl text-primary text-xl">
           Billing Details
         </h3>
         <FormField
@@ -446,25 +827,62 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
             )}
           />
         </div>
-        <Separator className="bg-muted/50" />
-        {/* Payment summary */}
-        <div className="flex flex-col gap-3">
-          <h3 className="font-bold md:text-2xl text-xl">Total</h3>
-          <p>{`${adventure.price} BHD`}</p>
-          <p>{`Partial Payment: ${adventure.partialPrice} BHD`}</p>
 
-          <p>{`Addons Total: ${addonsTotal} BHD`}</p>
-          <p>{`Discount: ${discount} BHD`}</p>
-          {/* <p>{`Total: ${total} BHD (with ${discount} BHD discount)`}</p> */}
+        <Separator className="bg-muted/50" /> */}
+        {/* Payment summary */}
+        <div className="flex flex-col mb-6 gap-3">
+          <h3 className="font-bold md:text-2xl text-xl text-primary">
+            Payment Breakdown
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            <p className="font-medium">Adventure:</p>
+            <p>{formatePrice({ locale, price: adventure.price })}</p>
+            <p className="font-medium">Addons:</p>
+            <p>{formatePrice({ locale, price: payment.addonsTotal })} +</p>
+            <p className="font-medium">Discount:</p>
+            <p>{formatePrice({ locale, price: payment.discount })} -</p>
+            {form.getValues().isPartialPayment && (
+              <>
+                <p className="font-medium">Remaining:</p>
+                <div>
+                  <p>
+                    {formatePrice({ locale, price: payment.partialRemaining })}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    (to be paid later)
+                  </p>
+                </div>
+              </>
+            )}
+            {form.getValues().isPartialPayment && (
+              <p className="font-medium">Total:</p>
+            )}
+            {form.getValues().isPartialPayment && (
+              <p>{formatePrice({ locale, price: payment.totalFullPrice })}</p>
+            )}
+            <Separator className="bg-muted/50 col-span-2" />
+            <div className="col-span-2 grid grid-cols-2 gap-3">
+              <p className="text-xl font-medium text-primary">
+                {form.getValues().isPartialPayment ? "Pay Now:" : "Total:"}
+              </p>
+              <p className="text-xl font-medium text-primary">
+                {form.getValues().isPartialPayment
+                  ? formatePrice({ locale, price: payment.partialPrice })
+                  : formatePrice({ locale, price: payment.totalFullPrice })}
+              </p>
+            </div>
+          </div>
         </div>
-        <Button
+        <Separator className="bg-muted/50" />
+        <PaymentMethod form={form} />
+        {/* <Button
           type="submit"
           disabled={!form.formState.isValid}
-          className="w-fit"
+          className="w-full sm:max-w-xs mt-4"
         >
           {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
           Place Order
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -475,7 +893,16 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center lg:place-items-start">
           {/* Billing Info */}
           <div className="order-2 lg:order-1 bg-background w-full text-foreground p-4 max-w-3xl">
-            <BillingInfo form={form} />
+            <BillingInfo
+              form={form}
+              payment={{
+                addonsTotal: addonsTotal,
+                discount: discount,
+                totalFullPrice: totalFullPrice,
+                partialPrice: partialPrice,
+                partialRemaining: partialRemaining,
+              }}
+            />
           </div>
           {/* Checkout choices */}
           <div className="order-1 lg:order-2 bg-primary rounded-xl w-full text-primary-foreground max-w-3xl p-4 md:p-6">
@@ -484,7 +911,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               adventure={adventure}
               myCoupons={myCoupons}
               payment={{
-                totalFullPrice: totalAdventureWithAddons,
+                totalFullPrice: totalFullPrice,
                 partialPrice: partialPrice,
                 partialRemaining: partialRemaining,
                 setAddonsTotal: setAddonsTotal,

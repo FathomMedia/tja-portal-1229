@@ -1,7 +1,7 @@
 "use client";
 
 import { TAddon } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, formatePrice } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import React, { FC, useState } from "react";
@@ -22,12 +22,12 @@ export const AddonsSelect: FC<TAddonsSelect> = ({
   const locale = useLocale();
 
   return (
-    <div className="flex gap-3 overflow-x-scroll">
+    <div className="grid gap-3 @container grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3">
       {addons.map((add, i) => (
         <div
           key={i}
           className={cn(
-            "p-4 rounded-md select-none min-w-[15rem] cursor-pointer min-h-[5rem] bg-background gap-3 text-foreground  flex justify-between border-2 border-border",
+            "p-4 rounded-md select-none w-full cursor-pointer min-h-[5rem] bg-background gap-3 text-foreground  flex justify-between border-2 border-border",
             selectedAddons.some((addon) => addon.id === add.id) &&
               "border-secondary"
           )}
@@ -44,10 +44,7 @@ export const AddonsSelect: FC<TAddonsSelect> = ({
               <p className="text-sm font-medium">{add.title}</p>
             </div>
             <p className="text-sm font-bold text-secondary">
-              {Intl.NumberFormat(locale, {
-                currency: "BHD",
-                style: "currency",
-              }).format(add.price)}
+              {formatePrice({ locale, price: add.price })}
             </p>
           </div>
           {/* select icon */}

@@ -48,8 +48,8 @@ export default async function Page() {
           </Link>
         ))}
       {!paginatedAdventures && (
-        <div>
-          <p>Failed to get the adventures</p>
+        <div className="text-center text-muted-foreground bg-muted p-4 rounded-md">
+          <p>Failed to retrieve adventures</p>
         </div>
       )}
     </div>
