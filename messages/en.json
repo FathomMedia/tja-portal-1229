@@ -244,6 +244,21 @@
     "ifOtherType": "If other, please specify",
     "typeHere": "Type Here",
     "submit": "Submit",
-    "back": "Back"
+    "back": "Back",
+    "destination": {
+      "errors": {
+        "required": "This field is required"
+      }
+    },
+    "airport": {
+      "errors": {
+        "required": "This field is required"
+      }
+    },
+    "budget": {
+      "errors": {
+        "required": "This field is required"
+      }
+    }
   }
 }
