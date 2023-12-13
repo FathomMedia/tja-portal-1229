@@ -100,7 +100,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       cardNumber: z.string().optional(),
       cardExpMonth: z.string().optional(),
       cardExpYear: z.string().optional(),
-      cardCVC: z.string().optional(),
+      cardCVV: z.string().optional(),
     })
     .superRefine(
       (
@@ -110,7 +110,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
           cardNumber,
           cardExpMonth,
           cardExpYear,
-          cardCVC,
+          cardCVV,
         },
         ctx
       ) => {
@@ -142,21 +142,21 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
             path: ["cardExpYear"],
           });
         }
-        if (paymentMethod === "card" && cardCVC === undefined) {
+        if (paymentMethod === "card" && cardCVV === undefined) {
           ctx.addIssue({
             code: "custom",
-            message: "Card CVC is required",
-            path: ["cardCVC"],
+            message: "Card CVV is required",
+            path: ["cardCVV"],
           });
         }
         if (
           paymentMethod === "card" &&
-          ((cardCVC ?? []).length < 3 || (cardCVC ?? []).length > 3)
+          ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
         ) {
           ctx.addIssue({
             code: "custom",
-            message: "Card CVC is invalid",
-            path: ["cardCVC"],
+            message: "Card CVV is invalid",
+            path: ["cardCVV"],
           });
         }
         if (
@@ -166,7 +166,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
           ctx.addIssue({
             code: "custom",
             message: "Card number is invalid",
-            path: ["cardCVC"],
+            path: ["cardCVV"],
           });
         }
       }
@@ -190,7 +190,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       cardNumber: "",
       cardExpMonth: "",
       cardExpYear: "",
-      cardCVC: "",
+      cardCVV: "",
     },
   });
 
@@ -233,6 +233,13 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       ...(values.coupon && { coupon: values.coupon.code }),
       ...(values.addOns.length > 0 && {
         addons: values.addOns.map((addon) => addon.id),
+      }),
+      ...(values.paymentMethod === "card" && {
+        card_holder_name: values.cardName,
+        card_number: values.cardNumber,
+        card_expiry_month: values.cardExpMonth,
+        card_expiry_year: values.cardExpYear,
+        card_cvv: values.cardCVV,
       }),
     };
 
@@ -515,16 +522,16 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
 
                         <FormField
                           control={form.control}
-                          name="cardCVC"
+                          name="cardCVV"
                           render={({ field }) => (
                             <FormItem className="grid gap-2 w-full">
                               <FormLabel>
-                                {"CVC"}
+                                {"CVV"}
                                 <span className="text-destructive ms-1">*</span>
                               </FormLabel>
                               <FormControl>
                                 <Input
-                                  placeholder="CVC"
+                                  placeholder="CVV"
                                   className=" "
                                   {...field}
                                 />
