@@ -1,9 +1,8 @@
 "use client";
 
-import { TAddon, TAdventure, TCoupon, TUser } from "@/lib/types";
+import { TAdventure, TCoupon, TUser } from "@/lib/types";
 import React, { FC, useEffect, useState } from "react";
-// import { AdventureChoices } from "./AdventureChoices";
-import { string, z } from "zod";
+import { z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
