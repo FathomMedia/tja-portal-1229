@@ -155,22 +155,24 @@ export const ConsultationForm = () => {
   const rowIndices = Array.from({ length: numRows }, (_, index) => index);
 
   const formSchema = z.object({
-    package: z.string().min(1),
+    package: z.string().min(1, t("destination.errors.required")),
     start_date: z.date(),
     end_date: z.date(),
     destination: z.string().min(2, t("destination.errors.required")),
-    class: z.string().min(1),
+    class: z.string().min(1, t("destination.errors.required")),
     airport: z.string().min(2, t("airport.errors.required")),
     plus: z.string(),
     budget: z.string().min(2, t("budget.errors.required")),
-    bPriority: z.string(),
+    bPriority: z.string().min(1, t("destination.errors.required")),
     budgetIncludes: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
         message: t("youHaveYoSelectAtLeastOneItem"),
       }),
-    vType: z.string(),
-    accommodationTypes: z.array(z.string()),
+    vType: z.string().min(1, t("destination.errors.required")),
+    accommodationTypes: z.array(
+      z.string().min(1, t("destination.errors.required"))
+    ),
     adventureToYouIs: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
@@ -287,10 +289,10 @@ export const ConsultationForm = () => {
       airport: "",
       plus: "",
       budget: "",
-      bPriority: undefined,
+      bPriority: "",
       budgetIncludes: [],
       vType: "",
-      accommodationTypes: [],
+      accommodationTypes: [""],
       adventureToYouIs: [],
       activityTypes: [],
       travelExperience: "",

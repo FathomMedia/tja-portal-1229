@@ -242,6 +242,21 @@
     "other": "أخرى",
     "ifOtherType": "إذا كان هناك رهاب آخر، يرجى توضيحه",
     "submit": "تقديم",
-    "back": "رجوع"
+    "back": "رجوع",
+    "destination": {
+      "errors": {
+        "required": "هذا الحقل مطلوب"
+      }
+    },
+    "airport": {
+      "errors": {
+        "required": "هذا الحقل مطلوب"
+      }
+    },
+    "budget": {
+      "errors": {
+        "required": "هذا الحقل مطلوب"
+      }
+    }
   }
 }
