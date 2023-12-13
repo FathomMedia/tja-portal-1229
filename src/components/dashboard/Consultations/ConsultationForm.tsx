@@ -22,7 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
+import { format, min } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useLocale, useTranslations } from "next-intl";
@@ -35,7 +35,8 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import SelectableCard from "@/components/dashboard/consultations/CardSelection";
+import { Textarea } from "@/components/ui/textarea";
+import SelectableCard from "@/components/dashboard/consultations/cardSelection";
 
 export const ConsultationForm = () => {
   const [step, setStep] = useState(1);
@@ -181,6 +182,8 @@ export const ConsultationForm = () => {
       }
     ),
     activityTypes: z.array(z.string()),
+    travelExperience: z.string(),
+    otherFears: z.string(),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -282,6 +285,8 @@ export const ConsultationForm = () => {
       accommodationTypes: [],
       adventureToYouIs: [],
       activityTypes: [],
+      travelExperience: "",
+      otherFears: "",
     },
   });
 
@@ -597,13 +602,26 @@ export const ConsultationForm = () => {
                 )}
               />
 
-              <Button
-                className="w-full max-w-[268px] "
-                variant={"secondary"}
-                onClick={() => setStep(3)}
-              >
-                {t("next")}
-              </Button>
+              <div className="grid grid-cols-2 gap-4">
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    onClick={() => setStep(1)}
+                  >
+                    {t("back")}
+                  </Button>
+                </div>
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    onClick={() => setStep(3)}
+                  >
+                    {t("next")}
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -699,13 +717,26 @@ export const ConsultationForm = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                className="w-full max-w-[268px] "
-                variant={"secondary"}
-                onClick={() => setStep(4)}
-              >
-                {t("next")}
-              </Button>
+              <div className="grid grid-cols-2 gap-4">
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    onClick={() => setStep(2)}
+                  >
+                    {t("back")}
+                  </Button>
+                </div>
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    onClick={() => setStep(4)}
+                  >
+                    {t("next")}
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
 
@@ -718,7 +749,7 @@ export const ConsultationForm = () => {
                   <FormItem>
                     <div className="mb-4">
                       <FormLabel className="text-base">
-                        {t("ToyouAdventureIs" + ":")}
+                        {t("ToyouAdventureIs")}
                       </FormLabel>
                     </div>
                     {adventureToYouIs.map((item) => (
@@ -854,13 +885,102 @@ export const ConsultationForm = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                className="w-full max-w-[268px] "
-                variant={"secondary"}
-                type="submit"
-              >
-                {t("next")}
-              </Button>
+              <FormField
+                control={form.control}
+                name="travelExperience"
+                render={({ field }) => (
+                  <FormItem className=" w-full">
+                    <FormLabel>{t("whatIsTheBestTravelExperience")}</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder={t("describe")}
+                        className=" border-primary"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="bPriority"
+                render={({ field }) => (
+                  <FormItem className=" w-full mb-2">
+                    <FormLabel>{t("doYouHaveFears")}</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-full border-primary">
+                          <SelectValue placeholder={t("selectOne")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="business_class_ticket">
+                          {t("gynophobia")}
+                        </SelectItem>
+                        <SelectItem value="accommodation_five_stars">
+                          {t("fearOfFlying")}
+                        </SelectItem>
+                        <SelectItem value="activities">
+                          {t("acrocophobia")}
+                        </SelectItem>
+                        <SelectItem value="activities">
+                          {t("claustrophobia")}
+                        </SelectItem>
+                        <SelectItem value="activities">
+                          {t("insectophobia")}
+                        </SelectItem>
+                        <SelectItem value="activities">
+                          {t("nyctophobia")}
+                        </SelectItem>
+                        <SelectItem value="activities">{t("other")}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="otherFears"
+                render={({ field }) => (
+                  <FormItem className=" w-full">
+                    <FormLabel>{t("ifOtherType")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder=""
+                        className=" border-primary"
+                        type="text"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    onClick={() => setStep(3)}
+                  >
+                    {t("back")}
+                  </Button>
+                </div>
+                <div className=" p-4">
+                  <Button
+                    className="w-full max-w-[268px] "
+                    variant={"secondary"}
+                    type="submit"
+                  >
+                    {t("submit")}
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
         </form>
