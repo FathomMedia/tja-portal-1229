@@ -186,7 +186,7 @@
     "caravans": "Caravans",
     "hostels": "Hostels",
     "homestays": "Homestays",
-    "ToyouAdventureIs": "To you, adventure is",
+    "ToyouAdventureIs": "To you, adventure is:",
     "visitingAStunningPlace": "Visiting a stunning place and try hard to climb a challenging mountain to enjoy a panoramic view at the end",
     "beingOutInWildNature": "Being out in wild nature",
     "overComingAFear": "Overcoming a fear",
@@ -230,6 +230,20 @@
     "kayakWithPenguins": "Kayak with penguins",
     "divingWithWhaleSharks": "Diving with Whale sharks",
     "culturalToursAndWorkshops": "Cultural tours and workshops",
-    "cookingClasses": "Cooking classes"
+    "cookingClasses": "Cooking classes",
+    "whatIsTheBestTravelExperience": "What is the best travel experience you had in your life? What made it special?",
+    "describe": "Describe Here",
+    "doYouHaveFears": "Do you have any fears/phobias?",
+    "gynophobia": "Gynophobia (fear of dogs)",
+    "fearOfFlying": "Fear of flying",
+    "acrocophobia": "Acrocophobia (fear of heights)",
+    "claustrophobia": "Claustrophobia (fear of enclosed or tight spaces)",
+    "insectophobia": "Insectophobia (fear of insects)",
+    "nyctophobia": "Nyctophobia (fear of darkness)",
+    "other": "Other",
+    "ifOtherType": "If other, please specify",
+    "typeHere": "Type Here",
+    "submit": "Submit",
+    "back": "Back"
   }
 }

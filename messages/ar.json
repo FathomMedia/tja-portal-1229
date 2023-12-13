@@ -195,7 +195,7 @@
     "getLostSomewhere": "تضيع في مكان ما دون أي اتصال بالخارج",
     "TryingNewActivities": "تجربة أنشطة جديدة في أماكن جديدة (ركوب الخيل، ركوب الدراجات وغيرها)",
     "nationalParksAndAnimals": "المتنزهات الوطنية والحيوانات والحياة البرية",
-    "ToyouAdventureIs": "المغامرة بالنسبة لك هي",
+    "ToyouAdventureIs": "المغامرة بالنسبة لك هي:",
     "Seeing-one-of-the-worlds-7-wonders": "رؤية إحدى عجائب الدنيا السبع",
     "hot-air-balloon-experience": "تجربة منطاد الهواء الساخن",
     "i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch": "لن أستيقظ مبكرًا إلا إذا كانت لدي رحلة لألحق بها",
@@ -229,6 +229,19 @@
     "divingWithWhaleSharks": "الغوص مع أسماك الحوت القرش",
     "culturalExperiences": "جولات ثقافية",
     "culturalToursAndWorkshops": "جولات ثقافية وورش عمل",
-    "cookingClasses": "دروس الطهي"
+    "cookingClasses": "دروس الطهي",
+    "whatIsTheBestTravelExperience": "ما هي أفضل تجربة سفر قمت بها في حياتك؟ ما الذي جعلها مميزة؟",
+    "describe": "اشرح هنا",
+    "doYouHaveFears": "هل لديك أي مخاوف/فوبيا؟",
+    "gynophobia": "جينوفوبيا (رهاب الكلاب)",
+    "fearOfFlying": "رهاب الطيران",
+    "acrocophobia": "أكروفوبيا (رهاب المرتفعات)",
+    "claustrophobia": "كلاستروفوبيا (رهاب الأماكن المغلقة أو الضيقة)",
+    "insectophobia": "إنسيكتوفوبيا (رهاب الحشرات)",
+    "nyctophobia": "نيكتوفوبيا (رهاب الظلام)",
+    "other": "أخرى",
+    "ifOtherType": "إذا كان هناك رهاب آخر، يرجى توضيحه",
+    "submit": "تقديم",
+    "back": "رجوع"
   }
 }
