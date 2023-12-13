@@ -145,4 +145,175 @@ export const Icons = {
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
     </svg>
   ),
+  card: (props: IconProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className="mb-3 h-6 w-6"
+    >
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <path d="M2 10h20" />
+    </svg>
+  ),
+  benefitPay: (props: IconProps) => (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 102 115"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <mask
+        id="mask0_106_220"
+        maskUnits="userSpaceOnUse"
+        x="0"
+        y="0"
+        // width="102"
+        // height="104"
+      >
+        <path d="M102 0H0V104H102V0Z" fill="white" />
+      </mask>
+      <g mask="url(#mask0_106_220)">
+        <mask
+          id="mask1_106_220"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="102"
+          height="104"
+        >
+          <path
+            d="M39.4999 20.1H62.4999C69.6999 20.1 73.2999 21 74.8999 21.8C77.2999 22.9 79.8999 25.1 78.3999 32C77.1999 37.8 74.1999 41.8 69.2999 44C65.9999 45.5 61.4999 46.2 55.8999 46.2H33.9999L39.4999 20.1ZM22.1999 0.900024L0.399902 103.9L24.8999 89.3L30.0999 65.1H56.0999C58.6999 65.1 61.1999 65.3 63.2999 65.6L64.5999 65.8L89.2999 51.1L89.6999 50.8C89.8999 50.6 90.0999 50.5 90.1999 50.3C95.4999 45.5 98.9999 39.2 100.6 31.8C102 25.2 101.5 19.3 98.8999 14.1C94.5999 5.30002 85.2999 0.900024 71.2999 0.900024H22.1999V0.900024Z"
+            fill="white"
+          />
+        </mask>
+        <g mask="url(#mask1_106_220)">
+          <mask
+            id="mask2_106_220"
+            maskUnits="userSpaceOnUse"
+            x="-89"
+            y="-42"
+            width="284"
+            height="284"
+          >
+            <path d="M195 -42H-89V242H195V-42Z" fill="white" />
+          </mask>
+          <g mask="url(#mask2_106_220)">
+            <mask
+              id="mask3_106_220"
+              maskUnits="userSpaceOnUse"
+              x="0"
+              y="0"
+              width="102"
+              height="104"
+            >
+              <path
+                d="M39.4999 20.1H62.4999C69.6999 20.1 73.2999 21 74.8999 21.8C77.2999 22.9 79.8999 25.1 78.3999 32C77.1999 37.8 74.1999 41.8 69.2999 44C65.9999 45.5 61.4999 46.2 55.8999 46.2H33.9999L39.4999 20.1ZM22.1999 0.900024L0.399902 103.9L24.8999 89.3L30.0999 65.1H56.0999C58.6999 65.1 61.1999 65.3 63.2999 65.6L64.5999 65.8L89.2999 51.1L89.6999 50.8C89.8999 50.6 90.0999 50.5 90.1999 50.3C95.4999 45.5 98.9999 39.2 100.6 31.8C102 25.2 101.5 19.3 98.8999 14.1C94.5999 5.30002 85.2999 0.900024 71.2999 0.900024H22.1999V0.900024Z"
+                fill="white"
+              />
+            </mask>
+            <g mask="url(#mask3_106_220)">
+              <path
+                d="M-49.2002 38.8L64.4998 -48L151.4 66L37.6998 152.8L-49.2002 38.8Z"
+                fill="url(#paint0_linear_106_220)"
+              />
+            </g>
+          </g>
+        </g>
+      </g>
+      <mask
+        id="mask4_106_220"
+        maskUnits="userSpaceOnUse"
+        x="0"
+        y="59"
+        width="97"
+        height="56"
+      >
+        <path d="M97 59H0V115H97V59Z" fill="white" />
+      </mask>
+      <g mask="url(#mask4_106_220)">
+        <mask
+          id="mask5_106_220"
+          maskUnits="userSpaceOnUse"
+          x="1"
+          y="60"
+          width="96"
+          height="55"
+        >
+          <path
+            d="M73.6 71L73.8 71.4C74.6 73.3 74.7 75.8 74.1 78.7C73.2 82.6 71.5 85.9 69 88.7C64.9 93.1 59.1 95.2 51.3 95.2H33.3L1 114.5H48.6C63.4 114.5 75.3 110 84.1 101.1C90 95.1 93.8 88.3 95.4 80.9C97.1 72.7 96.3 65.9 92.9 60.7L92.5 60L73.6 71Z"
+            fill="white"
+          />
+        </mask>
+        <g mask="url(#mask5_106_220)">
+          <mask
+            id="mask6_106_220"
+            maskUnits="userSpaceOnUse"
+            x="-89"
+            y="-42"
+            width="284"
+            height="284"
+          >
+            <path d="M195 -42H-89V242H195V-42Z" fill="white" />
+          </mask>
+          <g mask="url(#mask6_106_220)">
+            <mask
+              id="mask7_106_220"
+              maskUnits="userSpaceOnUse"
+              x="1"
+              y="60"
+              width="96"
+              height="55"
+            >
+              <path
+                d="M73.6 71L73.8 71.4C74.6 73.3 74.7 75.8 74.1 78.7C73.2 82.6 71.5 85.9 69 88.7C64.9 93.1 59.1 95.2 51.3 95.2H33.3L1 114.5H48.6C63.4 114.5 75.3 110 84.1 101.1C90 95.1 93.8 88.3 95.4 80.9C97.1 72.7 96.3 65.9 92.9 60.7L92.5 60L73.6 71Z"
+                fill="white"
+              />
+            </mask>
+            <g mask="url(#mask7_106_220)">
+              <path
+                d="M-25.3999 79.9L61.6001 13.6L123.1 94.4L36.1001 160.7L-25.3999 79.9Z"
+                fill="url(#paint1_linear_106_220)"
+              />
+            </g>
+          </g>
+        </g>
+      </g>
+      <defs>
+        <linearGradient
+          id="paint0_linear_106_220"
+          x1="-8.08089"
+          y1="97.5139"
+          x2="90.6615"
+          y2="22.2431"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#9D1C82" />
+          <stop offset="0.1153" stop-color="#9D1C82" />
+          <stop offset="0.4742" stop-color="#EC1D29" />
+          <stop offset="0.6538" stop-color="#EC1D29" />
+          <stop offset="1" stop-color="#F8A457" />
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_106_220"
+          x1="7.95794"
+          y1="118.32"
+          x2="106.378"
+          y2="43.295"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#9D1C82" />
+          <stop offset="0.1153" stop-color="#9D1C82" />
+          <stop offset="0.4742" stop-color="#EC1D29" />
+          <stop offset="0.6538" stop-color="#EC1D29" />
+          <stop offset="1" stop-color="#F8A457" />
+        </linearGradient>
+      </defs>
+    </svg>
+  ),
 };

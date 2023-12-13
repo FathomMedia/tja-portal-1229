@@ -2,7 +2,6 @@ import { getToken } from "@/lib/serverUtils";
 import { TAdventure } from "@/lib/types";
 import { apiReq } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
-import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";

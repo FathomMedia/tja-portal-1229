@@ -18,9 +18,11 @@ type TDashboardHome = {
 };
 
 export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
-  const upComingAdventures = latestOrders.filter(
-    (order: any) => order.type === "adventure" && order.details.isUpcoming
-  );
+  const upComingAdventures = latestOrders
+    ? latestOrders.filter(
+        (order: any) => order.type === "adventure" && order.details.isUpcoming
+      )
+    : [];
   const t = useTranslations("Home");
   return (
     <DashboardSection title={t("myAccount")}>
@@ -43,7 +45,9 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
               <p className="text-sm text-muted-foreground">
                 {t("daysTravelled")}
               </p>
-              <h2 className="text-2xl text-primary font-semibold">{`${user?.daysTravelled +" "+t("days")} `}</h2>
+              <h2 className="text-2xl text-primary font-semibold">{`${
+                user?.daysTravelled + " " + t("days")
+              } `}</h2>
             </div>
           </div>
           {/* Badge */}
@@ -73,8 +77,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
           <div className="flex flex-col gap-2">
             <h1 className="text-xl text-primary">{t("latestsOrders")}</h1>
             <div className="grid grid-cols-1 gap-3">
-              {
-              latestOrders.map((order, i) => {
+              {latestOrders?.map((order, i) => {
                 return (
                   <div className="min-h-[10rem] " key={i}>
                     {order.type === "adventure" && <Adventure order={order} />}
@@ -84,7 +87,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
                   </div>
                 );
               })}
-               {latestOrders.length == 0 && (
+              {latestOrders?.length == 0 && (
                 <div className="bg-muted rounded-lg p-3 text-muted-foreground">
                   <p>{t("noOrdersFound")}</p>
                 </div>
