@@ -38,7 +38,6 @@ export async function apiReq({
         },
     body: values ? JSON.stringify(values) : undefined,
   }).catch((error) => {
-    console.log(`Route: ${route}`, error);
-    return NextResponse.json({ data: null, error: error }, { status: 500 });
+    return NextResponse.json({ data: null, error: error }, { status: 503 });
   });
 }

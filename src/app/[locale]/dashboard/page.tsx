@@ -25,7 +25,6 @@ export default async function Page() {
     const res: TOrders = await val.json();
     return res.data;
   });
-  console.log("🚀 ~ file: page.tsx:36 ~ Page ~ latestOrders:", latestOrders);
 
   return (
     <div className="max-w-4xl">

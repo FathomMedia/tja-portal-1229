@@ -50,6 +50,7 @@ export type TAdventure = {
   partialPrice: number;
   priceWithCurrency: string;
   partialPriceWithCurrency: string;
+  partialRemaining: string;
   capacity: number;
   slug: string;
   startDate: string;

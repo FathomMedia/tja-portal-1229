@@ -2,8 +2,8 @@
 
 import { TAddon } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { useLocale } from "next-intl";
 import React, { FC, useState } from "react";
 
 type TAddonsSelect = {
@@ -19,6 +19,7 @@ export const AddonsSelect: FC<TAddonsSelect> = ({
 }) => {
   const [selectedAddons, setSelectedAddons] =
     useState<TAddon[]>(defaultSelected);
+  const locale = useLocale();
 
   return (
     <div className="flex gap-3 overflow-x-scroll">
@@ -42,7 +43,12 @@ export const AddonsSelect: FC<TAddonsSelect> = ({
             <div>
               <p className="text-sm font-medium">{add.title}</p>
             </div>
-            <p className="text-sm font-bold">{add.price}</p>
+            <p className="text-sm font-bold text-secondary">
+              {Intl.NumberFormat(locale, {
+                currency: "BHD",
+                style: "currency",
+              }).format(add.price)}
+            </p>
           </div>
           {/* select icon */}
           <div className={cn("duration-150 h-fit")}>

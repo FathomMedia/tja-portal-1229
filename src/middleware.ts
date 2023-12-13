@@ -21,6 +21,7 @@ export async function middleware(request: NextRequest) {
         locale,
         token: token.value,
       });
+
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
         const { data } = await resUserProfile.json();
@@ -79,9 +80,13 @@ export async function middleware(request: NextRequest) {
           token: token.value,
         });
       } else {
+        if (resUserProfile.status === 503) {
+          request.nextUrl.pathname = `${locale}/service-unavailable`;
+        } else {
+          request.cookies.delete("authToken");
+          request.nextUrl.pathname = `${locale}/${authPath}`;
+        }
         // delete the token and redirect to auth page if the token is wrong
-        request.cookies.delete("authToken");
-        request.nextUrl.pathname = `${locale}/${authPath}`;
       }
     }
   }
