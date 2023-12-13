@@ -34,7 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import SelectableCard from "@/components/dashboard/Consultations/cardSelection";
+import SelectableCard from "@/components/dashboard/consultations/cardSelection";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const ConsultationForm = () => {
@@ -170,7 +170,7 @@ export const ConsultationForm = () => {
       .refine((value) => value.some((item) => item), {
         message: t("youHaveYoSelectAtLeastOneItem"),
       }),
-    type: z.enum(
+    tripType: z.enum(
       [
         "Seeing-one-of-the-worlds-7-wonders",
         "hot-air-balloon-experience",
@@ -180,7 +180,7 @@ export const ConsultationForm = () => {
         required_error: t("youHaveYoSelectAtLeastOneItem"),
       }
     ),
-    groupOfCheckbox: z.array(z.string()),
+    activityTypes: z.array(z.string()),
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -201,21 +201,65 @@ export const ConsultationForm = () => {
     }[];
   }[] = [
     {
-      image: "/assets/images/holidayHomes.jpg",
-      title: "todo",
+      image: "/assets/images/adrenalineAdventures.jpg",
+      title: t("adrenalineAdventures"),
       options: [
-        { id: "ss", label: "sdd" },
-        { id: "bb", label: "bbb" },
-        { id: "tt", label: "ttt" },
+        { id: "skydiving", label: t("skydiving") },
+        { id: "bungee-jumping", label: t("bungeeJumping") },
+        { id: "paragliding", label: t("paragliding") },
       ],
     },
     {
-      image: "/assets/images/resort.jpg",
-      title: "Adventure",
+      image: "/assets/images/outdoorsAdventures.jpg",
+      title: t("outdoorsAdventures"),
       options: [
-        { id: "qq", label: "qqq" },
-        { id: "wwww", label: "wwwww" },
-        { id: "rrr", label: "rrrrr" },
+        { id: "snowmobiling", label: t("snowmobiling") },
+        { id: "cycling", label: t("cycling") },
+        { id: "camping", label: t("camping") },
+        { id: "hiking", label: t("hiking") },
+        { id: "via-ferrata", label: t("viaFerrata") },
+      ],
+    },
+    {
+      image: "/assets/images/waterAdventures.jpg",
+      title: t("waterAdventures"),
+      options: [
+        { id: "rafting", label: t("rafting") },
+        { id: "swimming", label: t("swimming") },
+        { id: "snorkelling", label: t("snorkelling") },
+        { id: "diving", label: t("diving") },
+        { id: "kayaking", label: t("kayaking") },
+        { id: "scuba-diving", label: t("scubaDiving") },
+      ],
+    },
+    {
+      image: "/assets/images/skyAdventures.jpg",
+      title: t("skyAdventures"),
+      options: [
+        { id: "helicopter-tours", label: t("helicopterTours") },
+        { id: "hot-air-balloon", label: t("hotAirBalloon") },
+        { id: "ziplining", label: t("ziplining") },
+      ],
+    },
+    {
+      image: "/assets/images/wildlifeExperiences.jpg",
+      title: t("wildlifeExperiences"),
+      options: [
+        { id: "horse-riding", label: t("horseRiding") },
+        { id: "safari-and-game-drives", label: t("safariAndGameDrives") },
+        { id: "kayak-with-penguins", label: t("kayakWithPenguins") },
+        { id: "diving-with-whale-sharks", label: t("divingWithWhaleSharks") },
+      ],
+    },
+    {
+      image: "/assets/images/culturalExperiences.jpg",
+      title: t("culturalExperiences"),
+      options: [
+        {
+          id: "cultural-tours-and-workshops",
+          label: t("culturalToursAndWorkshops"),
+        },
+        { id: "cooking-classes", label: t("cookingClasses") },
       ],
     },
   ];
@@ -237,7 +281,7 @@ export const ConsultationForm = () => {
       vType: "",
       accommodationTypes: [],
       adventureToYouIs: [],
-      groupOfCheckbox: [],
+      activityTypes: [],
     },
   });
 
@@ -570,7 +614,7 @@ export const ConsultationForm = () => {
                 name="vType"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
-                    <FormLabel>{t("travelClass")}</FormLabel>
+                    <FormLabel>{t("vacationType")}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -720,7 +764,7 @@ export const ConsultationForm = () => {
 
               <FormField
                 control={form.control}
-                name="groupOfCheckbox"
+                name="activityTypes"
                 render={({ field }) => {
                   return (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -768,10 +812,10 @@ export const ConsultationForm = () => {
 
               <FormField
                 control={form.control}
-                name="type"
+                name="tripType"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>Notify me about...</FormLabel>
+                    <FormLabel>{t("whichTypeOfActivities")}</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
