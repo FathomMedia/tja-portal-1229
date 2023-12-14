@@ -5,6 +5,7 @@ import { cn, formatePrice } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import React, { FC, useState } from "react";
+import { Badge } from "../ui/badge";
 
 type TCouponsSelect = {
   coupons: TCoupon[];
@@ -46,6 +47,9 @@ export const CouponsSelect: FC<TCouponsSelect> = ({
             <div className="flex flex-col gap-3 justify-between w-full">
               <div className="w-full">
                 <p className="text-sm font-medium break-all">{coupon.code}</p>
+                <p className="text-xs text-muted-foreground capitalize">
+                  {coupon.applyTo}
+                </p>
               </div>
               <p className="text-sm font-bold text-secondary">
                 {coupon.type === "percentage"

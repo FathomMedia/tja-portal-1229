@@ -1,6 +1,6 @@
 import { JourneysMiles } from "@/components/dashboard/JourneysMiles";
 import { getToken } from "@/lib/serverUtils";
-import { TLevels } from "@/lib/types";
+import { TCoupon, TLevels } from "@/lib/types";
 import { apiReq } from "@/lib/utils";
 import { useLocale } from "next-intl";
 
@@ -26,9 +26,53 @@ export default async function Page() {
     return res.data;
   });
 
+  const availableCoupons = await apiReq({
+    endpoint: "/profile/coupons/available",
+    locale,
+    token: token,
+  }).then(async (val) => {
+    if (val.ok) {
+      const resData = await val.json();
+      return resData.data as TCoupon[];
+    } else {
+      const resData = await val.json();
+
+      console.log(
+        "🚀 ~ journeys-miles file: page.tsx:40 ~ Page ~ resData.message:",
+        resData.message
+      );
+    }
+    return [];
+  });
+
+  const redeemedCoupons = await apiReq({
+    endpoint: "/profile/coupons/redeemed",
+    locale,
+    token: token,
+  }).then(async (val) => {
+    if (val.ok) {
+      const resData = await val.json();
+      return resData.data as TCoupon[];
+    } else {
+      const resData = await val.json();
+
+      console.log(
+        "🚀 ~ journeys-miles file: page.tsx:56 ~ Page ~ resData.message:",
+        resData.message
+      );
+    }
+
+    return [];
+  });
+
+  const coupons = {
+    available: availableCoupons,
+    redeemed: redeemedCoupons,
+  };
+
   return (
     <div className="max-w-4xl">
-      <JourneysMiles user={user} levels={levels} />
+      <JourneysMiles user={user} levels={levels} coupons={coupons} />
     </div>
   );
 }
