@@ -286,30 +286,30 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               {/* Payment Breakdown */}
               <div className="flex flex-col mb-6 gap-3">
                 <h3 className="font-bold md:text-2xl text-xl text-primary">
-                  Payment Breakdown
+                  {t("paymentBreakdown")}
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
-                  <p className="font-medium">Adventure:</p>
+                  <p className="font-medium">{t("adventure")}:</p>
                   <p>{formatePrice({ locale, price: adventure.price })}</p>
-                  <p className="font-medium">Addons:</p>
+                  <p className="font-medium">{t("addons")}:</p>
                   <p>{formatePrice({ locale, price: addonsTotal })} +</p>
-                  <p className="font-medium">Discount:</p>
+                  <p className="font-medium">{t("discount")}:</p>
                   <p>{formatePrice({ locale, price: discount })} -</p>
                   {form.getValues().isPartialPayment && (
                     <>
-                      <p className="font-medium">Remaining:</p>
+                      <p className="font-medium">{t("remaining")}:</p>
                       <div>
                         <p>
                           {formatePrice({ locale, price: partialRemaining })}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          (to be paid later)
+                          {t("toBePaidLater")}
                         </p>
                       </div>
                     </>
                   )}
                   {form.getValues().isPartialPayment && (
-                    <p className="font-medium">Total:</p>
+                    <p className="font-medium">{t("total")}:</p>
                   )}
                   {form.getValues().isPartialPayment && (
                     <p>{formatePrice({ locale, price: totalFullPrice })}</p>
@@ -318,8 +318,8 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   <div className="col-span-2 grid grid-cols-2 gap-3">
                     <p className="text-xl font-medium text-primary">
                       {form.getValues().isPartialPayment
-                        ? "Pay Now:"
-                        : "Total:"}
+                        ? t("payNow") + ":"
+                        : t("total") + ":"}
                     </p>
                     <p className="text-xl font-medium text-primary">
                       {form.getValues().isPartialPayment
@@ -333,7 +333,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
               {/* Payment Method */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Payment Method</CardTitle>
+                  <CardTitle>{t("paymentMethod")}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                   <FormField
@@ -361,7 +361,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                               >
                                 <Icons.card className="h-6 w-6" />
-                                Card
+                                {t("creditCard")}
                               </Label>
                             </div>
                             <div>
@@ -377,7 +377,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 <div className="mb-3">
                                   <Icons.benefitPay className="h-6 w-6" />
                                 </div>
-                                Benefit Pay
+                                {t("benefitPay")}
                               </Label>
                             </div>
                             <div>
@@ -391,7 +391,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                               >
                                 <Icons.apple className="mb-3 h-6 w-6" />
-                                Apple
+                                {t("applePay")}
                               </Label>
                             </div>
                           </RadioGroup>
@@ -462,11 +462,22 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                     <SelectValue placeholder="Month" />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="1">January</SelectItem>
-                                    <SelectItem value="2">February</SelectItem>
-                                    <SelectItem value="3">March</SelectItem>
-                                    <SelectItem value="4">April</SelectItem>
-                                    <SelectItem value="5">May</SelectItem>
+                                    <SelectItem value="1">
+                                      {t("january")}
+                                    </SelectItem>
+                                    ,
+                                    <SelectItem value="2">
+                                      {t("february")}
+                                    </SelectItem>
+                                    <SelectItem value="3">
+                                      {t("March")}
+                                    </SelectItem>
+                                    <SelectItem value="4">
+                                      {t("april")}
+                                    </SelectItem>
+                                    <SelectItem value="5">
+                                      {t("may")}
+                                    </SelectItem>
                                     <SelectItem value="6">June</SelectItem>
                                     <SelectItem value="7">July</SelectItem>
                                     <SelectItem value="8">August</SelectItem>

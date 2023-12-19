@@ -258,5 +258,22 @@
         "required": "هذا الحقل مطلوب"
       }
     }
+  },
+  "Checkout": {
+    "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
+    "paymentBreakdown": "تفاصيل الدفع",
+    "adventure": "المغامرة",
+    "price": "السعر",
+    "addons": "الإضافات",
+    "discount": "الخصم",
+    "remaining": "المتبقي",
+    "toBePaidLater": "(تُدفع لاحقًا)",
+    "payNow": "الدفع الآن",
+    "total": "الإجمالي",
+    "paymentMethod": "طريقة الدفع",
+    "creditCard": "البطاقة الإئتمانية",
+    "benefitPay": "بنفت البحرين",
+    "applePay": "ابل",
+    "january": "يناير"
   }
 }
