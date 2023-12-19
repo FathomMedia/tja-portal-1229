@@ -37,6 +37,8 @@ export async function middleware(request: NextRequest) {
         endpoint: "/users/profile",
         locale: currentLocale,
         token: token.value,
+      }).finally(() => {
+        console.log("finally");
       });
 
       console.log(
