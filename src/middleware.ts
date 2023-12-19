@@ -7,7 +7,7 @@ import { TUser } from "./lib/types";
 
 export async function middleware(request: NextRequest) {
   // const [, locale, pathname] = request.nextUrl.pathname.split("/");
-  const { pathname, locale } = request.nextUrl;
+  const { pathname, locale, origin } = request.nextUrl;
   // handle route if valid user
   var currentLocale = availableLocales[0];
   availableLocales.some((someLocale) => {
@@ -33,13 +33,21 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
-      const resUserProfile = await apiReq({
-        endpoint: "/users/profile",
-        locale: currentLocale,
-        token: token.value,
-      }).finally(() => {
-        console.log("finally");
+      const resUserProfile = await fetch(`${origin}/api/user/get-user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "accept-language": currentLocale,
+        },
+        body: JSON.stringify({ token: token.value }),
       });
+      // const resUserProfile = await apiReq({
+      //   endpoint: "/users/profile",
+      //   locale: currentLocale,
+      //   token: token.value,
+      // }).finally(() => {
+      //   console.log("finally");
+      // });
 
       console.log(
         "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile.ok:",
