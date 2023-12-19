@@ -37,28 +37,9 @@ export async function apiReq({
           Accept: "application/json",
         },
     body: values ? JSON.stringify(values) : undefined,
-  })
-    .then(async (val) => {
-      if (val.ok) {
-        const data = await val.json();
-        console.log("🚀 ~ file: utils.ts:41 ~ val (OK):", {
-          route,
-          token,
-          data,
-        });
-      } else {
-        console.log("🚀 ~ file: utils.ts:41 ~ val (NOT OK):", {
-          route,
-          token,
-          val,
-        });
-      }
-
-      return val;
-    })
-    .catch((error) => {
-      return NextResponse.json({ data: null, error: error }, { status: 503 });
-    });
+  }).catch((error) => {
+    return NextResponse.json({ data: null, error: error }, { status: 503 });
+  });
 }
 
 export function formatePrice({
