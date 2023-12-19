@@ -12,7 +12,7 @@ type TApiReq = {
   locale: string;
   token?: string;
   values?: any;
-  method?: "GET" | "POST" | "PUT" | "DEL";
+  method?: "GET" | "POST" | "PUT" | "DELETE";
 };
 export async function apiReq({
   endpoint,
