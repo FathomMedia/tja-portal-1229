@@ -37,6 +37,10 @@ export async function middleware(request: NextRequest) {
         locale: currentLocale,
         token: token.value,
       });
+      console.log(
+        "🚀 ~ file: middleware.ts:40 ~ middleware ~ resUserProfile:",
+        resUserProfile
+      );
 
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
