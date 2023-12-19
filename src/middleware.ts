@@ -47,15 +47,18 @@ export async function middleware(request: NextRequest) {
         "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile.status:",
         resUserProfile.status
       );
-
-      const jsonData = await resUserProfile.json();
       console.log(
-        "🚀 ~ file: middleware.ts:52 ~ middleware ~ jsonData:",
-        jsonData
+        "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile.url:",
+        resUserProfile.url
       );
 
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
+        const jsonData = await resUserProfile.json();
+        console.log(
+          "🚀 ~ file: middleware.ts:52 ~ middleware ~ jsonData:",
+          jsonData
+        );
         const data = jsonData?.data;
 
         console.log(
