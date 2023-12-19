@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { api, availableLocales } from "./config";
 import { apiReq } from "./lib/utils";
+import { TUser } from "./lib/types";
 
 export async function middleware(request: NextRequest) {
   // const [, locale, pathname] = request.nextUrl.pathname.split("/");
@@ -32,54 +33,32 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
-      // const resUserProfile = await apiReq({
-      //   endpoint: "/users/profile",
-      //   locale: currentLocale,
-      //   token: token.value,
-      // });
-      // console.log(
-      //   "🚀 ~ file: middleware.ts:40 ~ middleware ~ resUserProfile:",
-      //   resUserProfile
-      // );
+      const resUserProfile = await apiReq({
+        endpoint: "/users/profile",
+        locale: currentLocale,
+        token: token.value,
+      });
 
-      const route = `${api}/users/profile`;
-      console.log("🚀 ~ file: middleware.ts:47 ~ middleware ~ route:", route);
       console.log(
-        "🚀 ~ file: middleware.ts:48 ~ middleware ~ token.value:",
-        token.value
+        "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile.ok:",
+        resUserProfile.ok
       );
-      const resUserProfile = await fetch(route, {
-        method: "GET",
-        headers: {
-          "Accept-Language": locale,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token.value}`,
-        },
-      })
-        .then((val) => {
-          console.log(`get user Res: `, val);
-          return val;
-        })
-        .catch((error) => {
-          console.log(
-            "🚀 ~ file: middleware.ts:56 ~ middleware ~ error:",
-            error
-          );
-          return NextResponse.json(
-            { data: null, error: error },
-            { status: 503 }
-          );
-        });
       console.log(
-        "🚀 ~ file: middleware.ts:59 ~ middleware ~ resUserProfile:",
-        resUserProfile
+        "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile.status:",
+        resUserProfile.status
+      );
+
+      const jsonData = await resUserProfile.json();
+
+      const data = jsonData?.data;
+
+      console.log(
+        "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile ~ data:",
+        data
       );
 
       // check if there is a user with the provided token
-      if (resUserProfile.ok) {
-        const { data } = await resUserProfile.json();
-        console.log("From middleware", data.name);
+      if (resUserProfile.ok && data) {
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
@@ -87,29 +66,34 @@ export async function middleware(request: NextRequest) {
         } else {
           // Admins should not access dashboard pages and non-admins should not access admin pages
           if (data.role === "Admin") {
-            if (pathname?.startsWith(`dashboard`)) {
-              return NextResponse.redirect(
-                new URL(`/${currentLocale}/admin`, request.nextUrl)
-              );
+            if (pathname?.includes(`${locale}/dashboard`)) {
+              request.nextUrl.pathname = `/${currentLocale}/admin`;
+              // return NextResponse.redirect(
+              //   new URL(`/${currentLocale}/admin`, request.nextUrl)
+              // );
             }
           } else {
-            if (pathname?.startsWith(`admin`)) {
-              return NextResponse.redirect(
-                new URL(`/${currentLocale}/dashboard`, request.nextUrl)
-              );
+            if (pathname?.includes(`${locale}/admin`)) {
+              request.nextUrl.pathname = `/${currentLocale}/dashboard`;
+              // return NextResponse.redirect(
+              //   new URL(`/${currentLocale}/dashboard`, request.nextUrl)
+              // );
             }
           }
 
           // Redirect to the home page for empty pathname
           if (!pathname || pathname === "/") {
-            return NextResponse.redirect(
-              new URL(
-                `/${currentLocale}/${
-                  data.role === "Admin" ? "admin" : "dashboard"
-                }`,
-                request.nextUrl
-              )
-            );
+            request.nextUrl.pathname = `/${currentLocale}/${
+              data.role === "Admin" ? "admin" : "dashboard"
+            }`;
+            // return NextResponse.redirect(
+            //   new URL(
+            //     `/${currentLocale}/${
+            //       data.role === "Admin" ? "admin" : "dashboard"
+            //     }`,
+            //     request.nextUrl
+            //   )
+            // );
           }
         }
         console.log("middleware", {
@@ -132,31 +116,12 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  console.log("currentLocale", currentLocale);
-  console.log("pathname", pathname);
-
-  // request.nextUrl.pathname = `/${currentLocale}/${pathname}`;
-
-  console.log(
-    "🚀 ~ file: middleware.ts:101 ~ middleware ~ request.nextUrl.pathname:",
-    request.nextUrl.pathname
-  );
-  // const res = NextResponse.next();
-
-  // return res;
   // Add the locale middleware
   const handleI18nRouting = createIntlMiddleware({
     locales: availableLocales,
     defaultLocale: availableLocales[0],
   });
-  // const handleI18nRouting = createMiddleware({
-  //   locales: availableLocales,
-  //   defaultLocale: availableLocales[0],
-  // });
-
   const res: NextResponse = handleI18nRouting(request);
-  console.log("🚀 ~ file: middleware.ts:115 ~ middleware ~ res:", res);
-
   return res;
 }
 
