@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, min } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useLocale, useTranslations } from "next-intl";
@@ -40,7 +39,6 @@ import SelectableCard from "@/components/dashboard/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 
 export const ConsultationForm = () => {
-  const [step, setStep] = useState(1);
   const locale = useLocale();
   const t = useTranslations("Consultation");
 
@@ -123,7 +121,7 @@ export const ConsultationForm = () => {
   ] as const;
 
   const accommodationTypes = [
-    { title: t("aResortWith"), imageUrl: "/asset/images/resort.jpg" },
+    { title: t("aResortWith"), imageUrl: "/assets/images/resort.jpg" },
     {
       title: t("fiveStarHotel"),
       imageUrl: "/assets/images/5-star-hotel.jpg",

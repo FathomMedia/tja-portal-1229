@@ -3,7 +3,20 @@ const withNextIntl = require("next-intl/plugin")();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["i.pinimg.com", "images.unsplash.com", "i.ytimg.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.pinimg.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.ytimg.com",
+      },
+    ],
   },
 };
 
