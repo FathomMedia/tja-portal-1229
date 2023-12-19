@@ -633,7 +633,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 render={({ field }) => (
                   <FormItem className=" w-full">
                     <FormLabel>
-                      {"Why you choose this distention?"}
+                      {t("whyDidYouChooseThisDistention?")}
                       <span className="text-destructive ms-1">*</span>
                     </FormLabel>
                     <FormControl>
