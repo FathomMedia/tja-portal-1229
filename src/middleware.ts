@@ -49,16 +49,19 @@ export async function middleware(request: NextRequest) {
       );
 
       const jsonData = await resUserProfile.json();
-
-      const data = jsonData?.data;
-
       console.log(
-        "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile ~ data:",
-        data
+        "🚀 ~ file: middleware.ts:52 ~ middleware ~ jsonData:",
+        jsonData
       );
 
       // check if there is a user with the provided token
-      if (resUserProfile.ok && data) {
+      if (resUserProfile.ok) {
+        const data = jsonData?.data;
+
+        console.log(
+          "🚀 ~ file: middleware.ts:40 ~ middleware ~      resUserProfile ~ data:",
+          data
+        );
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
