@@ -38,7 +38,8 @@
     "endDate": "End Date",
     "noOrdersFound": "No orders found",
     "myAccount": "My Account",
-    "noUpcoming": "You don't have any upcoming adventures"
+    "noUpcoming": "You don't have any upcoming adventures",
+    "language": "Language"
   },
   "SignUp": {
     "email": {
@@ -260,5 +261,31 @@
         "required": "This field is required"
       }
     }
+  },
+  "Checkout": {
+    "thisAdventureIsNotAvailable": "This adventure is not available",
+    "paymentBreakdown": "Payment Details",
+    "adventure": "Adventure",
+    "why": {
+      "errors": {
+        "required": "This field is required"
+      }
+    },
+    "price": "Price",
+    "addons": "Add-ons",
+    "discount": "Discount",
+    "remaining": "Remaining",
+    "toBePaidLater": "(To be paid later)",
+    "payNow": "Pay Now",
+    "total": "Total",
+    "paymentMethod": "Payment Method",
+    "creditCard": "Credit Card",
+    "benefitPay": "Benefit Pay",
+    "applePay": "Apple Pay",
+    "january": "January",
+    "february": "February",
+    "March": "March",
+    "april": "April",
+    "may": "May"
   }
 }

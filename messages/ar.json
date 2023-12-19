@@ -38,7 +38,8 @@
     "endDate": "تاريخ الانتهاء",
     "noOrdersFound": "لم يتم العثور على أية طلبات",
     "myAccount": "حسابي",
-    "noUpcoming": "ليس لديك أي مغامرات قادمة"
+    "noUpcoming": "ليس لديك أي مغامرات قادمة",
+    "language": "اللغة"
   },
   "SignUp": {
     "email": {
@@ -258,5 +259,22 @@
         "required": "هذا الحقل مطلوب"
       }
     }
+  },
+  "Checkout": {
+    "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
+    "paymentBreakdown": "تفاصيل الدفع",
+    "adventure": "المغامرة",
+    "price": "السعر",
+    "addons": "الإضافات",
+    "discount": "الخصم",
+    "remaining": "المتبقي",
+    "toBePaidLater": "(تُدفع لاحقًا)",
+    "payNow": "الدفع الآن",
+    "total": "الإجمالي",
+    "paymentMethod": "طريقة الدفع",
+    "creditCard": "البطاقة الإئتمانية",
+    "benefitPay": "بنفت البحرين",
+    "applePay": "ابل",
+    "january": "يناير"
   }
 }

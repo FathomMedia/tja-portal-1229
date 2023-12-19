@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format, min } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useLocale, useTranslations } from "next-intl";
@@ -36,11 +35,10 @@ import {
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import SelectableCard from "@/components/dashboard/consultations/cardSelection";
+import SelectableCard from "@/components/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 
-export const ConsultationForm = () => {
-  const [step, setStep] = useState(1);
+export const ConsultationF: FC = () => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
 
@@ -123,7 +121,7 @@ export const ConsultationForm = () => {
   ] as const;
 
   const accommodationTypes = [
-    { title: t("aResortWith"), imageUrl: "/asset/images/resort.jpg" },
+    { title: t("aResortWith"), imageUrl: "/assets/images/resort.jpg" },
     {
       title: t("fiveStarHotel"),
       imageUrl: "/assets/images/5-star-hotel.jpg",
@@ -301,14 +299,13 @@ export const ConsultationForm = () => {
   });
 
   return (
-    <div className="">
+    <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-4 md:gap-6 flex flex-col pt-4 items-start"
+          className="gap-4 md:gap-6 flex flex-col items-start"
         >
-          {/* {step === 1 && ( */}
-          <div className="w-full  mt-8 max-w-xl">
+          <div className="w-full max-w-xl">
             <FormField
               control={form.control}
               name="package"
@@ -852,6 +849,7 @@ export const ConsultationForm = () => {
                   <FormLabel>{t("whichTypeOfActivities")}</FormLabel>
                   <FormControl>
                     <RadioGroup
+                      dir={isRtlLang(locale) ? "rtl" : "ltr"}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
@@ -860,7 +858,7 @@ export const ConsultationForm = () => {
                         <FormControl>
                           <RadioGroupItem value="Seeing-one-of-the-worlds-7-wonders" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t(`Seeing-one-of-the-worlds-7-wonders`)}
                         </FormLabel>
                       </FormItem>
@@ -868,7 +866,7 @@ export const ConsultationForm = () => {
                         <FormControl>
                           <RadioGroupItem value="hot-air-balloon-experience" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t("hot-air-balloon-experience")}
                         </FormLabel>
                       </FormItem>
@@ -876,7 +874,7 @@ export const ConsultationForm = () => {
                         <FormControl>
                           <RadioGroupItem value="i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t(
                             "i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch"
                           )}
@@ -981,8 +979,6 @@ export const ConsultationForm = () => {
               </Button>
             </div>
           </div>
-
-          {/* )} */}
         </form>
       </Form>
     </div>

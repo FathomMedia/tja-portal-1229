@@ -1,23 +1,24 @@
-import { ConsultationForm } from "@/components/dashboard/consultations/ConsultationForm";
-import { getToken } from "@/lib/serverUtils";
-import { TPaginatedAdventures } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
-import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { DashboardSection } from "@/components/DashboardSection";
+import { ConsultationF } from "@/components/consultations/ConsultationsF";
 
-export default function Page() {
-  const locale = useLocale();
-  const token = getToken();
-  const t = useTranslations("Consultations");
-  var isFirstStep = true;
+import { Skeleton } from "@/components/ui/skeleton";
+import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 
-  const handleProceedClick = () => {
-    isFirstStep = false;
-  };
-
-  return <ConsultationForm></ConsultationForm>;
-}
-
-function useClient() {
-  throw new Error("Function not implemented.");
+export default async function Page() {
+  const t = await getTranslations("Consultation");
+  return (
+    <DashboardSection className="flex flex-col gap-4" title={t("consultation")}>
+      <Suspense
+        fallback={
+          <div className="flex flex-col gap-4">
+            <Skeleton className="w-full h-16 rounded-md" />
+            <Skeleton className="w-full h-20 rounded-md" />
+          </div>
+        }
+      >
+        <ConsultationF />
+      </Suspense>
+    </DashboardSection>
+  );
 }
