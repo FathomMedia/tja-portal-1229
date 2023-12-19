@@ -35,11 +35,7 @@ import {
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-<<<<<<< Updated upstream:src/components/consultations/ConsultationsF.tsx
 import SelectableCard from "@/components/consultations/CardSelection";
-=======
-import SelectableCard from "@/components/dashboard/consultations/cardSelection";
->>>>>>> Stashed changes:src/components/dashboard/Consultations/ConsultationForm.tsx
 import { isRtlLang } from "rtl-detect";
 
 export const ConsultationF: FC = () => {
