@@ -58,13 +58,14 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const defaultDate = new Date(user.dateFormatted);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: user.name,
-      date_of_birth: new Date(user.dateOfBirth),
+      date_of_birth: defaultDate,
       gender: user.gender,
     },
   });
@@ -74,7 +75,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    console.log("birthday", format(values.date_of_birth, "dd/MM/yyyy"));
+
     const response = await fetch(`/api/user/update-user-profile`, {
       method: "PUT",
       headers: {
@@ -91,7 +92,6 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
     });
 
     const res = await response.json();
-    console.log("🚀 ~ file: UserAccountDetails.tsx:94 ~ onSubmit ~ res:", res);
 
     if (response.ok) {
       toast.success(res.message);
