@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
-import { availableLocales } from "./config";
+import { api, availableLocales } from "./config";
 import { apiReq } from "./lib/utils";
 
 export async function middleware(request: NextRequest) {
@@ -32,13 +32,32 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
-      const resUserProfile = await apiReq({
-        endpoint: "/users/profile",
-        locale: currentLocale,
-        token: token.value,
+      // const resUserProfile = await apiReq({
+      //   endpoint: "/users/profile",
+      //   locale: currentLocale,
+      //   token: token.value,
+      // });
+      // console.log(
+      //   "🚀 ~ file: middleware.ts:40 ~ middleware ~ resUserProfile:",
+      //   resUserProfile
+      // );
+
+      const route = `${api}/users/profile`;
+      console.log("🚀 ~ file: middleware.ts:47 ~ middleware ~ route:", route);
+      const resUserProfile = await fetch(route, {
+        method: "GET",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }).catch((error) => {
+        console.log("🚀 ~ file: middleware.ts:56 ~ middleware ~ error:", error);
+        return NextResponse.json({ data: null, error: error }, { status: 503 });
       });
       console.log(
-        "🚀 ~ file: middleware.ts:40 ~ middleware ~ resUserProfile:",
+        "🚀 ~ file: middleware.ts:59 ~ middleware ~ resUserProfile:",
         resUserProfile
       );
 
