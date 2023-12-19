@@ -1,22 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { apiReq } from "@/lib/utils";
 
-export async function GET(request: NextRequest) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("authToken");
+export async function POST(request: NextRequest) {
+  const { token } = await request.json();
 
-  const locale = request.headers.get("accept-language") ?? "en";
+  if (token) {
+    const locale = request.headers.get("accept-language") ?? "en";
 
-  const user = await apiReq({
-    endpoint: "/users/profile",
-    locale,
-    token: token?.value,
-  })
-    .then(async (res) => await res.json())
-    .catch((error) => {
-      return NextResponse.json(error, { status: 401 });
+    const user = await apiReq({
+      endpoint: "/users/profile",
+      locale,
+      token: token,
     });
 
-  return NextResponse.json(user, { status: 200 });
+    if (user.ok) {
+      const data = await user.json();
+
+      return NextResponse.json(data, { status: 200 });
+    } else {
+      return NextResponse.json({ data: null }, { status: 401 });
+    }
+  } else {
+    return NextResponse.json({ data: null }, { status: 401 });
+  }
 }

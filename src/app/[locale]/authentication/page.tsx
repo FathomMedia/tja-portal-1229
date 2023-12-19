@@ -7,9 +7,7 @@ export const metadata: Metadata = {
   description: "The Journey Adventures Authentication",
 };
 
-export default function Page() {
-
-
+export default async function Page() {
   return (
     <div className=" w-full bg-background">
       {/* auth card */}
