@@ -1,9 +1,6 @@
 import { ConsultationForm } from "@/components/dashboard/consultations/ConsultationForm";
 import { getToken } from "@/lib/serverUtils";
-import { TPaginatedAdventures } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
 
 export default function Page() {
   const locale = useLocale();

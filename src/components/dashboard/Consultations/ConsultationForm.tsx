@@ -36,7 +36,7 @@ import {
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import SelectableCard from "@/components/dashboard/consultations/cardSelection";
+import SelectableCard from "@/components/dashboard/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 
 export const ConsultationForm = () => {
