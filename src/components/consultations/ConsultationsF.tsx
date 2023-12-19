@@ -35,7 +35,11 @@ import {
 import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+<<<<<<< Updated upstream:src/components/consultations/ConsultationsF.tsx
 import SelectableCard from "@/components/consultations/CardSelection";
+=======
+import SelectableCard from "@/components/dashboard/consultations/cardSelection";
+>>>>>>> Stashed changes:src/components/dashboard/Consultations/ConsultationForm.tsx
 import { isRtlLang } from "rtl-detect";
 
 export const ConsultationF: FC = () => {
@@ -849,6 +853,7 @@ export const ConsultationF: FC = () => {
                   <FormLabel>{t("whichTypeOfActivities")}</FormLabel>
                   <FormControl>
                     <RadioGroup
+                      dir={isRtlLang(locale) ? "rtl" : "ltr"}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                       className="flex flex-col space-y-1"
@@ -857,7 +862,7 @@ export const ConsultationF: FC = () => {
                         <FormControl>
                           <RadioGroupItem value="Seeing-one-of-the-worlds-7-wonders" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t(`Seeing-one-of-the-worlds-7-wonders`)}
                         </FormLabel>
                       </FormItem>
@@ -865,7 +870,7 @@ export const ConsultationF: FC = () => {
                         <FormControl>
                           <RadioGroupItem value="hot-air-balloon-experience" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t("hot-air-balloon-experience")}
                         </FormLabel>
                       </FormItem>
@@ -873,7 +878,7 @@ export const ConsultationF: FC = () => {
                         <FormControl>
                           <RadioGroupItem value="i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch" />
                         </FormControl>
-                        <FormLabel className="font-normal">
+                        <FormLabel className="font-normal pr-2 pl-2">
                           {t(
                             "i-will-only-wake-up-that-early-if-i-have-a-flight-to-catch"
                           )}
