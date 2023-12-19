@@ -37,30 +37,30 @@ function useProviderApp() {
   const [token, setToken] = useState<string | null>(null);
   const locale = useLocale();
 
-  useEffect(() => {
-    async function getToken() {
-      return await fetch("/api/authentication/get-user-token").then(
-        async (res) => {
-          const data = await res.json();
+  // useEffect(() => {
+  //   async function getToken() {
+  //     return await fetch("/api/authentication/get-user-token").then(
+  //       async (res) => {
+  //         const data = await res.json();
 
-          return data.token ? data.token : null;
-        }
-      );
-    }
+  //         return data.token ? data.token : null;
+  //       }
+  //     );
+  //   }
 
-    getToken().then(setToken);
+  //   getToken().then(setToken);
 
-    return () => {};
-  }, []);
+  //   return () => {};
+  // }, []);
 
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      return await getUser({ locale });
-    };
-    getCurrentUser().then(setUser);
+  // useEffect(() => {
+  //   const getCurrentUser = async () => {
+  //     return await getUser({ locale });
+  //   };
+  //   getCurrentUser().then(setUser);
 
-    return () => {};
-  }, [locale]);
+  //   return () => {};
+  // }, [locale]);
 
   // return values
   return {
