@@ -35,7 +35,7 @@ export default function Page() {
 
   useEffect(() => {
     async function getUser({ locale }: { locale: string }) {
-      const res = await fetch("/api/user/get-user", {
+      const res = await fetch("/api/user/get-user-nt", {
         headers: {
           "Accept-Language": locale,
           "Content-Type": "application/json",

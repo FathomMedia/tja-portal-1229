@@ -104,11 +104,13 @@ export const SignUp = () => {
     );
 
     // TODO: move this to api route and set the token in the cookies
-    const res = await apiReq({
-      endpoint: "/auth/register",
+    const res = await fetch(`/api/authentication/sign-up`, {
       method: "POST",
-      locale,
-      values: dataToSend,
+      headers: {
+        "Accept-Language": locale,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataToSend),
     }).finally(() => setIsLoading(false));
 
     const { data, message } = await res.json();
