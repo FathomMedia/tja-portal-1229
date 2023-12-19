@@ -17,7 +17,7 @@ export type TUser = {
   daysTravelled: number;
   joinedAt: string;
   verified: boolean;
-  dateFormatted: any;
+  dateFormatted: string;
 };
 
 export type TAchievement = {
