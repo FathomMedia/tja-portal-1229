@@ -38,7 +38,8 @@
     "endDate": "End Date",
     "noOrdersFound": "No orders found",
     "myAccount": "My Account",
-    "noUpcoming": "You don't have any upcoming adventures"
+    "noUpcoming": "You don't have any upcoming adventures",
+    "language": "Language"
   },
   "SignUp": {
     "email": {

@@ -38,7 +38,8 @@
     "endDate": "تاريخ الانتهاء",
     "noOrdersFound": "لم يتم العثور على أية طلبات",
     "myAccount": "حسابي",
-    "noUpcoming": "ليس لديك أي مغامرات قادمة"
+    "noUpcoming": "ليس لديك أي مغامرات قادمة",
+    "language": "اللغة"
   },
   "SignUp": {
     "email": {

@@ -25,6 +25,7 @@ export async function middleware(request: NextRequest) {
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
         const { data } = await resUserProfile.json();
+        console.log("From middleware", data.name);
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
