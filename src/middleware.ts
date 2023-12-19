@@ -25,6 +25,7 @@ export async function middleware(request: NextRequest) {
   const authPath = `authentication`;
   if (pathname !== authPath) {
     const token = request.cookies.get("authToken");
+    console.log("🚀 ~ file: middleware.ts:28 ~ middleware ~ token:", token);
     // check if there is a token
     if (!token) {
       // redirect to auth if no token

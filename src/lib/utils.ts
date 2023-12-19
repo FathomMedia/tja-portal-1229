@@ -23,7 +23,6 @@ export async function apiReq({
 }: TApiReq) {
   const route = `${api}${endpoint}`;
   return fetch(route, {
-    cache: "no-cache",
     method: method ?? "GET",
     headers: token
       ? {
