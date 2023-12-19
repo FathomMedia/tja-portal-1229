@@ -1,5 +1,6 @@
 import { DashboardSection } from "@/components/DashboardSection";
-import ConsultationForm from "@/components/dashboard/consultations/ConsultationForm";
+import { ConsultationF } from "@/components/consultations/ConsultationsF";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
@@ -16,7 +17,7 @@ export default async function Page() {
           </div>
         }
       >
-        <ConsultationForm />
+        <ConsultationF />
       </Suspense>
     </DashboardSection>
   );
