@@ -168,9 +168,9 @@ export const ConsultationF: FC = () => {
         message: t("youHaveYoSelectAtLeastOneItem"),
       }),
     vType: z.string().min(1, t("destination.errors.required")),
-    accommodationTypes: z.array(
-      z.string().min(1, t("destination.errors.required"))
-    ),
+    accommodationTypes: z
+      .array(z.string())
+      .min(1, t("destination.errors.required")),
     adventureToYouIs: z
       .array(z.string())
       .refine((value) => value.some((item) => item), {
@@ -290,7 +290,7 @@ export const ConsultationF: FC = () => {
       bPriority: "",
       budgetIncludes: [],
       vType: "",
-      accommodationTypes: [""],
+      accommodationTypes: [],
       adventureToYouIs: [],
       activityTypes: [],
       travelExperience: "",
@@ -303,15 +303,17 @@ export const ConsultationF: FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-4 md:gap-6 flex flex-col items-start"
+          className="gap-6 flex flex-col items-start"
         >
-          <div className="w-full max-w-xl">
+          <div className="w-full max-w-xl flex flex-col gap-6">
             <FormField
               control={form.control}
               name="package"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2">
-                  <FormLabel>{t("packageType")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("packageType")}
+                  </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
                     onValueChange={field.onChange}
@@ -338,7 +340,9 @@ export const ConsultationF: FC = () => {
                 name="start_date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel>{t("startDate")}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t("startDate")}
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl className="w-full flex">
@@ -377,7 +381,7 @@ export const ConsultationF: FC = () => {
                 name="end_date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel>{t("endDate")}</FormLabel>
+                    <FormLabel className="text-base">{t("endDate")}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl className="w-full flex">
@@ -430,13 +434,15 @@ export const ConsultationF: FC = () => {
           </div>
 
           {/* {step === 2 && ( */}
-          <div className="w-full  mt-8 max-w-xl">
+          <div className="w-full max-w-xl flex flex-col gap-6">
             <FormField
               control={form.control}
               name="destination"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>{t("whereareyoutraveling")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("whereareyoutraveling")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder={t("yourDestination")}
@@ -454,7 +460,9 @@ export const ConsultationF: FC = () => {
               name="class"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2">
-                  <FormLabel>{t("travelClass")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("travelClass")}
+                  </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
                     onValueChange={field.onChange}
@@ -482,7 +490,9 @@ export const ConsultationF: FC = () => {
               name="airport"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>{t("whichAirport")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("whichAirport")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder={t("airportName")}
@@ -500,7 +510,7 @@ export const ConsultationF: FC = () => {
               name="plus"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>{t("plusOne")}</FormLabel>
+                  <FormLabel className="text-base">{t("plusOne")}</FormLabel>
                   <FormControl>
                     <Input
                       placeholder={t("numberOfcompanions")}
@@ -518,7 +528,9 @@ export const ConsultationF: FC = () => {
               name="budget"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>{t("budgetAmount")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("budgetAmount")}
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder={t("budgetexample")}
@@ -536,7 +548,9 @@ export const ConsultationF: FC = () => {
               name="bPriority"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2">
-                  <FormLabel>{t("budgetPriority")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("budgetPriority")}
+                  </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
                     onValueChange={field.onChange}
@@ -636,13 +650,15 @@ export const ConsultationF: FC = () => {
           {/* )} */}
 
           {/* {step === 3 && ( */}
-          <div className="w-full  mt-8">
+          <div className="w-full max-w-xl flex flex-col gap-6">
             <FormField
               control={form.control}
               name="vType"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2 max-w-xl">
-                  <FormLabel>{t("vacationType")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("vacationType")}
+                  </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
                     onValueChange={field.onChange}
@@ -677,7 +693,7 @@ export const ConsultationF: FC = () => {
                 name="vType"
                 render={({ field }) => (
                   <FormItem className=" w-full mb-2">
-                    <FormLabel></FormLabel>
+                    <FormLabel className="text-base"></FormLabel>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -688,8 +704,10 @@ export const ConsultationF: FC = () => {
               name="accommodationTypes"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2 max-w-3xl">
-                  <FormLabel>{t("whichTypeOfAccomidation")}</FormLabel>
-                  <div className="grid grid-cols-4 gap-4">
+                  <FormLabel className="text-base">
+                    {t("whichTypeOfAccomidation")}
+                  </FormLabel>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {rowIndices.map((rowIndex) => (
                       <React.Fragment key={rowIndex}>
                         {accommodationTypes
@@ -743,7 +761,7 @@ export const ConsultationF: FC = () => {
           {/* )} */}
 
           {/* {step === 4 && ( */}
-          <div className="w-full  mt-8 ">
+          <div className="w-full max-w-xl flex flex-col gap-6">
             <FormField
               control={form.control}
               name="adventureToYouIs"
@@ -797,44 +815,51 @@ export const ConsultationF: FC = () => {
               name="activityTypes"
               render={({ field }) => {
                 return (
-                  <FormItem className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl">
-                    {cardOptionsSelect.map((card, i) => (
-                      <div className="flex flex-col gap-2" key={i}>
-                        <div className="relative w-10 h-10">
-                          <Image
-                            alt="image"
-                            className="w-full h-full"
-                            fill
-                            src={card.image}
-                          ></Image>
+                  <FormItem className="">
+                    <div className="mb-4 max-w-xl">
+                      <FormLabel className="text-base">
+                        {t("whichTypeOfActivities")}
+                      </FormLabel>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-3xl">
+                      {cardOptionsSelect.map((card, i) => (
+                        <div className="flex flex-col gap-2" key={i}>
+                          <div className="relative w-full h-20">
+                            <Image
+                              alt="image"
+                              className="object-cover"
+                              fill
+                              src={card.image}
+                            ></Image>
+                          </div>
+                          <p className=" text-md ">{card.title}</p>
+                          <div className="flex flex-col gap-3">
+                            {card.options.map((option, j) => (
+                              <div className="flex gap-2 items-center" key={j}>
+                                <Checkbox
+                                  checked={field.value?.includes(option.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([
+                                          ...field.value,
+                                          option.id,
+                                        ])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== option.id
+                                          )
+                                        );
+                                  }}
+                                />
+                                <FormLabel className="font-normal">
+                                  {option.label}
+                                </FormLabel>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                        <p>{card.title}</p>
-                        <div className="flex flex-col gap-3">
-                          {card.options.map((option, j) => (
-                            <div className="flex gap-2 items-center" key={j}>
-                              <Checkbox
-                                checked={field.value?.includes(option.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        option.id,
-                                      ])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== option.id
-                                        )
-                                      );
-                                }}
-                              />
-                              <FormLabel className="font-normal">
-                                {option.label}
-                              </FormLabel>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 );
@@ -846,7 +871,11 @@ export const ConsultationF: FC = () => {
               name="tripType"
               render={({ field }) => (
                 <FormItem className="space-y-3 max-w-xl">
-                  <FormLabel>{t("whichTypeOfActivities")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {
+                      "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
+                    }
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       dir={isRtlLang(locale) ? "rtl" : "ltr"}
@@ -891,7 +920,9 @@ export const ConsultationF: FC = () => {
               name="travelExperience"
               render={({ field }) => (
                 <FormItem className=" w-full max-w-xl">
-                  <FormLabel>{t("whatIsTheBestTravelExperience")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("whatIsTheBestTravelExperience")}
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder={t("describe")}
@@ -908,7 +939,9 @@ export const ConsultationF: FC = () => {
               name="fearsSelection"
               render={({ field }) => (
                 <FormItem className=" w-full mb-2 max-w-xl">
-                  <FormLabel>{t("doYouHaveFears")}</FormLabel>
+                  <FormLabel className="text-base">
+                    {t("doYouHaveFears")}
+                  </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
                     onValueChange={(value) => {
@@ -954,7 +987,9 @@ export const ConsultationF: FC = () => {
                 name="otherFears"
                 render={({ field }) => (
                   <FormItem className=" w-full max-w-xl">
-                    <FormLabel>{t("ifOtherType")}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t("ifOtherType")}
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder=""
