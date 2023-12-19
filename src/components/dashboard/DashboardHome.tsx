@@ -87,7 +87,7 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
                   </div>
                 );
               })}
-              {latestOrders?.length == 0 && (
+              {(!latestOrders || latestOrders?.length == 0) && (
                 <div className="bg-muted rounded-lg p-3 text-muted-foreground">
                   <p>{t("noOrdersFound")}</p>
                 </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, use } from "react";
+import React, { FC, useState } from "react";
 import { DashboardSection } from "@/components/DashboardSection";
 
 import { useLocale, useTranslations } from "next-intl";
@@ -28,12 +28,11 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 
-import { Copy } from "lucide-react";
-
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
+import toast from "react-hot-toast";
+import { Icons } from "../ui/icons";
+import { useRouter } from "next/navigation";
 
 type TJourneysMiles = {
   user: TUser;
@@ -120,7 +119,7 @@ const LevelsTable = ({
           </TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      <TableBody className="">
         {levels.map((level, i) => (
           <TableRow
             key={i}
@@ -180,11 +179,20 @@ const RedeemedCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
 };
 const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
   const locale = useLocale();
+
   return (
     <div className="@container flex flex-col gap-4">
       <h3 className="font-bold md:text-2xl text-xl text-primary">
         Available Coupons
       </h3>
+      {coupons.length > 0 && (
+        <div className="text-xs text-muted-foreground">
+          {"Note: redeeming adventure coupons resets your point balance to"}{" "}
+          <Badge variant={"outline"} size={"sm"}>
+            70 points
+          </Badge>
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-3 @md:grid-cols-2 @3xl:grid-cols-3 @5xl:grid-cols-4">
         {coupons.map((coupon, i) => (
           <div
@@ -206,58 +214,7 @@ const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
                   : formatePrice({ locale, price: coupon.value! })}
               </p>
               {/* Redeem confirmation */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline">Redeem</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-xl">
-                  <DialogHeader className="gap-1">
-                    <DialogTitle>Redeem Coupon</DialogTitle>
-                    <DialogDescription>
-                      {coupon.applyTo === "adventure" ? (
-                        <>
-                          {"Redeeming this coupon will send you points back to"}{" "}
-                          <Badge variant={"outline"}>70 points</Badge>
-                        </>
-                      ) : (
-                        "Redeeming this coupon will not affect your points!"
-                      )}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div
-                    key={i}
-                    className={cn(
-                      "p-4 rounded-md w-full min-h-[5rem] bg-background gap-3 text-foreground flex justify-between border-2 border-border"
-                    )}
-                  >
-                    <div className="flex flex-col gap-3 justify-between w-full">
-                      <div className="w-full">
-                        <p className="text-sm font-medium break-all">
-                          {coupon.code}
-                        </p>
-                        <p className="text-xs text-muted-foreground capitalize">
-                          {coupon.applyTo}
-                        </p>
-                      </div>
-                      <p className="text-sm font-bold text-secondary">
-                        {coupon.type === "percentage"
-                          ? `${coupon.percentOff}% off`
-                          : formatePrice({ locale, price: coupon.value! })}
-                      </p>
-                    </div>
-                  </div>
-                  <DialogFooter className="sm:justify-start">
-                    <DialogClose asChild>
-                      <Button type="button" variant="ghost">
-                        Close
-                      </Button>
-                    </DialogClose>
-                    <Button type="button" variant="secondary">
-                      Redeem
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+              <CouponRedeemDialog coupon={coupon} />
             </div>
           </div>
         ))}
@@ -267,6 +224,128 @@ const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
+  const locale = useLocale();
+  const [open, setOpen] = useState(false);
+  const [agree, setAgree] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { refresh } = useRouter();
+
+  async function handleRedeem() {
+    setIsLoading(true);
+    await fetch("/api/user/redeem-coupon", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Language": locale,
+      },
+      body: JSON.stringify({ code: coupon.code }),
+    })
+      .then(async (val) => {
+        const data = await val.json();
+        if (val.ok) {
+          toast.success(data.message, { duration: 6000 });
+          refresh();
+        } else {
+          toast.error(data.message, { duration: 6000 });
+        }
+      })
+      .catch((err) => {
+        console.log(
+          "🚀 ~ file: JourneysMiles.tsx:239 ~ await wait ~ err:",
+          err
+        );
+        toast.error("Failed to redeem the coupon");
+      })
+
+      .finally(() => {
+        setOpen(false);
+        setIsLoading(false);
+      });
+  }
+
+  return (
+    <div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button className="w-full" variant="outline">
+            Redeem
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader className="gap-1">
+            <DialogTitle>Redeem Coupon</DialogTitle>
+            <DialogDescription className="gap-1 flex flex-col">
+              {coupon.applyTo === "adventure" ? (
+                <div>
+                  {"Note: redeeming this coupon resets your point balance to"}{" "}
+                  <Badge variant={"outline"}>70 points</Badge>
+                </div>
+              ) : (
+                "Redeeming this coupon will not impact your points balance."
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          {agree && (
+            <div
+              className={cn(
+                "p-4 rounded-md mx-auto w-full min-h-[5rem]   bg-background gap-3 text-foreground flex justify-between border-2 border-border"
+              )}
+            >
+              <div className="flex flex-col gap-3 justify-between w-full">
+                <div className="w-full">
+                  <p className="text-sm font-medium break-all">{coupon.code}</p>
+                  <p className="text-xs text-muted-foreground capitalize">
+                    {coupon.applyTo}
+                  </p>
+                </div>
+                <p className="text-sm font-bold text-secondary">
+                  {coupon.type === "percentage"
+                    ? `${coupon.percentOff}% off`
+                    : formatePrice({ locale, price: coupon.value! })}
+                </p>
+              </div>
+            </div>
+          )}
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button className="" type="button" variant="ghost">
+                Close
+              </Button>
+            </DialogClose>
+            <>
+              {!agree && (
+                <Button
+                  onClick={() => setAgree(true)}
+                  type="button"
+                  variant="outline"
+                >
+                  {isLoading && (
+                    <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                  )}
+                  Agree
+                </Button>
+              )}
+              {agree && (
+                <Button
+                  onClick={handleRedeem}
+                  type="button"
+                  variant="secondary"
+                >
+                  {isLoading && (
+                    <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                  )}
+                  Redeem
+                </Button>
+              )}
+            </>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

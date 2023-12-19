@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
         httpOnly: true,
         path: "/",
       });
+
       return NextResponse.json(data, { status: 200 });
     }
 

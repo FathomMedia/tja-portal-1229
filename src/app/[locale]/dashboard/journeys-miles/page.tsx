@@ -36,6 +36,7 @@ export default async function Page() {
       return resData.data as TCoupon[];
     } else {
       const resData = await val.json();
+      console.log("🚀 ~ file: page.tsx:39 ~ Page ~ resData:", resData);
 
       console.log(
         "🚀 ~ journeys-miles file: page.tsx:40 ~ Page ~ resData.message:",
