@@ -44,18 +44,33 @@ export async function middleware(request: NextRequest) {
 
       const route = `${api}/users/profile`;
       console.log("🚀 ~ file: middleware.ts:47 ~ middleware ~ route:", route);
+      console.log(
+        "🚀 ~ file: middleware.ts:48 ~ middleware ~ token.value:",
+        token.value
+      );
       const resUserProfile = await fetch(route, {
         method: "GET",
         headers: {
           "Accept-Language": locale,
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.value}`,
         },
-      }).catch((error) => {
-        console.log("🚀 ~ file: middleware.ts:56 ~ middleware ~ error:", error);
-        return NextResponse.json({ data: null, error: error }, { status: 503 });
-      });
+      })
+        .then((val) => {
+          console.log(`get user Res: `, val);
+          return val;
+        })
+        .catch((error) => {
+          console.log(
+            "🚀 ~ file: middleware.ts:56 ~ middleware ~ error:",
+            error
+          );
+          return NextResponse.json(
+            { data: null, error: error },
+            { status: 503 }
+          );
+        });
       console.log(
         "🚀 ~ file: middleware.ts:59 ~ middleware ~ resUserProfile:",
         resUserProfile
