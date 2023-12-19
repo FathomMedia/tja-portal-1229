@@ -1,11 +1,26 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
+import createIntlMiddleware from "next-intl/middleware";
 import { availableLocales } from "./config";
 import { apiReq } from "./lib/utils";
 
 export async function middleware(request: NextRequest) {
-  const [, locale, pathname] = request.nextUrl.pathname.split("/");
+  // const [, locale, pathname] = request.nextUrl.pathname.split("/");
+  const { pathname, locale } = request.nextUrl;
+  // handle route if valid user
+  var currentLocale = availableLocales[0];
+  availableLocales.some((someLocale) => {
+    const isMatching = locale === someLocale;
+    if (isMatching) {
+      // sets the someLocale found in the URL
+      currentLocale = someLocale;
+    }
+    return isMatching;
+  });
+
+  if (!currentLocale || currentLocale === "") {
+    currentLocale = availableLocales[0];
+  }
 
   const authPath = `authentication`;
   if (pathname !== authPath) {
@@ -13,12 +28,12 @@ export async function middleware(request: NextRequest) {
     // check if there is a token
     if (!token) {
       // redirect to auth if no token
-      request.nextUrl.pathname = `${locale}/${authPath}`;
+      request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
       const resUserProfile = await apiReq({
         endpoint: "/users/profile",
-        locale,
+        locale: currentLocale,
         token: token.value,
       });
 
@@ -29,23 +44,8 @@ export async function middleware(request: NextRequest) {
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
-          request.nextUrl.pathname = `${locale}/${authPath}/verify-email`;
+          request.nextUrl.pathname = `${currentLocale}/${authPath}/verify-email`;
         } else {
-          // handle route if valid user
-          var currentLocale = availableLocales[0];
-          availableLocales.some((someLocale) => {
-            const isMatching = locale === someLocale;
-            if (isMatching) {
-              // sets the someLocale found in the URL
-              currentLocale = someLocale;
-            }
-            return isMatching;
-          });
-
-          if (!currentLocale || currentLocale === "") {
-            currentLocale = availableLocales[0];
-          }
-
           // Admins should not access dashboard pages and non-admins should not access admin pages
           if (data.role === "Admin") {
             if (pathname?.startsWith(`dashboard`)) {
@@ -77,28 +77,46 @@ export async function middleware(request: NextRequest) {
           user: data,
           pathname,
           href: request.nextUrl.href,
-          locale,
+          locale: currentLocale,
           token: token.value,
         });
       } else {
+        // if server is down
         if (resUserProfile.status === 503) {
-          request.nextUrl.pathname = `${locale}/service-unavailable`;
+          request.nextUrl.pathname = `${currentLocale}/service-unavailable`;
         } else {
+          // delete the token and redirect to auth page if the token is wrong
           request.cookies.delete("authToken");
-          request.nextUrl.pathname = `${locale}/${authPath}`;
+          request.nextUrl.pathname = `${currentLocale}/${authPath}`;
         }
-        // delete the token and redirect to auth page if the token is wrong
       }
     }
   }
 
+  console.log("currentLocale", currentLocale);
+  console.log("pathname", pathname);
+
+  // request.nextUrl.pathname = `/${currentLocale}/${pathname}`;
+
+  console.log(
+    "🚀 ~ file: middleware.ts:101 ~ middleware ~ request.nextUrl.pathname:",
+    request.nextUrl.pathname
+  );
+  // const res = NextResponse.next();
+
+  // return res;
   // Add the locale middleware
-  const handleI18nRouting = createMiddleware({
+  const handleI18nRouting = createIntlMiddleware({
     locales: availableLocales,
     defaultLocale: availableLocales[0],
   });
+  // const handleI18nRouting = createMiddleware({
+  //   locales: availableLocales,
+  //   defaultLocale: availableLocales[0],
+  // });
 
   const res: NextResponse = handleI18nRouting(request);
+  console.log("🚀 ~ file: middleware.ts:115 ~ middleware ~ res:", res);
 
   return res;
 }
