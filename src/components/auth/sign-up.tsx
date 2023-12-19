@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -42,6 +43,7 @@ const maxAge = 95;
 
 export const SignUp = () => {
   const t = useTranslations("SignUp");
+  const { refresh } = useRouter();
 
   const formSchema = z
     .object({
@@ -96,6 +98,10 @@ export const SignUp = () => {
       date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
       recaptcha_token,
     };
+    console.log(
+      "🚀 ~ file: sign-up.tsx:95 ~ onSubmit ~ dataToSend:",
+      dataToSend
+    );
 
     // TODO: move this to api route and set the token in the cookies
     const res = await apiReq({
@@ -110,6 +116,7 @@ export const SignUp = () => {
 
     if (res.ok) {
       toast.success(message, { duration: 6000 });
+      refresh();
     } else {
       toast.error(message);
     }
