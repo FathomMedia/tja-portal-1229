@@ -1,20 +1,5 @@
 import { ConsultationForm } from "@/components/dashboard/consultations/ConsultationForm";
-import { getToken } from "@/lib/serverUtils";
-import { useLocale, useTranslations } from "next-intl";
 
-export default function Page() {
-  const locale = useLocale();
-  const token = getToken();
-  const t = useTranslations("Consultations");
-  var isFirstStep = true;
-
-  const handleProceedClick = () => {
-    isFirstStep = false;
-  };
-
+export default async function Page() {
   return <ConsultationForm></ConsultationForm>;
-}
-
-function useClient() {
-  throw new Error("Function not implemented.");
 }

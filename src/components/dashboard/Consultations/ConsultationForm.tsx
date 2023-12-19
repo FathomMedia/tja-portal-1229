@@ -37,6 +37,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import SelectableCard from "@/components/dashboard/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
+import { DashboardSection } from "@/components/DashboardSection";
 
 export const ConsultationForm = () => {
   const locale = useLocale();
@@ -299,7 +300,7 @@ export const ConsultationForm = () => {
   });
 
   return (
-    <div className="">
+    <DashboardSection className="flex flex-col gap-4" title={t("consultation")}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -983,6 +984,6 @@ export const ConsultationForm = () => {
           {/* )} */}
         </form>
       </Form>
-    </div>
+    </DashboardSection>
   );
 };
