@@ -39,7 +39,7 @@ import SelectableCard from "@/components/dashboard/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 import { DashboardSection } from "@/components/DashboardSection";
 
-export const ConsultationForm = () => {
+export const ConsultationFormPage = () => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
 

@@ -1,5 +1,5 @@
-import { ConsultationForm } from "@/components/dashboard/consultations/ConsultationForm";
+import { ConsultationFormPage } from "@/components/dashboard/consultations/ConsultationFormPage";
 
 export default async function Page() {
-  return <ConsultationForm></ConsultationForm>;
+  return <ConsultationFormPage></ConsultationFormPage>;
 }
