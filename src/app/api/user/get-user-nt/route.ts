@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiReq } from "@/lib/apiHelpers";
-import { getToken } from "@/lib/serverUtils";
+import { cookies } from "next/headers";
 
 export async function GET(request: NextRequest) {
-  const token = getToken();
+  const cookieStore = cookies();
+  const token = cookieStore.get("authToken");
 
   if (token) {
     const locale = request.headers.get("accept-language") ?? "en";
@@ -11,7 +12,7 @@ export async function GET(request: NextRequest) {
     const user = await apiReq({
       endpoint: "/users/profile",
       locale,
-      token: token,
+      token: token?.value,
     });
 
     if (user.ok) {

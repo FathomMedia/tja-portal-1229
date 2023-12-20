@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { getToken } from "@/lib/serverUtils";
+import { cookies } from "next/headers";
 
 export async function GET() {
-  const token = getToken();
-  return NextResponse.json(token ?? null, { status: 200 });
+  const cookieStore = cookies();
+  const token = cookieStore.get("authToken");
+  return NextResponse.json(token?.value ?? null, { status: 200 });
 }
