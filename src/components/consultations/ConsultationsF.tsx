@@ -303,138 +303,10 @@ export const ConsultationF: FC = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-6 flex flex-col items-start"
+          className="gap-10 flex flex-col items-start"
         >
-          <div className="w-full max-w-xl flex flex-col gap-6">
-            <FormField
-              control={form.control}
-              name="package"
-              render={({ field }) => (
-                <FormItem className=" w-full mb-2">
-                  <FormLabel className="text-base">
-                    {t("packageType")}
-                  </FormLabel>
-                  <Select
-                    dir={isRtlLang(locale) ? "rtl" : "ltr"}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="rounded-full border-primary">
-                        <SelectValue placeholder={t("selectPackage")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="silver">{t("silver")}</SelectItem>
-                      <SelectItem value="gold">{t("gold")}</SelectItem>
-                      <SelectItem value="platinum">{t("platinum")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-3 flex-col sm:flex-row items-center w-full justify-between">
-              <FormField
-                control={form.control}
-                name="start_date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-base">
-                      {t("startDate")}
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl className="w-full flex">
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal border-primary",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>{t("pickaDate")}</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          captionLayout={"dropdown"}
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-base">{t("endDate")}</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl className="w-full flex">
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal border-primary",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>{t("pickaDate")}</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          captionLayout={"dropdown"}
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            {/* <Button
-                disabled={
-                  form.getFieldState("package").invalid ||
-                  form.getFieldState("start_date").invalid ||
-                  form.getFieldState("end_date").invalid
-                }
-                className="w-full max-w-[268px] "
-                variant={"secondary"}
-                onClick={() => {
-                  // setStep(2)
-                }}
-              >
-                {t("proceed")}
-              </Button>
-            )} */}
-          </div>
-
           {/* {step === 2 && ( */}
-          <div className="w-full max-w-xl flex flex-col gap-6">
+          <div className="w-full flex flex-col gap-6">
             <FormField
               control={form.control}
               name="destination"
@@ -650,12 +522,12 @@ export const ConsultationF: FC = () => {
           {/* )} */}
 
           {/* {step === 3 && ( */}
-          <div className="w-full max-w-xl flex flex-col gap-6">
+          <div className="w-full  flex flex-col gap-6">
             <FormField
               control={form.control}
               name="vType"
               render={({ field }) => (
-                <FormItem className=" w-full mb-2 max-w-xl">
+                <FormItem className=" w-full mb-2 ">
                   <FormLabel className="text-base">
                     {t("vacationType")}
                   </FormLabel>
@@ -761,13 +633,13 @@ export const ConsultationF: FC = () => {
           {/* )} */}
 
           {/* {step === 4 && ( */}
-          <div className="w-full max-w-xl flex flex-col gap-6">
+          <div className="w-full  flex flex-col gap-6">
             <FormField
               control={form.control}
               name="adventureToYouIs"
               render={() => (
                 <FormItem>
-                  <div className="mb-4 max-w-xl">
+                  <div className="mb-4 ">
                     <FormLabel className="text-base">
                       {t("ToyouAdventureIs")}
                     </FormLabel>
@@ -816,7 +688,7 @@ export const ConsultationF: FC = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="">
-                    <div className="mb-4 max-w-xl">
+                    <div className="mb-4 ">
                       <FormLabel className="text-base">
                         {t("whichTypeOfActivities")}
                       </FormLabel>
@@ -870,7 +742,7 @@ export const ConsultationF: FC = () => {
               control={form.control}
               name="tripType"
               render={({ field }) => (
-                <FormItem className="space-y-3 max-w-xl">
+                <FormItem className="space-y-3 ">
                   <FormLabel className="text-base">
                     {
                       "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
@@ -919,7 +791,7 @@ export const ConsultationF: FC = () => {
               control={form.control}
               name="travelExperience"
               render={({ field }) => (
-                <FormItem className=" w-full max-w-xl">
+                <FormItem className=" w-full ">
                   <FormLabel className="text-base">
                     {t("whatIsTheBestTravelExperience")}
                   </FormLabel>
@@ -938,7 +810,7 @@ export const ConsultationF: FC = () => {
               control={form.control}
               name="fearsSelection"
               render={({ field }) => (
-                <FormItem className=" w-full mb-2 max-w-xl">
+                <FormItem className=" w-full mb-2 ">
                   <FormLabel className="text-base">
                     {t("doYouHaveFears")}
                   </FormLabel>
@@ -986,7 +858,7 @@ export const ConsultationF: FC = () => {
                 control={form.control}
                 name="otherFears"
                 render={({ field }) => (
-                  <FormItem className=" w-full max-w-xl">
+                  <FormItem className=" w-full ">
                     <FormLabel className="text-base">
                       {t("ifOtherType")}
                     </FormLabel>
