@@ -3,17 +3,23 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const { email, password } = await request.json();
+  const dataToSend: {
+    date_of_birth: string;
+    recaptcha_token: string;
+    name: string;
+    gender: string;
+    email: string;
+    password: string;
+    phone: string;
+    password_confirmation: string;
+  } = await request.json();
   const cookieStore = cookies();
 
   return await apiReq({
-    endpoint: "/auth/login",
+    endpoint: "/auth/register",
     locale: request.headers.get("Accept-Language") || "en",
     method: "POST",
-    values: {
-      email: email,
-      password: password,
-    },
+    values: dataToSend,
   }).then(async (value) => {
     console.log("🚀 ~ file: route.ts:18 ~ POST ~ value:", value);
     if (value.ok) {

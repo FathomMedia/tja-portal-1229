@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export type TUser = {
   name: string;
   email: string;
@@ -7,6 +5,7 @@ export type TUser = {
   gender: string;
   avatar: string | null;
   status: string;
+  role?: string;
   level: {
     id: number;
     name: string;
@@ -18,6 +17,7 @@ export type TUser = {
   daysTravelled: number;
   joinedAt: string;
   verified: boolean;
+  dateFormatted: string;
 };
 
 export type TAchievement = {

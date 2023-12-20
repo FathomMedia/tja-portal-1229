@@ -23,20 +23,23 @@ const SelectableCard: React.FC<SelectableCardProps> = ({
 
   return (
     <Card
-      className={`py-4 ${isSelected ? "border-2 border-blue-500" : ""}`}
+      className={`py-4 flex flex-col justify-between ${
+        isSelected ? "border-2 border-blue-500" : ""
+      }`}
       onClick={toggleSelection}
     >
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-        <h4 className="font-bold text-large">{title}</h4>
+      <CardHeader className="flex-col items-start">
+        <h4 className="font-bold text-md sm:text-sm">{title}</h4>
       </CardHeader>
-      <CardContent className="overflow-visible py-2">
-        <Image
-          alt={`Card background - ${title}`}
-          className="object-fill rounded-xl"
-          src={imageUrl}
-          width={200}
-          height={200}
-        />
+      <CardContent className="overflow-hidden py-2">
+        <div className="relative w-full aspect-square">
+          <Image
+            alt={`Card background - ${title}`}
+            className="object-cover"
+            src={imageUrl}
+            fill
+          />
+        </div>
       </CardContent>
     </Card>
   );

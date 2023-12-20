@@ -1,105 +1,90 @@
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-import createMiddleware from "next-intl/middleware";
+import createIntlMiddleware from "next-intl/middleware";
 import { availableLocales } from "./config";
-import { apiReq } from "./lib/utils";
+import { TUser } from "./lib/types";
 
 export async function middleware(request: NextRequest) {
-  const [, locale, pathname] = request.nextUrl.pathname.split("/");
+  const { pathname, locale, origin } = request.nextUrl;
+  // handle route if valid user
+  var currentLocale = availableLocales[0];
+  availableLocales.some((someLocale) => {
+    const isMatching = locale === someLocale;
+    if (isMatching) {
+      // sets the someLocale found in the URL
+      currentLocale = someLocale;
+    }
+    return isMatching;
+  });
+
+  if (!currentLocale || currentLocale === "") {
+    currentLocale = availableLocales[0];
+  }
 
   const authPath = `authentication`;
   if (pathname !== authPath) {
     const token = request.cookies.get("authToken");
+
     // check if there is a token
     if (!token) {
       // redirect to auth if no token
-      request.nextUrl.pathname = `${locale}/${authPath}`;
+      request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
-      const resUserProfile = await apiReq({
-        endpoint: "/users/profile",
-        locale,
-        token: token.value,
+      const resUserProfile = await fetch(`${origin}/api/user/get-user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "accept-language": currentLocale,
+        },
+        body: JSON.stringify({ token: token.value }),
       });
-
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
-        const { data } = await resUserProfile.json();
-        console.log("From middleware", data.name);
+        const jsonData = await resUserProfile.json();
+        const data: TUser = jsonData?.data;
         // check if the user is verified
         if (!data.verified) {
           // redirect to verify email if not verified
-          request.nextUrl.pathname = `${locale}/${authPath}/verify-email`;
+          request.nextUrl.pathname = `${currentLocale}/${authPath}/verify-email`;
         } else {
-          // handle route if valid user
-          var currentLocale = availableLocales[0];
-          availableLocales.some((someLocale) => {
-            const isMatching = locale === someLocale;
-            if (isMatching) {
-              // sets the someLocale found in the URL
-              currentLocale = someLocale;
-            }
-            return isMatching;
-          });
-
-          if (!currentLocale || currentLocale === "") {
-            currentLocale = availableLocales[0];
-          }
-
           // Admins should not access dashboard pages and non-admins should not access admin pages
           if (data.role === "Admin") {
-            if (pathname?.startsWith(`dashboard`)) {
-              return NextResponse.redirect(
-                new URL(`/${currentLocale}/admin`, request.nextUrl)
-              );
+            if (pathname?.includes(`${locale}/dashboard`)) {
+              request.nextUrl.pathname = `/${currentLocale}/admin`;
             }
           } else {
-            if (pathname?.startsWith(`admin`)) {
-              return NextResponse.redirect(
-                new URL(`/${currentLocale}/dashboard`, request.nextUrl)
-              );
+            if (pathname?.includes(`${locale}/admin`)) {
+              request.nextUrl.pathname = `/${currentLocale}/dashboard`;
             }
           }
 
           // Redirect to the home page for empty pathname
           if (!pathname || pathname === "/") {
-            return NextResponse.redirect(
-              new URL(
-                `/${currentLocale}/${
-                  data.role === "Admin" ? "admin" : "dashboard"
-                }`,
-                request.nextUrl
-              )
-            );
+            request.nextUrl.pathname = `/${currentLocale}/${
+              data.role === "Admin" ? "admin" : "dashboard"
+            }`;
           }
         }
-        console.log("middleware", {
-          user: data,
-          pathname,
-          href: request.nextUrl.href,
-          locale,
-          token: token.value,
-        });
       } else {
+        // if server is down
         if (resUserProfile.status === 503) {
-          request.nextUrl.pathname = `${locale}/service-unavailable`;
+          request.nextUrl.pathname = `${currentLocale}/service-unavailable`;
         } else {
+          // delete the token and redirect to auth page if the token is wrong
           request.cookies.delete("authToken");
-          request.nextUrl.pathname = `${locale}/${authPath}`;
+          request.nextUrl.pathname = `${currentLocale}/${authPath}`;
         }
-        // delete the token and redirect to auth page if the token is wrong
       }
     }
   }
 
   // Add the locale middleware
-  const handleI18nRouting = createMiddleware({
+  const handleI18nRouting = createIntlMiddleware({
     locales: availableLocales,
     defaultLocale: availableLocales[0],
   });
-
   const res: NextResponse = handleI18nRouting(request);
-
   return res;
 }
 

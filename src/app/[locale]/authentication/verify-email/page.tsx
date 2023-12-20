@@ -21,7 +21,8 @@ import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
 import { useLocale, useTranslations } from "next-intl";
 import toast from "react-hot-toast";
-import { getUser } from "@/lib/apiHelpers";
+
+import { TUser } from "@/lib/types";
 
 export default function Page() {
   const locale = useLocale();
@@ -33,6 +34,19 @@ export default function Page() {
   const t = useTranslations("Auth");
 
   useEffect(() => {
+    async function getUser({ locale }: { locale: string }) {
+      const res = await fetch("/api/user/get-user-nt", {
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+
+      const { data } = await res.json();
+      const user: TUser = data;
+      return user;
+    }
     getUser({ locale }).then((user) => {
       setEmail(user.email);
     });

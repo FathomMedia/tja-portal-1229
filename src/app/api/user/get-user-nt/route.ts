@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiReq } from "@/lib/utils";
+import { getToken } from "@/lib/serverUtils";
 
-export async function POST(request: NextRequest) {
-  const { token } = await request.json();
+export async function GET(request: NextRequest) {
+  const token = getToken();
 
   if (token) {
     const locale = request.headers.get("accept-language") ?? "en";
