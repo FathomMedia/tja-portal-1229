@@ -26,7 +26,7 @@ export default async function Layout({
 
   var sidebarNavItems = [
     {
-      title: t("myAccount"),
+      title: t("home"),
       href: `/${locale}/dashboard`,
     },
     {
@@ -54,8 +54,8 @@ export default async function Layout({
       href: `/${locale}/dashboard/account-details`,
     },
     {
-      title: t("help"),
-      href: `/${locale}/dashboard/help`,
+      title: t("getInTouch"),
+      href: `https://thejourneyadventures.com/get-in-touch`,
     },
   ];
 
