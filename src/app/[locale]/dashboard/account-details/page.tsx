@@ -5,7 +5,7 @@ import { UserUpdateEmail } from "@/components/user/UserUpdateEmail";
 import { UpdatePassword } from "@/components/user/UserUpdatePassword";
 import { getToken } from "@/lib/serverUtils";
 import { TUser } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 
 export default async function Page() {

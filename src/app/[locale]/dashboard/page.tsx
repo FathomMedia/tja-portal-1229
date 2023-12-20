@@ -1,7 +1,7 @@
 import { DashboardHome } from "@/components/dashboard/DashboardHome";
 import { getToken } from "@/lib/serverUtils";
 import { TOrders } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 import { notFound } from "next/navigation";
 

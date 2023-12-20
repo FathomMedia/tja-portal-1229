@@ -1,6 +1,6 @@
 import { DashboardHome } from "@/components/dashboard/DashboardHome";
 import { getToken } from "@/lib/serverUtils";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 
 export default async function Page() {

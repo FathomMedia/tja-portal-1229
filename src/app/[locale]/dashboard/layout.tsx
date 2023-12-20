@@ -2,7 +2,7 @@ import { SidebarNav } from "@/components/SideNav";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 import { getToken } from "@/lib/serverUtils";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { getToken } from "@/lib/serverUtils";
 
 export async function GET(request: NextRequest) {

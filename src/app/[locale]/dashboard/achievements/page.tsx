@@ -2,7 +2,7 @@ import { DashboardSection } from "@/components/DashboardSection";
 import { MyAchievements } from "@/components/user/MyAchievements";
 import { getToken } from "@/lib/serverUtils";
 import { TAchievement } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 

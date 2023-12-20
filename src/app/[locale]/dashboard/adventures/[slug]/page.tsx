@@ -1,6 +1,6 @@
 import { getToken } from "@/lib/serverUtils";
 import { TAdventure } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";

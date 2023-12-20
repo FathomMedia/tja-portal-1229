@@ -1,7 +1,7 @@
 import { JourneysMiles } from "@/components/dashboard/JourneysMiles";
 import { getToken } from "@/lib/serverUtils";
 import { TCoupon, TLevels } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 
 export default async function Page() {

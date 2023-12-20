@@ -1,7 +1,7 @@
 import { AdventureCheckoutForm } from "@/components/checkout/AdventureCheckoutForm";
 import { getToken } from "@/lib/serverUtils";
 import { TAdventure, TCoupon, TUser } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { useLocale } from "next-intl";
 
 import { notFound, redirect } from "next/navigation";

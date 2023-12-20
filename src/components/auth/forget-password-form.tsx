@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import toast from "react-hot-toast";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
