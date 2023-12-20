@@ -1,6 +1,8 @@
 import { api } from "@/config";
 import { TUser } from "./types";
 import { NextResponse } from "next/server";
+import { useLocale } from "next-intl";
+import { useQuery } from "@tanstack/react-query";
 
 export async function getUser({ locale }: { locale: string }) {
   const res = await fetch("/api/user/get-user", {
@@ -32,6 +34,37 @@ export async function apiReq({
   token,
   method,
 }: TApiReq) {
+  const route = `${api}${endpoint}`;
+  return fetch(route, {
+    method: method ?? "GET",
+    headers: token
+      ? {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      : {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+    body: values ? JSON.stringify(values) : undefined,
+  }).catch((error) => {
+    return NextResponse.json({ data: null, error: error }, { status: 503 });
+  });
+}
+
+export async function apiReqQuery({
+  endpoint,
+  locale,
+  values,
+  method,
+}: TApiReq) {
+  const token: string | null = await fetch(
+    "/api/user/get-current-user-token"
+  ).then((val) => val.json());
+
   const route = `${api}${endpoint}`;
   return fetch(route, {
     method: method ?? "GET",
