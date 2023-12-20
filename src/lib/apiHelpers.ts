@@ -1,8 +1,6 @@
 import { api } from "@/config";
 import { TUser } from "./types";
 import { NextResponse } from "next/server";
-import { useLocale } from "next-intl";
-import { useQuery } from "@tanstack/react-query";
 
 export async function getUser({ locale }: { locale: string }) {
   const res = await fetch("/api/user/get-user", {
