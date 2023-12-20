@@ -58,7 +58,8 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const defaultDate = new Date(user.dateFormatted);
+
+  const defaultDate = dayjs(user.dateFormatted).toDate();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({

@@ -22,8 +22,6 @@ export async function PUT(request: NextRequest) {
   }).then(async (value) => {
     if (value.ok) {
       const data = await value.json();
-      console.log("🚀 ~ file: route.ts:25 ~ PUT ~ data:", data);
-
       return NextResponse.json(data, { status: 200 });
     }
 
