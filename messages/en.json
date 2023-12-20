@@ -287,5 +287,11 @@
     "March": "March",
     "april": "April",
     "may": "May"
+  },
+  "consultation": "Consultations",
+  "help": "Help",
+  "ourTeamIsAwlaysHappyToHelp": "OUR TEAM IS ALWAYS HAPPY TO HELP…",
+  "Help": {
+    "ourTeamIsAwlaysHappyToHelp": "OUR TEAM IS ALWAYS HAPPY TO HELP…"
   }
 }
