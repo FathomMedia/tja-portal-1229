@@ -66,17 +66,20 @@ export async function apiReqQuery({
   const route = `${api}${endpoint}`;
   return fetch(route, {
     method: method ?? "GET",
+
     headers: token
       ? {
           "Accept-Language": locale,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${token}`,
         }
       : {
           "Accept-Language": locale,
           "Content-Type": "application/json",
           Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
     body: values ? JSON.stringify(values) : undefined,
   }).catch((error) => {
