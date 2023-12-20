@@ -103,10 +103,10 @@ export const UpdatePassword = () => {
             name="old_password"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>{t("Old_Password")}</FormLabel>
+                <FormLabel>{t("oldPassword")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Old password"
+                    placeholder={t("oldPassword")}
                     className=" border-primary"
                     type="password"
                     {...field}
@@ -121,10 +121,10 @@ export const UpdatePassword = () => {
             name="new_password"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>{t("New_Password")}</FormLabel>
+                <FormLabel>{t("newPassword")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="New password"
+                    placeholder={t("newPassword")}
                     className=" border-primary"
                     type="password"
                     {...field}
@@ -139,10 +139,10 @@ export const UpdatePassword = () => {
             name="new_password_confirmation"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>{t("confirmPassword")}</FormLabel>
+                <FormLabel>{t("confirmNewPassword")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={t("Confirm_Password")}
+                    placeholder={t("confirmNewPassword")}
                     className=" border-primary"
                     type="password"
                     {...field}
@@ -162,7 +162,7 @@ export const UpdatePassword = () => {
             {isLoading && (
               <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
             )}
-            {t("Update")}
+            {t("update")}
           </Button>
         </div>
       </form>

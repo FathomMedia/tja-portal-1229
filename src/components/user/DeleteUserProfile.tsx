@@ -84,18 +84,17 @@ export const DeleteProfile = () => {
     <div>
       <Dialog>
         <DialogTrigger className=" underline text-muted-foreground text-sm italic">
-          Delete Account?
+          {t("deleteAccount")}
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className=" my-4">
-              <h2 className=" text-primary font-semibold "> Are you sure?</h2>
+              <h2 className=" text-primary font-semibold ">
+                {t("areYouSure?")}
+              </h2>
             </DialogTitle>
             <DialogDescription>
-              <p>
-                To confirm that you want to delete your account, type in your
-                password.
-              </p>
+              <p>{t("typePasswordToConfirmDeletingAccount")}</p>
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -108,10 +107,10 @@ export const DeleteProfile = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("password")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={"Password"}
+                        placeholder={t("password")}
                         className=" border-primary"
                         type="password"
                         {...field}
@@ -131,7 +130,7 @@ export const DeleteProfile = () => {
                     {isLoading && (
                       <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                     )}
-                    Yes, delete my account
+                    {t("deleteMyAccount")}
                   </Button>
                 </div>
               </div>
@@ -139,7 +138,7 @@ export const DeleteProfile = () => {
           </Form>
           <DialogFooter>
             <DialogClose className=" text-sm text-muted-foreground mt-4">
-              Cancel
+              {t("cancel")}
             </DialogClose>
           </DialogFooter>
         </DialogContent>

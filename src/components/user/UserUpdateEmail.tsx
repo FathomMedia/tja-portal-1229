@@ -166,7 +166,7 @@ export const UserUpdateEmail = () => {
                   {isLoading && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
-                  Verify Email
+                  {t("verifyEmail")}
                 </Button>
               </div>
             </div>

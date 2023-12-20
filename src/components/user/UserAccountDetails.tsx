@@ -114,10 +114,10 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             name="name"
             render={({ field }) => (
               <FormItem className=" w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("name")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder={"John Smith"}
+                    placeholder={t("name")}
                     className=" border-primary"
                     type="name"
                     {...field}
@@ -133,7 +133,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             name="date_of_birth"
             render={({ field }) => (
               <FormItem className="flex flex-col gap-2 w-full">
-                <FormLabel>Date of birth</FormLabel>
+                <FormLabel>{t("dob")}</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl className="w-full flex">
@@ -179,14 +179,14 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             name="gender"
             render={({ field }) => (
               <FormItem className=" w-full mb-2">
-                <FormLabel>Gender</FormLabel>
+                <FormLabel>{t("gender")}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="rounded-full border-primary">
-                      <SelectValue placeholder={t("Select gender")} />
+                      <SelectValue placeholder={t("selectGender")} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -209,7 +209,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
               {isLoading && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
-              Update
+              {t("update")}
             </Button>
           </div>
         </div>

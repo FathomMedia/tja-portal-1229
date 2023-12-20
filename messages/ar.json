@@ -20,7 +20,15 @@
       "title": "كلمة المرور"
     },
     "signIn": "تسجيل دخول",
-    "lostPassword": "فقدت كلمة المرور الخاصة بك؟"
+    "lostPassword": "فقدت كلمة المرور الخاصة بك؟",
+    "dob": "تاريخ الميلاد",
+    "male": "ذكر",
+    "female": "أنثى",
+    "update": "تحديث",
+    "name": "الإسم",
+    "pickaDate": "اختر التاريخ",
+    "gender": "الجنس",
+    "selectGender": "اختيار الجنس"
   },
   "logout": "تسجيل خروج",
   "Home": {
@@ -82,7 +90,8 @@
     "submit": "تقديم",
     "sendEmail": "إرسال",
     "verifyOTP": "تأكيد رمز التحقق",
-    "resetPassword": "إعادة تعيين كلمة المرور"
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "verifyEmail": "تأكيد البريد الإلكتروني"
   },
   "Auth": {
     "login": "تسجيل الدخول",
@@ -282,5 +291,32 @@
   "ourTeamIsAwlaysHappyToHelp": "فريقنا دائماً سعيد بتقديم المساعدة...",
   "Help": {
     "ourTeamIsAwlaysHappyToHelp": "فريقنا دائماً سعيد بتقديم المساعدة..."
-  }
+  },
+  "DeleteProfile": {
+    "deleteAccount": "حذف الحساب؟",
+    "typePasswordToConfirmDeletingAccount": "لتأكيد رغبتك في حذف حسابك، يرجى كتابة كلمة المرور الخاصة بك",
+    "password": "كلمة المرور",
+    "deleteMyAccount": "حذف الحساب",
+    "cancel": "إلغاء"
+  },
+  "UpdatePassword": {
+    "Old_Password": "كلمة المرور القديمة",
+    "oldPassword": "كلمة المرور القديمة",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "update": "تحديث",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة"
+  },
+  "Profile": {
+    "updateProfile": "تحديث الملف الشخصي",
+    "updateEmail": "تحديث البريد الإلكتروني",
+    "updatePassword": "تحديث كلمة المرور",
+    "changePassword": "تغيير كلمة المرور"
+  },
+  "updateProfile": "تحديث الملف الشخصي",
+  "updateEmail": "تحديث البريد الإلكتروني ",
+  "changePassword": "تغيير كلمة المرور",
+  "yourEmail": "بريدك الإلكتروني الحالي",
+  "home": "الصفحة الرئيسية",
+  "getInTouch": "تواصل معنا"
 }
