@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,12 +32,30 @@ import {
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
 import toast from "react-hot-toast";
+import { TConsultation } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Icons } from "../ui/icons";
 
-export const CalculateConsultation: FC = () => {
+type TCalculateConsultationForm = {
+  onPackageChanged: (consultation: TConsultation) => void;
+  startDate: (date: Date) => void;
+  endDate: (date: Date) => void;
+  defaultTier: string;
+};
+
+export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
+  onPackageChanged,
+  defaultTier,
+  startDate,
+  endDate,
+}) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
+  const { refresh } = useRouter();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
   const formSchema = z.object({
     package: z.string().min(1, t("destination.errors.required")),
@@ -45,58 +63,107 @@ export const CalculateConsultation: FC = () => {
     end_date: z.date(),
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    const res = await fetch("/api/consultation", {
-      method: "POST",
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tier: values.package,
-        start_date: values.start_date,
-        end_date: values.end_date,
-      }),
-    }).finally(() => setIsLoading(false));
-
-    if (res.ok) {
-      const { message } = await res.json();
-
-      //   router.push(
-      //     pathname +
-      //       "?" +
-      //       createQueryString([
-      //         { name: "email", value: values.email },
-      //         { name: "otpSent", value: "true" },
-      //       ])
-      //   );
-
-      toast.success(message, { duration: 6000 });
-    } else {
-      const { message } = await res.json();
-      toast.error(message, { duration: 6000 });
-    }
-  }
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      package: "",
+      package: defaultTier,
       start_date: undefined,
       end_date: undefined,
     },
   });
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      return fetch("/api/consultation", {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tier: values.package,
+          start_date: format(values.start_date, "dd/MM/yyyy"),
+          end_date: format(values.end_date, "dd/MM/yyyy"),
+        }),
+      });
+    },
+    async onSuccess(data, values) {
+      if (data.ok) {
+        const { message, data: dataResponse } = await data.json();
+        console.log(
+          "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
+          dataResponse
+        );
+        toast.success(message, { duration: 6000 });
+        // queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["/profile/coupons/available"],
+        // });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["/profile/coupons/redeemed"],
+        // });
+
+        onPackageChanged(dataResponse);
+        startDate(values.start_date);
+        endDate(values.end_date);
+        setTotalFullPrice(dataResponse.priceWithCurrency ?? null);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    mutation.mutate(values);
+    // setIsLoading(true);
+    // const res = await fetch("/api/consultation", {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept-Language": locale,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     tier: values.package,
+    //     start_date: format(values.start_date, "dd/MM/yyyy"),
+    //     end_date: format(values.end_date, "dd/MM/yyyy"),
+    //   }),
+    // }).finally(() => setIsLoading(false));
+    // const dataResponse = await res.json();
+    // if (res.ok) {
+    // onPackageChanged(dataResponse.data.id);
+    // startDate(values.start_date);
+    // endDate(values.end_date);
+    // setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
+    //   refresh();
+    //   //   router.push(
+    //   //     pathname +
+    //   //       "?" +
+    //   //       createQueryString([
+    //   //         { name: "email", value: values.email },
+    //   //         { name: "otpSent", value: "true" },
+    //   //       ])
+    //   //   );
+    //   toast.success(dataResponse.message, { duration: 6000 });
+    // } else {
+    //   //   const { message } = await res.json();
+    //   toast.error(dataResponse.message, { duration: 6000 });
+    // }
+  }
 
   return (
     <div className="">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-6 flex flex-col items-start"
+          className="gap-6 flex flex-col items-start w-full"
         >
-          <div className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-col gap-6 ">
             <FormField
               control={form.control}
               name="package"
@@ -207,33 +274,25 @@ export const CalculateConsultation: FC = () => {
                 )}
               />
             </div>
-            <div className="w-full flex justify-center sm:justify-end">
+            <div className="w-full flex justify-center items-center gap-4 sm:justify-between">
+              <p className="text-muted-foreground text-lg">
+                <span className="font-bold">{t("price")}:</span>{" "}
+                {totalFullPrice}
+              </p>
+
               <Button
-                disabled={
-                  form.getFieldState("package").invalid ||
-                  form.getFieldState("start_date").invalid ||
-                  form.getFieldState("end_date").invalid
-                }
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
-                onClick={() => {
-                  // setStep(2)
-                }}
+                type="submit"
               >
+                {" "}
+                {mutation.isPending && (
+                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                )}
                 {"Calculate"}
               </Button>
             </div>
           </div>
-
-          {/* <div className=" p-4">
-            <Button
-              className="w-full max-w-[268px] "
-              variant={"secondary"}
-              type="submit"
-            >
-              {t("submit")}
-            </Button>
-          </div> */}
         </form>
       </Form>
     </div>

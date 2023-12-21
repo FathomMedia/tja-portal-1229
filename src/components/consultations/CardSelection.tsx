@@ -38,6 +38,8 @@ const SelectableCard: React.FC<SelectableCardProps> = ({
             className="object-cover"
             src={imageUrl}
             fill
+            sizes="50vw"
+            priority={false}
           />
         </div>
       </CardContent>

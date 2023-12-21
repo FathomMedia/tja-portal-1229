@@ -1,5 +1,5 @@
 import { DashboardSection } from "@/components/DashboardSection";
-import { ConsultationF } from "@/components/consultations/ConsultationsF";
+import { ConsultationForm } from "@/components/consultations/ConsultationsF";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getTranslations } from "next-intl/server";
