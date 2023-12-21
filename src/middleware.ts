@@ -31,25 +31,31 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname = `${currentLocale}/${authPath}`;
     } else {
       // get the user of the current token
-      const resUserProfile = await fetch(`${origin}/api/user/get-user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "accept-language": currentLocale,
-        },
-        body: JSON.stringify({ token: token.value }),
-      });
+      const resUserProfile = await fetch(
+        `${origin}/api/user/get-user-summary`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "accept-language": currentLocale,
+          },
+          body: JSON.stringify({ token: token.value }),
+        }
+      );
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
         const jsonData = await resUserProfile.json();
-        const data: TUser = jsonData?.data;
+        const {
+          isAdmin,
+          isVerified,
+        }: { isAdmin: boolean; isVerified: boolean } = jsonData?.data;
         // check if the user is verified
-        if (!data.verified) {
+        if (!isVerified) {
           // redirect to verify email if not verified
           request.nextUrl.pathname = `${currentLocale}/${authPath}/verify-email`;
         } else {
           // Admins should not access dashboard pages and non-admins should not access admin pages
-          if (data.role === "Admin") {
+          if (isAdmin) {
             if (pathname?.includes(`${locale}/dashboard`)) {
               request.nextUrl.pathname = `/${currentLocale}/admin`;
             }
@@ -62,7 +68,7 @@ export async function middleware(request: NextRequest) {
           // Redirect to the home page for empty pathname
           if (!pathname || pathname === "/") {
             request.nextUrl.pathname = `/${currentLocale}/${
-              data.role === "Admin" ? "admin" : "dashboard"
+              isAdmin ? "admin" : "dashboard"
             }`;
           }
         }
