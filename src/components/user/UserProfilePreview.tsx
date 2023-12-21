@@ -10,15 +10,17 @@ import { Skeleton } from "../ui/skeleton";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
 import { Menu } from "lucide-react";
-import { Button, buttonVariants } from "../ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { buttonVariants } from "../ui/button";
 import { MobileNav } from "../MobileNav";
 import { cn } from "@/lib/utils";
+import { isRtlLang } from "rtl-detect";
 
 type TUserProfilePreview = {
   items: {
@@ -73,13 +75,18 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
             >
               <Menu className="text-primary" />
             </SheetTrigger>
-            <SheetContent className="gap-6 flex flex-col">
+            <SheetContent
+              side={isRtlLang(locale) ? "left" : "right"}
+              className="gap-6 flex flex-col"
+            >
               <SheetHeader>
                 <SheetTitle className="text-primary">
                   The Journey Adventures
                 </SheetTitle>
               </SheetHeader>
-              <MobileNav items={items} onNavigate={() => setOpen(false)} />
+              <ScrollArea dir={isRtlLang(locale) ? "rtl" : "ltr"}>
+                <MobileNav items={items} onNavigate={() => setOpen(false)} />
+              </ScrollArea>
             </SheetContent>
           </Sheet>
         </div>
