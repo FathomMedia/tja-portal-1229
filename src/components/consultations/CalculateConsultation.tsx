@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -32,17 +32,43 @@ import {
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
 import toast from "react-hot-toast";
+import { TConsultation } from "@/lib/types";
+import { useRouter } from "next/navigation";
 
-export const CalculateConsultation: FC = () => {
+type TCalculateConsultationForm = {
+  onPackageChanged: (consultation: TConsultation) => void;
+  startDate: (date: Date) => void;
+  endDate: (date: Date) => void;
+  defaultTier: string;
+};
+
+export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
+  onPackageChanged,
+  defaultTier,
+  startDate,
+  endDate,
+}) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
+  const { refresh } = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
   const formSchema = z.object({
     package: z.string().min(1, t("destination.errors.required")),
     start_date: z.date(),
     end_date: z.date(),
+  });
+
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      package: defaultTier,
+      start_date: undefined,
+      end_date: undefined,
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -55,13 +81,20 @@ export const CalculateConsultation: FC = () => {
       },
       body: JSON.stringify({
         tier: values.package,
-        start_date: values.start_date,
-        end_date: values.end_date,
+        start_date: format(values.start_date, "dd/MM/yyyy"),
+        end_date: format(values.end_date, "dd/MM/yyyy"),
       }),
     }).finally(() => setIsLoading(false));
 
+    const dataResponse = await res.json();
     if (res.ok) {
-      const { message } = await res.json();
+      onPackageChanged(dataResponse.data.id);
+      startDate(values.start_date);
+      endDate(values.end_date);
+
+      setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
+
+      refresh();
 
       //   router.push(
       //     pathname +
@@ -72,31 +105,21 @@ export const CalculateConsultation: FC = () => {
       //       ])
       //   );
 
-      toast.success(message, { duration: 6000 });
+      toast.success(dataResponse.message, { duration: 6000 });
     } else {
-      const { message } = await res.json();
-      toast.error(message, { duration: 6000 });
+      //   const { message } = await res.json();
+      toast.error(dataResponse.message, { duration: 6000 });
     }
   }
-
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      package: "",
-      start_date: undefined,
-      end_date: undefined,
-    },
-  });
 
   return (
     <div className="">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-6 flex flex-col items-start"
+          className="gap-6 flex flex-col items-start w-full"
         >
-          <div className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-col gap-6 ">
             <FormField
               control={form.control}
               name="package"
@@ -207,15 +230,16 @@ export const CalculateConsultation: FC = () => {
                 )}
               />
             </div>
-            <div className="w-full flex justify-center sm:justify-end">
+            <div className="w-full flex justify-center items-center gap-4 sm:justify-between">
+              <p className="text-muted-foreground text-lg">
+                <span className="font-bold">{t("price")}:</span>{" "}
+                {totalFullPrice}
+              </p>
+
               <Button
-                disabled={
-                  form.getFieldState("package").invalid ||
-                  form.getFieldState("start_date").invalid ||
-                  form.getFieldState("end_date").invalid
-                }
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
+                type="submit"
                 onClick={() => {
                   // setStep(2)
                 }}
@@ -224,16 +248,6 @@ export const CalculateConsultation: FC = () => {
               </Button>
             </div>
           </div>
-
-          {/* <div className=" p-4">
-            <Button
-              className="w-full max-w-[268px] "
-              variant={"secondary"}
-              type="submit"
-            >
-              {t("submit")}
-            </Button>
-          </div> */}
         </form>
       </Form>
     </div>

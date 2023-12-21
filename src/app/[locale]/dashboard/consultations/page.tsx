@@ -1,15 +1,33 @@
-import { DashboardSection } from "@/components/DashboardSection";
+"use client";
+
 import { CalculateConsultation } from "@/components/consultations/CalculateConsultation";
 import { ConsultationF } from "@/components/consultations/ConsultationsF";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { getTranslations } from "next-intl/server";
-import { Suspense } from "react";
+import { TConsultation } from "@/lib/types";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 
-export default async function Page() {
-  const t = await getTranslations("Consultation");
+export default function Page() {
+  const t = useTranslations("Consultation");
+
+  const allowedPackages = ["silver", "gold", "platinum"];
+  const [selectedPackage, setSelectedPackage] = useState<TConsultation | null>(
+    null
+  );
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+
+  const searchParams = useSearchParams()!;
+
+  const defaultTier = allowedPackages.includes(searchParams.get("tier") ?? "")
+    ? searchParams.get("tier") ?? "silver"
+    : "silver";
+
   return (
     <div className="max-w-4xl flex flex-col gap-6">
+      <div>package: {selectedPackage?.id}</div>
       <div>
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
           Book a consultation
@@ -23,8 +41,13 @@ export default async function Page() {
           </div>
         }
       >
-        <CalculateConsultation />
-        <ConsultationF />
+        <CalculateConsultation
+          onPackageChanged={(val) => setSelectedPackage(val)}
+          defaultTier={defaultTier}
+          startDate={(val) => setStartDate(val)}
+          endDate={(val) => setEndDate(val)}
+        />
+        <ConsultationF chosenPackage={selectedPackage} />
       </Suspense>
     </div>
   );

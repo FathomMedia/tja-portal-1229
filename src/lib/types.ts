@@ -109,6 +109,7 @@ export type TConsultation = {
   tier: string;
   numberOfDays: number;
   price: number;
+  priceWithCurrency: string;
 };
 
 export type TOrders = {

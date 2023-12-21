@@ -16,14 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { useLocale, useTranslations } from "next-intl";
 import {
   Select,
@@ -32,13 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import SelectableCard from "@/components/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
+import { TConsultation } from "@/lib/types";
 
-export const ConsultationF: FC = () => {
+type TConsultationForm = {
+  chosenPackage: TConsultation | null;
+};
+
+export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
 
@@ -153,9 +149,9 @@ export const ConsultationF: FC = () => {
   const rowIndices = Array.from({ length: numRows }, (_, index) => index);
 
   const formSchema = z.object({
-    package: z.string().min(1, t("destination.errors.required")),
-    start_date: z.date(),
-    end_date: z.date(),
+    packageId: z.number().refine((value) => value, {
+      message: "Missing package details. Please fill in the details above.",
+    }),
     destination: z.string().min(2, t("destination.errors.required")),
     class: z.string().min(1, t("destination.errors.required")),
     airport: z.string().min(2, t("airport.errors.required")),
@@ -199,6 +195,8 @@ export const ConsultationF: FC = () => {
       "🚀 ~ file: ConsultationForm.tsx:186 ~ onSubmit ~ values:",
       values
     );
+
+    console.log("chosen package id", chosenPackage);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
   }
@@ -279,9 +277,7 @@ export const ConsultationF: FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      package: "",
-      start_date: undefined,
-      end_date: undefined,
+      packageId: chosenPackage?.id,
       destination: "",
       class: "",
       airport: "",
@@ -702,6 +698,8 @@ export const ConsultationF: FC = () => {
                               className="object-cover"
                               fill
                               src={card.image}
+                              sizes="50vw"
+                              priority={false}
                             ></Image>
                           </div>
                           <p className=" text-md ">{card.title}</p>
@@ -876,7 +874,7 @@ export const ConsultationF: FC = () => {
               />
             )}
 
-            <div className=" p-4">
+            <div className=" w-full flex justify-center sm:justify-end">
               <Button
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
