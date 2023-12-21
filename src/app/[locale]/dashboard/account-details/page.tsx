@@ -5,7 +5,6 @@ import { UserUpdateEmail } from "@/components/user/UserUpdateEmail";
 import { UpdatePassword } from "@/components/user/UserUpdatePassword";
 import { getToken } from "@/lib/serverUtils";
 import { TUser } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { apiReq } from "@/lib/apiHelpers";

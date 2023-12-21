@@ -119,7 +119,9 @@
     "help": "Help",
     "theJourneyMilesLevels": "The Journey Miles Levels",
     "minimumDays": "Minimum Days",
-    "maximumDays": "Maximum Days"
+    "maximumDays": "Maximum Days",
+    "home": "Home",
+    "getInTouch": "Get in Touch"
   },
   "MyAchievements": "My Achievements ",
   "upComingAdventures": "Up Coming Adventures",
@@ -134,7 +136,8 @@
     "nothingFound": "Nothing Found",
     "discover": "Discover",
     "startDate": "Start Date:",
-    "endDate": "End Date:"
+    "endDate": "End Date:",
+    "adventures": "Adventures"
   },
   "country": "Country",
   "continent": "Continent",
@@ -269,7 +272,8 @@
       "errors": {
         "required": "This field is required"
       }
-    }
+    },
+    "ifYouHadToWakeUpAt5AmToChaseAProgram": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
   },
   "Checkout": {
     "thisAdventureIsNotAvailable": "This adventure is not available",
@@ -329,5 +333,18 @@
   "changePassword": "Change Password",
   "yourEmail": "Your Email",
   "home": "Home",
-  "getInTouch": "Get in Touch"
+  "getInTouch": "Get in Touch",
+  "Coupons": {
+    "myRedeemedCoupons": "My Redeemed Coupons",
+    "availableCoupons": "Available Coupons",
+    "70points": "70 Points",
+    "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "Note: redeeming adventure coupons resets your point balance to",
+    "Redeem": "Redeem",
+    "redeem": "Redeem",
+    "close": "Close",
+    "agree": "Agree",
+    "redeemCoupon": "Redeem Coupon",
+    "redeemingThisCouponWillNotImpactYourPointsBalance": "Redeeming this coupon will not impact your points balance."
+  },
+  "bookAConsultation": "Book a consultation"
 }

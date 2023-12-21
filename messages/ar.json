@@ -119,7 +119,9 @@
     "help": "مساعدة",
     "theJourneyMilesLevels": "مستويات ذا جورني مايلز",
     "minimumDays": "الحد الأدنى من الأيام",
-    "maximumDays": "الحد الأقصى للأيام"
+    "maximumDays": "الحد الأقصى للأيام",
+    "home": "الصفحة الرئيسية",
+    "getInTouch": "تواصل معنا"
   },
   "MyAchievements": "انجازاتي",
   "upComingAdventures": "المغامرات القادمة",
@@ -134,7 +136,8 @@
     "nothingFound": "لم يتم العثور على شيء",
     "discover": "إكتشف",
     "startDate": "تاريخ البدء:",
-    "endDate": "تاريخ الانتهاء:"
+    "endDate": "تاريخ الانتهاء:",
+    "adventures": "المغامرات"
   },
   "country": "البلد",
   "continent": "القارة",
@@ -267,7 +270,8 @@
       "errors": {
         "required": "هذا الحقل مطلوب"
       }
-    }
+    },
+    "ifYouHadToWakeUpAt5AmToChaseAProgram": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ مبكرًا من أجله؟"
   },
   "Checkout": {
     "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
@@ -318,5 +322,17 @@
   "changePassword": "تغيير كلمة المرور",
   "yourEmail": "بريدك الإلكتروني الحالي",
   "home": "الصفحة الرئيسية",
-  "getInTouch": "تواصل معنا"
+  "getInTouch": "تواصل معنا",
+  "Coupons": {
+    "myRedeemedCoupons": "القسائم المستحوذة",
+    "availableCoupons": "القسائم المتاحة",
+    "70points": "70 نقطة",
+    "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "ملاحظة: يؤدي استخدام قسائم المغامرات إلى إعادة ضبط رصيد نقاطك إلى",
+    "redeem": "امتلاك",
+    "close": "إغلاق",
+    "agree": "موافق",
+    "redeemCoupon": "الحصول على قسيمة",
+    "redeemingThisCouponWillNotImpactYourPointsBalance": "لن يؤثر الحصول على هذه القسيمة على رصيد نقاطك."
+  },
+  "bookAConsultation": "احجز استشارة"
 }
