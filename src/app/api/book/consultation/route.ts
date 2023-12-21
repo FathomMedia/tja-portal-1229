@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   const locale = request.headers.get("accept-language") ?? "en";
 
   const data: {
-    slug: string;
+    id: number;
     dataToRequest: {
       reason: string;
       coupon: string | null;
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   } = await request.json();
 
   const bookingResponse = await apiReq({
-    endpoint: `/adventures/${data.slug}/book`,
+    endpoint: `/consultation-bookings/${data.id}/book`,
     locale,
     method: "POST",
     token: token?.value,

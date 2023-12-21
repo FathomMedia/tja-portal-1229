@@ -1,4 +1,5 @@
 import { DashboardSection } from "@/components/DashboardSection";
+import { CalculateConsultation } from "@/components/consultations/CalculateConsultation";
 import { ConsultationF } from "@/components/consultations/ConsultationsF";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,7 +9,12 @@ import { Suspense } from "react";
 export default async function Page() {
   const t = await getTranslations("Consultation");
   return (
-    <DashboardSection className="flex flex-col gap-4" title={t("consultation")}>
+    <div className="max-w-4xl flex flex-col gap-6">
+      <div>
+        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+          Book a consultation
+        </h2>
+      </div>
       <Suspense
         fallback={
           <div className="flex flex-col gap-4">
@@ -17,8 +23,9 @@ export default async function Page() {
           </div>
         }
       >
+        <CalculateConsultation />
         <ConsultationF />
       </Suspense>
-    </DashboardSection>
+    </div>
   );
 }

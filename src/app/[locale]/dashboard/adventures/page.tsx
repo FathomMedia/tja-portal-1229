@@ -1,30 +1,41 @@
-import { getToken } from "@/lib/serverUtils";
+"use client";
 import { TPaginatedAdventures } from "@/lib/types";
-import { apiReq } from "@/lib/utils";
-import { useLocale } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { DashboardSection } from "@/components/DashboardSection";
 
-export default async function Page() {
+export default function Page() {
   const locale = useLocale();
-  const token = getToken();
-  const t = await getTranslations("Adventures");
 
-  const paginatedAdventures = await apiReq({
-    endpoint: "/adventures",
-    locale,
-    token: token,
-  }).then(async (val) => {
-    if (val.ok) {
-      const data: TPaginatedAdventures = await val.json();
-      return data;
-    }
-    return null;
+  const t = useTranslations("Adventures");
+
+  const {
+    data: paginatedAdventures,
+    isFetching: isFetchingPaginatedAdventures,
+  } = useQuery<TPaginatedAdventures>({
+    queryKey: ["/adventures"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/adventures", locale }).then((res) =>
+        res.json().then((resData) => {
+          return resData;
+        })
+      ),
   });
 
   return (
-    <div className="flex flex-col gap-2">
+    <DashboardSection title={t("adventures")} className="flex flex-col gap-2">
+      {isFetchingPaginatedAdventures && (
+        <>
+          <Skeleton className="w-full h-40" />
+          <Skeleton className="w-full h-40" />
+          <Skeleton className="w-full h-40" />
+        </>
+      )}
       {paginatedAdventures &&
+        !isFetchingPaginatedAdventures &&
         paginatedAdventures.data.map((adventure, i) => (
           <Link href={`adventures/${adventure.slug}`} key={i}>
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -47,11 +58,11 @@ export default async function Page() {
             </div>
           </Link>
         ))}
-      {!paginatedAdventures && (
+      {!paginatedAdventures && !isFetchingPaginatedAdventures && (
         <div className="text-center text-muted-foreground bg-muted p-4 rounded-md">
           <p>Failed to retrieve adventures</p>
         </div>
       )}
-    </div>
+    </DashboardSection>
   );
 }

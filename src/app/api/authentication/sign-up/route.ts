@@ -1,4 +1,4 @@
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

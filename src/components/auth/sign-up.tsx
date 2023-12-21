@@ -21,11 +21,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { apiReq, cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { ReCaptchaProvider, useReCaptcha } from "next-recaptcha-v3";
+import { useReCaptcha } from "next-recaptcha-v3";
 import { useLocale, useTranslations } from "next-intl";
 import {
   Select,

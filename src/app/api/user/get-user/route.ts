@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 
 export async function POST(request: NextRequest) {
   const { token } = await request.json();

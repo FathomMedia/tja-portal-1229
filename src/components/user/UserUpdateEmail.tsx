@@ -20,7 +20,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { apiReq } from "@/lib/utils";
+import { apiReq } from "@/lib/apiHelpers";
 
 export const UserUpdateEmail = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);

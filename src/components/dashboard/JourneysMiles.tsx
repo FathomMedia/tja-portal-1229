@@ -32,64 +32,115 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import toast from "react-hot-toast";
 import { Icons } from "../ui/icons";
-import { useRouter } from "next/navigation";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Skeleton } from "../ui/skeleton";
 
-type TJourneysMiles = {
-  user: TUser;
-  levels: TLevel[];
-  coupons: {
-    available: TCoupon[];
-    redeemed: TCoupon[];
-  };
-};
-
-export const JourneysMiles: FC<TJourneysMiles> = ({
-  user,
-  levels,
-  coupons,
-}) => {
+export const JourneysMiles: FC = () => {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
+
+  const { data: user, isFetching: isFetchingUser } = useQuery<TUser>({
+    queryKey: ["/users/profile"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/users/profile", locale }).then((res) =>
+        res.json().then((resData) => resData.data)
+      ),
+  });
+
+  const { data: levels, isFetching: isFetchingLevels } = useQuery<TLevel[]>({
+    queryKey: ["/levels"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/levels", locale }).then((res) =>
+        res.json().then((resData) => resData.data)
+      ),
+  });
+
+  const { data: availableCoupons, isFetching: isFetchingAvailableCoupons } =
+    useQuery<TCoupon[]>({
+      queryKey: ["/profile/coupons/available"],
+      queryFn: () =>
+        apiReqQuery({ endpoint: "/profile/coupons/available", locale }).then(
+          (res) => res.json().then((resData) => resData.data)
+        ),
+    });
+
+  const { data: redeemedCoupons, isFetching: isFetchingRedeemedCoupons } =
+    useQuery<TCoupon[]>({
+      queryKey: ["/profile/coupons/redeemed"],
+      queryFn: () =>
+        apiReqQuery({ endpoint: "/profile/coupons/redeemed", locale }).then(
+          (res) => res.json().then((resData) => resData.data)
+        ),
+    });
 
   return (
     <DashboardSection
       className="flex flex-col gap-4"
       title={t("journeysMiles")}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
-          <p className="text-sm">{t("availablePoints")}</p>
-          <p className="text-xl">{user?.points}</p>
+      {isFetchingUser && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Skeleton className="w-full h-20" />
+          <Skeleton className="w-full h-20" />
         </div>
-        {/* <div className="p-4 flex flex-col gap-2 rounded-lg border border-muted">
-          <p>{user?.points}</p>
-        </div> */}
-        <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
-          <div className="flex gap-4 items-center">
-            <div className="relative aspect-square w-14 min-w-fit ">
-              {user?.level.badge && (
-                <Image
-                  className="w-full h-full object-cover rounded-full"
-                  fill
-                  src={user?.level.badge}
-                  alt="Badge"
-                />
-              )}
-            </div>
-            <div className="flex flex-col">
-              <p className="w-full text-sm text-primary">{t("level")}</p>
-              <p className="w-full text-sm text-muted-foreground">
-                {user?.level.name}
-              </p>
-            </div>
+      )}
+      {!isFetchingUser && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
+            <p className="text-sm">{t("availablePoints")}</p>
+            <p className="text-xl">{user?.points}</p>
+          </div>
+          <div className="p-4 text-primary flex flex-col gap-2 rounded-lg border border-muted">
+            {
+              <div className="flex gap-4 items-center">
+                <div className="relative aspect-square w-14 min-w-fit ">
+                  {user?.level.badge && (
+                    <Image
+                      className="w-full h-full object-cover rounded-full"
+                      fill
+                      src={user?.level.badge}
+                      alt="Badge"
+                    />
+                  )}
+                </div>
+                <div className="flex flex-col">
+                  <p className="w-full text-sm text-primary">{t("level")}</p>
+                  <p className="w-full text-sm text-muted-foreground">
+                    {user?.level.name}
+                  </p>
+                </div>
+              </div>
+            }
           </div>
         </div>
-      </div>
-      <LevelsTable levels={levels} userLevelId={user.level.id} />
+      )}
+      {(isFetchingLevels || isFetchingUser) && (
+        <Skeleton className="w-full h-96" />
+      )}
+      {levels && user && !isFetchingLevels && !isFetchingUser && (
+        <LevelsTable levels={levels} userLevelId={user.level.id} />
+      )}
       <Separator className="bg-muted/50 col-span-2" />
-      <RedeemedCoupons coupons={coupons.redeemed} />
+      {isFetchingRedeemedCoupons && (
+        <div className="flex gap-4">
+          <Skeleton className="w-full h-20 max-w-xs" />
+          <Skeleton className="w-full h-20 max-w-xs" />
+        </div>
+      )}
+      {redeemedCoupons && !isFetchingRedeemedCoupons && (
+        <RedeemedCoupons coupons={redeemedCoupons} />
+      )}
       <Separator className="bg-muted/50 col-span-2" />
-      <AvailableCoupons coupons={coupons.available} />
+      {isFetchingAvailableCoupons && (
+        <div className="flex gap-4">
+          <Skeleton className="w-full h-24 max-w-xs" />
+          <Skeleton className="w-full h-24 max-w-xs" />
+        </div>
+      )}
+      {availableCoupons && !isFetchingAvailableCoupons && (
+        <AvailableCoupons coupons={availableCoupons} />
+      )}
     </DashboardSection>
   );
 };
@@ -232,41 +283,42 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
   const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [agree, setAgree] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { refresh } = useRouter();
+  const queryClient = useQueryClient();
 
-  async function handleRedeem() {
-    setIsLoading(true);
-    await fetch("/api/user/redeem-coupon", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept-Language": locale,
-      },
-      body: JSON.stringify({ code: coupon.code }),
-    })
-      .then(async (val) => {
-        const data = await val.json();
-        if (val.ok) {
-          toast.success(data.message, { duration: 6000 });
-          refresh();
-        } else {
-          toast.error(data.message, { duration: 6000 });
-        }
-      })
-      .catch((err) => {
-        console.log(
-          "🚀 ~ file: JourneysMiles.tsx:239 ~ await wait ~ err:",
-          err
-        );
-        toast.error("Failed to redeem the coupon");
-      })
-
-      .finally(() => {
-        setOpen(false);
-        setIsLoading(false);
+  const mutation = useMutation({
+    mutationFn: () => {
+      return fetch("/api/user/redeem-coupon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept-Language": locale,
+        },
+        body: JSON.stringify({ code: coupon.code }),
       });
-  }
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message, { duration: 6000 });
+        queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+        queryClient.invalidateQueries({
+          queryKey: ["/profile/coupons/available"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["/profile/coupons/redeemed"],
+        });
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+    onSettled() {
+      setOpen(false);
+    },
+  });
 
   return (
     <div>
@@ -324,7 +376,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
                   type="button"
                   variant="outline"
                 >
-                  {isLoading && (
+                  {mutation.isPending && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
                   Agree
@@ -332,11 +384,11 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
               )}
               {agree && (
                 <Button
-                  onClick={handleRedeem}
+                  onClick={() => mutation.mutate()}
                   type="button"
                   variant="secondary"
                 >
-                  {isLoading && (
+                  {mutation.isPending && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
                   Redeem
