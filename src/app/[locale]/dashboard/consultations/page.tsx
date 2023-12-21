@@ -1,7 +1,7 @@
 "use client";
 
 import { CalculateConsultation } from "@/components/consultations/CalculateConsultation";
-import { ConsultationF } from "@/components/consultations/ConsultationsF";
+import { ConsultationForm } from "@/components/consultations/ConsultationsF";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { TConsultation } from "@/lib/types";
@@ -47,7 +47,13 @@ export default function Page() {
           startDate={(val) => setStartDate(val)}
           endDate={(val) => setEndDate(val)}
         />
-        <ConsultationF chosenPackage={selectedPackage} />
+        {selectedPackage && startDate && endDate && (
+          <ConsultationForm
+            chosenPackage={selectedPackage}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        )}
       </Suspense>
     </div>
   );

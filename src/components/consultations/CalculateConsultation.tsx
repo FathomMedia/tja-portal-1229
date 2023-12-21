@@ -34,6 +34,8 @@ import { isRtlLang } from "rtl-detect";
 import toast from "react-hot-toast";
 import { TConsultation } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Icons } from "../ui/icons";
 
 type TCalculateConsultationForm = {
   onPackageChanged: (consultation: TConsultation) => void;
@@ -52,7 +54,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
   const t = useTranslations("Consultation");
   const { refresh } = useRouter();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
   const formSchema = z.object({
@@ -71,45 +73,87 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     },
   });
 
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      return fetch("/api/consultation", {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tier: values.package,
+          start_date: format(values.start_date, "dd/MM/yyyy"),
+          end_date: format(values.end_date, "dd/MM/yyyy"),
+        }),
+      });
+    },
+    async onSuccess(data, values) {
+      if (data.ok) {
+        const { message, data: dataResponse } = await data.json();
+        console.log(
+          "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
+          dataResponse
+        );
+        toast.success(message, { duration: 6000 });
+        // queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["/profile/coupons/available"],
+        // });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["/profile/coupons/redeemed"],
+        // });
+
+        onPackageChanged(dataResponse);
+        startDate(values.start_date);
+        endDate(values.end_date);
+        setTotalFullPrice(dataResponse.priceWithCurrency ?? null);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    const res = await fetch("/api/consultation", {
-      method: "POST",
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        tier: values.package,
-        start_date: format(values.start_date, "dd/MM/yyyy"),
-        end_date: format(values.end_date, "dd/MM/yyyy"),
-      }),
-    }).finally(() => setIsLoading(false));
-
-    const dataResponse = await res.json();
-    if (res.ok) {
-      onPackageChanged(dataResponse.data.id);
-      startDate(values.start_date);
-      endDate(values.end_date);
-
-      setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
-
-      refresh();
-
-      //   router.push(
-      //     pathname +
-      //       "?" +
-      //       createQueryString([
-      //         { name: "email", value: values.email },
-      //         { name: "otpSent", value: "true" },
-      //       ])
-      //   );
-
-      toast.success(dataResponse.message, { duration: 6000 });
-    } else {
-      //   const { message } = await res.json();
-      toast.error(dataResponse.message, { duration: 6000 });
-    }
+    mutation.mutate(values);
+    // setIsLoading(true);
+    // const res = await fetch("/api/consultation", {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept-Language": locale,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     tier: values.package,
+    //     start_date: format(values.start_date, "dd/MM/yyyy"),
+    //     end_date: format(values.end_date, "dd/MM/yyyy"),
+    //   }),
+    // }).finally(() => setIsLoading(false));
+    // const dataResponse = await res.json();
+    // if (res.ok) {
+    // onPackageChanged(dataResponse.data.id);
+    // startDate(values.start_date);
+    // endDate(values.end_date);
+    // setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
+    //   refresh();
+    //   //   router.push(
+    //   //     pathname +
+    //   //       "?" +
+    //   //       createQueryString([
+    //   //         { name: "email", value: values.email },
+    //   //         { name: "otpSent", value: "true" },
+    //   //       ])
+    //   //   );
+    //   toast.success(dataResponse.message, { duration: 6000 });
+    // } else {
+    //   //   const { message } = await res.json();
+    //   toast.error(dataResponse.message, { duration: 6000 });
+    // }
   }
 
   return (
@@ -240,10 +284,11 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 className="w-full max-w-[268px] "
                 variant={"secondary"}
                 type="submit"
-                onClick={() => {
-                  // setStep(2)
-                }}
               >
+                {" "}
+                {mutation.isPending && (
+                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                )}
                 {"Calculate"}
               </Button>
             </div>

@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -29,12 +29,20 @@ import { Textarea } from "@/components/ui/textarea";
 import SelectableCard from "@/components/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 import { TConsultation } from "@/lib/types";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 type TConsultationForm = {
-  chosenPackage: TConsultation | null;
+  chosenPackage: TConsultation;
+  startDate: Date;
+  endDate: Date;
 };
 
-export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
+export const ConsultationForm: FC<TConsultationForm> = ({
+  chosenPackage,
+  startDate,
+  endDate,
+}) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
 
@@ -149,9 +157,11 @@ export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
   const rowIndices = Array.from({ length: numRows }, (_, index) => index);
 
   const formSchema = z.object({
-    packageId: z.number().refine((value) => value, {
-      message: "Missing package details. Please fill in the details above.",
-    }),
+    packageId: z
+      .number()
+      .min(1, "Missing package details. Please fill in the details above."),
+    startDate: z.date().min(new Date(2023, 12, 23)),
+    endDate: z.date(),
     destination: z.string().min(2, t("destination.errors.required")),
     class: z.string().min(1, t("destination.errors.required")),
     airport: z.string().min(2, t("airport.errors.required")),
@@ -189,17 +199,6 @@ export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
     fearsSelection: z.string().optional(),
     otherFears: z.string().optional(),
   });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(
-      "🚀 ~ file: ConsultationForm.tsx:186 ~ onSubmit ~ values:",
-      values
-    );
-
-    console.log("chosen package id", chosenPackage);
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-  }
 
   const cardOptionsSelect: {
     image: string;
@@ -277,7 +276,9 @@ export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      packageId: chosenPackage?.id,
+      packageId: chosenPackage.id,
+      startDate: startDate,
+      endDate: endDate,
       destination: "",
       class: "",
       airport: "",
@@ -294,14 +295,70 @@ export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
     },
   });
 
+  useEffect(() => {
+    console.log("called");
+
+    form.setValue("packageId", chosenPackage.id);
+    startDate && form.setValue("startDate", startDate);
+    endDate && form.setValue("endDate", endDate);
+
+    return () => {};
+  }, [chosenPackage, startDate, endDate, form]);
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(
+      "🚀 ~ file: ConsultationForm.tsx:186 ~ onSubmit ~ values:",
+      values
+    );
+    const formatted = format(values.endDate, "dd/MM/yyyy");
+    console.log("formatted", formatted);
+
+    console.log("chosen package id", chosenPackage);
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+  }
+
   return (
     <div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="gap-10 flex flex-col items-start"
+          className="gap-10 flex flex-col items-end"
         >
-          {/* {step === 2 && ( */}
+          <FormField
+            control={form.control}
+            name="packageId"
+            render={({ fieldState }) => (
+              <FormItem
+                className={cn(" w-full hidden", fieldState.error && "flex")}
+              >
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ fieldState }) => (
+              <FormItem
+                className={cn(" w-full hidden", fieldState.error && "flex")}
+              >
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="endDate"
+            render={({ fieldState }) => (
+              <FormItem
+                className={cn(" w-full hidden", fieldState.error && "flex")}
+              >
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="w-full flex flex-col gap-6">
             <FormField
               control={form.control}
@@ -873,6 +930,40 @@ export const ConsultationF: FC<TConsultationForm> = ({ chosenPackage }) => {
                 )}
               />
             )}
+
+            <FormField
+              control={form.control}
+              name="packageId"
+              render={({ fieldState }) => (
+                <FormItem
+                  className={cn(" w-full hidden", fieldState.error && "flex")}
+                >
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ fieldState }) => (
+                <FormItem
+                  className={cn(" w-full hidden", fieldState.error && "flex")}
+                >
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ fieldState }) => (
+                <FormItem
+                  className={cn(" w-full hidden", fieldState.error && "flex")}
+                >
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className=" w-full flex justify-center sm:justify-end">
               <Button
