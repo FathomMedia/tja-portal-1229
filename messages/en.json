@@ -20,7 +20,15 @@
       "title": "Password"
     },
     "signIn": "Sign In",
-    "lostPassword": "Lost your password?"
+    "lostPassword": "Lost your password?",
+    "dob": "Date of birth",
+    "male": "Male",
+    "female": "Female",
+    "update": "Update",
+    "name": "Name",
+    "pickaDate": "Pick a Date",
+    "gender": "Gender",
+    "selectGender": "Select Gender"
   },
   "logout": "Logout",
   "Home": {
@@ -82,7 +90,8 @@
     "submit": "Submit",
     "sendEmail": "Send Email",
     "verifyOTP": "Verify OTP",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "verifyEmail": "Verify Email"
   },
   "Auth": {
     "login": "Login",
@@ -293,5 +302,32 @@
   "ourTeamIsAwlaysHappyToHelp": "OUR TEAM IS ALWAYS HAPPY TO HELP…",
   "Help": {
     "ourTeamIsAwlaysHappyToHelp": "OUR TEAM IS ALWAYS HAPPY TO HELP…"
-  }
+  },
+  "DeleteProfile": {
+    "deleteAccount": "Delete Account?",
+    "typePasswordToConfirmDeletingAccount": "To confirm that you want to delete your account, Please type in your password",
+    "password": "Password",
+    "deleteMyAccount": "Delete my account",
+    "cancel": "Cancel"
+  },
+  "UpdatePassword": {
+    "Old_Password": "Old Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "update": "Update",
+    "confirmNewPassword": "Confirm New Password"
+  },
+  "Profile": {
+    "updateProfile": "Update Profile",
+    "updateEmail": "Update Email",
+    "updatePassword": "Update Password",
+    "changePassword": "Change Password"
+  },
+  "updateProfile": "Update Profile ",
+  "updateEmail": "Update Email",
+  "changePassword": "Change Password",
+  "yourEmail": "Your Email",
+  "home": "Home",
+  "getInTouch": "Get in Touch"
 }

@@ -5,12 +5,15 @@ import { UserUpdateEmail } from "@/components/user/UserUpdateEmail";
 import { UpdatePassword } from "@/components/user/UserUpdatePassword";
 import { getToken } from "@/lib/serverUtils";
 import { TUser } from "@/lib/types";
+import { apiReq } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { apiReq } from "@/lib/apiHelpers";
-import { useLocale } from "next-intl";
 
 export default async function Page() {
   const locale = useLocale();
   const token = getToken();
+  const t = await getTranslations("Profile");
 
   const user = await apiReq({
     endpoint: "/users/profile",
@@ -25,24 +28,24 @@ export default async function Page() {
     <div className="max-w-4xl flex flex-col gap-10">
       <div>
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          Update profile
+          {t("updateProfile")}
         </h2>
       </div>
       <UserAccountDetails user={user} />
       <Separator />
       <div className=" space-y-4">
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          Update email
+          {t("updateEmail")}
         </h2>
         <div className=" text-sm text-muted-foreground">
-          Your email: <span className=" italic">{user.email}</span>
+          {t("yourEmail")}: <span className=" italic">{user.email}</span>
         </div>
       </div>
       <UserUpdateEmail />
       <Separator />
       <div>
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          Update password
+          {t("changePassword")}
         </h2>
       </div>
       <UpdatePassword />
