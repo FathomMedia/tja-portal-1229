@@ -8,6 +8,7 @@ import { TUser } from "@/lib/types";
 import { apiReq } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { apiReq } from "@/lib/apiHelpers";
 
 export default async function Page() {
   const locale = useLocale();

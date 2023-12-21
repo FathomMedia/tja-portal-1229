@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { apiReq } from "@/lib/apiHelpers";
-import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("authToken");
+export async function POST(request: NextRequest) {
+  const { token } = await request.json();
 
   if (token) {
     const locale = request.headers.get("accept-language") ?? "en";
 
     const user = await apiReq({
-      endpoint: "/users/profile",
+      endpoint: "/users/profile/summary",
       locale,
-      token: token?.value,
+      token: token,
     });
 
     if (user.ok) {

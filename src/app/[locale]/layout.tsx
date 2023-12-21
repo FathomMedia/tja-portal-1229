@@ -8,7 +8,8 @@ import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";
 import { Toaster } from "react-hot-toast";
 import { ReCaptchaProvider } from "next-recaptcha-v3";
-import { AppProvider } from "@/contexts/AppContext";
+
+import TanstackProvider from "@/providers/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,7 +41,7 @@ export default function RootLayout({
             locale={locale}
             messages={messages}
           >
-            <AppProvider>{children}</AppProvider>
+            <TanstackProvider>{children}</TanstackProvider>
           </NextIntlClientProvider>
         </ReCaptchaProvider>
         <Toaster position="top-center" />

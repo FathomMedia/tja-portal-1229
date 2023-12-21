@@ -108,7 +108,7 @@ export type TConsultation = {
   id: number;
   tier: string;
   numberOfDays: number;
-  price: string;
+  price: number;
 };
 
 export type TOrders = {

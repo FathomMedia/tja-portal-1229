@@ -1,25 +1,37 @@
 "use client";
 
-import {
-  OrderType,
-  TAdventure,
-  TConsultation,
-  TOrder,
-  TUser,
-} from "@/lib/types";
-import React, { FC } from "react";
+import { TAdventure, TConsultation, TOrder, TOrders, TUser } from "@/lib/types";
+import React from "react";
 import { DashboardSection } from "../DashboardSection";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { useQuery } from "@tanstack/react-query";
+import { LoadingComp } from "../LoadingComp";
+import { Skeleton } from "../ui/skeleton";
 
-type TDashboardHome = {
-  user: TUser;
-  latestOrders: TOrder[];
-};
+export const DashboardHome = () => {
+  const locale = useLocale();
 
-export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
-  const upComingAdventures = latestOrders
-    ? latestOrders.filter(
+  const { data: user, isFetching: isFetchingUser } = useQuery<TUser>({
+    queryKey: ["/users/profile"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/users/profile", locale }).then((res) =>
+        res.json().then((resData) => resData.data)
+      ),
+  });
+
+  const { data: latestOrders, isFetching: isFetchingLatestOrders } =
+    useQuery<TOrders>({
+      queryKey: ["/profile/bookings"],
+      queryFn: () =>
+        apiReqQuery({ endpoint: "/profile/bookings", locale }).then((res) =>
+          res.json()
+        ),
+    });
+
+  const upComingAdventures = latestOrders?.data
+    ? latestOrders?.data.filter(
         (order: any) => order.type === "adventure" && order.details.isUpcoming
       )
     : [];
@@ -28,73 +40,87 @@ export const DashboardHome: FC<TDashboardHome> = ({ user, latestOrders }) => {
     <DashboardSection title={t("myAccount")}>
       <div className=" flex flex-col gap-4">
         <div className="flex gap-3">
-          <div className="flex border-b">
-            {/* Current Tier */}
-            <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">
-                {t("currentTier")}
-              </p>
-              <h2 className="text-2xl text-primary font-semibold">
-                {user?.level.name}
-              </h2>
+          {isFetchingUser && <Skeleton className="h-20 w-full max-w-xs" />}
+          {!isFetchingUser && (
+            <div className="flex border-b">
+              {/* Current Tier */}
+              <div className=" flex p-4 flex-col">
+                <p className="text-sm text-muted-foreground">
+                  {t("currentTier")}
+                </p>
+                <h2 className="text-2xl text-primary font-semibold">
+                  {user?.level.name}
+                </h2>
+              </div>
+              {/* divider */}
+              <div className="w-[1px] h-full bg-border"></div>
+              {/* Days Travelled */}
+              <div className=" flex p-4 flex-col">
+                <p className="text-sm text-muted-foreground">
+                  {t("daysTravelled")}
+                </p>
+                <h2 className="text-2xl text-primary font-semibold">{`${
+                  user?.daysTravelled + " " + t("days")
+                } `}</h2>
+              </div>
             </div>
-            {/* divider */}
-            <div className="w-[1px] h-full bg-border"></div>
-            {/* Days Travelled */}
-            <div className=" flex p-4 flex-col">
-              <p className="text-sm text-muted-foreground">
-                {t("daysTravelled")}
-              </p>
-              <h2 className="text-2xl text-primary font-semibold">{`${
-                user?.daysTravelled + " " + t("days")
-              } `}</h2>
-            </div>
-          </div>
-          {/* Badge */}
-          <div></div>
+          )}
         </div>
-        <div className="p-6 flex flex-col gap-4">
-          {/* Up coming adventures */}
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xl text-primary">{t("upComingAdventures")}</h1>
-            <div className="grid grid-cols-1 gap-3">
-              {upComingAdventures.map((order, i) => {
-                return (
-                  <div className="min-h-[10rem] " key={i}>
-                    {order.type === "adventure" && <Adventure order={order} />}
-                  </div>
-                );
-              })}
-              {upComingAdventures.length == 0 && (
-                <div className="bg-muted rounded-lg p-3 text-muted-foreground">
-                  <p>{t("noUpcoming")}</p>
-                </div>
-              )}
-            </div>
+        {isFetchingLatestOrders && (
+          <div>
+            <LoadingComp />
           </div>
-          {/* Latest orders */}
+        )}
+        {!isFetchingLatestOrders && (
+          <div className="p-6 flex flex-col gap-4">
+            {/* Up coming adventures */}
+            <div className="flex flex-col gap-2">
+              <h1 className="text-xl text-primary">
+                {t("upComingAdventures")}
+              </h1>
+              <div className="grid grid-cols-1 gap-3">
+                {upComingAdventures.map((order, i) => {
+                  return (
+                    <div className="min-h-[10rem] " key={i}>
+                      {order.type === "adventure" && (
+                        <Adventure order={order} />
+                      )}
+                    </div>
+                  );
+                })}
+                {upComingAdventures.length == 0 && (
+                  <div className="bg-muted rounded-lg p-3 text-muted-foreground">
+                    <p>{t("noUpcoming")}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Latest orders */}
 
-          <div className="flex flex-col gap-2">
-            <h1 className="text-xl text-primary">{t("latestsOrders")}</h1>
-            <div className="grid grid-cols-1 gap-3">
-              {latestOrders?.map((order, i) => {
-                return (
-                  <div className="min-h-[10rem] " key={i}>
-                    {order.type === "adventure" && <Adventure order={order} />}
-                    {order.type === "consultation" && (
-                      <Consultation order={order} />
-                    )}
+            <div className="flex flex-col gap-2">
+              <h1 className="text-xl text-primary">{t("latestsOrders")}</h1>
+              <div className="grid grid-cols-1 gap-3">
+                {latestOrders?.data?.map((order, i) => {
+                  return (
+                    <div className="min-h-[10rem] " key={i}>
+                      {order.type === "adventure" && (
+                        <Adventure order={order} />
+                      )}
+                      {order.type === "consultation" && (
+                        <Consultation order={order} />
+                      )}
+                    </div>
+                  );
+                })}
+                {(!latestOrders?.data || latestOrders?.data?.length == 0) && (
+                  <div className="bg-muted rounded-lg p-3 text-muted-foreground">
+                    <p>{t("noOrdersFound")}</p>
                   </div>
-                );
-              })}
-              {(!latestOrders || latestOrders?.length == 0) && (
-                <div className="bg-muted rounded-lg p-3 text-muted-foreground">
-                  <p>{t("noOrdersFound")}</p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <div></div>
     </DashboardSection>
