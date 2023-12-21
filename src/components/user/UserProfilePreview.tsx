@@ -1,15 +1,35 @@
 "use client";
 import { TUser } from "@/lib/types";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
+import { Menu } from "lucide-react";
+import { Button, buttonVariants } from "../ui/button";
+import { MobileNav } from "../MobileNav";
+import { cn } from "@/lib/utils";
 
-export const UserProfilePreview: FC = () => {
+type TUserProfilePreview = {
+  items: {
+    href: string;
+    title: string;
+  }[];
+};
+
+export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
   const t = useTranslations("Dashboard");
+  const [open, setOpen] = useState(false);
 
   const locale = useLocale();
 
@@ -41,7 +61,28 @@ export const UserProfilePreview: FC = () => {
           </div>
         )}
         {isFetchingUser && <Skeleton className="h-14 w-full max-w-xs" />}
-        <LanguageSwitcher />
+        <div className="flex gap-3">
+          <LanguageSwitcher />
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              className={cn(
+                "lg:hidden border-primary",
+                buttonVariants({ variant: "outline", size: "icon" }),
+                "border-primary"
+              )}
+            >
+              <Menu className="text-primary" />
+            </SheetTrigger>
+            <SheetContent className="gap-6 flex flex-col">
+              <SheetHeader>
+                <SheetTitle className="text-primary">
+                  The Journey Adventures
+                </SheetTitle>
+              </SheetHeader>
+              <MobileNav items={items} onNavigate={() => setOpen(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </div>
   );
