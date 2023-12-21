@@ -4,7 +4,7 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Page({
@@ -15,6 +15,17 @@ export default function Page({
   const locale = useLocale();
 
   const t = useTranslations("Adventures");
+
+  const queryClient = useQueryClient();
+
+  // ? Check the token sent from payment and then invalidate if correct
+  // queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+  // queryClient.invalidateQueries({
+  //   queryKey: ["/profile/coupons/available"],
+  // });
+  // queryClient.invalidateQueries({
+  //   queryKey: ["/profile/coupons/redeemed"],
+  // });
 
   const { data: adventure, isFetching: isFetchingAdventure } =
     useQuery<TAdventure>({
