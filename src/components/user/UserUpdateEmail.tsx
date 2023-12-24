@@ -19,7 +19,7 @@ import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
 

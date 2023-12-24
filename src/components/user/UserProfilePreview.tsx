@@ -68,7 +68,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               className={cn(
-                "lg:hidden border-primary",
+                "xl:hidden border-primary",
                 buttonVariants({ variant: "outline", size: "icon" }),
                 "border-primary"
               )}

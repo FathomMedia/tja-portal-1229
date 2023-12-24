@@ -19,7 +19,7 @@ import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { apiReq } from "@/lib/apiHelpers";
 
 export const SignInWithEmailOTP = () => {
@@ -122,7 +122,8 @@ export const SignInWithEmailOTP = () => {
 
     if (response.ok) {
       toast.success(res.message);
-      router.push(`/${locale}/dashboard`);
+      const isAdmin = res.data.role === "Admin";
+      router.push(`/${locale}/${isAdmin ? "admin" : "dashboard"}`);
     } else {
       toast.error(res.message);
     }

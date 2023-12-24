@@ -21,7 +21,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiReq } from "@/lib/apiHelpers";
 import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export const SignInWithPassword = () => {
   const { push } = useRouter();
@@ -71,8 +71,9 @@ export const SignInWithPassword = () => {
     const res = await response.json();
 
     if (response.ok) {
+      const isAdmin = res.data.role === "Admin";
       toast.success(res.message);
-      push(`/${locale}/dashboard`);
+      push(`/${locale}/${isAdmin ? "admin" : "dashboard"}`);
     } else {
       toast.error(res.message);
     }

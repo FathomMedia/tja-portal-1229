@@ -30,7 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";

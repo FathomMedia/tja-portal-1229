@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useLocale, useTranslations } from "next-intl";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface MobileNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {

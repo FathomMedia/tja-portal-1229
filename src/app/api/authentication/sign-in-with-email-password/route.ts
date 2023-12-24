@@ -15,10 +15,8 @@ export async function POST(request: NextRequest) {
       password: password,
     },
   }).then(async (value) => {
-    console.log("🚀 ~ file: route.ts:18 ~ POST ~ value:", value);
     if (value.ok) {
       const data = await value.json();
-      console.log("🚀 ~ file: route.ts:21 ~ POST ~ data:", data);
 
       cookieStore.set("authToken", data["access_token"], {
         httpOnly: true,

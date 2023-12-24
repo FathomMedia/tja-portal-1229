@@ -1,4 +1,5 @@
 import { SidebarNav } from "@/components/SideNav";
+import { ResizablePanelGroup } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 import { useLocale, useTranslations } from "next-intl";
@@ -48,10 +49,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <UserProfilePreview items={sidebarNavItems} />
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:gap-6 lg:space-y-0">
-          <aside className="-px-4 hidden lg:flex lg:w-1/5 overflow-x-scroll">
+          <aside className="-px-4 hidden min-w-fit lg:flex lg:w-1/5 overflow-x-scroll">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1">{children}</div>
+          <div className="grow lg:max-w-[80%]">{children}</div>
         </div>
       </div>
     </div>

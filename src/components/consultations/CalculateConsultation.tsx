@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { TConsultation } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

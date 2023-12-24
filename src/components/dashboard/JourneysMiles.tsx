@@ -30,7 +30,7 @@ import {
 
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Icons } from "../ui/icons";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

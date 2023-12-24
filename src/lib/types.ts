@@ -76,7 +76,7 @@ export interface Links {
   next: null;
 }
 
-export interface Meta {
+export type TMeta = {
   current_page: number;
   from: number;
   last_page: number;
@@ -85,7 +85,8 @@ export interface Meta {
   per_page: number;
   to: number;
   total: number;
-}
+  pagination: TPagination;
+};
 
 export interface Link {
   url: null | string;
@@ -96,7 +97,7 @@ export interface Link {
 export interface TPaginatedAdventures {
   data: TAdventure[];
   links: Links;
-  meta: Meta;
+  meta: TMeta;
 }
 
 export enum OrderType {
@@ -125,7 +126,7 @@ export type TOrder = {
 export type TLevels = {
   data: TLevel[];
   links: Links;
-  meta: Meta;
+  meta: TMeta;
 };
 
 export type TLevel = {
@@ -134,4 +135,42 @@ export type TLevel = {
   minDays: number;
   maxDays: number;
   badge: string;
+};
+
+// Admin Types
+
+export type TCustomers = {
+  data: TCustomer[];
+  links: Links;
+  meta: TMeta;
+};
+
+export type TPagination = {
+  per_page: number;
+  current_page: number;
+  total_pages: number;
+  next_page_number: number | null;
+  prev_page_number: number | null;
+};
+
+export type TCustomer = {
+  customerId: number;
+  userId: number;
+  name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  status: string;
+  level: TLevel;
+  points: number;
+  dateFormatted: string;
+  totalPoints: number;
+  role: string;
+  age: number;
+  dateOfBirth: string;
+  daysTravelled: number;
+  joinedAt: string;
+  verified: boolean;
+  nextLevel: TLevel;
+  isSuspended: boolean;
 };
