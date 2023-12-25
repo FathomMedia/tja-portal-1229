@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -20,6 +21,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const locale = useLocale();
   const { push } = useRouter();
   const t = useTranslations("Home");
+  const queryClient = useQueryClient();
 
   async function logOut() {
     const res = await fetch("/api/authentication/logout", {
@@ -30,6 +32,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
     const data = await res.json();
     if (res.ok) {
       toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
       push(`/${locale}/authentication`);
     } else {
       toast.error(data.message);
@@ -48,6 +51,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           key={item.href}
           href={item.href}
           className={cn(
+            "w-fit",
             buttonVariants({ variant: "ghost" }),
             pathname.startsWith(item.href) && i != 0
               ? "bg-muted hover:bg-muted"
@@ -62,7 +66,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       ))}
       <Button
         variant={"ghost"}
-        className="hover:underline hover:bg-transparent justify-start"
+        className="hover:underline hover:bg-transparent w-fit justify-start"
         onClick={logOut}
       >
         {t("logout")}

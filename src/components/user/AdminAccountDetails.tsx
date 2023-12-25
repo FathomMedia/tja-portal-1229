@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,49 +21,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import dayjs from "dayjs";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
 import { TUser } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-// minimum age for date of birth
-const minAge = 5;
-const maxAge = 95;
-
-type TUserAccountDetails = {
+type TAdminAccountDetails = {
   user: TUser;
 };
 
-export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
+export const AdminAccountDetails: FC<TAdminAccountDetails> = ({ user }) => {
   const locale = useLocale();
   const t = useTranslations("SignInWithPassword");
 
   const formSchema = z.object({
     name: z.string().min(1, "Name is required"),
-    date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
+
     gender: z.string().min(1).max(1),
   });
-  const defaultDate = dayjs(user.dateFormatted).toDate();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: user.name,
-      date_of_birth: defaultDate,
       gender: user.gender,
     },
   });
@@ -78,11 +61,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          dataToSend: {
-            name: values.name,
-            date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
-            gender: values.gender,
-          },
+          dataToSend: { name: values.name, gender: values.gender },
         }),
       });
     },
@@ -131,53 +110,6 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="date_of_birth"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-2 w-full">
-                <FormLabel>{t("dob")}</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl className="w-full flex">
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full pl-3 text-left font-normal border-primary",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>{t("pickaDate")}</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      captionLayout={"dropdown"}
-                      fromYear={dayjs().subtract(maxAge, "year").year()}
-                      toYear={dayjs().subtract(minAge, "year").year()}
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > dayjs().subtract(minAge, "year").toDate() ||
-                        date < dayjs().subtract(maxAge, "year").toDate()
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="gender"

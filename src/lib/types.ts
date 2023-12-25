@@ -118,9 +118,18 @@ export type TOrders = {
 };
 
 export type TOrder = {
+  id: number;
   type: string;
   dateBooked: string;
   details: TAdventure | TConsultation;
+  invoice: null;
+  isFullyPaid: boolean;
+  isPartiallyPaid: boolean;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
 };
 
 export type TLevels = {
@@ -143,6 +152,35 @@ export type TCustomers = {
   data: TCustomer[];
   links: Links;
   meta: TMeta;
+};
+export type TAdventureBookings = {
+  data: TAdventureBooking[];
+  links: Links;
+  meta: TMeta;
+};
+
+export type TAdventureBooking = {
+  id: number;
+  customer: {
+    id: number;
+    userId: number;
+    name: string;
+    email: string;
+    phone: string;
+  };
+  adventure: {
+    id: number;
+    title: string;
+    startDate: string;
+    endDate: string;
+    price: number;
+  };
+  dateBooked: string;
+  isFullyPaid: boolean;
+  isPartiallyPaid: null;
+  addOns: any[];
+  totalPrice: number;
+  totalPriceWithCurrency: string;
 };
 
 export type TPagination = {

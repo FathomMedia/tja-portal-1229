@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface MobileNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -26,6 +27,7 @@ export function MobileNav({
   const locale = useLocale();
   const { push } = useRouter();
   const t = useTranslations("Home");
+  const queryClient = useQueryClient();
 
   async function logOut() {
     const res = await fetch("/api/authentication/logout", {
@@ -36,6 +38,7 @@ export function MobileNav({
     const data = await res.json();
     if (res.ok) {
       toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
       push(`/${locale}/authentication`);
     } else {
       toast.error(data.message);

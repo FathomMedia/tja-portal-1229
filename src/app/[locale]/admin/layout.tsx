@@ -9,32 +9,38 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
 
+  const t = useTranslations("Dashboard");
+
   const sidebarNavItems = [
     {
-      title: "Home",
+      title: t("home"),
       href: `/${locale}/admin`,
-    },
-    {
-      title: "Journeys Miles",
-      href: `/${locale}/admin/journeys-miles`,
-    },
-    {
-      title: "Orders",
-      href: `/${locale}/admin/orders`,
-    },
-    {
-      title: "Products",
-      href: `/${locale}/admin/products`,
     },
 
     {
-      title: "Customers",
+      title: t("journeysMiles"),
+      href: `/${locale}/admin/journeys-miles`,
+    },
+    {
+      title: t("orders"),
+      href: `/${locale}/admin/orders`,
+    },
+    {
+      title: t("products"),
+      href: `/${locale}/admin/products`,
+    },
+    {
+      title: t("customers"),
       href: `/${locale}/admin/customers`,
+    },
+    {
+      title: t("accountDetails"),
+      href: `/${locale}/admin/account-details`,
     },
   ];
 
