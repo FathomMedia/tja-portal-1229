@@ -35,7 +35,11 @@
     "dangerArea": "Danger Area",
     "deleteAdventure": "Delete Adventure",
     "areYouSureYouWantToDelete": "Are you sure you want to delete",
-    "close": "Close"
+    "close": "Close",
+    "new": "New",
+    "create": "Create",
+    "newAdventure": "New Adventure",
+    "editAdventure": "Edit Adventure"
   },
   "Auth": {
     "OTP": "OTP",

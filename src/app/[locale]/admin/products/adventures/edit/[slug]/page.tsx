@@ -1,18 +1,14 @@
 "use client";
+import { AdventureForm } from "@/components/admin/products/adventures/AdventureForm";
 import { Separator } from "@/components/ui/separator";
-import { DeleteProfile } from "@/components/user/DeleteUserProfile";
 
-import { TAdventure, TCountry, TCustomer } from "@/lib/types";
+import { TAddon, TAdventure, TCountry } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CustomerAccountDetails } from "@/components/admin/customers/CustomerAccountDetails";
 import { toast } from "sonner";
-import { FormLabel } from "@/components/ui/form";
-import { Badge } from "@/components/ui/badge";
-import { DisplayTranslatedText } from "@/components/Helper";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import {
@@ -25,7 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ClipboardCopy } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Page({
   params: { slug },
@@ -36,6 +32,7 @@ export default function Page({
 
   const t = useTranslations("Adventures");
   const queryClient = useQueryClient();
+  const { push } = useRouter();
 
   const { data: adventure, isFetching: isFetchingAdventure } =
     useQuery<TAdventure>({
@@ -56,13 +53,21 @@ export default function Page({
       ),
     staleTime: Infinity,
   });
+  const { data: addons, isFetching: isFetchingAddons } = useQuery<TAddon[]>({
+    queryKey: [`/add-ons`],
+    queryFn: () =>
+      apiReqQuery({ endpoint: `/add-ons`, locale }).then((res) =>
+        res.json().then((resData) => resData.data)
+      ),
+    staleTime: Infinity,
+  });
 
   const deleteMutation = useMutation({
     mutationFn: () => {
-      return fetch(`/api/adventure/delete`, {
+      return fetch(`/api/adventure/delete-adventure`, {
         method: "POST",
         body: JSON.stringify({
-          id: adventure?.id,
+          slug: adventure?.slug,
         }),
         headers: {
           "Accept-Language": locale,
@@ -78,6 +83,7 @@ export default function Page({
           queryKey: [`/adventures/${slug}`],
         });
         queryClient.invalidateQueries({ queryKey: [`/adventures`] });
+        push(`/${locale}/admin/products?type=adventures`);
       } else {
         const { message } = await data.json();
         toast.error(message, { duration: 6000 });
@@ -92,16 +98,23 @@ export default function Page({
     <div className="max-w-4xl flex flex-col gap-10 pb-20">
       <div>
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          {t("edit")}
+          {t("editAdventure")}
         </h2>
       </div>
-      {isFetchingAdventure ||
-        (isFetchingCountries && <Skeleton className="w-full h-64" />)}
+      {(isFetchingAdventure || isFetchingCountries || isFetchingAddons) && (
+        <Skeleton className="w-full h-96" />
+      )}
       {adventure &&
         countries &&
+        addons &&
         !isFetchingAdventure &&
-        !isFetchingCountries && (
-          <AdventureForm adventure={adventure} countries={countries} />
+        !isFetchingCountries &&
+        !isFetchingAddons && (
+          <AdventureForm
+            adventure={adventure}
+            countries={countries}
+            addons={addons}
+          />
         )}
 
       <Separator />
@@ -164,30 +177,3 @@ export default function Page({
     </div>
   );
 }
-
-import React from "react";
-import { AdventureForm } from "@/components/admin/products/adventures/AdventureForm";
-
-const CopyValue = ({ title, value }: { title: string; value: string }) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <p className="font-medium text-sm">{title}</p>
-      <Button
-        variant={"outline"}
-        size={"sm"}
-        className="flex items-center justify-start gap-1 text-xs w-full hover:cursor-copy group"
-        onClick={() => {
-          toast.message(`${title} copied to your clipboard.`, {
-            icon: <ClipboardCopy className="w-3 h-3" />,
-          });
-          navigator.clipboard.writeText(value);
-        }}
-      >
-        {value}
-        <span>
-          <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-        </span>
-      </Button>
-    </div>
-  );
-};

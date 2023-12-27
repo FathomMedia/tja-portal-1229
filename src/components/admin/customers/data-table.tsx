@@ -122,7 +122,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className="last:sticky first:sticky start-0 end-0 bg-background last:shadow"
+                      className="last:sticky first:sticky start-0 end-0 last:bg-background first:bg-background first:group-hover/row:bg-muted last:shadow"
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

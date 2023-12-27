@@ -35,7 +35,11 @@
     "dangerArea": "منطقة الخطر",
     "deleteAdventure": "حذف المغامرة",
     "areYouSureYouWantToDelete": "هل أنت متأكد أنك تريد حذف",
-    "close": "يغلق"
+    "close": "يغلق",
+    "new": "جديد",
+    "create": "يخلق",
+    "newAdventure": "مغامرة جديدة",
+    "editAdventure": "تحرير المغامرة"
   },
   "Auth": {
     "OTP": "رمز التحقق",

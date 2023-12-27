@@ -70,13 +70,13 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         ...(values.addOns.length > 0 && {
           addons: values.addOns.map((addon) => addon.id),
         }),
-        ...(values.paymentMethod === "card" && {
-          card_holder_name: values.cardName,
-          card_number: values.cardNumber,
-          card_expiry_month: values.cardExpMonth,
-          card_expiry_year: values.cardExpYear,
-          card_cvv: values.cardCVV,
-        }),
+        // ...(values.paymentMethod === "card" && {
+        //   card_holder_name: values.cardName,
+        //   card_number: values.cardNumber,
+        //   card_expiry_month: values.cardExpMonth,
+        //   card_expiry_year: values.cardExpYear,
+        //   card_cvv: values.cardCVV,
+        // }),
       };
 
       return fetch(`/api/book/adventure`, {
@@ -130,115 +130,114 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       ),
   });
 
-  const formSchema = z
-    .object({
-      // Adventures choices
-      why: z.string().min(1, t("why.errors.required")),
-      addOns: z.array(
-        z.object({
-          id: z.number(),
-          title: z.string(),
-          price: z.number(),
-        })
-      ),
-      coupon: z
-        .object({
-          id: z.number(),
-          code: z.string(),
-          type: z.enum(["percentage", "fixed"]),
-          value: z.number().optional(),
-          percentOff: z.number().optional(),
-          minPoints: z.number(),
-          maxPoints: z.number(),
-          applyTo: z.string(),
-          isUsed: z.number(),
-        })
-        .nullable(),
-      isPartialPayment: z.boolean(),
-      // // Billing Info
-      // customerName: z.string().min(1),
-      // address: z.string().min(1),
-      // city: z.string().min(1),
-      // country: z.string().min(1),
-      // email: z.string().email().min(1),
-      // phone: z.string().min(1),
-      // Payment method
-      paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
-      cardName: z.string().optional(),
-      cardNumber: z.string().optional(),
-      cardExpMonth: z.string().optional(),
-      cardExpYear: z.string().optional(),
-      cardCVV: z.string().optional(),
-    })
-    .superRefine(
-      (
-        {
-          paymentMethod,
-          cardName,
-          cardNumber,
-          cardExpMonth,
-          cardExpYear,
-          cardCVV,
-        },
-        ctx
-      ) => {
-        if (paymentMethod === "card" && cardName === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card name is required",
-            path: ["cardName"],
-          });
-        }
-        if (paymentMethod === "card" && cardNumber === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is required",
-            path: ["cardNumber"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpMonth === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry month is required",
-            path: ["cardExpMonth"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpYear === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry year is required",
-            path: ["cardExpYear"],
-          });
-        }
-        if (paymentMethod === "card" && cardCVV === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is required",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is invalid",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is invalid",
-            path: ["cardCVV"],
-          });
-        }
-      }
-    );
+  const formSchema = z.object({
+    // Adventures choices
+    why: z.string().min(1, t("why.errors.required")),
+    addOns: z.array(
+      z.object({
+        id: z.number(),
+        title: z.string(),
+        price: z.number(),
+      })
+    ),
+    coupon: z
+      .object({
+        id: z.number(),
+        code: z.string(),
+        type: z.enum(["percentage", "fixed"]),
+        value: z.number().optional(),
+        percentOff: z.number().optional(),
+        minPoints: z.number(),
+        maxPoints: z.number(),
+        applyTo: z.string(),
+        isUsed: z.number(),
+      })
+      .nullable(),
+    isPartialPayment: z.boolean(),
+    // // Billing Info
+    // customerName: z.string().min(1),
+    // address: z.string().min(1),
+    // city: z.string().min(1),
+    // country: z.string().min(1),
+    // email: z.string().email().min(1),
+    // phone: z.string().min(1),
+    // Payment method
+    paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+    // cardName: z.string().optional(),
+    // cardNumber: z.string().optional(),
+    // cardExpMonth: z.string().optional(),
+    // cardExpYear: z.string().optional(),
+    // cardCVV: z.string().optional(),
+  });
+  // .superRefine(
+  //   (
+  //     {
+  //       paymentMethod,
+  //       cardName,
+  //       cardNumber,
+  //       cardExpMonth,
+  //       cardExpYear,
+  //       cardCVV,
+  //     },
+  //     ctx
+  //   ) => {
+  //     if (paymentMethod === "card" && cardName === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card name is required",
+  //         path: ["cardName"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardNumber === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is required",
+  //         path: ["cardNumber"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpMonth === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry month is required",
+  //         path: ["cardExpMonth"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpYear === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry year is required",
+  //         path: ["cardExpYear"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardCVV === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is required",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //   }
+  // );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -254,11 +253,11 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       // city: "",
       // country: "",
       paymentMethod: "card",
-      cardName: "",
-      cardNumber: "",
-      cardExpMonth: "",
-      cardExpYear: "",
-      cardCVV: "",
+      // cardName: "",
+      // cardNumber: "",
+      // cardExpMonth: "",
+      // cardExpYear: "",
+      // cardCVV: "",
     },
   });
 
@@ -428,7 +427,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     )}
                   />
                   {/* card details */}
-                  {selectedPaymentMethod === "card" && (
+                  {/* {selectedPaymentMethod === "card" && (
                     <div className={cn("grid gap-6")}>
                       <FormField
                         control={form.control}
@@ -580,7 +579,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </CardContent>
                 <CardFooter>
                   <Button
@@ -765,40 +764,44 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   </FormItem>
                 )}
               />
-              <Separator className="bg-muted/50" />
-              <FormField
-                control={form.control}
-                name="isPartialPayment"
-                render={({ field }) => (
-                  <FormItem className=" w-full">
-                    <div className="flex items-center justify-between flex-wrap">
-                      <FormLabel>{"Payment type"}</FormLabel>
-                    </div>
-                    <FormControl>
-                      <PaymentTypeSelect
-                        fullPrice={formatePrice({
-                          locale,
-                          price: totalFullPrice,
-                        })}
-                        partialPrice={formatePrice({
-                          locale,
-                          price: partialPrice,
-                        })}
-                        partialRemaining={formatePrice({
-                          locale,
-                          price: partialRemaining,
-                        })}
-                        defaultSelected={field.value}
-                        onSelect={(selected) => {
-                          field.onChange(selected);
-                        }}
-                      />
-                    </FormControl>
+              {initAdventure.isPartialAllowed && (
+                <Separator className="bg-muted/50" />
+              )}
+              {initAdventure.isPartialAllowed && (
+                <FormField
+                  control={form.control}
+                  name="isPartialPayment"
+                  render={({ field }) => (
+                    <FormItem className=" w-full">
+                      <div className="flex items-center justify-between flex-wrap">
+                        <FormLabel>{"Payment type"}</FormLabel>
+                      </div>
+                      <FormControl>
+                        <PaymentTypeSelect
+                          fullPrice={formatePrice({
+                            locale,
+                            price: totalFullPrice,
+                          })}
+                          partialPrice={formatePrice({
+                            locale,
+                            price: partialPrice,
+                          })}
+                          partialRemaining={formatePrice({
+                            locale,
+                            price: partialRemaining,
+                          })}
+                          defaultSelected={field.value}
+                          onSelect={(selected) => {
+                            field.onChange(selected);
+                          }}
+                        />
+                      </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             {/* ----------------Adventure Choices---------------- */}
           </div>

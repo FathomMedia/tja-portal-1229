@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,12 +31,13 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, parseDateFromAPI } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { TAdventure, TCountry } from "@/lib/types";
+import { TAddon, TAdventure, TCountry } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -45,21 +47,26 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { imagesApi } from "@/config";
+
 import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type TAdventureForm = {
   adventure?: TAdventure;
   countries: TCountry[];
+  addons: TAddon[];
 };
 
-export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
-  console.log("🚀 ~ file: AdventureForm.tsx:55 ~ adventure:", adventure);
+export const AdventureForm: FC<TAdventureForm> = ({
+  adventure,
+  countries,
+  addons,
+}) => {
   const locale = useLocale();
   const t = useTranslations("Adventures");
 
   const [preview, setPreview] = useState<string | null>(
-    adventure?.image ? `${imagesApi}/${adventure.image}` : null
+    adventure?.image ?? null
   );
 
   const formSchema = z.object({
@@ -68,28 +75,27 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
     description: z.string().min(1, "Description is required"),
     arabic_description: z.string().min(1, "Description is required"),
     country_id: z.number(),
-    price: z.number().min(0, "Price must be at least 0"),
+    price: z.number().positive().min(0.01, "Price must be at least 0.01"),
     start_date: z.date(),
     end_date: z.date(),
-    capacity: z.number().min(1, "Capacity must be at least 1"),
-    gift_points: z.number().min(0, "Gift Points must be at least 0"),
+    capacity: z.number().positive().min(0, "Capacity must be at least 0"),
+    gift_points: z.number().positive().min(0, "Gift Points must be at least 0"),
     gender: z.enum(["M", "F", "A"]),
-    image: z
-      .any()
-      // .transform((file) => file.length > 0 && file.item(0))
-      .optional(),
-    // image: z.any().optional(),
-    // image: z.string().optional(),
+    image: z.any().optional(),
     add_ons: z.array(
       z.object({
         id: z.number(),
-        price: z.number().min(0, "Price must be at least 0"),
+        price: z.number().min(0.01, "Price must be at least 0.01"),
       })
     ),
   });
 
-  const defaultStartDate = dayjs(adventure?.startDate).toDate();
-  const defaultEndDate = dayjs(adventure?.endDate).toDate();
+  const defaultStartDate = adventure
+    ? parseDateFromAPI(adventure.startDate)
+    : new Date();
+  const defaultEndDate = adventure
+    ? parseDateFromAPI(adventure.endDate)
+    : new Date();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -106,12 +112,12 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
       capacity: adventure?.capacity ?? 0,
       gift_points: adventure?.giftPoints ?? 0,
       gender: (adventure?.genderValue ?? "A") as any,
-      // image: adventure?.image,
       add_ons: adventure?.addOns ?? [],
     },
   });
 
   const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const formData = new FormData();
@@ -126,8 +132,7 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
       formData.append("capacity", String(values.capacity));
       formData.append("gift_points", String(values.gift_points));
       formData.append("gender", values.gender);
-      // formData.append("add_ons", values.add_ons); // Assuming this is an array or object
-      formData.append("add_ons", JSON.stringify(values.add_ons)); // Assuming this is an array or object
+      formData.append("add_ons", JSON.stringify(values.add_ons));
       formData.append("start_date", format(values.start_date, "dd/MM/yyyy"));
       formData.append("end_date", format(values.end_date, "dd/MM/yyyy"));
       if (adventure) {
@@ -139,51 +144,31 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
         formData.append("image", values.image);
       }
 
-      return fetch(`/api/adventure/update-adventure`, {
-        method: "PUT",
-        headers: {
-          "Accept-Language": locale,
-          // "Content-Type": "multipart/form-data",
-        },
-        body: formData,
-      });
-      // const image: File | null = values.image ?? null;
-      // console.log("🚀 ~ file: AdventureForm.tsx:114 ~ image:", image);
-      // // const arrayBuffer = await image?.arrayBuffer()
-      // const dataToSend = {
-      //   title: values.title,
-      //   arabic_title: values.arabic_title,
-      //   description: values.description,
-      //   arabic_description: values.arabic_description,
-      //   country_id: values.country_id,
-      //   price: values.price,
-      //   capacity: values.capacity,
-      //   gift_points: values.gift_points,
-      //   gender: values.gender,
-      //   add_ons: values.add_ons,
-      //   start_date: format(values.start_date, "dd/MM/yyyy"),
-      //   end_date: format(values.end_date, "dd/MM/yyyy"),
-      //   ...(image && { image: image }),
-      // };
-
-      // console.log("🚀 ~ file: AdventureForm.tsx:106 ~ dataToSend:", dataToSend);
-      // return fetch(`/api/adventure/update-adventure`, {
-      //   method: "PUT",
-      //   headers: {
-      //     "Accept-Language": locale,
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     slug: adventure?.slug,
-      //     dataToSend: dataToSend,
-      //   }),
-      // });
+      return adventure
+        ? fetch(`/api/adventure/update-adventure`, {
+            method: "PUT",
+            headers: {
+              "Accept-Language": locale,
+            },
+            body: formData,
+          })
+        : fetch(`/api/adventure/new-adventure`, {
+            method: "POST",
+            headers: {
+              "Accept-Language": locale,
+            },
+            body: formData,
+          });
     },
     async onSuccess(data) {
       if (data.ok) {
         const { message } = await data.json();
         toast.success(message, { duration: 6000 });
-        queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+        queryClient.invalidateQueries({ queryKey: ["/adventures"] });
+        adventure &&
+          queryClient.invalidateQueries({
+            queryKey: [`/adventures/${adventure.slug}`],
+          });
       } else {
         const { message } = await data.json();
         toast.error(message, { duration: 6000 });
@@ -210,16 +195,17 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
         className="grid gap-6 grid-cols-1 sm:grid-cols-2 items-end"
       >
         {preview && (
-          <div className="w-20 h-20 relative">
+          <div className="w-40 h-40 relative sm:col-span-2">
             <Image
               src={preview}
-              fill
+              width={160}
+              height={160}
               alt="adventure image"
-              className="w-full h-full object-cover"
+              className="w-full h-full rounded-md shadow-md object-cover"
             />
           </div>
         )}
-        {preview && <div className="w-20 h-20 relative">{preview}</div>}
+
         <FormField
           control={form.control}
           name="title"
@@ -349,30 +335,6 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
             </FormItem>
           )}
         />
-
-        {/* <FormField
-            control={form.control}
-            name="country_id"
-            render={({ field }) => (
-              <FormItem className=" w-full mb-2">
-                <FormLabel>{t("country")}</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value.toString()}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-full border-primary">
-                      <SelectValue placeholder={t("selectCountry")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {countries.map((country, i) => <SelectItem key={i} value={country.id.toString()}>{`${country.name} - ${country.continent}`}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
         <FormField
           control={form.control}
           name="price"
@@ -589,6 +551,109 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
           )}
         />
 
+        <FormField
+          control={form.control}
+          name="add_ons"
+          render={() => (
+            <FormItem className="sm:col-span-2">
+              <div className="mb-4">
+                <FormLabel className="text-base">Addons</FormLabel>
+                <FormDescription>
+                  Select the addons you want for this adventure.
+                </FormDescription>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {addons.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name="add_ons"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={item.id}
+                          className="flex items-center p-3 bg-muted/30 border rounded-sm gap-4 justify-between"
+                        >
+                          <div className="flex flex-row items-center gap-2">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value
+                                  ?.map((item) => item.id)
+                                  .includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([
+                                        ...field.value,
+                                        { id: item.id, price: 0 },
+                                      ])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value.id !== item.id
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {item.title}
+                            </FormLabel>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <FormLabel
+                              className={cn(
+                                "font-normal",
+                                !field.value
+                                  ?.map((item) => item.id)
+                                  .includes(item.id) && "opacity-30"
+                              )}
+                            >
+                              {t("price")}
+                            </FormLabel>
+
+                            <Input
+                              className="max-w-[8rem]"
+                              placeholder="Price"
+                              prefix="BHD"
+                              disabled={
+                                !field.value
+                                  ?.map((item) => item.id)
+                                  .includes(item.id)
+                              }
+                              type="number"
+                              value={
+                                field.value?.filter(
+                                  (value) => value.id === item.id
+                                )?.[0]?.price ?? 0
+                              }
+                              onChange={(event) => {
+                                const current = field.value?.filter(
+                                  (value) => value.id === item.id
+                                )?.[0];
+
+                                const temp = {
+                                  id: current.id,
+                                  price: Number(event.target.value),
+                                };
+
+                                const withoutTheOld = field.value?.filter(
+                                  (value) => value.id !== item.id
+                                );
+
+                                field.onChange([...withoutTheOld, temp]);
+                              }}
+                            />
+                          </div>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="w-full flex justify-center sm:justify-start">
           <Button
             className="w-full max-w-[268px] mt-5"
@@ -598,7 +663,7 @@ export const AdventureForm: FC<TAdventureForm> = ({ adventure, countries }) => {
             {mutation.isPending && (
               <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
             )}
-            {t("update")}
+            {adventure ? t("update") : t("create")}
           </Button>
         </div>
       </form>

@@ -1,16 +1,13 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
 
   const data = await request.formData();
-  data.append("_method", "PUT");
 
-  const route = `${process.env.NEXT_PUBLIC_API_URL}/adventures/${data.get(
-    "slug"
-  )}`;
+  const route = `${process.env.NEXT_PUBLIC_API_URL}/adventures`;
 
   return fetch(route, {
     method: "POST",
