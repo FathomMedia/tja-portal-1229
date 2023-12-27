@@ -3,3 +3,7 @@ export const timezone = "Asia/Bahrain";
 
 export const api =
   process.env.NEXT_PUBLIC_API_URL ?? "http://v20s-imac.local:8000/api";
+
+export const imagesApi =
+  process.env.NEXT_PUBLIC_IMAGE_API_URL ??
+  "https://the-journey-adventures.nyc3.digitaloceanspaces.com";

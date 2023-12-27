@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,13 +20,28 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { apiReq } from "@/lib/apiHelpers";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
 export const SignInWithPassword = () => {
   const { push } = useRouter();
   const locale = useLocale();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations("SignInWithPassword");
+
+  const createQueryString = useCallback(
+    (pairs: { name: string; value: string }[]) => {
+      const params = new URLSearchParams(searchParams);
+      pairs.forEach(({ name, value }) => {
+        params.set(name, value);
+      });
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const formSchema = z.object({
     email: z
       .string()
@@ -49,6 +64,7 @@ export const SignInWithPassword = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
     setIsLoading(true);
 
     const response = await fetch(
@@ -73,7 +89,10 @@ export const SignInWithPassword = () => {
     if (response.ok) {
       const isAdmin = res.data.role === "Admin";
       toast.success(res.message);
-      push(`/${locale}/${isAdmin ? "admin" : "dashboard"}`);
+      const redirectTo = pathname.includes("authentication")
+        ? `/${locale}/${isAdmin ? "admin" : "dashboard"}`
+        : pathname + "?" + createQueryString([]);
+      push(redirectTo);
     } else {
       toast.error(res.message);
     }

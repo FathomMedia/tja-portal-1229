@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "**.ytimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "the-journey-adventures.nyc3.digitaloceanspaces.com",
+      },
     ],
   },
 };

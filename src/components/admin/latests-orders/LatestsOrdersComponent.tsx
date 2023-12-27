@@ -89,6 +89,7 @@ export const LatestsOrdersComponent = () => {
               </>
             )}
             {orders &&
+              orders.data &&
               !isFetching &&
               orders.data.map((order, i) => {
                 const isAdventure = order.type === "adventure";
@@ -130,13 +131,15 @@ export const LatestsOrdersComponent = () => {
                   </TableRow>
                 );
               })}
-            {orders && !isFetching && orders.data.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={8} className="h-24 text-start">
-                  {t("nothingFound")}
-                </TableCell>
-              </TableRow>
-            )}
+            {orders &&
+              !isFetching &&
+              (!orders.data || orders.data?.length === 0) && (
+                <TableRow>
+                  <TableCell colSpan={8} className="h-24 text-start">
+                    {t("nothingFound")}
+                  </TableCell>
+                </TableRow>
+              )}
           </TableBody>
         </Table>
         <Separator />

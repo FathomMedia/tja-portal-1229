@@ -28,7 +28,7 @@ export const SignInWithEmailOTP = () => {
   const t = useTranslations("SignUp");
 
   const locale = useLocale();
-  const router = useRouter();
+  const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams()!;
 
@@ -84,8 +84,7 @@ export const SignInWithEmailOTP = () => {
 
     if (res.ok) {
       const { message } = await res.json();
-
-      router.push(
+      push(
         pathname +
           "?" +
           createQueryString([
@@ -121,9 +120,12 @@ export const SignInWithEmailOTP = () => {
     const res = await response.json();
 
     if (response.ok) {
-      toast.success(res.message);
       const isAdmin = res.data.role === "Admin";
-      router.push(`/${locale}/${isAdmin ? "admin" : "dashboard"}`);
+      toast.success(res.message);
+      const redirectTo = pathname.includes("authentication")
+        ? `/${locale}/${isAdmin ? "admin" : "dashboard"}`
+        : pathname + "?" + createQueryString([]);
+      push(redirectTo);
     } else {
       toast.error(res.message);
     }

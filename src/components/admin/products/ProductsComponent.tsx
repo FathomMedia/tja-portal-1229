@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { useLocale } from "next-intl";
-import { AdventureOrdersComponent } from "./adventures/AdventureOrdersComponent";
+import { AdventureListComponent } from "./adventures/AdventureListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export const OrdersComponent = () => {
-  const locale = useLocale();
+export const ProductsComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
 
@@ -42,7 +40,7 @@ export const OrdersComponent = () => {
           <TabsTrigger value="consultation">Consultation</TabsTrigger>
         </TabsList>
         <TabsContent value="adventures">
-          <AdventureOrdersComponent />
+          <AdventureListComponent />
         </TabsContent>
         <TabsContent value="consultation">
           Change your password here.

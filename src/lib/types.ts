@@ -40,27 +40,42 @@ export type TCoupon = {
   isUsed?: number;
 };
 
+export type TCountry = {
+  id: number;
+  name: string;
+  continent: string;
+};
+
 export type TAdventure = {
   id: number;
   title: string;
-  description: string | null;
+  description: null;
+  createdAt: string;
   country: string;
+  countryId: number;
   continent: string;
   price: number;
-  partialPrice: number;
-  priceWithCurrency: string;
-  partialPriceWithCurrency: string;
-  partialRemaining: string;
-  capacity: number;
   slug: string;
+  capacity: number;
   startDate: string;
   endDate: string;
+  image: null;
   giftPoints: number;
   gender: string;
+  genderValue: string;
+  arabicTitle: string;
+  englishTitle: string;
+  arabicDescription: null;
+  englishDescription: null;
   isFull: boolean;
   isUpcoming: boolean;
-  isPartialAllowed: boolean;
+  numberOfBookings: number;
   addOns: TAddon[];
+  priceWithCurrency: string;
+  isPartialAllowed: boolean;
+  partialPrice: number;
+  partialPriceWithCurrency: string;
+  partialRemaining: string;
 };
 
 export type TAddon = {
@@ -155,6 +170,11 @@ export type TCustomers = {
 };
 export type TAdventureBookings = {
   data: TAdventureBooking[];
+  links: Links;
+  meta: TMeta;
+};
+export type TAdventures = {
+  data: TAdventure[];
   links: Links;
   meta: TMeta;
 };
