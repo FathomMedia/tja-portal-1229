@@ -67,8 +67,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         is_partial: values.isPartialPayment,
         payment_method: values.paymentMethod,
         ...(values.coupon && { coupon: values.coupon.code }),
+
         ...(values.addOns.length > 0 && {
-          addons: values.addOns.map((addon) => addon.id),
+          add_ons: values.addOns.map((addon) => addon.id),
         }),
         // ...(values.paymentMethod === "card" && {
         //   card_holder_name: values.cardName,
@@ -78,6 +79,10 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         //   card_cvv: values.cardCVV,
         // }),
       };
+      console.log(
+        "🚀 ~ file: AdventureCheckoutForm.tsx:81 ~ dataToRequest:",
+        dataToRequest
+      );
 
       return fetch(`/api/book/adventure`, {
         method: "POST",
