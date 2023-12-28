@@ -693,40 +693,42 @@ export const AdventureForm: FC<TAdventureForm> = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="package"
-          render={({ field }) => (
-            <FormItem className=" w-full">
-              <FormLabel>{t("englishPackage")}</FormLabel>
-              <FormControl>
-                <Editor
-                  initData={field.value}
-                  onDataChange={(data) => field.onChange(data)}
-                  placeHolder={t("enterEnglishPackage")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="arabic_package"
-          render={({ field }) => (
-            <FormItem className=" w-full">
-              <FormLabel>{t("arabicPackage")}</FormLabel>
-              <FormControl>
-                <Editor
-                  initData={field.value}
-                  onDataChange={(data) => field.onChange(data)}
-                  placeHolder={t("enterArabicPackage")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 sm:col-span-2">
+          <FormField
+            control={form.control}
+            name="package"
+            render={({ field }) => (
+              <FormItem className="  w-full">
+                <FormLabel>{t("englishPackage")}</FormLabel>
+                <FormControl>
+                  <Editor
+                    initData={field.value}
+                    onDataChange={(data) => field.onChange(data)}
+                    placeHolder={t("enterEnglishPackage")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="arabic_package"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("arabicPackage")}</FormLabel>
+                <FormControl>
+                  <Editor
+                    initData={field.value}
+                    onDataChange={(data) => field.onChange(data)}
+                    placeHolder={t("enterArabicPackage")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="w-full flex justify-center sm:justify-start">
           <Button

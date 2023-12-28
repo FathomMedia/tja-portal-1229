@@ -118,7 +118,6 @@ h1 {
 .editor-container {
   margin: 20px auto 20px auto;
   border-radius: 2px;
-  max-width: 600px;
   color: #000;
   position: relative;
   line-height: 20px;
@@ -834,13 +833,11 @@ i.justify-align {
       initialConfig={{ ...editorConfig, editorState: initData || undefined }}
     >
       <style>{css}</style>
-      <div className="editor-container !rounded-b-xl overflow-clip">
+      <div className="editor-container !w-full !rounded-b-xl overflow-clip">
         <ToolbarPlugin />
-        <div className="editor-inner">
+        <div className="editor-inner ">
           <RichTextPlugin
-            contentEditable={
-              <ContentEditable className="editor-input  prose" />
-            }
+            contentEditable={<ContentEditable className="editor-input prose" />}
             placeholder={
               placeHolder ? <Placeholder text={placeHolder} /> : null
             }
