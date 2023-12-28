@@ -73,7 +73,10 @@ export const AdventureForm: FC<TAdventureForm> = ({
   );
 
   const formSchema = z.object({
-    link: z.string().min(1, "Wordpress link is required"),
+    link: z
+      .string()
+      .url("Link is invalid")
+      .min(1, "Wordpress link is required"),
     title: z.string().min(1, "Title is required"),
     arabic_title: z.string().min(1, "Arabic title is required"),
     description: z.string().min(1, "Description is required"),
@@ -92,8 +95,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
         price: z.number().min(0.01, "Price must be at least 0.01"),
       })
     ),
-    // packing: z.string().min(1, "Packing is required"),
-    // arabic_packing: z.string().min(1, "Arabic Packing is required"),
+    package: z.string().min(1, "package is required"),
+    arabic_package: z.string().min(1, "Arabic package is required"),
   });
 
   const defaultStartDate = adventure
@@ -108,9 +111,9 @@ export const AdventureForm: FC<TAdventureForm> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       link: adventure?.link ?? "",
-      title: adventure?.title ?? "",
+      title: adventure?.englishTitle ?? "",
       arabic_title: adventure?.arabicTitle ?? "",
-      description: adventure?.description ?? "",
+      description: adventure?.englishDescription ?? "",
       arabic_description: adventure?.arabicDescription ?? "",
       country_id: adventure?.countryId ?? 0,
       price: adventure?.price ?? 0,
@@ -120,8 +123,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
       gift_points: adventure?.giftPoints ?? 0,
       gender: (adventure?.genderValue ?? "A") as any,
       add_ons: adventure?.addOns ?? [],
-      // packing: "",
-      // arabic_packing: "",
+      package: adventure?.englishPackage ?? "",
+      arabic_package: adventure?.arabicPackage ?? "",
     },
   });
 
@@ -137,6 +140,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
       formData.append("arabic_title", values.arabic_title);
       formData.append("description", values.description);
       formData.append("arabic_description", values.arabic_description);
+      formData.append("package", values.package);
+      formData.append("arabic_package", values.arabic_package);
       formData.append("country_id", String(values.country_id));
       formData.append("price", String(values.price));
       formData.append("capacity", String(values.capacity));
@@ -191,10 +196,6 @@ export const AdventureForm: FC<TAdventureForm> = ({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(
-      "🚀 ~ file: AdventureForm.tsx:139 ~ onSubmit ~ values:",
-      values
-    );
     mutation.mutate(values);
   }
 
@@ -692,25 +693,40 @@ export const AdventureForm: FC<TAdventureForm> = ({
           )}
         />
 
-        {/* <FormField
+        <FormField
           control={form.control}
-          name="packing"
+          name="package"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>{t("englishPacking")}</FormLabel>
+              <FormLabel>{t("englishPackage")}</FormLabel>
               <FormControl>
-                <Editor />
-                <Input
-                  dir="ltr"
-                  placeholder={t("englishPacking")}
-                  className=" border-primary"
-                  {...field}
-                /> 
+                <Editor
+                  initData={field.value}
+                  onDataChange={(data) => field.onChange(data)}
+                  placeHolder={t("enterEnglishPackage")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
-        />  */}
+        />
+        <FormField
+          control={form.control}
+          name="arabic_package"
+          render={({ field }) => (
+            <FormItem className=" w-full">
+              <FormLabel>{t("arabicPackage")}</FormLabel>
+              <FormControl>
+                <Editor
+                  initData={field.value}
+                  onDataChange={(data) => field.onChange(data)}
+                  placeHolder={t("enterArabicPackage")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="w-full flex justify-center sm:justify-start">
           <Button

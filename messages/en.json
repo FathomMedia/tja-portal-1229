@@ -42,7 +42,15 @@
     "editAdventure": "Edit Adventure",
     "englishDescription": "English Description",
     "addons": "Addons",
-    "selectTheAddonsYouWantForThisAdventure": "Select the addons you want for this adventure."
+    "selectTheAddonsYouWantForThisAdventure": "Select the addons you want for this adventure.",
+    "englishPacking": "English Packing List",
+    "packing": "Packing List...",
+    "arabicPacking": "Arabic Packing",
+    "arabicPackage": "Arabic Package",
+    "englishPackage": "English Package",
+    "enterEnglishPackage": "Enter english package...",
+    "enterArabicPackage": "Enter arabic package...",
+    "wordpressLink": "Wordpress Link"
   },
   "Auth": {
     "OTP": "OTP",

@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
       locale,
       token: token,
     });
-    console.log("🚀 ~ file: route.ts:15 ~ POST ~ token:", token);
 
     if (user.ok) {
       const data = await user.json();

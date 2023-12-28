@@ -7,6 +7,7 @@ export async function PUT(request: NextRequest) {
 
   const data = await request.formData();
   data.append("_method", "PUT");
+  console.log("🚀 ~ file: route.ts:9 ~ PUT ~ data:", data);
 
   const route = `${process.env.NEXT_PUBLIC_API_URL}/adventures/${data.get(
     "slug"

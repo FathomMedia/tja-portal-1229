@@ -50,7 +50,7 @@ export type TAdventure = {
   id: number;
   link: string;
   title: string;
-  description: null;
+  description: string | null;
   createdAt: string;
   country: string;
   countryId: number;
@@ -66,12 +66,15 @@ export type TAdventure = {
   genderValue: string;
   arabicTitle: string;
   englishTitle: string;
-  arabicDescription: null;
-  englishDescription: null;
+  arabicDescription: string | null;
+  englishDescription: string | null;
   isFull: boolean;
   isUpcoming: boolean;
   numberOfBookings: number;
   addOns: TAddon[];
+  package: string | null;
+  englishPackage: string | null;
+  arabicPackage: string | null;
   priceWithCurrency: string;
   isPartialAllowed: boolean;
   partialPrice: number;

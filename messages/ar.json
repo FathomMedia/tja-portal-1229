@@ -42,7 +42,14 @@
     "editAdventure": "تحرير المغامرة",
     "englishDescription": "الوصف باللغة الإنجليزية",
     "addons": "إضافات",
-    "selectTheAddonsYouWantForThisAdventure": "حدد الإضافات التي تريدها لهذه المغامرة."
+    "selectTheAddonsYouWantForThisAdventure": "حدد الإضافات التي تريدها لهذه المغامرة.",
+    "englishPacking": "قائمة التعبئة الإنجليزية",
+    "packing": "قائمة التعبئة...",
+    "arabicPackage": "الحزمة العربية",
+    "englishPackage": "الحزمة الإنجليزية",
+    "enterEnglishPackage": "أدخل الحزمة الانجليزية...",
+    "enterArabicPackage": "أدخل الباقة العربية...",
+    "wordpressLink": "رابط ووردبريس"
   },
   "Auth": {
     "OTP": "رمز التحقق",

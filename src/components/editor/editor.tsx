@@ -21,11 +21,11 @@ import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { EditorState } from "lexical";
 
-function Placeholder() {
-  return <div className="editor-placeholder">Enter some rich text...</div>;
+function Placeholder({ text }: { text: string }) {
+  return <div className="editor-placeholder">{text}</div>;
 }
 
 const editorConfig = {
@@ -57,6 +57,7 @@ const editorConfig = {
 
 import React from "react";
 import { OnChangePlugin } from "./plugins/OnChangePlugin";
+import { DisplayTranslatedText } from "../Helper";
 
 // ({ onChange }: {onChange: (state: EditorState) => void}) {
 //   const [editor] = useLexicalComposerContext();
@@ -67,7 +68,15 @@ import { OnChangePlugin } from "./plugins/OnChangePlugin";
 //   }, [editor, onChange]);
 // }
 
-export default function Editor() {
+export default function Editor({
+  initData,
+  onDataChange,
+  placeHolder,
+}: {
+  initData: string | null;
+  onDataChange: (data: string) => void;
+  placeHolder?: string | null;
+}) {
   const css = `
   
 .other h2 {
@@ -814,29 +823,27 @@ i.justify-align {
 
   `;
 
-  const [editorState, setEditorState] = useState<EditorState>();
-
   function onChange(editorState: EditorState) {
-    console.log(
-      "🚀 ~ file: editor.tsx:826 ~ onChange ~ editorState:",
-      editorState.toJSON()
-    );
-    setEditorState(editorState);
+    const json = editorState.toJSON();
+    const data = JSON.stringify(json);
+    onDataChange(data);
   }
+
   return (
-    <LexicalComposer initialConfig={editorConfig}>
+    <LexicalComposer
+      initialConfig={{ ...editorConfig, editorState: initData || undefined }}
+    >
       <style>{css}</style>
       <div className="editor-container !rounded-b-xl overflow-clip">
         <ToolbarPlugin />
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable
-                onChange={(event) => {}}
-                className="editor-input  prose"
-              />
+              <ContentEditable className="editor-input  prose" />
             }
-            placeholder={<Placeholder />}
+            placeholder={
+              placeHolder ? <Placeholder text={placeHolder} /> : null
+            }
             ErrorBoundary={LexicalErrorBoundary}
           />
 
