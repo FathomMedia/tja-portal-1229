@@ -8,15 +8,15 @@ import { isRtlLang } from "rtl-detect";
 
 export function UserAuthForm() {
   const locale = useLocale();
-  const t= useTranslations("Auth");
+  const t = useTranslations("Auth");
   return (
-    <div className={cn("grid gap-6", "w-full")}>
+    <div className={cn("max-w-2xl", "w-full flex flex-col justify-center")}>
       <Tabs
         dir={isRtlLang(locale) ? "rtl" : "ltr"}
         defaultValue="login"
-        className=""
+        className=" w-full flex flex-col items-center "
       >
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full  grid-cols-2">
           <TabsTrigger
             className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             value="login"
@@ -30,10 +30,23 @@ export function UserAuthForm() {
             {t("Register")}
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="login" className="pt-6">
+        <TabsContent
+          value="login"
+          className="pt-6 max-w-2xl w-full items-center flex flex-col md:flex-row gap-4 sm:gap-6"
+        >
           <SignInWithPassword />
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
+          <div className="relative hidden md:flex flex-col justify-center h-full min-h-[10rem]">
+            <div className="absolute inset-0 h-full flex flex-col items-center">
+              <span className="h-full border-r" />
+            </div>
+            <div className="relative flex justify-center text-xs py-3 uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                {t("Or")}
+              </span>
+            </div>
+          </div>
+          <div className="relative w-full justify-center flex md:hidden items-center">
+            <div className="absolute inset-0  flex flex-col justify-center">
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs py-3 uppercase">
@@ -42,9 +55,11 @@ export function UserAuthForm() {
               </span>
             </div>
           </div>
-          <SignInWithEmailOTP />
+          <div className="h-full w-full mb-auto">
+            <SignInWithEmailOTP />
+          </div>
         </TabsContent>
-        <TabsContent value="register">
+        <TabsContent className="max-w-md" value="register">
           <SignUp />
         </TabsContent>
       </Tabs>

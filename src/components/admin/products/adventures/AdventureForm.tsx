@@ -4,6 +4,7 @@ import React, { FC, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { enUS, ar } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +51,8 @@ import {
 
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
+import { isRtlLang } from "rtl-detect";
+import Editor from "@/components/editor/editor";
 
 type TAdventureForm = {
   adventure?: TAdventure;
@@ -70,6 +73,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
   );
 
   const formSchema = z.object({
+    link: z.string().min(1, "Wordpress link is required"),
     title: z.string().min(1, "Title is required"),
     arabic_title: z.string().min(1, "Arabic title is required"),
     description: z.string().min(1, "Description is required"),
@@ -88,6 +92,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
         price: z.number().min(0.01, "Price must be at least 0.01"),
       })
     ),
+    // packing: z.string().min(1, "Packing is required"),
+    // arabic_packing: z.string().min(1, "Arabic Packing is required"),
   });
 
   const defaultStartDate = adventure
@@ -101,6 +107,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      link: adventure?.link ?? "",
       title: adventure?.title ?? "",
       arabic_title: adventure?.arabicTitle ?? "",
       description: adventure?.description ?? "",
@@ -113,6 +120,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
       gift_points: adventure?.giftPoints ?? 0,
       gender: (adventure?.genderValue ?? "A") as any,
       add_ons: adventure?.addOns ?? [],
+      // packing: "",
+      // arabic_packing: "",
     },
   });
 
@@ -123,6 +132,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
       const formData = new FormData();
 
       // Append all text-based fields
+      formData.append("link", values.link);
       formData.append("title", values.title);
       formData.append("arabic_title", values.arabic_title);
       formData.append("description", values.description);
@@ -208,12 +218,31 @@ export const AdventureForm: FC<TAdventureForm> = ({
 
         <FormField
           control={form.control}
+          name="link"
+          render={({ field }) => (
+            <FormItem className=" w-full sm:col-span-2">
+              <FormLabel>{t("wordpressLink")}</FormLabel>
+              <FormControl>
+                <Input
+                  dir="ltr"
+                  placeholder={t("wordpressLink")}
+                  className=" border-primary"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="title"
           render={({ field }) => (
             <FormItem className=" w-full">
               <FormLabel>{t("englishTitle")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder={t("englishTitle")}
                   className=" border-primary"
                   {...field}
@@ -223,6 +252,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="arabic_title"
@@ -246,10 +276,11 @@ export const AdventureForm: FC<TAdventureForm> = ({
           name="description"
           render={({ field }) => (
             <FormItem className=" w-full">
-              <FormLabel>{t("description")}</FormLabel>
+              <FormLabel>{t("englishDescription")}</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder={t("description")}
+                  dir="ltr"
+                  placeholder={t("englishDescription")}
                   className=" border-primary resize-none"
                   {...field}
                 />
@@ -374,16 +405,19 @@ export const AdventureForm: FC<TAdventureForm> = ({
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "PPP", {
+                          locale: locale === "ar" ? ar : enUS,
+                        })
                       ) : (
                         <span>{t("pickaDate")}</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    locale={locale === "ar" ? ar : enUS}
                     captionLayout={"dropdown"}
                     fromYear={dayjs().subtract(20, "year").year()}
                     toYear={dayjs().add(3, "year").year()}
@@ -419,16 +453,19 @@ export const AdventureForm: FC<TAdventureForm> = ({
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(field.value, "PPP", {
+                          locale: locale === "ar" ? ar : enUS,
+                        })
                       ) : (
                         <span>{t("pickaDate")}</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    locale={locale === "ar" ? ar : enUS}
                     captionLayout={"dropdown"}
                     fromYear={dayjs().subtract(20, "year").year()}
                     toYear={dayjs().add(3, "year").year()}
@@ -522,6 +559,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
               <FormLabel>{t("image")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   className=" border-primary"
                   {...field}
                   value={undefined}
@@ -557,9 +595,9 @@ export const AdventureForm: FC<TAdventureForm> = ({
           render={() => (
             <FormItem className="sm:col-span-2">
               <div className="mb-4">
-                <FormLabel className="text-base">Addons</FormLabel>
+                <FormLabel className="text-base">{t("addons")}</FormLabel>
                 <FormDescription>
-                  Select the addons you want for this adventure.
+                  {t("selectTheAddonsYouWantForThisAdventure")}
                 </FormDescription>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -653,6 +691,26 @@ export const AdventureForm: FC<TAdventureForm> = ({
             </FormItem>
           )}
         />
+
+        {/* <FormField
+          control={form.control}
+          name="packing"
+          render={({ field }) => (
+            <FormItem className=" w-full">
+              <FormLabel>{t("englishPacking")}</FormLabel>
+              <FormControl>
+                <Editor />
+                <Input
+                  dir="ltr"
+                  placeholder={t("englishPacking")}
+                  className=" border-primary"
+                  {...field}
+                /> 
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />  */}
 
         <div className="w-full flex justify-center sm:justify-start">
           <Button

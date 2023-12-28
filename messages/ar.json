@@ -37,9 +37,12 @@
     "areYouSureYouWantToDelete": "هل أنت متأكد أنك تريد حذف",
     "close": "يغلق",
     "new": "جديد",
-    "create": "يخلق",
+    "create": "إنشاء",
     "newAdventure": "مغامرة جديدة",
-    "editAdventure": "تحرير المغامرة"
+    "editAdventure": "تحرير المغامرة",
+    "englishDescription": "الوصف باللغة الإنجليزية",
+    "addons": "إضافات",
+    "selectTheAddonsYouWantForThisAdventure": "حدد الإضافات التي تريدها لهذه المغامرة."
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -289,7 +292,12 @@
     "noUpcoming": "ليس لديك أي مغامرات قادمة",
     "startDate": "تاريخ البدء",
     "tier": "الفئة",
-    "upComingAdventures": "المغامرات القادمة"
+    "upComingAdventures": "المغامرات القادمة",
+    "paid": "مدفوع",
+    "pendingPayment": "في انتظار الدفع",
+    "downloadReceipt": "تحميل الإيصال",
+    "completePayment": "دفع كامل",
+    "total": "المجموع"
   },
   "Index": {
     "title": "اهلا بالعالم"
@@ -327,7 +335,8 @@
     "pickaDate": "اختر التاريخ",
     "selectGender": "اختيار الجنس",
     "signIn": "تسجيل دخول",
-    "update": "تحديث"
+    "update": "تحديث",
+    "phone": "هاتف"
   },
   "SignUp": {
     "Enter your name": "أدخل أسمك",

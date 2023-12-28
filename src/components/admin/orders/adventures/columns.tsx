@@ -8,6 +8,7 @@ import {
   LucideMinusCircle,
   MoreHorizontal,
   ArrowUpDown,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<TAdventureBooking>[] = [
   {
@@ -97,6 +99,26 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     cell: ({ row }) => <p>{row.original.adventure.title}</p>,
   },
   {
+    accessorKey: "image",
+    header: () => (
+      <div className="min-w-[2.5rem]">
+        <DisplayTranslatedText text="image" translation="Adventures" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <Avatar className="w-10 h-10">
+          {row.original.adventure.image && (
+            <AvatarImage src={row.original.adventure.image} />
+          )}
+          <AvatarFallback>
+            {<X className="w-4 h-4 text-muted-foreground" />}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
+  },
+  {
     accessorKey: "isFullyPaid",
     header: ({ column }) => {
       return (
@@ -121,14 +143,18 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
   {
     accessorKey: "adventureStartDate",
     header: () => (
-      <DisplayTranslatedText text="startDate" translation="Adventures" />
+      <div className="min-w-[6rem]">
+        <DisplayTranslatedText text="startDate" translation="Adventures" />
+      </div>
     ),
     cell: ({ row }) => <p>{row.original.adventure.startDate}</p>,
   },
   {
     accessorKey: "adventureEndDate",
     header: () => (
-      <DisplayTranslatedText text="endDate" translation="Adventures" />
+      <div className="min-w-[6rem]">
+        <DisplayTranslatedText text="endDate" translation="Adventures" />
+      </div>
     ),
     cell: ({ row }) => <p>{row.original.adventure.endDate}</p>,
   },

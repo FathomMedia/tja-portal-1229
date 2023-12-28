@@ -48,6 +48,7 @@ export type TCountry = {
 
 export type TAdventure = {
   id: number;
+  link: string;
   title: string;
   description: null;
   createdAt: string;
@@ -59,7 +60,7 @@ export type TAdventure = {
   capacity: number;
   startDate: string;
   endDate: string;
-  image: null;
+  image: string | null;
   giftPoints: number;
   gender: string;
   genderValue: string;
@@ -194,6 +195,7 @@ export type TAdventureBooking = {
     startDate: string;
     endDate: string;
     price: number;
+    image: string | null;
   };
   dateBooked: string;
   isFullyPaid: boolean;

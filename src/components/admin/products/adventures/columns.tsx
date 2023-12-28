@@ -10,6 +10,7 @@ import {
   ArrowUpDown,
   Circle,
   PlusCircle,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,7 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<TAdventure>[] = [
   {
@@ -38,6 +40,24 @@ export const columns: ColumnDef<TAdventure>[] = [
         <DisplayTranslatedText text="title" translation="Adventures" />
       </div>
     ),
+  },
+  {
+    accessorKey: "image",
+    header: () => (
+      <div className="min-w-[2.5rem]">
+        <DisplayTranslatedText text="image" translation="Adventures" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <Avatar className="w-10 h-10">
+          {row.original.image && <AvatarImage src={row.original.image} />}
+          <AvatarFallback>
+            {<X className="w-4 h-4 text-muted-foreground" />}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
   },
 
   {

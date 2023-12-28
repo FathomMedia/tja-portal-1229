@@ -102,7 +102,7 @@ export const SignInWithPassword = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center"
+        className="space-y-8 flex w-full flex-col items-center"
       >
         <FormField
           control={form.control}
@@ -126,7 +126,7 @@ export const SignInWithPassword = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className=" w-full">
+            <FormItem className=" w-full flex flex-col">
               <FormLabel>{t("password.title")}</FormLabel>
               <FormControl>
                 <Input
@@ -137,6 +137,12 @@ export const SignInWithPassword = () => {
                 />
               </FormControl>
               <FormMessage />
+              <Link
+                className="text-sm text-primary w-fit self-center"
+                href={`/${locale}/authentication/forgot-password`}
+              >
+                {t("lostPassword")}
+              </Link>
             </FormItem>
           )}
         />
@@ -148,12 +154,6 @@ export const SignInWithPassword = () => {
           {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
           {t("signIn")}
         </Button>
-        <Link
-          className="text-sm text-primary"
-          href={`/${locale}/authentication/forgot-password`}
-        >
-          {t("lostPassword")}
-        </Link>
       </form>
     </Form>
   );

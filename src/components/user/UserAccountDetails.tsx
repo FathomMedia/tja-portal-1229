@@ -38,6 +38,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { TUser } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { PhoneNumberInput } from "../ui/phone";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -55,6 +56,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
     name: z.string().min(1, "Name is required"),
     date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
     gender: z.string().min(1).max(1),
+    phone: z.string().min(1),
   });
   const defaultDate = dayjs(user.dateFormatted).toDate();
 
@@ -65,6 +67,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
       name: user.name,
       date_of_birth: defaultDate,
       gender: user.gender,
+      phone: user.phone,
     },
   });
 
@@ -82,6 +85,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             name: values.name,
             date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
             gender: values.gender,
+            phone: values.phone,
           },
         }),
       });
@@ -124,6 +128,23 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
                     placeholder={t("name")}
                     className=" border-primary"
                     type="name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("phone")}</FormLabel>
+                <FormControl>
+                  <PhoneNumberInput
+                    placeholder={t("phone")}
+                    className=" border-primary"
                     {...field}
                   />
                 </FormControl>

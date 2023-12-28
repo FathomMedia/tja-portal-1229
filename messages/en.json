@@ -39,7 +39,10 @@
     "new": "New",
     "create": "Create",
     "newAdventure": "New Adventure",
-    "editAdventure": "Edit Adventure"
+    "editAdventure": "Edit Adventure",
+    "englishDescription": "English Description",
+    "addons": "Addons",
+    "selectTheAddonsYouWantForThisAdventure": "Select the addons you want for this adventure."
   },
   "Auth": {
     "OTP": "OTP",
@@ -285,7 +288,7 @@
   },
   "Home": {
     "adventure": "Adventure",
-    "bookedAt": "Booked At",
+    "bookedAt": "Booked On",
     "consultation": "Consultation",
     "currentTier": "Current Tier",
     "days": "Days",
@@ -299,7 +302,12 @@
     "noUpcoming": "You don't have any upcoming adventures",
     "startDate": "Start Date",
     "tier": "Tier",
-    "upComingAdventures": "Upcoming adventures"
+    "upComingAdventures": "Upcoming adventures",
+    "paid": "Paid",
+    "pendingPayment": "Pending Payment",
+    "downloadReceipt": "Download Receipt",
+    "completePayment": "Complete Payment",
+    "total": "Total"
   },
   "Index": {
     "title": "Hello world!"
@@ -337,7 +345,8 @@
     "pickaDate": "Pick a Date",
     "selectGender": "Select Gender",
     "signIn": "Sign In",
-    "update": "Update"
+    "update": "Update",
+    "phone": "Phone"
   },
   "SignUp": {
     "Enter your name": "Enter your name",
