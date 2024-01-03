@@ -231,7 +231,16 @@
     "totalPoints": "مجمل النقاط",
     "unsuspend": "إلغاء التعليق",
     "update": "تحديث",
-    "updateCustomer": "تحديث العميل"
+    "updateCustomer": "تحديث العميل",
+    "revokeCoupon": "إلغاء القسيمة",
+    "revoke": "سحب او إبطال",
+    "areYouSureYouWantToRevoke": "هل أنت متأكد أنك تريد الإلغاء",
+    "redeemedCoupons": "كوبونات مستردة",
+    "reasonIsRequired": "السبب مطلوب",
+    "reason": "سبب",
+    "revokeDescription": "سبب إلغاء القسيمة.",
+    "forCustomer": "للزبون",
+    "nothingFound": "لم يتم العثور على شيء"
   },
   "Dashboard": {
     "MyAchievements": "انجازاتي",
