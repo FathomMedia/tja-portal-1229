@@ -242,7 +242,16 @@
     "totalPoints": "Total Points",
     "unsuspend": "Unsuspend",
     "update": "Update",
-    "updateCustomer": "Update Customer"
+    "updateCustomer": "Update Customer",
+    "revoke": "Revoke",
+    "revokeCoupon": "Revoke Coupon",
+    "areYouSureYouWantToRevoke": "Are you sure you want to revoke",
+    "redeemedCoupons": "Redeemed Coupons",
+    "reasonIsRequired": "Reason is required",
+    "reason": "Reason",
+    "revokeDescription": "The reason for revoking the coupon.",
+    "forCustomer": "For customer",
+    "nothingFound": "Nothing Found"
   },
   "Dashboard": {
     "MyAchievements": "My Achievements",
