@@ -52,9 +52,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
-  const { refresh } = useRouter();
 
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
   const formSchema = z.object({
@@ -73,7 +71,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     },
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) => {
       return fetch("/api/consultation", {
@@ -97,14 +95,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
           dataResponse
         );
         toast.success(message, { duration: 6000 });
-        // queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
-        // queryClient.invalidateQueries({
-        //   queryKey: ["/profile/coupons/available"],
-        // });
-        // queryClient.invalidateQueries({
-        //   queryKey: ["/profile/coupons/redeemed"],
-        // });
-
         onPackageChanged(dataResponse);
         startDate(values.start_date);
         endDate(values.end_date);
@@ -121,39 +111,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     mutation.mutate(values);
-    // setIsLoading(true);
-    // const res = await fetch("/api/consultation", {
-    //   method: "POST",
-    //   headers: {
-    //     "Accept-Language": locale,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     tier: values.package,
-    //     start_date: format(values.start_date, "dd/MM/yyyy"),
-    //     end_date: format(values.end_date, "dd/MM/yyyy"),
-    //   }),
-    // }).finally(() => setIsLoading(false));
-    // const dataResponse = await res.json();
-    // if (res.ok) {
-    // onPackageChanged(dataResponse.data.id);
-    // startDate(values.start_date);
-    // endDate(values.end_date);
-    // setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
-    //   refresh();
-    //   //   router.push(
-    //   //     pathname +
-    //   //       "?" +
-    //   //       createQueryString([
-    //   //         { name: "email", value: values.email },
-    //   //         { name: "otpSent", value: "true" },
-    //   //       ])
-    //   //   );
-    //   toast.success(dataResponse.message, { duration: 6000 });
-    // } else {
-    //   //   const { message } = await res.json();
-    //   toast.error(dataResponse.message, { duration: 6000 });
-    // }
   }
 
   return (

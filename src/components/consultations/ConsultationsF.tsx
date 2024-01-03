@@ -29,8 +29,15 @@ import { Textarea } from "@/components/ui/textarea";
 import SelectableCard from "@/components/consultations/CardSelection";
 import { isRtlLang } from "rtl-detect";
 import { TConsultation } from "@/lib/types";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import {
+  accommodationTypes,
+  adventureToYouIs,
+  budgetIncludes,
+  cardOptionsSelect,
+} from "./consultation-constants";
+import { ConsultationCheckoutForm } from "../checkout/ConsultationCheckoutForm";
+import { Card, CardContent } from "../ui/card";
 
 type TConsultationForm = {
   chosenPackage: TConsultation;
@@ -50,109 +57,16 @@ export const ConsultationForm: FC<TConsultationForm> = ({
     undefined
   );
 
-  const budgetIncludes = [
-    {
-      id: "international-flight-tickets",
-      label: t("internationalFlightTickets"),
-    },
-    {
-      id: "accommodation",
-      label: t("accommodation"),
-    },
-    {
-      id: "transport-and-fuel",
-      label: t("transportAndFuel"),
-    },
-    {
-      id: "activities",
-      label: t("activities"),
-    },
-    {
-      id: "attractions-fees",
-      label: t("sightseeingAndAttractionsFees"),
-    },
-    {
-      id: "travel-insurance",
-      label: t("travelInsurance"),
-    },
-    {
-      id: "travel-consultation-fees",
-      label: t("travelConsultationFees"),
-    },
-  ] as const;
+  const [formData, setFormData] = useState<z.infer<typeof formSchema> | null>(
+    null
+  );
 
-  const adventureToYouIs = [
-    {
-      id: "visiting-a-stunning-place-and-try-hard-to-climb-a-challenging-mountain-to-enjoy-a-panoramic-view-at-the-end",
-      label: t("visitingAStunningPlace"),
-    },
-    {
-      id: "being-out-in-wild-nature",
-      label: t("beingOutInWildNature"),
-    },
-    {
-      id: "over-coming-a-fear",
-      label: t("overComingAFear"),
-    },
-    {
-      id: "extreme-sports",
-      label: t("extremeSports"),
-    },
-    {
-      id: "beaches-and-water-sports",
-      label: t("BeachesAndWaterSports"),
-    },
-    {
-      id: "camping-outdoors",
-      label: t("campingOutdoors"),
-    },
-    {
-      id: "sightseeing-and-learning-about-new-cultures",
-      label: t("sightseeingAndLearning"),
-    },
-    {
-      id: "get-lost-somewhere-with-no-connection",
-      label: t("getLostSomewhere"),
-    },
-    {
-      id: "trying-new-activities-in-new-places",
-      label: t("TryingNewActivities"),
-    },
-    {
-      id: "national-parks-animals-and-wild-life",
-      label: t("nationalParksAndAnimals"),
-    },
-  ] as const;
-
-  const accommodationTypes = [
-    { title: t("aResortWith"), imageUrl: "/assets/images/resort.jpg" },
-    {
-      title: t("fiveStarHotel"),
-      imageUrl: "/assets/images/5-star-hotel.jpg",
-    },
-    { title: t("romanticCabins"), imageUrl: "/assets/images/cabins.jpg" },
-    {
-      title: t("bedAndBreakfast"),
-      imageUrl: "/assets/images/bedAndBreakfast.jpg",
-    },
-    { title: t("holidayHomes"), imageUrl: "/assets/images/holidayHomes.jpg" },
-    {
-      title: t("servicedApartments"),
-      imageUrl: "/assets/images/servicedApartments.jpg",
-    },
-    { title: t("glamping"), imageUrl: "/assets/images/glamping.jpg" },
-    { title: t("tents"), imageUrl: "/assets/images/tents.jpg" },
-    { title: t("caravans"), imageUrl: "/assets/images/caravans.jpg" },
-    { title: t("hostels"), imageUrl: "/assets/images/hostels.jpg" },
-    { title: t("homestays"), imageUrl: "/assets/images/homestays.jpg" },
-    // Add more items as needed
-  ];
+  const [isOpen, setIsOpen] = useState(false);
 
   const itemsPerRow = 4;
 
   // Calculate the number of rows based on the items and itemsPerRow
   const numRows = Math.ceil(accommodationTypes.length / itemsPerRow);
-
   // Generate an array of row indices
   const rowIndices = Array.from({ length: numRows }, (_, index) => index);
 
@@ -160,7 +74,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
     packageId: z
       .number()
       .min(1, "Missing package details. Please fill in the details above."),
-    startDate: z.date().min(new Date(2023, 12, 23)),
+    startDate: z.date(),
     endDate: z.date(),
     destination: z.string().min(2, t("destination.errors.required")),
     class: z.string().min(1, t("destination.errors.required")),
@@ -200,78 +114,6 @@ export const ConsultationForm: FC<TConsultationForm> = ({
     otherFears: z.string().optional(),
   });
 
-  const cardOptionsSelect: {
-    image: string;
-    title: string;
-    options: {
-      id: string;
-      label: string;
-    }[];
-  }[] = [
-    {
-      image: "/assets/images/adrenalineAdventures.jpg",
-      title: t("adrenalineAdventures"),
-      options: [
-        { id: "skydiving", label: t("skydiving") },
-        { id: "bungee-jumping", label: t("bungeeJumping") },
-        { id: "paragliding", label: t("paragliding") },
-      ],
-    },
-    {
-      image: "/assets/images/outdoorsAdventures.jpg",
-      title: t("outdoorsAdventures"),
-      options: [
-        { id: "snowmobiling", label: t("snowmobiling") },
-        { id: "cycling", label: t("cycling") },
-        { id: "camping", label: t("camping") },
-        { id: "hiking", label: t("hiking") },
-        { id: "via-ferrata", label: t("viaFerrata") },
-      ],
-    },
-    {
-      image: "/assets/images/waterAdventures.jpg",
-      title: t("waterAdventures"),
-      options: [
-        { id: "rafting", label: t("rafting") },
-        { id: "swimming", label: t("swimming") },
-        { id: "snorkelling", label: t("snorkelling") },
-        { id: "diving", label: t("diving") },
-        { id: "kayaking", label: t("kayaking") },
-        { id: "scuba-diving", label: t("scubaDiving") },
-      ],
-    },
-    {
-      image: "/assets/images/skyAdventures.jpg",
-      title: t("skyAdventures"),
-      options: [
-        { id: "helicopter-tours", label: t("helicopterTours") },
-        { id: "hot-air-balloon", label: t("hotAirBalloon") },
-        { id: "ziplining", label: t("ziplining") },
-      ],
-    },
-    {
-      image: "/assets/images/wildlifeExperiences.jpg",
-      title: t("wildlifeExperiences"),
-      options: [
-        { id: "horse-riding", label: t("horseRiding") },
-        { id: "safari-and-game-drives", label: t("safariAndGameDrives") },
-        { id: "kayak-with-penguins", label: t("kayakWithPenguins") },
-        { id: "diving-with-whale-sharks", label: t("divingWithWhaleSharks") },
-      ],
-    },
-    {
-      image: "/assets/images/culturalExperiences.jpg",
-      title: t("culturalExperiences"),
-      options: [
-        {
-          id: "cultural-tours-and-workshops",
-          label: t("culturalToursAndWorkshops"),
-        },
-        { id: "cooking-classes", label: t("cookingClasses") },
-      ],
-    },
-  ];
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -296,8 +138,6 @@ export const ConsultationForm: FC<TConsultationForm> = ({
   });
 
   useEffect(() => {
-    console.log("called");
-
     form.setValue("packageId", chosenPackage.id);
     startDate && form.setValue("startDate", startDate);
     endDate && form.setValue("endDate", endDate);
@@ -310,12 +150,14 @@ export const ConsultationForm: FC<TConsultationForm> = ({
       "🚀 ~ file: ConsultationForm.tsx:186 ~ onSubmit ~ values:",
       values
     );
-    const formatted = format(values.endDate, "dd/MM/yyyy");
-    console.log("formatted", formatted);
 
     console.log("chosen package id", chosenPackage);
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    // TODO : pass values to checkout sheet
+
+    setFormData(values);
+    setIsOpen(true);
   }
 
   return (
@@ -539,7 +381,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {item.label}
+                              {t(item.label)}
                             </FormLabel>
                           </FormItem>
                         );
@@ -550,27 +392,6 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                 </FormItem>
               )}
             />
-
-            {/* <div className="grid grid-cols-2 gap-4">
-                <div className=" p-4">
-                  <Button
-                    className="w-full max-w-[268px] "
-                    variant={"secondary"}
-                    onClick={() => setStep(1)}
-                  >
-                    {t("back")}
-                  </Button>
-                </div>
-                <div className=" p-4">
-                  <Button
-                    className="w-full max-w-[268px] "
-                    variant={"secondary"}
-                    onClick={() => setStep(3)}
-                  >
-                    {t("next")}
-                  </Button>
-                </div>
-              </div> */}
           </div>
           {/* )} */}
 
@@ -613,22 +434,12 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                 </FormItem>
               )}
             />
-            {/* <FormField
-                control={form.control}
-                name="vType"
-                render={({ field }) => (
-                  <FormItem className=" w-full mb-2">
-                    <FormLabel className="text-base"></FormLabel>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
 
             <FormField
               control={form.control}
               name="accommodationTypes"
               render={({ field }) => (
-                <FormItem className=" w-full mb-2 max-w-3xl">
+                <FormItem className=" w-full mb-2 ">
                   <FormLabel className="text-base">
                     {t("whichTypeOfAccomidation")}
                   </FormLabel>
@@ -643,14 +454,17 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                           .map((item, index) => (
                             <SelectableCard
                               key={index}
-                              title={item.title}
+                              title={t(item.title)}
                               imageUrl={item.imageUrl}
                               onSelect={(isSelected) =>
                                 isSelected
-                                  ? field.onChange([...field.value, item.title])
+                                  ? field.onChange([
+                                      ...field.value,
+                                      t(item.title),
+                                    ])
                                   : field.onChange(
                                       field.value?.filter(
-                                        (value) => value !== item.title
+                                        (value) => value !== t(item.title)
                                       )
                                     )
                               }
@@ -662,28 +476,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                 </FormItem>
               )}
             />
-            {/* <div className="grid grid-cols-2 gap-4">
-                <div className=" p-4">
-                  <Button
-                    className="w-full max-w-[268px] "
-                    variant={"secondary"}
-                    onClick={() => setStep(2)}
-                  >
-                    {t("back")}
-                  </Button>
-                </div>
-                <div className=" p-4">
-                  <Button
-                    className="w-full max-w-[268px] "
-                    variant={"secondary"}
-                    onClick={() => setStep(4)}
-                  >
-                    {t("next")}
-                  </Button>
-                </div>
-              </div> */}
           </div>
-          {/* )} */}
 
           {/* {step === 4 && ( */}
           <div className="w-full  flex flex-col gap-6">
@@ -723,7 +516,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {item.label}
+                              {t(item.label)}
                             </FormLabel>
                           </FormItem>
                         );
@@ -746,20 +539,20 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                         {t("whichTypeOfActivities")}
                       </FormLabel>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-3xl">
+                    <Card className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 p-4">
                       {cardOptionsSelect.map((card, i) => (
                         <div className="flex flex-col gap-2" key={i}>
-                          <div className="relative w-full h-20">
+                          <div className="relative w-full h-40 ">
                             <Image
                               alt="image"
-                              className="object-cover"
+                              className="object-cover rounded-md"
                               fill
                               src={card.image}
                               sizes="50vw"
                               priority={false}
                             ></Image>
                           </div>
-                          <p className=" text-md ">{card.title}</p>
+                          <p className=" text-md ">{t(card.title)}</p>
                           <div className="flex flex-col gap-3">
                             {card.options.map((option, j) => (
                               <div className="flex gap-2 items-center" key={j}>
@@ -779,14 +572,14 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                                   }}
                                 />
                                 <FormLabel className="font-normal">
-                                  {option.label}
+                                  {t(option.label)}
                                 </FormLabel>
                               </div>
                             ))}
                           </div>
                         </div>
                       ))}
-                    </div>
+                    </Card>
                     <FormMessage />
                   </FormItem>
                 );
@@ -815,7 +608,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                           <RadioGroupItem value="Seeing-one-of-the-worlds-7-wonders" />
                         </FormControl>
                         <FormLabel className="font-normal pr-2 pl-2">
-                          {t(`Seeing-one-of-the-worlds-7-wonders`)}
+                          {t("Seeing-one-of-the-worlds-7-wonders")}
                         </FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
@@ -977,6 +770,12 @@ export const ConsultationForm: FC<TConsultationForm> = ({
           </div>
         </form>
       </Form>
+      <ConsultationCheckoutForm
+        consultation={chosenPackage}
+        formData={formData}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </div>
   );
 };
