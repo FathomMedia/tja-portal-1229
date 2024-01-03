@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { AdventureOrdersComponent } from "./adventures/AdventureOrdersComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ConsultationOrdersComponent } from "./consultation/ConsultationOrdersComponent";
 
 export const OrdersComponent = () => {
   const locale = useLocale();
@@ -45,7 +46,7 @@ export const OrdersComponent = () => {
           <AdventureOrdersComponent />
         </TabsContent>
         <TabsContent value="consultation">
-          Change your password here.
+          <ConsultationOrdersComponent />
         </TabsContent>
       </Tabs>
     </div>

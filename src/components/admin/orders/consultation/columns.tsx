@@ -1,7 +1,7 @@
 "use client";
 
-import { TAdventureBooking } from "@/lib/types";
-import { ColumnDef } from "@tanstack/react-table";
+import { TConsultationBooking } from "@/lib/types";
+import { ColumnDef, VisibilityState } from "@tanstack/react-table";
 import {
   CheckCircle2,
   ClipboardCopy,
@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 
-export const columns: ColumnDef<TAdventureBooking>[] = [
+export const columns: ColumnDef<TConsultationBooking>[] = [
   {
     accessorKey: "id",
     header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
@@ -67,76 +67,71 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "phone",
     header: () => <DisplayTranslatedText text="Phone" translation="SignUp" />,
     cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Phone copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.phone);
-          }}
-        >
-          {row.original.customer.phone}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
+      return <p>{row.original.customer.phone}</p>;
     },
   },
   {
-    accessorKey: "adventureName",
+    accessorKey: "consultationTier",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="title" translation="Adventures" />
+        <DisplayTranslatedText text="tier" translation="Consultation" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.adventure.title}</p>,
+    cell: ({ row }) => <p>{row.original.consultation.tier}</p>,
   },
   {
-    accessorKey: "isFullyPaid",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <DisplayTranslatedText text="isFullyPaid" translation="Adventures" />
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "consultationNumberOfDays",
+    header: () => (
+      <div className="min-w-[8rem]">
+        <DisplayTranslatedText
+          text="Number of Days"
+          translation="Consultation"
+        />
+      </div>
+    ),
+    cell: ({ row }) => <p>{row.original.consultation.numberOfDays}</p>,
+  },
+  // {
+  //   accessorKey: "isPaid",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         <DisplayTranslatedText text="isPaid" translation="Consultation" />
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
 
-    cell: ({ row }) => {
-      return row.original.isFullyPaid ? (
-        <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
-      ) : (
-        <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
-      );
-    },
+  //   cell: ({ row }) => {
+  //     return row.original.isPaid ? (
+  //       <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
+  //     ) : (
+  //       <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
+  //     );
+  //   },
+  // },
+  {
+    accessorKey: "consultationStartDate",
+    header: () => (
+      <DisplayTranslatedText text="startDate" translation="Consultation" />
+    ),
+    cell: ({ row }) => <p>{row.original.startDate}</p>,
   },
   {
-    accessorKey: "adventureStartDate",
+    accessorKey: "consultationEndDate",
     header: () => (
-      <DisplayTranslatedText text="startDate" translation="Adventures" />
+      <DisplayTranslatedText text="endDate" translation="Consultation" />
     ),
-    cell: ({ row }) => <p>{row.original.adventure.startDate}</p>,
-  },
-  {
-    accessorKey: "adventureEndDate",
-    header: () => (
-      <DisplayTranslatedText text="endDate" translation="Adventures" />
-    ),
-    cell: ({ row }) => <p>{row.original.adventure.endDate}</p>,
+    cell: ({ row }) => <p>{row.original.endDate}</p>,
   },
   {
     accessorKey: "dateBooked",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="dateBooked" translation="Adventures" />
+        <DisplayTranslatedText text="dateBooked" translation="Consultation" />
       </div>
     ),
   },
@@ -145,20 +140,21 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "totalPriceWithCurrency",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="price" translation="Adventures" />
+        <DisplayTranslatedText text="price" translation="Consultation" />
       </div>
     ),
+    cell: ({ row }) => <p>{row.original.consultation.priceWithCurrency}</p>,
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions adventureBooking={row.original} />,
+    cell: ({ row }) => <Actions consultationBooking={row.original} />,
   },
 ];
 
 const Actions = ({
-  adventureBooking,
+  consultationBooking,
 }: {
-  adventureBooking: TAdventureBooking;
+  consultationBooking: TConsultationBooking;
 }) => {
   const locale = useLocale();
 
@@ -203,18 +199,18 @@ const Actions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem asChild>
+          {/* <DropdownMenuItem asChild>
             <Link
-              href={`/${locale}/admin/customers/edit/${adventureBooking.customer.id}`}
+              href={`/${locale}/admin/customers/edit/${consultationBooking.customer.id}`}
             >
               View Customer
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/${locale}/admin/booking/${adventureBooking.id}`}>
+            <Link href={`/${locale}/admin/booking/${consultationBooking.id}`}>
               View Booking
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             {
