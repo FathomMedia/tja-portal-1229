@@ -25,7 +25,7 @@ import Link from "next/link";
 import { cn, formatePrice } from "@/lib/utils";
 import { PaymentTypeSelect } from "./PaymentTypeSelect";
 import { useRouter } from "next/navigation";
-
+import { format } from "date-fns";
 import {
   Card,
   CardHeader,
@@ -42,7 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   Sheet,
   SheetContent,
@@ -51,11 +51,31 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { ScrollArea } from "../ui/scroll-area";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { Skeleton } from "../ui/skeleton";
 
 type TConsultationCheckoutForm = {
   consultation: TConsultation;
-  formData: any;
+  formData: {
+    packageId: number;
+    startDate: Date;
+    endDate: Date;
+    destination: string;
+    class: string;
+    airport: string;
+    plus: number;
+    budget: string;
+    bPriority: string;
+    budgetIncludes: string[];
+    vType: string;
+    accommodationTypes: string[];
+    adventureToYouIs: string[];
+    activityTypes: string[];
+    travelExperience: string;
+    otherFears?: string | undefined;
+    tripType: string;
+  };
   isOpen: boolean;
   setIsOpen: (newOpen: boolean) => void;
 };
@@ -72,110 +92,109 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
   const locale = useLocale();
   const { push } = useRouter();
 
-  const formSchema = z
-    .object({
-      // Consultation choices
-      coupon: z
-        .object({
-          id: z.number(),
-          code: z.string(),
-          type: z.enum(["percentage", "fixed"]),
-          value: z.number().optional(),
-          percentOff: z.number().optional(),
-          minPoints: z.number(),
-          maxPoints: z.number(),
-          applyTo: z.string(),
-          isUsed: z.number(),
-        })
-        .nullable(),
-      // Payment method
-      paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
-      cardName: z.string().optional(),
-      cardNumber: z.string().optional(),
-      cardExpMonth: z.string().optional(),
-      cardExpYear: z.string().optional(),
-      cardCVV: z.string().optional(),
-    })
-    .superRefine(
-      (
-        {
-          paymentMethod,
-          cardName,
-          cardNumber,
-          cardExpMonth,
-          cardExpYear,
-          cardCVV,
-        },
-        ctx
-      ) => {
-        if (paymentMethod === "card" && cardName === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card name is required",
-            path: ["cardName"],
-          });
-        }
-        if (paymentMethod === "card" && cardNumber === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is required",
-            path: ["cardNumber"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpMonth === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry month is required",
-            path: ["cardExpMonth"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpYear === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry year is required",
-            path: ["cardExpYear"],
-          });
-        }
-        if (paymentMethod === "card" && cardCVV === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is required",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is invalid",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is invalid",
-            path: ["cardCVV"],
-          });
-        }
-      }
-    );
+  const formSchema = z.object({
+    // Consultation choices
+    coupon: z
+      .object({
+        id: z.number(),
+        code: z.string(),
+        type: z.enum(["percentage", "fixed"]),
+        value: z.number().optional(),
+        percentOff: z.number().optional(),
+        minPoints: z.number(),
+        maxPoints: z.number(),
+        applyTo: z.string(),
+        isUsed: z.number(),
+      })
+      .nullable(),
+    // Payment method
+    paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+    // cardName: z.string().optional(),
+    // cardNumber: z.string().optional(),
+    // cardExpMonth: z.string().optional(),
+    // cardExpYear: z.string().optional(),
+    // cardCVV: z.string().optional(),
+  });
+  // .superRefine(
+  //   (
+  //     {
+  //       paymentMethod,
+  //       cardName,
+  //       cardNumber,
+  //       cardExpMonth,
+  //       cardExpYear,
+  //       cardCVV,
+  //     },
+  //     ctx
+  //   ) => {
+  //     if (paymentMethod === "card" && cardName === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card name is required",
+  //         path: ["cardName"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardNumber === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is required",
+  //         path: ["cardNumber"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpMonth === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry month is required",
+  //         path: ["cardExpMonth"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpYear === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry year is required",
+  //         path: ["cardExpYear"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardCVV === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is required",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //   }
+  // );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       coupon: null,
       paymentMethod: "card",
-      cardName: "",
-      cardNumber: "",
-      cardExpMonth: "",
-      cardExpYear: "",
-      cardCVV: "",
+      // cardName: "",
+      // cardNumber: "",
+      // cardExpMonth: "",
+      // cardExpYear: "",
+      // cardCVV: "",
     },
   });
 
@@ -183,20 +202,66 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
     string | undefined
   >(form.formState.defaultValues?.paymentMethod);
 
-  const [discount, setDiscount] = useState(0);
-  const [totalFullPrice, setTotalFullPrice] = useState(0);
+  const [discount, setDiscount] = useState<number>(0);
+
+  const [totalFullPrice, setTotalFullPrice] = useState<number>(
+    consultation.price
+  );
 
   useEffect(() => {
+    console.log("first");
+
+    setTotalFullPrice(consultation.price - discount);
+
     return () => {};
-  }, [consultation.price, discount, totalFullPrice]);
+  }, [consultation.price, discount]);
+
+  const { data: myCoupons, isFetching: isFetchingMyCoupons } = useQuery<
+    TCoupon[]
+  >({
+    queryKey: ["/profile/coupons/redeemed"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/profile/coupons/redeemed", locale }).then(
+        (res) => res.json().then((resData) => resData.data)
+      ),
+  });
 
   const mutation = useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) => {
+      var dataToRequest = {
+        payment_method: values.paymentMethod,
+        ...(values.coupon && { coupon: values.coupon.code }),
+        start_date: format(formData.startDate, "dd/MM/yyyy"),
+        end_date: format(formData.endDate, "dd/MM/yyyy"),
+        class: formData.class,
+        number_of_travelers: formData.plus,
+        budget: formData.budget,
+        budget_priority: formData.bPriority,
+        vacation_type: formData.vType,
+        accommodation_type: formData.accommodationTypes,
+        activities: formData.activityTypes,
+        destination: formData.destination,
+        adventure_meaning: formData.adventureToYouIs,
+        morning_activity: formData.tripType,
+        departure_airport: formData.airport,
+        // ...(values.paymentMethod === "card" && {
+        //   card_holder_name: values.cardName,
+        //   card_number: values.cardNumber,
+        //   card_expiry_month: values.cardExpMonth,
+        //   card_expiry_year: values.cardExpYear,
+        //   card_cvv: values.cardCVV,
+        // }),
+      };
+      console.log(
+        "🚀 ~ file: ConsultationCheckoutForm.tsx:255 ~ dataToRequest:",
+        dataToRequest
+      );
+
       return fetch(`/api/book/consultation`, {
         method: "POST",
         body: JSON.stringify({
           id: consultation.id,
-          dataToRequest: values,
+          dataToRequest: dataToRequest,
         }),
         headers: {
           "Accept-Language": locale,
@@ -205,15 +270,27 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
       });
     },
     async onSuccess(data, values) {
-      const { message, data: dataResponse } = await data.json();
+      // const { message, data: dataResponse } = await data.json();
+      // if (data.ok) {
+      //   console.log(
+      //     "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
+      //     dataResponse
+      //   );
+      //   toast.success(message, { duration: 6000 });
+      // } else {
+      //   toast.error(message, { duration: 6000 });
+      // }
+
       if (data.ok) {
-        console.log(
-          "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
-          dataResponse
-        );
-        toast.success(message, { duration: 6000 });
+        const paymentSession = await data.json();
+
+        if (paymentSession?.session?.PaymentURL) {
+          push(paymentSession?.session?.PaymentURL);
+        } else {
+          toast.error("Couldn't create a payment session", { duration: 6000 });
+        }
       } else {
-        toast.error(message, { duration: 6000 });
+        toast.error("Couldn't create a payment session", { duration: 6000 });
       }
     },
     async onError(error) {
@@ -222,51 +299,8 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-
-    var dataToRequest = {
-      payment_method: values.paymentMethod,
-      ...(values.coupon && { coupon: values.coupon.code }),
-      ...(values.paymentMethod === "card" && {
-        card_holder_name: values.cardName,
-        card_number: values.cardNumber,
-        card_expiry_month: values.cardExpMonth,
-        card_expiry_year: values.cardExpYear,
-        card_cvv: values.cardCVV,
-      }),
-    };
-
-    const response = await fetch(`/api/book/consultation`, {
-      method: "POST",
-      body: JSON.stringify({
-        id: consultation.id,
-        dataToRequest: dataToRequest,
-      }),
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (paymentSessionRes) => {
-        if (paymentSessionRes.ok) {
-          const paymentSession = await paymentSessionRes.json();
-
-          push(paymentSession.session.PaymentURL);
-        } else {
-          toast.error("Failed to create a payment session.");
-        }
-      })
-      .catch((err) => {
-        console.log(
-          "🚀 ~ file: consultationCheckoutForm.tsx:265 ~ .then ~ err:",
-          err
-        );
-        toast.error(err.message);
-      })
-
-      .finally(() => setIsLoading(false));
-
-    console.log(response);
+    // setIsLoading(true);
+    mutation.mutate(values);
   }
 
   return (
@@ -349,29 +383,40 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                     Get Coupons
                                   </Link>
                                 </div>
-                                {/* {myCoupons && myCoupons.length > 0 && (
-                              <FormControl>
-                                <CouponsSelect
-                                  applyTo="consultation"
-                                  coupons={myCoupons}
-                                  defaultSelected={field.value}
-                                  onSelect={(selected) => {
-                                    setDiscount(selected?.value || 0);
-    
-                                    field.onChange(selected);
-                                  }}
-                                />
-                              </FormControl>
-                            )}
-                            {/* if user have no redeemed coupons  */}
-                                {/* {!myCoupons ||
-                              (myCoupons.length === 0 && (
-                                <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center cursor-pointer min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
-                                  <p className="text-sm font-medium">
-                                    {"You don't have any redeemed coupons"}
-                                  </p>
-                                </div>
-                              ))} } */}
+                                {isFetchingMyCoupons && (
+                                  <Skeleton className="w-full h-20" />
+                                )}
+                                {myCoupons && myCoupons.length > 0 && (
+                                  <FormControl>
+                                    <CouponsSelect
+                                      applyTo="consultation"
+                                      coupons={myCoupons}
+                                      defaultSelected={field.value}
+                                      onSelect={(selected) => {
+                                        if (selected?.type === "percentage") {
+                                          const val =
+                                            (totalFullPrice *
+                                              (selected.percentOff || 0)) /
+                                            100;
+                                          setDiscount(val);
+                                        } else {
+                                          setDiscount(selected?.value || 0);
+                                        }
+
+                                        field.onChange(selected);
+                                      }}
+                                    />
+                                  </FormControl>
+                                )}
+                                {/* if user have no redeemed coupons  */}
+                                {!myCoupons ||
+                                  (myCoupons.length === 0 && (
+                                    <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center cursor-pointer min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
+                                      <p className="text-sm font-medium">
+                                        {"You don't have any redeemed coupons"}
+                                      </p>
+                                    </div>
+                                  ))}
                                 <FormMessage />
                               </FormItem>
                             )}
@@ -388,6 +433,14 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
 
                         <p className="font-medium">{t("discount")}:</p>
                         <p>{formatePrice({ locale, price: discount })} -</p>
+                      </div>
+                      <div className="col-span-2 grid grid-cols-2 gap-3">
+                        <p className="text-xl font-medium text-primary">
+                          {t("total") + ":"}
+                        </p>
+                        <p className="text-xl font-medium text-primary">
+                          {formatePrice({ locale, price: totalFullPrice })}
+                        </p>
                       </div>
                     </div>
                     <Separator className="bg-muted/50" />
@@ -457,12 +510,17 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                   </div>
                                 </RadioGroup>
                               </FormControl>
+                              {field.value === "benefitpay" && (
+                                <p className="text-muted-foreground text-sm">
+                                  {t("benefitPay-debit-card-for-Bahraini-only")}
+                                </p>
+                              )}
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                         {/* card details */}
-                        {selectedPaymentMethod === "card" && (
+                        {/* {selectedPaymentMethod === "card" && (
                           <div className={cn("grid gap-6")}>
                             <FormField
                               control={form.control}
@@ -645,7 +703,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                               />
                             </div>
                           </div>
-                        )}
+                        )} */}
                       </CardContent>
                       <CardFooter>
                         <Button

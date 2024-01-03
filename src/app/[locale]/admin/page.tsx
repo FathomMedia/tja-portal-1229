@@ -1,30 +1,13 @@
-import { DashboardHome } from "@/components/dashboard/DashboardHome";
-import { getToken } from "@/lib/serverUtils";
-import { apiReq } from "@/lib/apiHelpers";
-import { useLocale } from "next-intl";
+import { DashboardSection } from "@/components/DashboardSection";
+import { LatestsOrdersComponent } from "@/components/admin/latests-orders/LatestsOrdersComponent";
+import { useTranslations } from "next-intl";
 
-export default async function Page() {
-  const locale = useLocale();
-  const token = getToken();
+export default function Page() {
+  const t = useTranslations("Dashboard");
 
-  const user = await apiReq({
-    endpoint: "/users/profile",
-    locale,
-    token: token,
-  }).then(async (val) => {
-    const { data } = await val.json();
-    return data;
-  });
-
-  // const latestOrders = await apiReq({
-  //   endpoint: "/profile/bookings",
-  //   locale,
-  //   token: token?.value,
-  // }).then(async (val) => {
-  //   const { data } = await val.json();
-  //   return data;
-  // });
-  // console.log("🚀 ~ file: page.tsx:36 ~ Page ~ latestOrders:", latestOrders);
-
-  return <div>Admin</div>;
+  return (
+    <DashboardSection title={t("home")}>
+      <LatestsOrdersComponent />
+    </DashboardSection>
+  );
 }

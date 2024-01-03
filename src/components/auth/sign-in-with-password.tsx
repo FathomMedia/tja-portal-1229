@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,13 +20,28 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { apiReq } from "@/lib/apiHelpers";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 export const SignInWithPassword = () => {
   const { push } = useRouter();
   const locale = useLocale();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const t = useTranslations("SignInWithPassword");
+
+  const createQueryString = useCallback(
+    (pairs: { name: string; value: string }[]) => {
+      const params = new URLSearchParams(searchParams);
+      pairs.forEach(({ name, value }) => {
+        params.set(name, value);
+      });
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const formSchema = z.object({
     email: z
       .string()
@@ -49,6 +64,7 @@ export const SignInWithPassword = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
     setIsLoading(true);
 
     const response = await fetch(
@@ -71,8 +87,12 @@ export const SignInWithPassword = () => {
     const res = await response.json();
 
     if (response.ok) {
+      const isAdmin = res.data.role === "Admin";
       toast.success(res.message);
-      push(`/${locale}/dashboard`);
+      const redirectTo = pathname.includes("authentication")
+        ? `/${locale}/${isAdmin ? "admin" : "dashboard"}`
+        : pathname + "?" + createQueryString([]);
+      push(redirectTo);
     } else {
       toast.error(res.message);
     }
@@ -82,7 +102,7 @@ export const SignInWithPassword = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 flex flex-col items-center"
+        className="space-y-8 flex w-full flex-col items-center"
       >
         <FormField
           control={form.control}
@@ -106,7 +126,7 @@ export const SignInWithPassword = () => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className=" w-full">
+            <FormItem className=" w-full flex flex-col">
               <FormLabel>{t("password.title")}</FormLabel>
               <FormControl>
                 <Input
@@ -117,6 +137,12 @@ export const SignInWithPassword = () => {
                 />
               </FormControl>
               <FormMessage />
+              <Link
+                className="text-sm text-primary w-fit self-center"
+                href={`/${locale}/authentication/forgot-password`}
+              >
+                {t("lostPassword")}
+              </Link>
             </FormItem>
           )}
         />
@@ -128,12 +154,6 @@ export const SignInWithPassword = () => {
           {isLoading && <Icons.spinner className="me-2 h-4 w-4 animate-spin" />}
           {t("signIn")}
         </Button>
-        <Link
-          className="text-sm text-primary"
-          href={`/${locale}/authentication/forgot-password`}
-        >
-          {t("lostPassword")}
-        </Link>
       </form>
     </Form>
   );

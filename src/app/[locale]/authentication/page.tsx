@@ -11,7 +11,7 @@ export default async function Page() {
   return (
     <div className=" w-full bg-background">
       {/* auth card */}
-      <div className="container max-w-md flex flex-col items-center py-6  md:py-20">
+      <div className="container flex flex-col items-center py-6  md:py-20">
         <UserAuthForm />
       </div>
     </div>

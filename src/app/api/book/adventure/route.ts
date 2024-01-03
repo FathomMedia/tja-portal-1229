@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     dataToRequest: {
       reason: string;
       coupon: string | null;
-      addons: number[] | null;
+      add_ons: number[] | null;
       is_partial: boolean;
       payment_method: "benefitpay" | "applepay" | "card";
     };

@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
 import { useLocale, useTranslations } from "next-intl";
-import toast from "react-hot-toast";
+import { toast } from "sonner"
 
 import { TUser } from "@/lib/types";
 

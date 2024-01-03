@@ -27,7 +27,7 @@ module.exports = {
         },
         destructive: {
           DEFAULT: "#FF7373",
-          foreground: "##F4F3F0",
+          foreground: "#F4F3F0",
         },
         info: {
           DEFAULT: "#65D0E7",
@@ -74,5 +74,6 @@ module.exports = {
   plugins: [
     require("tailwindcss-animate"),
     require("@tailwindcss/container-queries"),
+    require("@tailwindcss/typography"),
   ],
 };

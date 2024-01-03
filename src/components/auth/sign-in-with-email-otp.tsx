@@ -19,8 +19,9 @@ import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { apiReq } from "@/lib/apiHelpers";
+import OtpInput from "react-otp-input";
 
 export const SignInWithEmailOTP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,7 +29,7 @@ export const SignInWithEmailOTP = () => {
   const t = useTranslations("SignUp");
 
   const locale = useLocale();
-  const router = useRouter();
+  const { push } = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams()!;
 
@@ -84,8 +85,7 @@ export const SignInWithEmailOTP = () => {
 
     if (res.ok) {
       const { message } = await res.json();
-
-      router.push(
+      push(
         pathname +
           "?" +
           createQueryString([
@@ -121,20 +121,24 @@ export const SignInWithEmailOTP = () => {
     const res = await response.json();
 
     if (response.ok) {
+      const isAdmin = res.data.role === "Admin";
       toast.success(res.message);
-      router.push(`/${locale}/dashboard`);
+      const redirectTo = pathname.includes("authentication")
+        ? `/${locale}/${isAdmin ? "admin" : "dashboard"}`
+        : pathname + "?" + createQueryString([]);
+      push(redirectTo);
     } else {
       toast.error(res.message);
     }
   }
 
   return (
-    <div>
+    <div className="w-full">
       {!Boolean(searchParams.get("otpSent")) && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmitEmail)}
-            className="space-y-8 flex flex-col items-center"
+            className="space-y-8 flex  flex-col items-center"
           >
             <FormField
               control={form.control}
@@ -188,6 +192,7 @@ export const SignInWithEmailOTP = () => {
                       className=" border-primary"
                       type="email"
                       {...field}
+                      value={searchParams.get("email") ?? ""}
                     />
                   </FormControl>
                 </FormItem>
@@ -197,14 +202,32 @@ export const SignInWithEmailOTP = () => {
               control={formOTP.control}
               name="otp"
               render={({ field }) => (
-                <FormItem className=" w-full">
+                <FormItem className=" w-fit">
                   <FormLabel>{t("OTP")}</FormLabel>
                   <FormControl>
-                    <Input
+                    {/* <Input
                       placeholder={t("OTPSentToTheAboveEmail")}
                       className=" border-primary"
                       type="text"
                       {...field}
+                    /> */}
+                    <OtpInput
+                      containerStyle={{
+                        width: "fit-content",
+                      }}
+                      value={field.value}
+                      onChange={field.onChange}
+                      numInputs={6}
+                      renderSeparator={<span className="w-2"></span>}
+                      renderInput={(props) => (
+                        <Input
+                          {...props}
+                          className="rounded-md !w-12 h-12"
+                          type="text"
+                        />
+                      )}
+                      inputType="number"
+                      shouldAutoFocus={true}
                     />
                   </FormControl>
                   <FormMessage />

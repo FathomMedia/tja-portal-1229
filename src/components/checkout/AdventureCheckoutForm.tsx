@@ -1,6 +1,6 @@
 "use client";
 
-import { TAdventure, TCoupon, TUser } from "@/lib/types";
+import { TAdventure, TCoupon } from "@/lib/types";
 import React, { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
@@ -44,133 +44,205 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { Skeleton } from "../ui/skeleton";
 
 type TAdventureCheckoutForm = {
-  adventure: TAdventure;
-  user: TUser;
-  myCoupons: TCoupon[] | null;
+  initAdventure: TAdventure;
 };
 
 export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
-  adventure,
-  user,
-  myCoupons,
+  initAdventure,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const t = useTranslations("Checkout");
   const locale = useLocale();
   const { push } = useRouter();
 
-  const formSchema = z
-    .object({
-      // Adventures choices
-      why: z.string().min(1, t("why.errors.required")),
-      addOns: z.array(
-        z.object({
-          id: z.number(),
-          title: z.string(),
-          price: z.number(),
-        })
-      ),
-      coupon: z
-        .object({
-          id: z.number(),
-          code: z.string(),
-          type: z.enum(["percentage", "fixed"]),
-          value: z.number().optional(),
-          percentOff: z.number().optional(),
-          minPoints: z.number(),
-          maxPoints: z.number(),
-          applyTo: z.string(),
-          isUsed: z.number(),
-        })
-        .nullable(),
-      isPartialPayment: z.boolean(),
-      // // Billing Info
-      // customerName: z.string().min(1),
-      // address: z.string().min(1),
-      // city: z.string().min(1),
-      // country: z.string().min(1),
-      // email: z.string().email().min(1),
-      // phone: z.string().min(1),
-      // Payment method
-      paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
-      cardName: z.string().optional(),
-      cardNumber: z.string().optional(),
-      cardExpMonth: z.string().optional(),
-      cardExpYear: z.string().optional(),
-      cardCVV: z.string().optional(),
-    })
-    .superRefine(
-      (
-        {
-          paymentMethod,
-          cardName,
-          cardNumber,
-          cardExpMonth,
-          cardExpYear,
-          cardCVV,
+  const mutation = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      var dataToRequest = {
+        reason: values.why,
+        is_partial: values.isPartialPayment,
+        payment_method: values.paymentMethod,
+        ...(values.coupon && { coupon: values.coupon.code }),
+
+        ...(values.addOns.length > 0 && {
+          add_ons: values.addOns.map((addon) => addon.id),
+        }),
+        // ...(values.paymentMethod === "card" && {
+        //   card_holder_name: values.cardName,
+        //   card_number: values.cardNumber,
+        //   card_expiry_month: values.cardExpMonth,
+        //   card_expiry_year: values.cardExpYear,
+        //   card_cvv: values.cardCVV,
+        // }),
+      };
+      console.log(
+        "🚀 ~ file: AdventureCheckoutForm.tsx:81 ~ dataToRequest:",
+        dataToRequest
+      );
+
+      return fetch(`/api/book/adventure`, {
+        method: "POST",
+        body: JSON.stringify({
+          slug: adventure.slug,
+          dataToRequest: dataToRequest,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
         },
-        ctx
-      ) => {
-        if (paymentMethod === "card" && cardName === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card name is required",
-            path: ["cardName"],
-          });
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const paymentSession = await data.json();
+
+        if (paymentSession?.session?.PaymentURL) {
+          push(paymentSession?.session?.PaymentURL);
+        } else {
+          toast.error("Couldn't create a payment session", { duration: 6000 });
         }
-        if (paymentMethod === "card" && cardNumber === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is required",
-            path: ["cardNumber"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpMonth === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry month is required",
-            path: ["cardExpMonth"],
-          });
-        }
-        if (paymentMethod === "card" && cardExpYear === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card expiry year is required",
-            path: ["cardExpYear"],
-          });
-        }
-        if (paymentMethod === "card" && cardCVV === undefined) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is required",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card CVV is invalid",
-            path: ["cardCVV"],
-          });
-        }
-        if (
-          paymentMethod === "card" &&
-          ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
-        ) {
-          ctx.addIssue({
-            code: "custom",
-            message: "Card number is invalid",
-            path: ["cardCVV"],
-          });
-        }
+      } else {
+        toast.error("Couldn't create a payment session", { duration: 6000 });
       }
-    );
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  const { data: adventure, isFetching: isFetchingAdventure } =
+    useQuery<TAdventure>({
+      queryKey: [`/adventures/${initAdventure.slug}`],
+      queryFn: () =>
+        apiReqQuery({
+          endpoint: `/adventures/${initAdventure.slug}`,
+          locale,
+        }).then((res) => res.json().then((resData) => resData.data)),
+      initialData: initAdventure,
+    });
+
+  const { data: myCoupons, isFetching: isFetchingMyCoupons } = useQuery<
+    TCoupon[]
+  >({
+    queryKey: ["/profile/coupons/redeemed"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/profile/coupons/redeemed", locale }).then(
+        (res) => res.json().then((resData) => resData.data)
+      ),
+  });
+
+  const formSchema = z.object({
+    // Adventures choices
+    why: z.string().min(1, t("why.errors.required")),
+    addOns: z.array(
+      z.object({
+        id: z.number(),
+        title: z.string(),
+        price: z.number(),
+      })
+    ),
+    coupon: z
+      .object({
+        id: z.number(),
+        code: z.string(),
+        type: z.enum(["percentage", "fixed"]),
+        value: z.number().optional(),
+        percentOff: z.number().optional(),
+        minPoints: z.number(),
+        maxPoints: z.number(),
+        applyTo: z.string(),
+        isUsed: z.number(),
+      })
+      .nullable(),
+    isPartialPayment: z.boolean(),
+    // // Billing Info
+    // customerName: z.string().min(1),
+    // address: z.string().min(1),
+    // city: z.string().min(1),
+    // country: z.string().min(1),
+    // email: z.string().email().min(1),
+    // phone: z.string().min(1),
+    // Payment method
+    paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+    // cardName: z.string().optional(),
+    // cardNumber: z.string().optional(),
+    // cardExpMonth: z.string().optional(),
+    // cardExpYear: z.string().optional(),
+    // cardCVV: z.string().optional(),
+  });
+  // .superRefine(
+  //   (
+  //     {
+  //       paymentMethod,
+  //       cardName,
+  //       cardNumber,
+  //       cardExpMonth,
+  //       cardExpYear,
+  //       cardCVV,
+  //     },
+  //     ctx
+  //   ) => {
+  //     if (paymentMethod === "card" && cardName === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card name is required",
+  //         path: ["cardName"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardNumber === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is required",
+  //         path: ["cardNumber"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpMonth === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry month is required",
+  //         path: ["cardExpMonth"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardExpYear === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card expiry year is required",
+  //         path: ["cardExpYear"],
+  //       });
+  //     }
+  //     if (paymentMethod === "card" && cardCVV === undefined) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is required",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card CVV is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //     if (
+  //       paymentMethod === "card" &&
+  //       ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
+  //     ) {
+  //       ctx.addIssue({
+  //         code: "custom",
+  //         message: "Card number is invalid",
+  //         path: ["cardCVV"],
+  //       });
+  //     }
+  //   }
+  // );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -178,7 +250,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       why: "",
       addOns: [],
       coupon: null,
-      isPartialPayment: adventure.isPartialAllowed ? true : false,
+      isPartialPayment: adventure?.isPartialAllowed ? true : false,
       // customerName: user.name,
       // email: user.email,
       // phone: user.phone,
@@ -186,11 +258,11 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       // city: "",
       // country: "",
       paymentMethod: "card",
-      cardName: "",
-      cardNumber: "",
-      cardExpMonth: "",
-      cardExpYear: "",
-      cardCVV: "",
+      // cardName: "",
+      // cardNumber: "",
+      // cardExpMonth: "",
+      // cardExpYear: "",
+      // cardCVV: "",
     },
   });
 
@@ -206,7 +278,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
   const [partialRemaining, setPartialRemaining] = useState(0);
 
   useEffect(() => {
-    setTotalAdventureWithAddons(adventure.price + addonsTotal);
+    setTotalAdventureWithAddons(adventure?.price + addonsTotal);
 
     setTotalFullPrice(totalAdventureWithAddons - discount);
 
@@ -217,63 +289,14 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
     return () => {};
   }, [
     addonsTotal,
-    adventure.price,
+    adventure?.price,
     discount,
     totalAdventureWithAddons,
     totalFullPrice,
   ]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-
-    var dataToRequest = {
-      reason: values.why,
-      is_partial: values.isPartialPayment,
-      payment_method: values.paymentMethod,
-      ...(values.coupon && { coupon: values.coupon.code }),
-      ...(values.addOns.length > 0 && {
-        addons: values.addOns.map((addon) => addon.id),
-      }),
-      ...(values.paymentMethod === "card" && {
-        card_holder_name: values.cardName,
-        card_number: values.cardNumber,
-        card_expiry_month: values.cardExpMonth,
-        card_expiry_year: values.cardExpYear,
-        card_cvv: values.cardCVV,
-      }),
-    };
-
-    const response = await fetch(`/api/book/adventure`, {
-      method: "POST",
-      body: JSON.stringify({
-        slug: adventure.slug,
-        dataToRequest: dataToRequest,
-      }),
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-    })
-      .then(async (paymentSessionRes) => {
-        if (paymentSessionRes.ok) {
-          const paymentSession = await paymentSessionRes.json();
-
-          push(paymentSession.session.PaymentURL);
-        } else {
-          toast.error("Failed to create a payment session.");
-        }
-      })
-      .catch((err) => {
-        console.log(
-          "🚀 ~ file: AdventureCheckoutForm.tsx:265 ~ .then ~ err:",
-          err
-        );
-        toast.error(err.message);
-      })
-
-      .finally(() => setIsLoading(false));
-
-    console.log(response);
+    mutation.mutate(values);
   }
 
   return (
@@ -288,46 +311,49 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 <h3 className="font-bold md:text-2xl text-xl text-primary">
                   {t("paymentBreakdown")}
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <p className="font-medium">{t("adventure")}:</p>
-                  <p>{formatePrice({ locale, price: adventure.price })}</p>
-                  <p className="font-medium">{t("addons")}:</p>
-                  <p>{formatePrice({ locale, price: addonsTotal })} +</p>
-                  <p className="font-medium">{t("discount")}:</p>
-                  <p>{formatePrice({ locale, price: discount })} -</p>
-                  {form.getValues().isPartialPayment && (
-                    <>
-                      <p className="font-medium">{t("remaining")}:</p>
-                      <div>
-                        <p>
-                          {formatePrice({ locale, price: partialRemaining })}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {t("toBePaidLater")}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                  {form.getValues().isPartialPayment && (
-                    <p className="font-medium">{t("total")}:</p>
-                  )}
-                  {form.getValues().isPartialPayment && (
-                    <p>{formatePrice({ locale, price: totalFullPrice })}</p>
-                  )}
-                  <Separator className="bg-muted/50 col-span-2" />
-                  <div className="col-span-2 grid grid-cols-2 gap-3">
-                    <p className="text-xl font-medium text-primary">
-                      {form.getValues().isPartialPayment
-                        ? t("payNow") + ":"
-                        : t("total") + ":"}
-                    </p>
-                    <p className="text-xl font-medium text-primary">
-                      {form.getValues().isPartialPayment
-                        ? formatePrice({ locale, price: partialPrice })
-                        : formatePrice({ locale, price: totalFullPrice })}
-                    </p>
+                {isFetchingAdventure && <Skeleton className="w-full h-60" />}
+                {adventure && !isFetchingAdventure && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <p className="font-medium">{t("adventure")}:</p>
+                    <p>{formatePrice({ locale, price: adventure.price })}</p>
+                    <p className="font-medium">{t("addons")}:</p>
+                    <p>{formatePrice({ locale, price: addonsTotal })} +</p>
+                    <p className="font-medium">{t("discount")}:</p>
+                    <p>{formatePrice({ locale, price: discount })} -</p>
+                    {form.getValues().isPartialPayment && (
+                      <>
+                        <p className="font-medium">{t("remaining")}:</p>
+                        <div>
+                          <p>
+                            {formatePrice({ locale, price: partialRemaining })}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {t("toBePaidLater")}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    {form.getValues().isPartialPayment && (
+                      <p className="font-medium">{t("total")}:</p>
+                    )}
+                    {form.getValues().isPartialPayment && (
+                      <p>{formatePrice({ locale, price: totalFullPrice })}</p>
+                    )}
+                    <Separator className="bg-muted/50 col-span-2" />
+                    <div className="col-span-2 grid grid-cols-2 gap-3">
+                      <p className="text-xl font-medium text-primary">
+                        {form.getValues().isPartialPayment
+                          ? t("payNow") + ":"
+                          : t("total") + ":"}
+                      </p>
+                      <p className="text-xl font-medium text-primary">
+                        {form.getValues().isPartialPayment
+                          ? formatePrice({ locale, price: partialPrice })
+                          : formatePrice({ locale, price: totalFullPrice })}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <Separator className="bg-muted/50" />
               {/* Payment Method */}
@@ -340,7 +366,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     control={form.control}
                     name="paymentMethod"
                     render={({ field }) => (
-                      <FormItem className=" w-full">
+                      <FormItem className="@container/paymentMethod w-full">
                         <FormControl>
                           <RadioGroup
                             onValueChange={(val) => {
@@ -348,7 +374,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                               field.onChange(val);
                             }}
                             defaultValue={field.value}
-                            className="grid grid-cols-3 gap-4"
+                            className="grid @sm/paymentMethod:grid-cols-3 grid-cols-1 gap-4"
                           >
                             <div>
                               <RadioGroupItem
@@ -396,12 +422,17 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                             </div>
                           </RadioGroup>
                         </FormControl>
+                        {field.value === "benefitpay" && (
+                          <p className="text-muted-foreground text-sm">
+                            {t("benefitPay-debit-card-for-Bahraini-only")}
+                          </p>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   {/* card details */}
-                  {selectedPaymentMethod === "card" && (
+                  {/* {selectedPaymentMethod === "card" && (
                     <div className={cn("grid gap-6")}>
                       <FormField
                         control={form.control}
@@ -553,7 +584,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                         />
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </CardContent>
                 <CardFooter>
                   <Button
@@ -561,7 +592,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     // disabled={!form.formState.isValid}
                     className="w-full mt-4"
                   >
-                    {isLoading && (
+                    {mutation.isPending && (
                       <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                     )}
                     Place Order
@@ -588,42 +619,45 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   />
                 </div>
                 {/* Adventure info */}
-                <div className="w-full flex flex-col justify-between space-y-2">
-                  <div className="flex flex-col gap-2">
-                    <h3 className="font-bold md:text-2xl text-xl">
-                      {adventure.title}
-                    </h3>
-                    <div className="flex justify-between item-center">
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant={"secondary"}>
-                          {t("startDate")} <p>{adventure.startDate}</p>
-                        </Badge>
-                        <Badge variant={"secondary"}>
-                          {t("endDate")} <p>{adventure.endDate}</p>
-                        </Badge>
-                        <Badge variant={"info"}>
-                          <p>{adventure.gender}</p>
-                        </Badge>
+                {isFetchingAdventure && <Skeleton className="w-full h-60" />}
+                {adventure && !isFetchingAdventure && (
+                  <div className="w-full flex flex-col justify-between space-y-2">
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-bold md:text-2xl text-xl">
+                        {adventure.title}
+                      </h3>
+                      <div className="flex justify-between item-center">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant={"secondary"}>
+                            {t("startDate")} <p>{adventure.startDate}</p>
+                          </Badge>
+                          <Badge variant={"secondary"}>
+                            {t("endDate")} <p>{adventure.endDate}</p>
+                          </Badge>
+                          <Badge variant={"info"}>
+                            <p>{adventure.gender}</p>
+                          </Badge>
+                        </div>
                       </div>
+                      <p className="md:text-lg text-muted text-base">
+                        {adventure.description}
+                      </p>
                     </div>
-                    <p className="md:text-lg text-muted text-base">
-                      {adventure.description}
+                    <p className="text-muted mb-4">
+                      <span className="font-bold">{t("country")}</span>{" "}
+                      {adventure.country}
+                    </p>
+
+                    <p className="text-muted mb-4">
+                      <span className="font-bold">{t("continent")}:</span>{" "}
+                      {adventure.continent}
+                    </p>
+                    <p className="text-muted mb-4">
+                      <span className="font-bold">{t("price")}:</span>{" "}
+                      {adventure.priceWithCurrency}
                     </p>
                   </div>
-                  <p className="text-muted mb-4">
-                    <span className="font-bold">{t("country")}</span>{" "}
-                    {adventure.country}
-                  </p>
-
-                  <p className="text-muted mb-4">
-                    <span className="font-bold">{t("continent")}:</span>{" "}
-                    {adventure.continent}
-                  </p>
-                  <p className="text-muted mb-4">
-                    <span className="font-bold">{t("price")}:</span>{" "}
-                    {adventure.priceWithCurrency}
-                  </p>
-                </div>
+                )}
               </div>
               <Separator className="bg-muted/50" />
               {/* Why did you choose this destination */}
@@ -647,10 +681,10 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   </FormItem>
                 )}
               />
-              {adventure.addOns?.length > 0 && (
+              {adventure?.addOns?.length > 0 && (
                 <Separator className="bg-muted/50" />
               )}
-              {adventure.addOns?.length > 0 && (
+              {adventure?.addOns?.length > 0 && (
                 <FormField
                   control={form.control}
                   name="addOns"
@@ -695,28 +729,33 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                         Get Coupons
                       </Link>
                     </div>
-                    {myCoupons && myCoupons.length > 0 && (
-                      <FormControl>
-                        <CouponsSelect
-                          applyTo="adventure"
-                          coupons={myCoupons}
-                          defaultSelected={field.value}
-                          onSelect={(selected) => {
-                            if (selected?.type === "percentage") {
-                              setDiscount(
-                                (totalAdventureWithAddons *
-                                  (selected.percentOff || 0)) /
-                                  100
-                              );
-                            } else {
-                              setDiscount(selected?.value || 0);
-                            }
-
-                            field.onChange(selected);
-                          }}
-                        />
-                      </FormControl>
+                    {isFetchingMyCoupons && (
+                      <Skeleton className="w-full h-20" />
                     )}
+                    {myCoupons &&
+                      myCoupons.length > 0 &&
+                      !isFetchingMyCoupons && (
+                        <FormControl>
+                          <CouponsSelect
+                            applyTo="adventure"
+                            coupons={myCoupons}
+                            defaultSelected={field.value}
+                            onSelect={(selected) => {
+                              if (selected?.type === "percentage") {
+                                setDiscount(
+                                  (totalAdventureWithAddons *
+                                    (selected.percentOff || 0)) /
+                                    100
+                                );
+                              } else {
+                                setDiscount(selected?.value || 0);
+                              }
+
+                              field.onChange(selected);
+                            }}
+                          />
+                        </FormControl>
+                      )}
                     {/* if user have no redeemed coupons  */}
                     {!myCoupons ||
                       (myCoupons.length === 0 && (
@@ -730,40 +769,44 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   </FormItem>
                 )}
               />
-              <Separator className="bg-muted/50" />
-              <FormField
-                control={form.control}
-                name="isPartialPayment"
-                render={({ field }) => (
-                  <FormItem className=" w-full">
-                    <div className="flex items-center justify-between flex-wrap">
-                      <FormLabel>{"Payment type"}</FormLabel>
-                    </div>
-                    <FormControl>
-                      <PaymentTypeSelect
-                        fullPrice={formatePrice({
-                          locale,
-                          price: totalFullPrice,
-                        })}
-                        partialPrice={formatePrice({
-                          locale,
-                          price: partialPrice,
-                        })}
-                        partialRemaining={formatePrice({
-                          locale,
-                          price: partialRemaining,
-                        })}
-                        defaultSelected={field.value}
-                        onSelect={(selected) => {
-                          field.onChange(selected);
-                        }}
-                      />
-                    </FormControl>
+              {initAdventure.isPartialAllowed && (
+                <Separator className="bg-muted/50" />
+              )}
+              {initAdventure.isPartialAllowed && (
+                <FormField
+                  control={form.control}
+                  name="isPartialPayment"
+                  render={({ field }) => (
+                    <FormItem className=" w-full">
+                      <div className="flex items-center justify-between flex-wrap">
+                        <FormLabel>{"Payment type"}</FormLabel>
+                      </div>
+                      <FormControl>
+                        <PaymentTypeSelect
+                          fullPrice={formatePrice({
+                            locale,
+                            price: totalFullPrice,
+                          })}
+                          partialPrice={formatePrice({
+                            locale,
+                            price: partialPrice,
+                          })}
+                          partialRemaining={formatePrice({
+                            locale,
+                            price: partialRemaining,
+                          })}
+                          defaultSelected={field.value}
+                          onSelect={(selected) => {
+                            field.onChange(selected);
+                          }}
+                        />
+                      </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
             </div>
             {/* ----------------Adventure Choices---------------- */}
           </div>

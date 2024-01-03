@@ -34,8 +34,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { PhoneNumberInput } from "../ui/phone";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -89,21 +90,12 @@ export const SignUp = () => {
     setIsLoading(true);
     const recaptcha_token = await executeRecaptcha("sign_up");
 
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(values);
-
     const dataToSend = {
       ...values,
       date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
       recaptcha_token,
     };
-    console.log(
-      "🚀 ~ file: sign-up.tsx:95 ~ onSubmit ~ dataToSend:",
-      dataToSend
-    );
 
-    // TODO: move this to api route and set the token in the cookies
     const res = await fetch(`/api/authentication/sign-up`, {
       method: "POST",
       headers: {
@@ -113,8 +105,7 @@ export const SignUp = () => {
       body: JSON.stringify(dataToSend),
     }).finally(() => setIsLoading(false));
 
-    const { data, message } = await res.json();
-    console.log("🚀 ~ file: sign-up.tsx:99 ~ onSubmit ~ data:", data);
+    const { message } = await res.json();
 
     if (res.ok) {
       toast.success(message, { duration: 6000 });
@@ -130,7 +121,7 @@ export const SignUp = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="gap-4 md:gap-6 flex flex-col pt-4 items-center"
       >
-        <div className="flex flex-col sm:flex-row w-full gap-3 items-center justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-3 items-center justify-between">
           <FormField
             control={form.control}
             name="name"
@@ -156,10 +147,9 @@ export const SignUp = () => {
               <FormItem className=" w-full">
                 <FormLabel>{t("Phone")}</FormLabel>
                 <FormControl>
-                  <Input
+                  <PhoneNumberInput
                     placeholder={t("Phone")}
-                    className=" border-primary"
-                    type="text"
+                    className=" border-primary w-full"
                     {...field}
                   />
                 </FormControl>

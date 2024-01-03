@@ -40,27 +40,46 @@ export type TCoupon = {
   isUsed?: number;
 };
 
+export type TCountry = {
+  id: number;
+  name: string;
+  continent: string;
+};
+
 export type TAdventure = {
   id: number;
+  link: string;
   title: string;
   description: string | null;
+  createdAt: string;
   country: string;
+  countryId: number;
   continent: string;
   price: number;
-  partialPrice: number;
-  priceWithCurrency: string;
-  partialPriceWithCurrency: string;
-  partialRemaining: string;
-  capacity: number;
   slug: string;
+  capacity: number;
   startDate: string;
   endDate: string;
+  image: string | null;
   giftPoints: number;
   gender: string;
+  genderValue: string;
+  arabicTitle: string;
+  englishTitle: string;
+  arabicDescription: string | null;
+  englishDescription: string | null;
   isFull: boolean;
   isUpcoming: boolean;
-  isPartialAllowed: boolean;
+  numberOfBookings: number;
   addOns: TAddon[];
+  package: string | null;
+  englishPackage: string | null;
+  arabicPackage: string | null;
+  priceWithCurrency: string;
+  isPartialAllowed: boolean;
+  partialPrice: number;
+  partialPriceWithCurrency: string;
+  partialRemaining: string;
 };
 
 export type TAddon = {
@@ -76,7 +95,7 @@ export interface Links {
   next: null;
 }
 
-export interface Meta {
+export type TMeta = {
   current_page: number;
   from: number;
   last_page: number;
@@ -85,7 +104,8 @@ export interface Meta {
   per_page: number;
   to: number;
   total: number;
-}
+  pagination: TPagination;
+};
 
 export interface Link {
   url: null | string;
@@ -96,7 +116,7 @@ export interface Link {
 export interface TPaginatedAdventures {
   data: TAdventure[];
   links: Links;
-  meta: Meta;
+  meta: TMeta;
 }
 
 export enum OrderType {
@@ -117,15 +137,24 @@ export type TOrders = {
 };
 
 export type TOrder = {
+  id: number;
   type: string;
   dateBooked: string;
   details: TAdventure | TConsultation;
+  invoice: null;
+  isFullyPaid: boolean;
+  isPartiallyPaid: boolean;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
 };
 
 export type TLevels = {
   data: TLevel[];
   links: Links;
-  meta: Meta;
+  meta: TMeta;
 };
 
 export type TLevel = {
@@ -134,4 +163,77 @@ export type TLevel = {
   minDays: number;
   maxDays: number;
   badge: string;
+};
+
+// Admin Types
+
+export type TCustomers = {
+  data: TCustomer[];
+  links: Links;
+  meta: TMeta;
+};
+export type TAdventureBookings = {
+  data: TAdventureBooking[];
+  links: Links;
+  meta: TMeta;
+};
+export type TAdventures = {
+  data: TAdventure[];
+  links: Links;
+  meta: TMeta;
+};
+
+export type TAdventureBooking = {
+  id: number;
+  customer: {
+    id: number;
+    userId: number;
+    name: string;
+    email: string;
+    phone: string;
+  };
+  adventure: {
+    id: number;
+    title: string;
+    startDate: string;
+    endDate: string;
+    price: number;
+    image: string | null;
+  };
+  dateBooked: string;
+  isFullyPaid: boolean;
+  isPartiallyPaid: null;
+  addOns: any[];
+  totalPrice: number;
+  totalPriceWithCurrency: string;
+};
+
+export type TPagination = {
+  per_page: number;
+  current_page: number;
+  total_pages: number;
+  next_page_number: number | null;
+  prev_page_number: number | null;
+};
+
+export type TCustomer = {
+  customerId: number;
+  userId: number;
+  name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  status: string;
+  level: TLevel;
+  points: number;
+  dateFormatted: string;
+  totalPoints: number;
+  role: string;
+  age: number;
+  dateOfBirth: string;
+  daysTravelled: number;
+  joinedAt: string;
+  verified: boolean;
+  nextLevel: TLevel;
+  isSuspended: boolean;
 };

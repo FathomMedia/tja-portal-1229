@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { TConsultation } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -88,8 +88,8 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
       });
     },
     async onSuccess(data, values) {
+      const { message, data: dataResponse } = await data.json();
       if (data.ok) {
-        const { message, data: dataResponse } = await data.json();
         console.log(
           "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
           dataResponse
@@ -100,7 +100,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
         endDate(values.end_date);
         setTotalFullPrice(dataResponse.priceWithCurrency ?? null);
       } else {
-        const { message } = await data.json();
         toast.error(message, { duration: 6000 });
       }
     },
@@ -128,6 +127,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 <FormItem className=" w-full mb-2">
                   <FormLabel className="text-base">
                     {t("packageType")}
+                    <span className="text-destructive ms-1">*</span>
                   </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
@@ -157,6 +157,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                   <FormItem className="flex flex-col w-full">
                     <FormLabel className="text-base">
                       {t("startDate")}
+                      <span className="text-destructive ms-1">*</span>
                     </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -196,7 +197,10 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 name="end_date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-base">{t("endDate")}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t("endDate")}
+                      <span className="text-destructive ms-1">*</span>
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl className="w-full flex">

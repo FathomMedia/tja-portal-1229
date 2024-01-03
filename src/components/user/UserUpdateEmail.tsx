@@ -19,18 +19,42 @@ import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { apiReq } from "@/lib/apiHelpers";
+import { toast } from "sonner";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { format } from "date-fns";
 
 export const UserUpdateEmail = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const t = useTranslations("SignUp");
-
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams()!;
+
+  const formSchema = z.object({
+    email: z
+      .string()
+      .email(t("email.errors.invalid"))
+      .min(1, t("email.errors.required")),
+  });
+
+  const formSchemaOTP = z.object({
+    otp: z.string().min(4),
+  });
+
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const formOTP = useForm<z.infer<typeof formSchemaOTP>>({
+    resolver: zodResolver(formSchemaOTP),
+    defaultValues: {
+      otp: "",
+    },
+  });
 
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
@@ -46,88 +70,80 @@ export const UserUpdateEmail = () => {
     [searchParams]
   );
 
-  const formSchema = z.object({
-    email: z
-      .string()
-      .email(t("email.errors.invalid"))
-      .min(1, t("email.errors.required")),
-  });
-  const formSchemaOTP = z.object({
-    otp: z.string().min(4),
-  });
+  const queryClient = useQueryClient();
 
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
+  const mutationEmail = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      return fetch("/api/user/send-update-email-otp", {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+        }),
+      });
+    },
+    async onSuccess(data, values) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message, { duration: 6000 });
+        router.push(
+          pathname +
+            "?" +
+            createQueryString([
+              { name: "email", value: values.email },
+              { name: "otpSent", value: "true" },
+            ])
+        );
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
     },
   });
-  const formOTP = useForm<z.infer<typeof formSchemaOTP>>({
-    resolver: zodResolver(formSchemaOTP),
-    defaultValues: {
-      otp: "",
+
+  const mutationOTP = useMutation({
+    mutationFn: (values: z.infer<typeof formSchemaOTP>) => {
+      return fetch(`/api/user/update-user-email`, {
+        method: "PUT",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: searchParams.get("email"),
+          otp: values.otp,
+        }),
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message, { duration: 6000 });
+        queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+        router.push(pathname);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmitEmail(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    const res = await fetch("/api/user/send-update-email-otp", {
-      method: "POST",
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: values.email,
-      }),
-    }).finally(() => setIsLoading(false));
-
-    if (res.ok) {
-      const { message } = await res.json();
-
-      router.push(
-        pathname +
-          "?" +
-          createQueryString([
-            { name: "email", value: values.email },
-            { name: "otpSent", value: "true" },
-          ])
-      );
-
-      toast.success(message, { duration: 6000 });
-    } else {
-      const { message } = await res.json();
-      toast.error(message, { duration: 6000 });
-    }
+    mutationEmail.mutate(values);
   }
   // 2. Define a submit handler.
   async function onSubmitOTP(values: z.infer<typeof formSchemaOTP>) {
-    setIsLoading(true);
-
-    const response = await fetch(`/api/user/update-user-email`, {
-      method: "PUT",
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: searchParams.get("email"),
-        otp: values.otp,
-      }),
-    }).finally(() => {
-      setIsLoading(false);
-    });
-
-    const res = await response.json();
-
-    if (response.ok) {
-      toast.success(res.message);
-      router.push(`/${locale}/dashboard`);
-    } else {
-      toast.error(res.message);
-    }
+    mutationOTP.mutate(values);
   }
 
   return (
@@ -163,7 +179,7 @@ export const UserUpdateEmail = () => {
                   variant={"secondary"}
                   type="submit"
                 >
-                  {isLoading && (
+                  {mutationEmail.isPending && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
                   {t("verifyEmail")}
@@ -225,7 +241,7 @@ export const UserUpdateEmail = () => {
                 variant={"secondary"}
                 type="submit"
               >
-                {isLoading && (
+                {mutationOTP.isPending && (
                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                 )}
                 Update

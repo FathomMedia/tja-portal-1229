@@ -14,13 +14,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Menu } from "lucide-react";
+import { Crown, Menu } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { buttonVariants } from "../ui/button";
 import { MobileNav } from "../MobileNav";
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
+import { Badge } from "../ui/badge";
 
 type TUserProfilePreview = {
   items: {
@@ -49,15 +50,27 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
 
       <div className="flex justify-between gap-4 items-center">
         {!isFetchingUser && user && (
-          <div className="flex gap-3 items-center">
+          <div className={cn("flex gap-3 items-center")}>
             <Avatar className="">
               {user.avatar && <AvatarImage src={user.avatar} />}
               <AvatarFallback className="text-primary-foreground bg-primary">
                 {user.name.slice(0, 2)}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <h2>{t("hello")}</h2>
+            <div
+              className={cn(
+                "flex flex-col",
+                user.role === "Admin" && "flex-col-reverse"
+              )}
+            >
+              {user.role === "Admin" ? (
+                <Badge size={"sm"} variant={"info"} className="w-fit">
+                  {t("admin")}
+                </Badge>
+              ) : (
+                <h2>{t("hello")}</h2>
+              )}
+
               <h2 className="text-xl font-semibold">{user.name}</h2>
             </div>
           </div>
