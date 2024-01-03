@@ -2,27 +2,12 @@ import ExampleTheme from "./themes/ExampleTheme";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
-import { TRANSFORMERS } from "@lexical/markdown";
-
-import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
-import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
-import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
-import { EditorState } from "lexical";
-
-function Placeholder({ text }: { text: string }) {
-  return <div className="editor-placeholder">{text}</div>;
-}
 
 const editorConfig = {
   namespace: "Editor",
@@ -30,11 +15,12 @@ const editorConfig = {
   theme: ExampleTheme,
   // Handling of errors during update
   onError(error: Error) {
-    throw error;
+    // throw error;
   },
   onchange(ev: any) {
-    console.log(ev);
+    // console.log(ev);
   },
+  editable: false,
   // Any custom nodes go here
   nodes: [
     HeadingNode,
@@ -52,16 +38,14 @@ const editorConfig = {
 };
 
 import React from "react";
-import { OnChangePlugin } from "./plugins/OnChangePlugin";
+import { cn } from "@/lib/utils";
 
-export default function Editor({
-  initData,
-  onDataChange,
-  placeHolder,
+export default function EditorViewer({
+  data,
+  className,
 }: {
-  initData: string | null;
-  onDataChange: (data: string) => void;
-  placeHolder?: string | null;
+  data: string | null;
+  className?: string | null;
 }) {
   const css = `
   
@@ -134,8 +118,8 @@ h1 {
   overflow: hidden;
   position: absolute;
   text-overflow: ellipsis;
-  top: 1.8rem;
-  left: 1.8rem;
+  top: 15px;
+  left: 10px;
   font-size: 15px;
   user-select: none;
   display: inline-block;
@@ -275,6 +259,7 @@ h1 {
 .editor-heading-h1 {
   font-size: 24px;
   // color: rgb(5, 5, 5);
+  // color: #1E473F;
   font-weight: 400;
   margin: 0;
   margin-bottom: 12px;
@@ -283,7 +268,8 @@ h1 {
 
 .editor-heading-h2 {
   font-size: 15px;
-  // color: rgb(101, 103, 107);
+  // color: rgb(201, 103, 107);
+  // color: #1E473F;
   font-weight: 700;
   margin: 0;
   margin-top: 10px;
@@ -575,7 +561,6 @@ i.chevron-down {
 }
 
 .dropdown {
-  // top:0 !important;
   z-index: 5;
   display: block;
   position: absolute;
@@ -665,7 +650,7 @@ i.chevron-down {
   border-radius: 15px;
   background-color: #eee;
   font-size: 15px;
-  color: rgb(5, 5, 5);
+  // color: rgb(5, 5, 5);
   border: 0;
   outline: 0;
   position: relative;
@@ -687,8 +672,8 @@ i.chevron-down {
 }
 
 .link-editor .link-input a {
-  color: rgb(33, 111, 219);
-  // text-decoration: none;
+  // color: rgb(33, 111, 219);
+  text-decoration: none;
   display: block;
   white-space: nowrap;
   overflow: hidden;
@@ -808,38 +793,26 @@ i.justify-align {
 
   `;
 
-  function onChange(editorState: EditorState) {
-    const json = editorState.toJSON();
-    const data = JSON.stringify(json);
-    onDataChange(data);
-  }
-
   return (
     <LexicalComposer
-      initialConfig={{ ...editorConfig, editorState: initData || undefined }}
+      initialConfig={{ ...editorConfig, editorState: data || undefined }}
     >
-      <style>{css}</style>
-      <div className="editor-container !w-full !rounded-b-xl overflow-clip">
-        <ToolbarPlugin />
-        <HistoryPlugin />
-        <div className="editor-inner bg-white p-3">
+      {/* <style>{css}</style> */}
+      <div className="editor-container  !w-full">
+        <div className="editor-inner">
           <RichTextPlugin
             contentEditable={
-              <ContentEditable className="editor-input prose prose-headings:text-primary hover:prose-a:underline hover:prose-a:cursor-pointer prose-a:text-secondary prose-h2:text-secondary" />
+              <ContentEditable
+                readOnly
+                className={cn(
+                  "editor-input prose prose-headings:text-primary hover:prose-a:underline hover:prose-a:cursor-pointer prose-a:text-secondary prose-h2:text-secondary",
+                  className
+                )}
+              />
             }
-            placeholder={
-              placeHolder ? <Placeholder text={placeHolder} /> : null
-            }
+            placeholder={null}
             ErrorBoundary={LexicalErrorBoundary}
           />
-
-          <CodeHighlightPlugin />
-          <ListPlugin />
-          <LinkPlugin />
-          <AutoLinkPlugin />
-          <ListMaxIndentLevelPlugin maxDepth={7} />
-          <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
-          <OnChangePlugin onChange={onChange} />
         </div>
       </div>
     </LexicalComposer>

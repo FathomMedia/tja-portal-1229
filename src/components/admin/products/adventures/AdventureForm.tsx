@@ -35,8 +35,7 @@ import { toast } from "sonner";
 import { cn, parseDateFromAPI } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, ImageOff } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { TAddon, TAdventure, TCountry } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -51,8 +50,8 @@ import {
 
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import { isRtlLang } from "rtl-detect";
 import Editor from "@/components/editor/editor";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type TAdventureForm = {
   adventure?: TAdventure;
@@ -65,6 +64,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
   countries,
   addons,
 }) => {
+  console.log("🚀 ~ file: AdventureForm.tsx:67 ~ adventure:", adventure);
   const locale = useLocale();
   const t = useTranslations("Adventures");
 
@@ -282,7 +282,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                 <Textarea
                   dir="ltr"
                   placeholder={t("englishDescription")}
-                  className=" border-primary resize-none"
+                  className=" border-primary resize-none min-h-[10rem]"
                   {...field}
                 />
               </FormControl>
@@ -300,7 +300,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                 <Textarea
                   dir="rtl"
                   placeholder={t("arabicDescription")}
-                  className=" border-primary resize-none"
+                  className=" border-primary resize-none min-h-[10rem]"
                   {...field}
                 />
               </FormControl>
@@ -552,43 +552,45 @@ export const AdventureForm: FC<TAdventureForm> = ({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem className=" w-full">
-              <FormLabel>{t("image")}</FormLabel>
-              <FormControl>
-                <Input
-                  dir="ltr"
-                  className=" border-primary"
-                  {...field}
-                  value={undefined}
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    console.log(
-                      "🚀 ~ file: AdventureForm.tsx:505 ~ file:",
-                      file
-                    );
-                    if (file) {
-                      const imageUrl = URL.createObjectURL(file);
-                      console.log(
-                        "🚀 ~ file: AdventureForm.tsx:508 ~ imageUrl:",
-                        imageUrl
-                      );
+        <div className="flex gap-3 items-end">
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("image")}</FormLabel>
+                <FormControl>
+                  <Input
+                    dir="ltr"
+                    className=" border-primary"
+                    {...field}
+                    value={undefined}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
 
-                      setPreview(imageUrl);
+                      if (file) {
+                        const imageUrl = URL.createObjectURL(file);
 
-                      field.onChange(file);
-                    }
-                  }}
-                  type="file"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                        setPreview(imageUrl);
+
+                        field.onChange(file);
+                      }
+                    }}
+                    type="file"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Avatar className="w-10 h-10">
+            {preview && <AvatarImage className="object-cover" src={preview} />}
+            <AvatarFallback>
+              {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+            </AvatarFallback>
+          </Avatar>
+        </div>
 
         <FormField
           control={form.control}

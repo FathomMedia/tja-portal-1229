@@ -11,6 +11,7 @@ import {
   Circle,
   PlusCircle,
   X,
+  ImageOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
@@ -51,9 +51,11 @@ export const columns: ColumnDef<TAdventure>[] = [
     cell: ({ row }) => {
       return (
         <Avatar className="w-10 h-10">
-          {row.original.image && <AvatarImage src={row.original.image} />}
+          {row.original.image && (
+            <AvatarImage className="object-cover" src={row.original.image} />
+          )}
           <AvatarFallback>
-            {<X className="w-4 h-4 text-muted-foreground" />}
+            {<ImageOff className="w-4 h-4 text-muted-foreground" />}
           </AvatarFallback>
         </Avatar>
       );
@@ -95,7 +97,7 @@ export const columns: ColumnDef<TAdventure>[] = [
   {
     accessorKey: "gender",
     header: () => (
-      <div className="min-w-[8rem]">
+      <div className="">
         <DisplayTranslatedText text="gender" translation="Adventures" />
       </div>
     ),

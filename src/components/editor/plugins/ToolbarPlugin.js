@@ -77,9 +77,9 @@ function positionEditorElement(editor, rect) {
     editor.style.left = "-1000px";
   } else {
     editor.style.opacity = "1";
-    editor.style.top = `${rect.top + rect.height + window.pageYOffset + 10}px`;
+    editor.style.top = `${rect.top + rect.height + window.scrollY + 10}px`;
     editor.style.left = `${
-      rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2
+      rect.left + window.scrollX - editor.offsetWidth / 2 + rect.width / 2
     }px`;
   }
 }
@@ -269,7 +269,7 @@ function BlockOptionsDropdownList({
 
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
+      dropDown.style.top = `${top + scrollY + 40}px`;
       dropDown.style.left = `${left}px`;
     }
   }, [dropDownRef, toolbarRef]);
