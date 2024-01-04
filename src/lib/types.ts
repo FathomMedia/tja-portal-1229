@@ -39,6 +39,11 @@ export type TCoupon = {
   applyTo: string;
   isUsed?: number;
 };
+export type TCoupons = {
+  data: TCoupon[];
+  links: Links;
+  meta: TMeta;
+};
 
 export type TCountry = {
   id: number;
