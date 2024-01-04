@@ -240,7 +240,16 @@
     "reason": "سبب",
     "revokeDescription": "سبب إلغاء القسيمة.",
     "forCustomer": "للزبون",
-    "nothingFound": "لم يتم العثور على شيء"
+    "nothingFound": "لم يتم العثور على شيء",
+    "journeyMiles": "جورني مايلز",
+    "loyalty": "نقاط الوفاء",
+    "loyaltyPoints": "نقاط الولاء",
+    "addOrRemovePointsForCustomer": "إضافة أو إزالة النقاط للعميل",
+    "current": "حاضِر",
+    "points": "نقاط",
+    "managePointsDescription": "مقدار النقاط المراد إضافتها أو إزالتها.",
+    "amount": "كمية",
+    "view": "منظر"
   },
   "Dashboard": {
     "MyAchievements": "انجازاتي",
@@ -280,7 +289,8 @@
     "status": "الحالة",
     "suspended": "معلق",
     "theJourneyMilesLevels": "مستويات ذا جورني مايلز",
-    "type": "يكتب"
+    "type": "يكتب",
+    "noAvailableCouponsToRedeem": "لا توجد كوبونات متاحة لاسترداد قيمتها."
   },
   "DeleteProfile": {
     "cancel": "إلغاء",

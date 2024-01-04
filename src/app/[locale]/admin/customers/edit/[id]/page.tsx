@@ -165,7 +165,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       )}
       <Separator />
       <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-        {t("updateCustomer")}
+        {t("journeyMiles")}
       </h2>
       {isFetchingCustomer && <Skeleton className="w-full h-64" />}
       {customer && !isFetchingCustomer && (

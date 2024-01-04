@@ -251,7 +251,16 @@
     "reason": "Reason",
     "revokeDescription": "The reason for revoking the coupon.",
     "forCustomer": "For customer",
-    "nothingFound": "Nothing Found"
+    "nothingFound": "Nothing Found",
+    "journeyMiles": "Journey Miles",
+    "loyalty": "Loyalty",
+    "loyaltyPoints": "Loyalty Points",
+    "addOrRemovePointsForCustomer": "Add or remove points for customer",
+    "current": "Current",
+    "points": "Points",
+    "managePointsDescription": "The amount of points to add or remove.",
+    "amount": "Amount",
+    "view": "View"
   },
   "Dashboard": {
     "MyAchievements": "My Achievements",
@@ -291,7 +300,8 @@
     "status": "Status",
     "suspended": "Suspended",
     "theJourneyMilesLevels": "The Journey Miles Levels",
-    "type": "Type"
+    "type": "Type",
+    "noAvailableCouponsToRedeem": "No available coupons to redeem."
   },
   "DeleteProfile": {
     "cancel": "Cancel",
