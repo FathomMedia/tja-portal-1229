@@ -4,6 +4,7 @@ import React, { useCallback } from "react";
 import { AdventureListComponent } from "./adventures/AdventureListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ConsultationListComponent } from "./consultation/ConsultationOrdersComponent";
 
 export const ProductsComponent = () => {
   const { push } = useRouter();
@@ -43,7 +44,7 @@ export const ProductsComponent = () => {
           <AdventureListComponent />
         </TabsContent>
         <TabsContent value="consultation">
-          Change your password here.
+          <ConsultationListComponent />
         </TabsContent>
       </Tabs>
     </div>

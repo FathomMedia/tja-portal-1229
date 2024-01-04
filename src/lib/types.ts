@@ -177,8 +177,21 @@ export type TAdventureBookings = {
   links: Links;
   meta: TMeta;
 };
+
+export type TConsultationBookings = {
+  data: TConsultationBooking[];
+  links: Links;
+  meta: TMeta;
+};
+
 export type TAdventures = {
   data: TAdventure[];
+  links: Links;
+  meta: TMeta;
+};
+
+export type TConsultations = {
+  data: TConsultation[];
   links: Links;
   meta: TMeta;
 };
@@ -206,6 +219,20 @@ export type TAdventureBooking = {
   addOns: any[];
   totalPrice: number;
   totalPriceWithCurrency: string;
+};
+
+export type TConsultationBooking = {
+  id: number;
+  isPaid: boolean;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  consultation: TConsultation;
+  dateBooked: string;
+  startDate: string;
+  endDate: string;
 };
 
 export type TPagination = {
