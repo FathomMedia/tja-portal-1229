@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { TConsultationBookings } from "@/lib/types";
+import { TConsultations } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
@@ -14,23 +14,22 @@ export const ConsultationListComponent = () => {
 
   const [page, setPage] = useState(1);
   // TODO: change to Consultation
-  const { data: consultationOrders, isFetching } =
-    useQuery<TConsultationBookings>({
-      queryKey: [`/consultation-bookings`, page],
-      queryFn: () =>
-        apiReqQuery({
-          endpoint: `/consultation-bookings?page=${page}`,
-          locale,
-        }).then((res) => res.json()),
-    });
+  const { data: consultationList, isFetching } = useQuery<TConsultations>({
+    queryKey: [`/consultations`, page],
+    queryFn: () =>
+      apiReqQuery({
+        endpoint: `/consultations?page=${page}`,
+        locale,
+      }).then((res) => res.json()),
+  });
 
   return (
-    <DashboardSection title={"Consultation Orders"} className="flex w-full">
+    <DashboardSection title={"Consultations"} className="flex w-full">
       <DataTable
         columns={columns}
-        data={consultationOrders?.data ?? []}
+        data={consultationList?.data ?? []}
         isFetching={isFetching}
-        meta={consultationOrders?.meta ?? null}
+        meta={consultationList?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
       />
     </DashboardSection>
