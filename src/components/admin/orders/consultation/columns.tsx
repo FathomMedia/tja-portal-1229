@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TConsultationBooking>[] = [
   {
@@ -65,7 +66,11 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
   },
   {
     accessorKey: "phone",
-    header: () => <DisplayTranslatedText text="Phone" translation="SignUp" />,
+    header: () => (
+      <div className="min-w-[8rem]">
+        <DisplayTranslatedText text="Phone" translation="SignUp" />
+      </div>
+    ),
     cell: ({ row }) => {
       return <p>{row.original.customer.phone}</p>;
     },
@@ -77,42 +82,31 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
         <DisplayTranslatedText text="tier" translation="Consultation" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.consultation.tier}</p>,
+    cell: ({ row }) => (
+      <Badge
+        variant="outline"
+        // className={(row.original.consultation.tier == "silver" && "bg-[#C0C0C0]",
+        //   row.original.consultation.tier == "gold" && "bg-[#FFD700]")
+        // }
+      >
+        {row.original.consultation.tier.toUpperCase()}
+      </Badge>
+    ),
   },
   {
     accessorKey: "consultationNumberOfDays",
     header: () => (
-      <div className="min-w-[8rem]">
+      <div className="">
         <DisplayTranslatedText
           text="Number of Days"
           translation="Consultation"
         />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.consultation.numberOfDays}</p>,
+    cell: ({ row }) => (
+      <p className=" text-center">{row.original.consultation.numberOfDays}</p>
+    ),
   },
-  // {
-  //   accessorKey: "isPaid",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         <DisplayTranslatedText text="isPaid" translation="Consultation" />
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-
-  //   cell: ({ row }) => {
-  //     return row.original.isPaid ? (
-  //       <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
-  //     ) : (
-  //       <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
-  //     );
-  //   },
-  // },
   {
     accessorKey: "consultationStartDate",
     header: () => (
