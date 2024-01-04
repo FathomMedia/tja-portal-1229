@@ -74,7 +74,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
   // const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) => {
-      return fetch("/api/consultation", {
+      return fetch("/api/consultation/calculate-consultation", {
         method: "POST",
         headers: {
           "Accept-Language": locale,
@@ -90,10 +90,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     async onSuccess(data, values) {
       const { message, data: dataResponse } = await data.json();
       if (data.ok) {
-        console.log(
-          "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
-          dataResponse
-        );
         toast.success(message, { duration: 6000 });
         onPackageChanged(dataResponse);
         startDate(values.start_date);

@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { AdventureListComponent } from "./adventures/AdventureListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ConsultationListComponent } from "./consultation/ConsultationOrdersComponent";
+import { ConsultationListComponent } from "./consultation/ConsultationListComponent";
 
 export const ProductsComponent = () => {
   const { push } = useRouter();

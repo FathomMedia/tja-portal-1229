@@ -1,6 +1,10 @@
 "use client";
 
-import { TConsultationBooking } from "@/lib/types";
+import { TConsultation } from "@/lib/types";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
 import { ColumnDef } from "@tanstack/react-table";
 import {
   CheckCircle2,
@@ -8,6 +12,9 @@ import {
   LucideMinusCircle,
   MoreHorizontal,
   ArrowUpDown,
+  Calendar,
+  CalendarIcon,
+  PlusCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,11 +27,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { isRtlLang } from "rtl-detect";
+import { Input } from "@/components/ui/input";
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { useQuery } from "@tanstack/react-query";
+import { CreateConsultationForm } from "./CreateConsultationForm";
 
-export const columns: ColumnDef<TConsultationBooking>[] = [
+type TEditConsultation = {
+  tier: string;
+  numOfDays: number;
+  price: number;
+};
+
+export const columns: ColumnDef<TConsultation>[] = [
   {
     accessorKey: "id",
     header: () => (
@@ -32,179 +74,145 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "name",
+    accessorKey: "tierType",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="name" translation="Consultation" />
+        <DisplayTranslatedText text="tier" translation="Consultation" />
       </div>
     ),
     cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Email copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.email);
-          }}
-        >
-          {row.original.customer.email}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
+      return <Badge variant={"outline"}>{row.original.tier}</Badge>;
     },
   },
   {
-    accessorKey: "type",
+    accessorKey: "numberOfDays",
     header: () => (
-      <DisplayTranslatedText text="emailAddress" translation="SignUp" />
+      <DisplayTranslatedText text="No. of Days" translation="Consultation" />
     ),
     cell: ({ row }) => {
-      // return <Badge variant={"outline"}>{row.original.consultation.}</Badge>;
+      return <p className=" text-center">{row.original.numberOfDays}</p>;
     },
   },
   {
-    accessorKey: "percentOff",
-    header: () => <DisplayTranslatedText text="Phone" translation="SignUp" />,
-    cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Phone copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.phone);
-          }}
-        >
-          {row.original.customer.phone}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "minPoints",
+    accessorKey: "price",
     header: () => (
-      <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="title" translation="Adventures" />
-      </div>
+      <DisplayTranslatedText text="Price" translation="Consultation" />
     ),
-    cell: ({ row }) => <p>{}</p>,
+    cell: ({ row }) => {
+      return <p className=" text-center">{row.original.priceWithCurrency}</p>;
+    },
   },
-  // {
-  //   accessorKey: "maxPoints",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         <DisplayTranslatedText text="isFullyPaid" translation="Adventures" />
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-
-  //   cell: ({ row }) => {
-  //     return row.original ? (
-  //       <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
-  //     ) : (
-  //       <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
-  //     );
-  //   },
-  // },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => <Actions adventureBooking={row.original} />,
-  // },
+  {
+    id: "actions",
+    header: () => <AddNew />,
+    cell: ({ row }) => <Actions consultation={row.original} />,
+  },
 ];
 
-// const Actions = ({
-//   adventureBooking,
-// }: {
-//   adventureBooking: TAdventureBooking;
-// }) => {
-//   const locale = useLocale();
+export const AddNew = () => {
+  const locale = useLocale();
+  return (
+    <div className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100" onClick={() => CreateConsultationForm()}>
+      <PlusCircle className="w-4 h-4" />{" "}
+      <DisplayTranslatedText text="add" translation="Consultation" />
+    </div>
+  );
+};
 
-// const queryClient = useQueryClient();
+const Actions = ({ consultation }: { consultation: TConsultation }) => {
+  const locale = useLocale();
+  const t = useTranslations("Consultation");
 
-// const mutation = useMutation({
-//   mutationFn: () => {
-//     return fetch(`/api/user/handleSuspend`, {
-//       method: "POST",
-//       body: JSON.stringify({
-//         customerId: customer.customerId,
-//       }),
-//       headers: {
-//         "Accept-Language": locale,
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   },
-//   async onSuccess(data) {
-//     if (data.ok) {
-//       const { message } = await data.json();
-//       toast.success(message);
-//       queryClient.invalidateQueries({ queryKey: ["/customers"] });
-//     } else {
-//       const { message } = await data.json();
-//       toast.error(message, { duration: 6000 });
-//     }
-//   },
-//   async onError(error) {
-//     toast.error(error.message, { duration: 6000 });
-//   },
-// });
+  const formSchema = z.object({
+    tier: z.string().min(1, "Please select a tier"),
+    numOfDays: z.number(),
+    price: z.number(),
+  });
 
-// return (
-//   <div>
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button variant="ghost" className="h-8 w-8 p-0">
-//           <span className="sr-only">Open menu</span>
-//           <MoreHorizontal className="h-4 w-4" />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent align="end">
-//         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//         <DropdownMenuItem asChild>
-//           <Link
-//             href={`/${locale}/admin/customers/edit/${adventureBooking.customer.id}`}
-//           >
-//             View Customer
-//           </Link>
-//         </DropdownMenuItem>
-//         <DropdownMenuItem asChild>
-//           <Link href={`/${locale}/admin/booking/${adventureBooking.id}`}>
-//             View Booking
-//           </Link>
-//         </DropdownMenuItem>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuItem asChild>
-//           {
-//             <Button
-//               className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-//               variant="outline"
-//             >
-//               {/* {mutation.isPending && (
-//                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-//                 )} */}
-//               Download Invoice
-//             </Button>
-//           }
-//         </DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   </div>
-// );
-// };
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      //TODO take the values of the consultation package
+    },
+  });
+
+  // const queryClient = useQueryClient();
+  // const mutation = useMutation({
+  //   mutationFn: (values: z.infer<typeof formSchema>) => {
+  //     return fetch("/api/consultation", {
+  //       method: "POST",
+  //       headers: {
+  //         "Accept-Language": locale,
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         tier: values.package,
+  //         start_date: format(values.start_date, "dd/MM/yyyy"),
+  //         end_date: format(values.end_date, "dd/MM/yyyy"),
+  //       }),
+  //     });
+  //   },
+  //   async onSuccess(data, values) {
+  //     const { message, data: dataResponse } = await data.json();
+  //     if (data.ok) {
+  //       console.log(
+  //         "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
+  //         dataResponse
+  //       );
+  //       toast.success(message, { duration: 6000 });
+  //       onPackageChanged(dataResponse);
+  //       startDate(values.start_date);
+  //       endDate(values.end_date);
+  //       setTotalFullPrice(dataResponse.priceWithCurrency ?? null);
+  //     } else {
+  //       toast.error(message, { duration: 6000 });
+  //     }
+  //   },
+  //   async onError(error) {
+  //     toast.error(error.message, { duration: 6000 });
+  //   },
+  // });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // mutation.mutate(values);
+    console.log(values);
+  }
+
+  return (
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            {
+              <Dialog>
+                <DialogTrigger className="w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent">
+                  Edit
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className=" text-primary text-xl">
+                      Edit consultation details
+                    </DialogTitle>
+                    <DialogDescription>
+                      {
+                        "Make changes to the consultation package here. Click save to update the information."
+                      }
+                    </DialogDescription>
+                  </DialogHeader>
+                  {/* <CreateConsultationForm /> */}
+                </DialogContent>
+              </Dialog>
+            }
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+};
