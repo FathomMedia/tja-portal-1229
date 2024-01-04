@@ -112,8 +112,9 @@ export const columns: ColumnDef<TConsultation>[] = [
 export const AddNew = () => {
   const locale = useLocale();
   return (
-    <div className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100" onClick={() => CreateConsultationForm()}>
-      <PlusCircle className="w-4 h-4" />{" "}
+    <div className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100">
+      <PlusCircle className="w-4 h-4" />
+      {/* onClick={() => CreateConsultationForm()} */}
       <DisplayTranslatedText text="add" translation="Consultation" />
     </div>
   );
