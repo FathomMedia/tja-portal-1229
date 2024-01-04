@@ -3,7 +3,12 @@
 import { Badge } from "@/components/ui/badge";
 import { TCustomer } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ClipboardCopy, MoreHorizontal } from "lucide-react";
+import {
+  ClipboardCopy,
+  MinusCircle,
+  MoreHorizontal,
+  PlusCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,10 +30,25 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Icons } from "@/components/ui/icons";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns: ColumnDef<TCustomer>[] = [
   {
@@ -170,8 +190,23 @@ export const columns: ColumnDef<TCustomer>[] = [
 
 const Actions = ({ customer }: { customer: TCustomer }) => {
   const locale = useLocale();
+  const t = useTranslations("Customer");
 
   const queryClient = useQueryClient();
+
+  const formSchema = z.object({
+    points: z.number().min(1, t("pointsAreRequired")),
+    operation: z.string(),
+  });
+
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      points: 100,
+      operation: "",
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: () => {
@@ -201,6 +236,49 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
     },
   });
 
+  const managePointsMutation = useMutation({
+    mutationFn: ({
+      points,
+      operation,
+    }: {
+      points: number;
+      operation: string;
+    }) => {
+      return fetch(`/api/user/managePoints`, {
+        method: "POST",
+        body: JSON.stringify({
+          customerId: customer.customerId,
+          points,
+          operation,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        queryClient.invalidateQueries({ queryKey: ["/customers"] });
+        queryClient.invalidateQueries({
+          queryKey: [`/customers/${customer.customerId}`],
+        });
+        toast.success(message);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  async function managePoints(values: z.infer<typeof formSchema>) {
+    managePointsMutation.mutate(values);
+  }
+
   return (
     <div>
       <DropdownMenu>
@@ -216,15 +294,138 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
             <Link
               href={`/${locale}/admin/customers/edit/${customer.customerId}`}
             >
-              Edit
+              {t("view")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link
-              href={`/${locale}/admin/loyalty?customer=${customer.customerId}`}
-            >
-              Loyalty
-            </Link>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant={"ghost"}
+                  size={"sm"}
+                  className="relative w-full flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                >
+                  {t("loyaltyPoints")}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-xs">
+                <DialogHeader className="gap-1">
+                  <DialogTitle>{t("loyaltyPoints")}</DialogTitle>
+                  <DialogDescription className="gap-1 flex justify-center flex-col items-center text-center">
+                    {t("addOrRemovePointsForCustomer")}
+                    <span className="bg-muted text-muted-foreground w-fit text-xs p-1 rounded-sm">
+                      {customer.email}
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                {/* Loyalty management */}
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(managePoints)}
+                    className="flex flex-col gap-4"
+                  >
+                    {/* current points */}
+                    <div className="flex flex-col my-2 justify-center items-center gap-2">
+                      <p className="text-xs text-primary uppercase">
+                        {t("availablePoints")}
+                      </p>
+                      <Badge
+                        variant={"outline"}
+                        size={"default"}
+                        className="text-xl font-semibold"
+                      >
+                        {customer.points}
+                      </Badge>
+                    </div>
+                    <Separator />
+                    {/* manage points */}
+                    <div className="grid grid-cols-1 gap-3">
+                      <FormField
+                        control={form.control}
+                        name="points"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            <FormLabel>{t("amount")}</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder={t("amount")}
+                                className=" border-primary"
+                                type="text"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(Number(e.target.value))
+                                }
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              {t("managePointsDescription")}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid grid-cols-2 gap-2 relative">
+                        {managePointsMutation.isPending && (
+                          <div className="absolute -inset-1 rounded-sm bg-white/50 flex justify-center items-center">
+                            <Skeleton className="w-full h-full" />
+                          </div>
+                        )}
+
+                        <FormField
+                          control={form.control}
+                          name="operation"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <Button
+                                  disabled={managePointsMutation.isPending}
+                                  onClick={() => field.onChange("-")}
+                                  type="submit"
+                                  variant={"secondary"}
+                                  size={"sm"}
+                                  className="w-full"
+                                >
+                                  <MinusCircle />
+                                </Button>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="operation"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <Button
+                                  disabled={managePointsMutation.isPending}
+                                  onClick={() => field.onChange("+")}
+                                  type="submit"
+                                  variant={"default"}
+                                  size={"sm"}
+                                  className="w-full"
+                                >
+                                  <PlusCircle />
+                                </Button>
+                              </FormControl>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </Form>
+
+                <DialogFooter className="sm:justify-start">
+                  <DialogClose asChild>
+                    <Button className="" type="button" variant="ghost">
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>

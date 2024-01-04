@@ -138,8 +138,12 @@ export const JourneysMiles: FC = () => {
           <Skeleton className="w-full h-24 max-w-xs" />
         </div>
       )}
-      {availableCoupons && !isFetchingAvailableCoupons && (
-        <AvailableCoupons coupons={availableCoupons} />
+      {availableCoupons && !isFetchingAvailableCoupons && user && (
+        <AvailableCoupons
+          coupons={availableCoupons.filter(
+            (coupon) => coupon.minPoints <= user.points
+          )}
+        />
       )}
     </DashboardSection>
   );
@@ -231,6 +235,8 @@ const RedeemedCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
 const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
   const locale = useLocale();
 
+  const t = useTranslations("Dashboard");
+
   return (
     <div className="@container flex flex-col gap-4">
       <h3 className="font-bold md:text-2xl text-xl text-primary">
@@ -271,7 +277,7 @@ const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
         ))}
         {coupons.length === 0 && (
           <div className="p-3 min-h-[5rem] flex justify-center items-center bg-muted rounded-md text-muted-foreground">
-            <p className="text-sm">{"No available coupons to redeem"}</p>
+            <p className="text-sm">{t("noAvailableCouponsToRedeem")}</p>
           </div>
         )}
       </div>
@@ -299,7 +305,6 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
     async onSuccess(data) {
       if (data.ok) {
         const { message } = await data.json();
-        toast.success(message, { duration: 6000 });
         queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
         queryClient.invalidateQueries({
           queryKey: ["/profile/coupons/available"],
@@ -307,6 +312,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
         queryClient.invalidateQueries({
           queryKey: ["/profile/coupons/redeemed"],
         });
+        toast.success(message, { duration: 6000 });
       } else {
         const { message } = await data.json();
         toast.error(message, { duration: 6000 });
