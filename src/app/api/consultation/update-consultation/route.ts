@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { apiReq } from "@/lib/apiHelpers";
+import { TConsultation } from "@/lib/types";
 
-export async function POST(request: NextRequest) {
+export async function PUT(request: NextRequest) {
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
 
   const locale = request.headers.get("accept-language") ?? "en";
 
-  const data: {
-    tier: string;
-    number_of_days: number;
-    price: number;
-  } = await request.json();
+  const data: TConsultation = await request.json();
 
+  console.log("🚀 ~ file: route.ts:25 ~ PUT ~ dataResponse:", data.id);
   const dataResponse = await apiReq({
-    endpoint: `/consultations`,
+    endpoint: `/consultations/${data.id}`,
     locale,
-    method: "POST",
+    method: "PUT",
     token: token?.value,
     values: data,
   })

@@ -40,10 +40,6 @@ export async function POST(request: NextRequest) {
     .catch((error) => {
       return NextResponse.json(error, { status: 401 });
     });
-  console.log(
-    "🚀 ~ file: route.ts:28 ~ POST ~ bookingResponse:",
-    bookingResponse
-  );
 
   return NextResponse.json(bookingResponse, { status: 200 });
 }
