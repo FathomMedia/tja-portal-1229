@@ -1,26 +1,28 @@
+"use client";
 import { Separator } from "@/components/ui/separator";
 import { DeleteProfile } from "@/components/user/DeleteUserProfile";
 import { UserAccountDetails } from "@/components/user/UserAccountDetails";
 import { UserUpdateEmail } from "@/components/user/UserUpdateEmail";
 import { UpdatePassword } from "@/components/user/UserUpdatePassword";
-import { getToken } from "@/lib/serverUtils";
+
 import { TUser } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
-import { getTranslations } from "next-intl/server";
-import { apiReq } from "@/lib/apiHelpers";
 
-export default async function Page() {
+import { apiReqQuery } from "@/lib/apiHelpers";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export default function Page() {
   const locale = useLocale();
-  const token = getToken();
-  const t = await getTranslations("Profile");
 
-  const user = await apiReq({
-    endpoint: "/users/profile",
-    locale,
-    token: token,
-  }).then(async (val) => {
-    const { data } = await val.json();
-    return data as TUser;
+  const t = useTranslations("Profile");
+
+  const { data: user, isFetching: isFetchingUser } = useQuery<TUser>({
+    queryKey: ["/users/profile"],
+    queryFn: () =>
+      apiReqQuery({ endpoint: "/users/profile", locale }).then((res) =>
+        res.json().then((resData) => resData.data)
+      ),
   });
 
   return (
@@ -30,15 +32,19 @@ export default async function Page() {
           {t("updateProfile")}
         </h2>
       </div>
-      <UserAccountDetails user={user} />
+      {isFetchingUser && <Skeleton className="w-full h-64" />}
+      {user && !isFetchingUser && <UserAccountDetails user={user} />}
       <Separator />
       <div className=" space-y-4">
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
           {t("updateEmail")}
         </h2>
-        <div className=" text-sm text-muted-foreground">
-          {t("yourEmail")}: <span className=" italic">{user.email}</span>
-        </div>
+        {isFetchingUser && <Skeleton className="w-full max-w-sm h-6" />}
+        {user && !isFetchingUser && (
+          <div className=" text-sm text-muted-foreground">
+            {t("yourEmail")}: <span className=" italic">{user.email}</span>
+          </div>
+        )}
       </div>
       <UserUpdateEmail />
       <Separator />

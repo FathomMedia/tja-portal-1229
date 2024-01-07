@@ -1,4 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -16,4 +18,9 @@ export function formatePrice({
     currency: "BHD",
     style: "currency",
   }).format(price);
+}
+
+export function parseDateFromAPI(stringDate: string) {
+  dayjs.extend(customParseFormat);
+  return dayjs(stringDate, "DD/MM/YYYY").toDate();
 }

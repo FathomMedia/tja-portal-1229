@@ -35,18 +35,12 @@ export async function apiReq({
   const route = `${api}${endpoint}`;
   return fetch(route, {
     method: method ?? "GET",
-    headers: token
-      ? {
-          "Accept-Language": locale,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        }
-      : {
-          "Accept-Language": locale,
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+    headers: {
+      "Accept-Language": locale,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
     body: values ? JSON.stringify(values) : undefined,
   }).catch((error) => {
     return NextResponse.json({ data: null, error: error }, { status: 503 });

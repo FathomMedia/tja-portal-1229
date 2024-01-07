@@ -11,11 +11,21 @@ export async function POST(request: NextRequest) {
   const data: {
     id: number;
     dataToRequest: {
-      reason: string;
       coupon: string | null;
-      addons: number[] | null;
-      is_partial: boolean;
       payment_method: "benefitpay" | "applepay" | "card";
+      start_date: Date;
+      end_date: Date;
+      class: string;
+      number_of_travelers: number;
+      budget: string;
+      budget_priority: string;
+      vacation_type: string;
+      accommodation_type: string[];
+      activities: string[];
+      destination: string;
+      adventure_meaning: string[];
+      morning_activity: string;
+      departure_airport: string;
     };
   } = await request.json();
 
@@ -30,10 +40,6 @@ export async function POST(request: NextRequest) {
     .catch((error) => {
       return NextResponse.json(error, { status: 401 });
     });
-  console.log(
-    "🚀 ~ file: route.ts:28 ~ POST ~ bookingResponse:",
-    bookingResponse
-  );
 
   return NextResponse.json(bookingResponse, { status: 200 });
 }

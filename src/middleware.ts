@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { availableLocales } from "./config";
-import { TUser } from "./lib/types";
 
 export async function middleware(request: NextRequest) {
   const { pathname, locale, origin } = request.nextUrl;
@@ -56,17 +55,22 @@ export async function middleware(request: NextRequest) {
         } else {
           // Admins should not access dashboard pages and non-admins should not access admin pages
           if (isAdmin) {
-            if (pathname?.includes(`${locale}/dashboard`)) {
+            if (pathname?.includes(`${currentLocale}/dashboard`)) {
               request.nextUrl.pathname = `/${currentLocale}/admin`;
             }
           } else {
-            if (pathname?.includes(`${locale}/admin`)) {
+            if (pathname?.includes(`${currentLocale}/admin`)) {
               request.nextUrl.pathname = `/${currentLocale}/dashboard`;
             }
           }
 
           // Redirect to the home page for empty pathname
-          if (!pathname || pathname === "/") {
+          if (
+            !pathname ||
+            pathname === "/" ||
+            pathname === `/${currentLocale}` ||
+            pathname === `/${currentLocale}/`
+          ) {
             request.nextUrl.pathname = `/${currentLocale}/${
               isAdmin ? "admin" : "dashboard"
             }`;
@@ -91,6 +95,7 @@ export async function middleware(request: NextRequest) {
     defaultLocale: availableLocales[0],
   });
   const res: NextResponse = handleI18nRouting(request);
+
   return res;
 }
 

@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { TConsultation } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -52,9 +52,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
-  const { refresh } = useRouter();
 
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
   const formSchema = z.object({
@@ -73,10 +71,10 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     },
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) => {
-      return fetch("/api/consultation", {
+      return fetch("/api/consultation/calculate-consultation", {
         method: "POST",
         headers: {
           "Accept-Language": locale,
@@ -90,27 +88,14 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
       });
     },
     async onSuccess(data, values) {
+      const { message, data: dataResponse } = await data.json();
       if (data.ok) {
-        const { message, data: dataResponse } = await data.json();
-        console.log(
-          "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
-          dataResponse
-        );
         toast.success(message, { duration: 6000 });
-        // queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
-        // queryClient.invalidateQueries({
-        //   queryKey: ["/profile/coupons/available"],
-        // });
-        // queryClient.invalidateQueries({
-        //   queryKey: ["/profile/coupons/redeemed"],
-        // });
-
         onPackageChanged(dataResponse);
         startDate(values.start_date);
         endDate(values.end_date);
         setTotalFullPrice(dataResponse.priceWithCurrency ?? null);
       } else {
-        const { message } = await data.json();
         toast.error(message, { duration: 6000 });
       }
     },
@@ -121,39 +106,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     mutation.mutate(values);
-    // setIsLoading(true);
-    // const res = await fetch("/api/consultation", {
-    //   method: "POST",
-    //   headers: {
-    //     "Accept-Language": locale,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     tier: values.package,
-    //     start_date: format(values.start_date, "dd/MM/yyyy"),
-    //     end_date: format(values.end_date, "dd/MM/yyyy"),
-    //   }),
-    // }).finally(() => setIsLoading(false));
-    // const dataResponse = await res.json();
-    // if (res.ok) {
-    // onPackageChanged(dataResponse.data.id);
-    // startDate(values.start_date);
-    // endDate(values.end_date);
-    // setTotalFullPrice(dataResponse.data.priceWithCurrency ?? null);
-    //   refresh();
-    //   //   router.push(
-    //   //     pathname +
-    //   //       "?" +
-    //   //       createQueryString([
-    //   //         { name: "email", value: values.email },
-    //   //         { name: "otpSent", value: "true" },
-    //   //       ])
-    //   //   );
-    //   toast.success(dataResponse.message, { duration: 6000 });
-    // } else {
-    //   //   const { message } = await res.json();
-    //   toast.error(dataResponse.message, { duration: 6000 });
-    // }
   }
 
   return (
@@ -171,6 +123,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 <FormItem className=" w-full mb-2">
                   <FormLabel className="text-base">
                     {t("packageType")}
+                    <span className="text-destructive ms-1">*</span>
                   </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
@@ -200,6 +153,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                   <FormItem className="flex flex-col w-full">
                     <FormLabel className="text-base">
                       {t("startDate")}
+                      <span className="text-destructive ms-1">*</span>
                     </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -239,7 +193,10 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 name="end_date"
                 render={({ field }) => (
                   <FormItem className="flex flex-col w-full">
-                    <FormLabel className="text-base">{t("endDate")}</FormLabel>
+                    <FormLabel className="text-base">
+                      {t("endDate")}
+                      <span className="text-destructive ms-1">*</span>
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl className="w-full flex">

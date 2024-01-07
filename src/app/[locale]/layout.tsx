@@ -6,8 +6,9 @@ import "@/app/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";
-import { Toaster } from "react-hot-toast";
+
 import { ReCaptchaProvider } from "next-recaptcha-v3";
+import { Toaster } from "@/components/ui/sonner";
 
 import TanstackProvider from "@/providers/TanstackProvider";
 
@@ -44,7 +45,7 @@ export default function RootLayout({
             <TanstackProvider>{children}</TanstackProvider>
           </NextIntlClientProvider>
         </ReCaptchaProvider>
-        <Toaster position="top-center" />
+        <Toaster duration={5000} closeButton />
       </body>
     </html>
   );

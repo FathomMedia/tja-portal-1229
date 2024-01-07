@@ -3,15 +3,9 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(request: NextRequest) {
-  const { name, date_of_birth, gender } = await request.json();
+  const { dataToSend } = await request.json();
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
-
-  const dataToSend = {
-    name: name,
-    date_of_birth: date_of_birth,
-    gender: gender,
-  };
 
   return await apiReq({
     endpoint: "/users/profile",

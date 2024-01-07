@@ -9,6 +9,10 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { LoadingComp } from "../LoadingComp";
 import { Skeleton } from "../ui/skeleton";
+import { Badge } from "../ui/badge";
+import { CheckCircle, Download } from "lucide-react";
+import { Button } from "../ui/button";
+import { formatePrice } from "@/lib/utils";
 
 export const DashboardHome = () => {
   const locale = useLocale();
@@ -171,46 +175,84 @@ const Consultation = ({ order }: { order: TOrder }) => {
 const Adventure = ({ order }: { order: TOrder }) => {
   const adventure = order.details as TAdventure;
   const t = useTranslations("Home");
+  const locale = useLocale();
   return (
-    <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
+    <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto border border-white bg-white">
       <div className="w-full md:w-1/3 aspect-video md:aspect-square bg-white relative grid place-items-center">
         <Image
           width={200}
           height={200}
-          src="/assets/images/adventure.jpg"
-          alt="tailwind logo"
-          className="rounded-xl w-full h-full object-cover"
+          src={adventure.image ?? "/assets/images/adventure.jpg"}
+          alt={adventure.title}
+          className="rounded-md w-full h-full object-cover"
         />
       </div>
-      <div className="w-full md:w-2/3 bg-white flex flex-col justify-between space-y-2 p-3">
-        <div className="flex flex-col gap-2">
+      <div className="w-full @container md:w-2/3 bg-white flex flex-col justify-between space-y-2 p-3">
+        <div className="flex flex-col gap-2 ">
           <div className="flex justify-between item-center">
-            <p className="text-gray-500 font-medium hidden md:block">
+            <p className="text-gray-500 font-light hidden md:block">
               {t("adventure")}
             </p>
-            <div className="flex flex-wrap md:flex-row gap-2">
-              <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("startDate")}:<p>{adventure.startDate}</p>
-              </div>
-              <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("endDate")}:<p>{adventure.endDate}</p>
-              </div>
-            </div>
+            {order.isFullyPaid ? (
+              <Badge className="bg-teal-400/40 text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
+                {t("paid")}
+                <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
+              </Badge>
+            ) : (
+              <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
+                {t("pendingPayment")}
+              </Badge>
+            )}
           </div>
-          <h3 className="font-black text-gray-800 md:text-3xl text-xl">
+          <h3 className="font-black text-primary md:text-3xl text-xl">
             {adventure.title}
           </h3>
-          <div className="text-xs font-medium text-foreground flex gap-1">
-            {t("bookedAt")}:<p>{order.dateBooked}</p>
+          <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
+            {t("bookedAt")} <p>{order.dateBooked}</p>
           </div>
-          <p className="md:text-lg text-gray-500 text-base">
-            {adventure.description}
-          </p>
+          <div className=" gap-4 flex flex-col @md:flex-row text-sm text-primary py-6">
+            <p>
+              {t("startDate")}: {adventure.startDate}
+            </p>
+            <p>
+              {t("endDate")}: {adventure.endDate}
+            </p>
+          </div>
         </div>
-        <p className="text-xl font-black text-gray-800 ">
-          {adventure.price}
-          <span className="font-normal text-gray-600 text-base"> BHD</span>
-        </p>
+        <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
+          {order.isFullyPaid && (
+            <Button
+              onClick={() => {
+                throw new Error("Not implemented");
+              }}
+              type="button"
+              variant={"ghost"}
+              size={"sm"}
+            >
+              {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" />
+            </Button>
+          )}
+          {!order.isFullyPaid && (
+            <Button
+              onClick={() => {
+                throw new Error("Not implemented");
+              }}
+              type="button"
+              variant={"ghost"}
+              size={"sm"}
+              className="text-secondary underline hover:text-secondary hover:bg-secondary/10"
+            >
+              {t("completePayment")}
+            </Button>
+          )}
+
+          <div className="flex items-baseline gap-2">
+            <p className="text-sm text-muted-foreground">{t("total")}</p>
+            <p className="text-xl font-black text-primary ">
+              {formatePrice({ locale, price: adventure.price })}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

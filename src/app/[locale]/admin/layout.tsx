@@ -1,50 +1,59 @@
+"use client";
+
 import { SidebarNav } from "@/components/SideNav";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
+
+  const t = useTranslations("Dashboard");
 
   const sidebarNavItems = [
     {
-      title: "Home",
+      title: t("home"),
       href: `/${locale}/admin`,
-    },
-    {
-      title: "Journeys Miles",
-      href: `/${locale}/admin/journeys-miles`,
-    },
-    {
-      title: "Orders",
-      href: `/${locale}/admin/orders`,
-    },
-    {
-      title: "Products",
-      href: `/${locale}/admin/products`,
     },
 
     {
-      title: "Customers",
+      title: t("journeysMiles"),
+      href: `/${locale}/admin/journeys-miles`,
+    },
+    {
+      title: t("orders"),
+      href: `/${locale}/admin/orders`,
+    },
+    {
+      title: t("products"),
+      href: `/${locale}/admin/products`,
+    },
+    {
+      title: t("customers"),
       href: `/${locale}/admin/customers`,
+    },
+    {
+      title: t("accountDetails"),
+      href: `/${locale}/admin/account-details`,
     },
   ];
 
   return (
-    <div>
-      <div className="space-y-6 p-4 md:p-10 pb-16">
-        <UserProfilePreview />
+    <div className="h-screen flex flex-col">
+      <div className="space-y-6 p-4 md:p-10 pb-16 flex flex-col h-full">
+        <UserProfilePreview items={sidebarNavItems} />
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:gap-6 lg:space-y-0">
-          <aside className="-px-4 lg:w-1/5 overflow-x-scroll">
+          <aside className="-px-4 hidden lg:flex lg:w-1/5 overflow-x-scroll">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-4xl">{children}</div>
+          <div className="grow lg:max-w-[80%]">{children}</div>
         </div>
       </div>
     </div>

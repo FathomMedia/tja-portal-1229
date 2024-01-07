@@ -30,13 +30,15 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { TUser } from "@/lib/types";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { PhoneNumberInput } from "../ui/phone";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -47,7 +49,6 @@ type TUserAccountDetails = {
 };
 
 export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
-  const { refresh } = useRouter();
   const locale = useLocale();
   const t = useTranslations("SignInWithPassword");
 
@@ -55,10 +56,8 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
     name: z.string().min(1, "Name is required"),
     date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
     gender: z.string().min(1).max(1),
+    phone: z.string().min(1),
   });
-
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const defaultDate = dayjs(user.dateFormatted).toDate();
 
   // 1. Define your form.
@@ -68,38 +67,47 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
       name: user.name,
       date_of_birth: defaultDate,
       gender: user.gender,
+      phone: user.phone,
+    },
+  });
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      return fetch(`/api/user/update-user-profile`, {
+        method: "PUT",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dataToSend: {
+            name: values.name,
+            date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
+            gender: values.gender,
+            phone: values.phone,
+          },
+        }),
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message, { duration: 6000 });
+        queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
     },
   });
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    setIsLoading(true);
-
-    const response = await fetch(`/api/user/update-user-profile`, {
-      method: "PUT",
-      headers: {
-        "Accept-Language": locale,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: values.name,
-        date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
-        gender: values.gender,
-      }),
-    }).finally(() => {
-      setIsLoading(false);
-    });
-
-    const res = await response.json();
-
-    if (response.ok) {
-      toast.success(res.message);
-      refresh();
-    } else {
-      toast.error(res.message);
-    }
+    mutation.mutate(values);
   }
 
   return (
@@ -120,6 +128,23 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
                     placeholder={t("name")}
                     className=" border-primary"
                     type="name"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("phone")}</FormLabel>
+                <FormControl>
+                  <PhoneNumberInput
+                    placeholder={t("phone")}
+                    className=" border-primary"
                     {...field}
                   />
                 </FormControl>
@@ -206,7 +231,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
               variant={"secondary"}
               type="submit"
             >
-              {isLoading && (
+              {mutation.isPending && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
               {t("update")}
