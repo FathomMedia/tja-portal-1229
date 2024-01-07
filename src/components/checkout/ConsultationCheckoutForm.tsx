@@ -209,8 +209,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
   );
 
   useEffect(() => {
-    console.log("first");
-
     setTotalFullPrice(consultation.price - discount);
 
     return () => {};
@@ -270,17 +268,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
       });
     },
     async onSuccess(data, values) {
-      // const { message, data: dataResponse } = await data.json();
-      // if (data.ok) {
-      //   console.log(
-      //     "🚀 ~ file: CalculateConsultation.tsx:95 ~ onSuccess ~ dataResponse:",
-      //     dataResponse
-      //   );
-      //   toast.success(message, { duration: 6000 });
-      // } else {
-      //   toast.error(message, { duration: 6000 });
-      // }
-
       if (data.ok) {
         const paymentSession = await data.json();
 
@@ -347,22 +334,29 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                 <h3 className="font-bold md:text-2xl text-xl">
                                   {consultation.tier}
                                 </h3>
-                                {/* <div className="flex justify-between item-center">
-                          <div className="flex flex-wrap gap-2">
-                            <Badge variant={"secondary"}>
-                              {t("startDate")} <p>{consultation.startDate}</p>
-                            </Badge>
-                            <Badge variant={"secondary"}>
-                              {t("endDate")} <p>{consultation.endDate}</p>
-                            </Badge>
-                          </div>
-                        </div> */}
+                                <div className="flex justify-between item-center">
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant={"secondary"}>
+                                      {t("startDate")}{" "}
+                                      <p>
+                                        :
+                                        {format(
+                                          formData.startDate,
+                                          "dd/MM/yyyy"
+                                        )}
+                                      </p>
+                                    </Badge>
+                                    <Badge variant={"secondary"}>
+                                      {t("endDate")}
+                                      {/* <p>{formData.endDate}</p> */}
+                                      <p>
+                                        :
+                                        {format(formData.endDate, "dd/MM/yyyy")}
+                                      </p>
+                                    </Badge>
+                                  </div>
+                                </div>
                               </div>
-
-                              {/* <p className="text-muted mb-4">
-                        <span className="font-bold">{t("price")}:</span>{" "}
-                        {consultation.priceWithCurrency}
-                      </p> */}
                             </div>
                           </div>
                           <Separator className="bg-muted/50" />

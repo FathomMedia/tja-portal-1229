@@ -34,6 +34,18 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { isRtlLang } from "rtl-detect";
 import { Input } from "@/components/ui/input";
 import { apiReqQuery } from "@/lib/apiHelpers";
@@ -116,6 +128,39 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
     setIsOpen(false);
   }
 
+  const deleteConsultationMutation = useMutation({
+    mutationFn: (values: TConsultation) => {
+      console.log(
+        "🚀 ~ file: ConsultationForm.tsx:155 ~ values:",
+        values.numberOfDays
+      );
+      return fetch("/api/consultation/delete-consultation", {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...values }),
+      });
+    },
+    async onSuccess(data, values) {
+      const { message, data: dataResponse } = await data.json();
+      if (data.ok) {
+        queryClient.invalidateQueries({ queryKey: ["/consultations"] });
+        toast.success(message, { duration: 6000 });
+      } else {
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  async function onDeletePackage(values: TConsultation) {
+    deleteConsultationMutation.mutate(values);
+  }
+
   return (
     <div>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -162,7 +207,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="gap-6 flex flex-col items-start w-full"
+              className="gap-6 flex flex-col items-start w-full mt-4"
             >
               <div className="w-full flex flex-col gap-6 ">
                 <FormField
@@ -272,7 +317,29 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
           </Form>
           {consultation && (
             <div className=" w-full flex justify-center mt-4">
-              <p className=" text-sm">Delete package?</p>
+              <AlertDialog>
+                <AlertDialogTrigger className=" text-xs text-red-500">
+                  Delete package?
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this data.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <Button
+                      className=" text-sm bg-transparent text-red-400 hover:bg-transparent"
+                      onClick={() => onDeletePackage(consultation)}
+                    >
+                      Yes, delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           )}
         </DialogContent>
