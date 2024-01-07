@@ -1,11 +1,6 @@
 "use client";
 
 import { SidebarNav } from "@/components/SideNav";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 
