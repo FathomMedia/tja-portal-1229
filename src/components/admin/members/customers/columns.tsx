@@ -292,7 +292,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link
-              href={`/${locale}/admin/customers/edit/${customer.customerId}`}
+              href={`/${locale}/admin/members/customers/edit/${customer.customerId}`}
             >
               {t("view")}
             </Link>

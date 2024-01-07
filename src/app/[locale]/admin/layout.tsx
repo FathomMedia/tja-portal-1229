@@ -34,8 +34,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       href: `/${locale}/admin/achievements`,
     },
     {
-      title: t("customers"),
-      href: `/${locale}/admin/customers`,
+      title: t("members"),
+      href: `/${locale}/admin/members`,
     },
     {
       title: t("accountDetails"),

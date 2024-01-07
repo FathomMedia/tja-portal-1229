@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CustomerAccountDetails } from "@/components/admin/customers/CustomerAccountDetails";
+import { CustomerAccountDetails } from "@/components/admin/members/customers/CustomerAccountDetails";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { DisplayTranslatedText } from "@/components/Helper";

@@ -1,3 +1,5 @@
+import { WeekNumberLabel } from "react-day-picker";
+
 export type TUser = {
   name: string;
   email: string;
@@ -173,6 +175,11 @@ export type TLevel = {
 };
 
 // Admin Types
+export type TAdmins = {
+  data: TAdmin[];
+  links: Links;
+  meta: TMeta;
+};
 
 export type TCustomers = {
   data: TCustomer[];
@@ -270,4 +277,18 @@ export type TCustomer = {
   verified: boolean;
   nextLevel: TLevel;
   isSuspended: boolean;
+};
+
+export type TAdmin = {
+  adminId: number;
+  name: string;
+  email: string;
+  gender: string;
+  dateFormatted: string;
+  role: string;
+  joinedAt: string;
+  verified: boolean;
+  invitedBy: TLevel;
+  isAccepted: boolean;
+  acceptedAt: string | null;
 };
