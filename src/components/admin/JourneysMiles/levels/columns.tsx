@@ -1,13 +1,13 @@
 "use client";
 
-import { TConsultationBooking } from "@/lib/types";
+import { TCoupon, TLevel } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  CheckCircle2,
   ClipboardCopy,
-  LucideMinusCircle,
   MoreHorizontal,
   ArrowUpDown,
+  PlusCircle,
+  ImageOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
@@ -23,188 +22,116 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const columns: ColumnDef<TConsultationBooking>[] = [
+export const columns: ColumnDef<TLevel>[] = [
   {
     accessorKey: "id",
-    header: () => (
-      <DisplayTranslatedText text="id" translation="Consultation" />
-    ),
+    header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
   },
   {
     accessorKey: "name",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="name" translation="Consultation" />
+        <DisplayTranslatedText text="name" translation="Dashboard" />
+      </div>
+    ),
+  },
+  {
+    accessorKey: "badge",
+    header: () => (
+      <div className="min-w-[2.5rem]">
+        <DisplayTranslatedText text="badge" translation="Adventures" />
       </div>
     ),
     cell: ({ row }) => {
       return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Email copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.email);
-          }}
-        >
-          {row.original.customer.email}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
+        <Avatar className="w-10 h-10">
+          {row.original.badge && (
+            <AvatarImage className="object-cover" src={row.original.badge} />
+          )}
+          <AvatarFallback>
+            {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+          </AvatarFallback>
+        </Avatar>
       );
     },
   },
-  {
-    accessorKey: "type",
-    header: () => (
-      <DisplayTranslatedText text="emailAddress" translation="SignUp" />
-    ),
-    cell: ({ row }) => {
-      // return <Badge variant={"outline"}>{row.original.consultation.}</Badge>;
-    },
-  },
-  {
-    accessorKey: "percentOff",
-    header: () => <DisplayTranslatedText text="Phone" translation="SignUp" />,
-    cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Phone copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.phone);
-          }}
-        >
-          {row.original.customer.phone}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "minPoints",
-    header: () => (
-      <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="title" translation="Adventures" />
-      </div>
-    ),
-    cell: ({ row }) => <p>{}</p>,
-  },
-  // {
-  //   accessorKey: "maxPoints",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         <DisplayTranslatedText text="isFullyPaid" translation="Adventures" />
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
 
-  //   cell: ({ row }) => {
-  //     return row.original ? (
-  //       <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
-  //     ) : (
-  //       <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
-  //     );
-  //   },
-  // },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => <Actions adventureBooking={row.original} />,
-  // },
+  {
+    accessorKey: "minDays",
+    header: () => (
+      <div className="min-w-[5rem]">
+        <DisplayTranslatedText text="minDays" translation="Dashboard" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="">
+          <Badge variant={"outline"}>{row.original.minDays}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "maxDays",
+    header: () => (
+      <div className="min-w-[5rem]">
+        <DisplayTranslatedText text="maxDays" translation="Dashboard" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="">
+          <Badge variant={"outline"}>{row.original.maxDays}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: () => <AddNew />,
+    cell: ({ row }) => <Actions level={row.original} />,
+  },
 ];
 
-// const Actions = ({
-//   adventureBooking,
-// }: {
-//   adventureBooking: TAdventureBooking;
-// }) => {
-//   const locale = useLocale();
+export const AddNew = () => {
+  const locale = useLocale();
+  return (
+    <Link
+      className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100"
+      href={`/${locale}/admin/journeys-miles/level/new`}
+    >
+      <PlusCircle className="w-4 h-4" />{" "}
+      <DisplayTranslatedText text="add" translation="Dashboard" />
+    </Link>
+  );
+};
 
-// const queryClient = useQueryClient();
+const Actions = ({ level }: { level: TLevel }) => {
+  const locale = useLocale();
 
-// const mutation = useMutation({
-//   mutationFn: () => {
-//     return fetch(`/api/user/handleSuspend`, {
-//       method: "POST",
-//       body: JSON.stringify({
-//         customerId: customer.customerId,
-//       }),
-//       headers: {
-//         "Accept-Language": locale,
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   },
-//   async onSuccess(data) {
-//     if (data.ok) {
-//       const { message } = await data.json();
-//       toast.success(message);
-//       queryClient.invalidateQueries({ queryKey: ["/customers"] });
-//     } else {
-//       const { message } = await data.json();
-//       toast.error(message, { duration: 6000 });
-//     }
-//   },
-//   async onError(error) {
-//     toast.error(error.message, { duration: 6000 });
-//   },
-// });
-
-// return (
-//   <div>
-//     <DropdownMenu>
-//       <DropdownMenuTrigger asChild>
-//         <Button variant="ghost" className="h-8 w-8 p-0">
-//           <span className="sr-only">Open menu</span>
-//           <MoreHorizontal className="h-4 w-4" />
-//         </Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent align="end">
-//         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//         <DropdownMenuItem asChild>
-//           <Link
-//             href={`/${locale}/admin/customers/edit/${adventureBooking.customer.id}`}
-//           >
-//             View Customer
-//           </Link>
-//         </DropdownMenuItem>
-//         <DropdownMenuItem asChild>
-//           <Link href={`/${locale}/admin/booking/${adventureBooking.id}`}>
-//             View Booking
-//           </Link>
-//         </DropdownMenuItem>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuItem asChild>
-//           {
-//             <Button
-//               className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-//               variant="outline"
-//             >
-//               {/* {mutation.isPending && (
-//                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-//                 )} */}
-//               Download Invoice
-//             </Button>
-//           }
-//         </DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   </div>
-// );
-// };
+  return (
+    <div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem asChild>
+            <Link
+              href={`/${locale}/admin/journeys-miles/level/edit/${level.id}`}
+            >
+              Edit
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+};

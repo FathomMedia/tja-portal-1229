@@ -158,13 +158,15 @@ export type TOrder = {
 
 export type TLevels = {
   data: TLevel[];
-  links: Links;
-  meta: TMeta;
+  links?: Links;
+  meta?: TMeta;
 };
 
 export type TLevel = {
   id: number;
   name: string;
+  arabicName?: string;
+  englishName?: string;
   minDays: number;
   maxDays: number;
   badge: string;

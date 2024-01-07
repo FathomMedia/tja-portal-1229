@@ -3,34 +3,31 @@
 import React, { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { TCoupons } from "@/lib/types";
+import { TCoupons, TLevel, TLevels } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
-export const CouponsListComponent = () => {
+export const LevelsListComponent = () => {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
 
-  const [page, setPage] = useState(1);
-  const { data: coupons, isFetching } = useQuery<TCoupons>({
-    queryKey: [`/coupons`, page],
+  const { data: levels, isFetching } = useQuery<TLevels>({
+    queryKey: [`/levels`],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/coupons?page=${page}`,
+        endpoint: `/levels`,
         locale,
       }).then((res) => res.json()),
   });
 
   return (
-    <DashboardSection title={t("coupons")} className="flex w-full">
+    <DashboardSection title={t("levels")} className="flex w-full">
       <DataTable
         columns={columns}
-        data={coupons?.data ?? []}
+        data={levels?.data ?? []}
         isFetching={isFetching}
-        meta={coupons?.meta ?? null}
-        onPageSelect={(goTO) => setPage(goTO)}
       />
     </DashboardSection>
   );

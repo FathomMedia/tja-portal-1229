@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { CouponsListComponent } from "./coupons/CouponsListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ConsultationListComponent } from "./levels/ConsultationOrdersComponent";
+import { LevelsListComponent } from "./levels/LevelsListComponent";
 
 export const JourneysMilesComponent = () => {
   const { push } = useRouter();
@@ -44,7 +44,7 @@ export const JourneysMilesComponent = () => {
           <CouponsListComponent />
         </TabsContent>
         <TabsContent value="levels">
-          <ConsultationListComponent />
+          <LevelsListComponent />
         </TabsContent>
       </Tabs>
     </div>
