@@ -1,9 +1,9 @@
-import { CustomersComponent } from "@/components/admin/customers/CustomersComponent";
+import { AchievementsListComponent } from "@/components/admin/achievements/AchievementsListComponent";
 
 export default async function Page() {
   return (
     <div>
-      <CustomersComponent />
+      <AchievementsListComponent />
     </div>
   );
 }

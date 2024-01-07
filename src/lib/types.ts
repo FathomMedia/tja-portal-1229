@@ -24,6 +24,10 @@ export type TAchievement = {
   id: number;
   title: string;
   description: string;
+  englishTitle: string;
+  arabicTitle: string;
+  englishDescription: string;
+  arabicDescription: string;
   badge: string;
   achieved: boolean;
 };
@@ -156,6 +160,11 @@ export type TOrder = {
   };
 };
 
+export type TAchievements = {
+  data: TAchievement[];
+  links?: Links;
+  meta?: TMeta;
+};
 export type TLevels = {
   data: TLevel[];
   links?: Links;

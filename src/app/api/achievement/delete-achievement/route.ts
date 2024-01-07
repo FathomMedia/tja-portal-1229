@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const token = cookieStore.get("authToken");
 
   return await apiReq({
-    endpoint: `/levels/${id}`,
+    endpoint: `/achievements/${id}`,
     locale: request.headers.get("Accept-Language") || "en",
     method: "DELETE",
     token: token?.value,
