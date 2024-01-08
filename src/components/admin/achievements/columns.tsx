@@ -1,6 +1,6 @@
 "use client";
 
-import { TCoupon, TLevel } from "@/lib/types";
+import { TAchievement, TCoupon, TLevel } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   ClipboardCopy,
@@ -25,16 +25,16 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export const columns: ColumnDef<TLevel>[] = [
+export const columns: ColumnDef<TAchievement>[] = [
   {
     accessorKey: "id",
     header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
   },
   {
-    accessorKey: "name",
+    accessorKey: "title",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="name" translation="Dashboard" />
+        <DisplayTranslatedText text="title" translation="Dashboard" />
       </div>
     ),
   },
@@ -60,39 +60,17 @@ export const columns: ColumnDef<TLevel>[] = [
   },
 
   {
-    accessorKey: "minDays",
+    accessorKey: "description",
     header: () => (
       <div className="min-w-[5rem]">
-        <DisplayTranslatedText text="minDays" translation="Dashboard" />
+        <DisplayTranslatedText text="description" translation="Dashboard" />
       </div>
     ),
-    cell: ({ row }) => {
-      return (
-        <div className="">
-          <Badge variant={"outline"}>{row.original.minDays}</Badge>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "maxDays",
-    header: () => (
-      <div className="min-w-[5rem]">
-        <DisplayTranslatedText text="maxDays" translation="Dashboard" />
-      </div>
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="">
-          <Badge variant={"outline"}>{row.original.maxDays}</Badge>
-        </div>
-      );
-    },
   },
   {
     id: "actions",
     header: () => <AddNew />,
-    cell: ({ row }) => <Actions level={row.original} />,
+    cell: ({ row }) => <Actions achievement={row.original} />,
   },
 ];
 
@@ -101,7 +79,7 @@ export const AddNew = () => {
   return (
     <Link
       className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100"
-      href={`/${locale}/admin/journeys-miles/level/new`}
+      href={`/${locale}/admin/achievements/new`}
     >
       <PlusCircle className="w-4 h-4" />{" "}
       <DisplayTranslatedText text="add" translation="Dashboard" />
@@ -109,7 +87,7 @@ export const AddNew = () => {
   );
 };
 
-const Actions = ({ level }: { level: TLevel }) => {
+const Actions = ({ achievement }: { achievement: TAchievement }) => {
   const locale = useLocale();
 
   return (
@@ -124,9 +102,7 @@ const Actions = ({ level }: { level: TLevel }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link
-              href={`/${locale}/admin/journeys-miles/level/edit/${level.id}`}
-            >
+            <Link href={`/${locale}/admin/achievements/edit/${achievement.id}`}>
               Edit
             </Link>
           </DropdownMenuItem>

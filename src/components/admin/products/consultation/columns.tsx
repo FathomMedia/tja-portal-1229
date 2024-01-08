@@ -42,7 +42,7 @@ export const columns: ColumnDef<TConsultation>[] = [
       <DisplayTranslatedText text="numberOfDays" translation="Consultations" />
     ),
     cell: ({ row }) => {
-      return <p className=" text-center">{row.original.numberOfDays}</p>;
+      return <p className=" ">{row.original.numberOfDays}</p>;
     },
   },
   {
@@ -51,7 +51,7 @@ export const columns: ColumnDef<TConsultation>[] = [
       <DisplayTranslatedText text="price" translation="Consultations" />
     ),
     cell: ({ row }) => {
-      return <p className=" text-center">{row.original.priceWithCurrency}</p>;
+      return <p className="">{row.original.priceWithCurrency}</p>;
     },
   },
   {

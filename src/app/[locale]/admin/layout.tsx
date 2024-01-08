@@ -1,11 +1,6 @@
 "use client";
 
 import { SidebarNav } from "@/components/SideNav";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 
@@ -35,8 +30,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       href: `/${locale}/admin/products`,
     },
     {
-      title: t("customers"),
-      href: `/${locale}/admin/customers`,
+      title: t("achievements"),
+      href: `/${locale}/admin/achievements`,
+    },
+    {
+      title: t("members"),
+      href: `/${locale}/admin/members`,
     },
     {
       title: t("accountDetails"),
