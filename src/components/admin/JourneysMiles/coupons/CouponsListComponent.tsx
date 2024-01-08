@@ -11,7 +11,7 @@ import { DashboardSection } from "@/components/DashboardSection";
 
 export const CouponsListComponent = () => {
   const locale = useLocale();
-  const t = useTranslations("Dashboard");
+  const t = useTranslations("Coupons");
 
   const [page, setPage] = useState(1);
   const { data: coupons, isFetching } = useQuery<TCoupons>({
@@ -24,7 +24,7 @@ export const CouponsListComponent = () => {
   });
 
   return (
-    <DashboardSection title={t("coupons")} className="flex w-full">
+    <DashboardSection title={t("Coupons")} className="flex w-full">
       <DataTable
         columns={columns}
         data={coupons?.data ?? []}

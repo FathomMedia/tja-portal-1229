@@ -8,6 +8,8 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale } from "next-intl";
 import { Skeleton } from "../ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ImageOff } from "lucide-react";
 
 export const MyAchievements: FC = () => {
   const locale = useLocale();
@@ -43,26 +45,26 @@ export const MyAchievements: FC = () => {
                 !ach.achieved && "bg-muted opacity-80"
               )}
             >
-              <div className="relative aspect-square w-20 max-sm:w-16">
-                <Image
-                  className="w-full h-full object-cover rounded-full"
-                  fill
-                  src={ach.badge}
-                  alt="Badge"
-                />
-              </div>
+              <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16">
+                {ach.badge && (
+                  <AvatarImage className="object-cover" src={ach.badge} />
+                )}
+                <AvatarFallback className="border border-muted-foreground rounded-full">
+                  {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                </AvatarFallback>
+              </Avatar>
               <p className="text-sm text-muted-foreground">{ach.title}</p>
             </PopoverTrigger>
             <PopoverContent className="rounded-xl">
               <div className="flex gap-4 items-center">
-                <div className="relative aspect-square w-20 min-w-fit max-sm:w-16">
-                  <Image
-                    className="w-full h-full object-cover rounded-full"
-                    fill
-                    src={ach.badge}
-                    alt="Badge"
-                  />
-                </div>
+                <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16">
+                  {ach.badge && (
+                    <AvatarImage className="object-cover" src={ach.badge} />
+                  )}
+                  <AvatarFallback>
+                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                  </AvatarFallback>
+                </Avatar>
                 <p className="w-full text-sm text-muted-foreground">
                   {ach.description}
                 </p>

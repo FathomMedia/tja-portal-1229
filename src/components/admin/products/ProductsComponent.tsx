@@ -5,10 +5,12 @@ import { AdventureListComponent } from "./adventures/AdventureListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ConsultationListComponent } from "./consultation/ConsultationListComponent";
+import { useTranslations } from "next-intl";
 
 export const ProductsComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Products");
 
   const searchParams = useSearchParams();
 
@@ -37,8 +39,8 @@ export const ProductsComponent = () => {
         className="w-full gap-3 flex-col flex"
       >
         <TabsList className="w-fit">
-          <TabsTrigger value="adventures">Adventures</TabsTrigger>
-          <TabsTrigger value="consultation">Consultation</TabsTrigger>
+          <TabsTrigger value="adventures">{t("adventures")}</TabsTrigger>
+          <TabsTrigger value="consultation">{t("consultations")}</TabsTrigger>
         </TabsList>
         <TabsContent value="adventures">
           <AdventureListComponent />

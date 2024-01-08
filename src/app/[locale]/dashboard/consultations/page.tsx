@@ -29,7 +29,7 @@ export default function Page() {
     <div className="max-w-4xl flex flex-col gap-6">
       <div>
         <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          Book a consultation
+          {t("bookAConsultation")}
         </h2>
       </div>
       <Suspense

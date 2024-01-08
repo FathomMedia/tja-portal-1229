@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { AdventureOrdersComponent } from "./adventures/AdventureOrdersComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -11,6 +11,7 @@ export const OrdersComponent = () => {
   const locale = useLocale();
   const { push } = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("Orders");
 
   const searchParams = useSearchParams();
 
@@ -39,8 +40,8 @@ export const OrdersComponent = () => {
         className="w-full gap-3 flex-col flex"
       >
         <TabsList className="w-fit">
-          <TabsTrigger value="adventures">Adventures</TabsTrigger>
-          <TabsTrigger value="consultation">Consultation</TabsTrigger>
+          <TabsTrigger value="adventures">{t("adventures")}</TabsTrigger>
+          <TabsTrigger value="consultation">{t("consultation")}</TabsTrigger>
         </TabsList>
         <TabsContent value="adventures">
           <AdventureOrdersComponent />

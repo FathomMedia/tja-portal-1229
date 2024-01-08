@@ -6,11 +6,12 @@ import { columns } from "./columns";
 import { TConsultations } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
 export const ConsultationListComponent = () => {
   const locale = useLocale();
+  const t = useTranslations("Products");
 
   const [page, setPage] = useState(1);
   // TODO: change to Consultation
@@ -24,7 +25,7 @@ export const ConsultationListComponent = () => {
   });
 
   return (
-    <DashboardSection title={"Consultations"} className="flex w-full">
+    <DashboardSection title={t("consultations")} className="flex w-full">
       <DataTable
         columns={columns}
         data={consultationList?.data ?? []}

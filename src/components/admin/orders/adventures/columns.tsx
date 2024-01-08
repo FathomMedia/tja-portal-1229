@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -34,7 +34,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "name",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="Name" translation="SignUp" />
+        <DisplayTranslatedText text="name" translation="Adventures" />
       </div>
     ),
     cell: ({ row }) => <p>{row.original.customer.name}</p>,
@@ -42,7 +42,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
   {
     accessorKey: "email",
     header: () => (
-      <DisplayTranslatedText text="emailAddress" translation="SignUp" />
+      <DisplayTranslatedText text="email" translation="Adventures" />
     ),
     cell: ({ row }) => {
       return (
@@ -67,7 +67,9 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
   },
   {
     accessorKey: "phone",
-    header: () => <DisplayTranslatedText text="Phone" translation="SignUp" />,
+    header: () => (
+      <DisplayTranslatedText text="phone" translation="Adventures" />
+    ),
     cell: ({ row }) => {
       return (
         <Button
@@ -90,10 +92,10 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     },
   },
   {
-    accessorKey: "adventureName",
+    accessorKey: "adventureTitle",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="title" translation="Adventures" />
+        <DisplayTranslatedText text="adventureTitle" translation="Adventures" />
       </div>
     ),
     cell: ({ row }) => <p>{row.original.adventure.title}</p>,
@@ -144,7 +146,10 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "adventureStartDate",
     header: () => (
       <div className="min-w-[6rem]">
-        <DisplayTranslatedText text="startDate" translation="Adventures" />
+        <DisplayTranslatedText
+          text="adventureStartDate"
+          translation="Adventures"
+        />
       </div>
     ),
     cell: ({ row }) => <p>{row.original.adventure.startDate}</p>,
@@ -153,7 +158,10 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "adventureEndDate",
     header: () => (
       <div className="min-w-[6rem]">
-        <DisplayTranslatedText text="endDate" translation="Adventures" />
+        <DisplayTranslatedText
+          text="adventureEndDate"
+          translation="Adventures"
+        />
       </div>
     ),
     cell: ({ row }) => <p>{row.original.adventure.endDate}</p>,
@@ -171,7 +179,10 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     accessorKey: "totalPriceWithCurrency",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="price" translation="Adventures" />
+        <DisplayTranslatedText
+          text="totalPriceWithCurrency"
+          translation="Adventures"
+        />
       </div>
     ),
   },
@@ -187,6 +198,7 @@ const Actions = ({
   adventureBooking: TAdventureBooking;
 }) => {
   const locale = useLocale();
+  const t = useTranslations("Orders");
 
   // const queryClient = useQueryClient();
 
@@ -223,22 +235,22 @@ const Actions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/customers/edit/${adventureBooking.customer.id}`}
             >
-              View Customer
+              {t("viewCustomer")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={`/${locale}/admin/booking/${adventureBooking.id}`}>
-              View Booking
+              {t("viewBooking")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -251,7 +263,7 @@ const Actions = ({
                 {/* {mutation.isPending && (
                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                 )} */}
-                Download Invoice
+                {t("downloadInvoice")}
               </Button>
             }
           </DropdownMenuItem>

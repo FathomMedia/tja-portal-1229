@@ -194,11 +194,12 @@ const LevelsTable = ({
 };
 
 const RedeemedCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
+  const t = useTranslations("Coupons");
   const locale = useLocale();
   return (
     <div className="@container flex flex-col gap-4">
       <h3 className="font-bold md:text-2xl text-xl text-primary">
-        My Redeemed Coupons
+        {t("myRedeemedCoupons")}
       </h3>
       <div className="grid grid-cols-1 gap-3 @md:grid-cols-2 @3xl:grid-cols-3 @5xl:grid-cols-4">
         {coupons.map((coupon, i) => (
@@ -240,13 +241,13 @@ const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
   return (
     <div className="@container flex flex-col gap-4">
       <h3 className="font-bold md:text-2xl text-xl text-primary">
-        Available Coupons
+        {t("availableCoupons")}
       </h3>
       {coupons.length > 0 && (
         <div className="text-xs text-muted-foreground">
-          {"Note: redeeming adventure coupons resets your point balance to"}{" "}
+          {t("noteRedeemingAdventureCouponsResetsYourPointBalanceTo")}{" "}
           <Badge variant={"outline"} size={"sm"}>
-            70 points
+            {t("70points")}
           </Badge>
         </div>
       )}
@@ -290,6 +291,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
   const [open, setOpen] = useState(false);
   const [agree, setAgree] = useState(false);
   const queryClient = useQueryClient();
+  const t = useTranslations("Coupons");
 
   const mutation = useMutation({
     mutationFn: () => {
@@ -331,20 +333,22 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="w-full" variant="outline">
-            Redeem
+            {t("redeem")}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader className="gap-1">
-            <DialogTitle>Redeem Coupon</DialogTitle>
+            <DialogTitle>{t("redeemCoupon")}</DialogTitle>
             <DialogDescription className="gap-1 flex flex-col">
               {coupon.applyTo === "adventure" ? (
                 <div>
-                  {"Note: redeeming this coupon resets your point balance to"}{" "}
-                  <Badge variant={"outline"}>70 points</Badge>
+                  {t("noteRedeemingAdventureCouponsResetsYourPointBalanceTo")}{" "}
+                  <Badge variant={"outline"}>{t("70points")}</Badge>
                 </div>
               ) : (
-                "Redeeming this coupon will not impact your points balance."
+                <div>
+                  {t("redeemingThisCouponWillNotImpactYourPointsBalance")}
+                </div>
               )}
             </DialogDescription>
           </DialogHeader>
@@ -372,7 +376,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
               <Button className="" type="button" variant="ghost">
-                Close
+                {t("close")}
               </Button>
             </DialogClose>
             <>
@@ -385,7 +389,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
                   {mutation.isPending && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
-                  Agree
+                  {t("agree")}
                 </Button>
               )}
               {agree && (
@@ -397,7 +401,7 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
                   {mutation.isPending && (
                     <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                   )}
-                  Redeem
+                  {t("redeem")}
                 </Button>
               )}
             </>
