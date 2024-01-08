@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
       number_of_travelers: number;
       budget: string;
       budget_priority: string;
+      budget_includes: string[];
       vacation_type: string;
       accommodation_type: string[];
       activities: string[];
