@@ -246,7 +246,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 {mutation.isPending && (
                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                 )}
-                {"Calculate"}
+                {t("calculate")}
               </Button>
             </div>
           </div>

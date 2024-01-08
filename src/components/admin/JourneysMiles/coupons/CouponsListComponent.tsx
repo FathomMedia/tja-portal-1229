@@ -6,11 +6,12 @@ import { columns } from "./columns";
 import { TCoupons } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
 export const CouponsListComponent = () => {
   const locale = useLocale();
+  const t = useTranslations("Coupons");
 
   const [page, setPage] = useState(1);
   const { data: coupons, isFetching } = useQuery<TCoupons>({
@@ -23,7 +24,7 @@ export const CouponsListComponent = () => {
   });
 
   return (
-    <DashboardSection title={"Coupons"} className="flex w-full">
+    <DashboardSection title={t("Coupons")} className="flex w-full">
       <DataTable
         columns={columns}
         data={coupons?.data ?? []}
