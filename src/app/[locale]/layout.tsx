@@ -13,6 +13,12 @@ import { Toaster } from "@/components/ui/sonner";
 import TanstackProvider from "@/providers/TanstackProvider";
 import localFont from "next/font/local";
 
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  maximumScale: 1,
+};
+
 const helveticaNeue = localFont({
   src: [
     {
@@ -34,6 +40,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: "The Journey Adventures",
   description: "The Journey Adventures Portal",
+
+  // "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
 };
 
 // Can be imported from a shared config
@@ -56,6 +64,7 @@ export default function RootLayout({
       lang={locale}
       className={cn(inter.variable, helveticaNeue.variable)}
     >
+      {/* <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/> */}
       <body>
         <ReCaptchaProvider>
           <NextIntlClientProvider
