@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { CheckCircle2, CalendarClock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import React, { FC, useState } from "react";
 
 type TPaymentTypeSelect = {
@@ -22,6 +23,8 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
   const [isPartialPayment, setIsPartialPayment] =
     useState<boolean>(defaultSelected);
 
+  const t = useTranslations("Checkout");
+
   return (
     <div className="flex gap-3 flex-col @container @sm:flex-row">
       <div
@@ -37,7 +40,7 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
         <div className="flex flex-col gap-3 justify-between w-full">
           <div>
             <p className="text-sm font-medium whitespace-pre">
-              Partial Payment
+              {t("partialPayment")}
             </p>
           </div>
           <div className="flex items-start text-muted-foreground gap-2">
@@ -70,7 +73,9 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
       >
         <div className="flex flex-col gap-3 justify-between w-full">
           <div>
-            <p className="text-sm font-medium whitespace-pre">Full Payment</p>
+            <p className="text-sm font-medium whitespace-pre">
+              {t("fullPayment")}
+            </p>
           </div>
           <p className="text-sm font-bold text-secondary">{fullPrice}</p>
         </div>

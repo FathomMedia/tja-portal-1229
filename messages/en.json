@@ -64,7 +64,9 @@
     "adventureStartDate": "Start Date",
     "adventureEndDate": "End Date",
     "totalPriceWithCurrency": "Total Price",
-    "actions": "Actions"
+    "actions": "Actions",
+    "failed": "Failed!",
+    "success": "Success!"
   },
   "Auth": {
     "OTP": "OTP",
@@ -82,7 +84,7 @@
     "adventure": "Adventure",
     "applePay": "Apple Pay",
     "april": "April",
-    "benefitPay": "Benefit Pay",
+    "benefitPay": "BenefitPay",
     "creditCard": "Credit Card",
     "discount": "Discount",
     "february": "February",
@@ -100,7 +102,22 @@
       "errors": {
         "required": "This field is required"
       }
-    }
+    },
+    "CouldntCreateAPaymentSession": "Couldn't create a payment session",
+    "benefitPay-debit-card-for-Bahraini-only": "BenefitPay - Debit Card (Bahrain Only)",
+    "placeOrder": "Place Order",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "country": "Country",
+    "continent": "Continent",
+    "Addons": "Addons",
+    "coupons": "Coupons",
+    "getCoupons": "Get Coupons",
+    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons",
+    "consultation": "Consultation",
+    "partialPayment": "Partial Payment",
+    "fullPayment": "Full Payment",
+    "whyDidYouChooseThisDistention": "Why you choose this distention?..."
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",
@@ -177,7 +194,7 @@
     "kayakWithPenguins": "Kayak with penguins",
     "kayaking": "Kayaking",
     "mixofAandB": "A mixture of A & B",
-    "moreDiscovering ": "More of discovering and city hopping with some adventurous activities between",
+    "moreDiscovering": "More of discovering and city hopping with some adventurous activities between",
     "nationalParksAndAnimals": "National parks, animals and wild life",
     "next": "Next",
     "numberOfcompanions": "Number of Companions",
@@ -291,7 +308,14 @@
     "unsuspend": "Unsuspend",
     "update": "Update",
     "updateCustomer": "Update Customer",
-    "view": "View"
+    "view": "View",
+    "achievements": "Achievements",
+    "attach": "Attach",
+    "attachAchievement": "Attach Achievement",
+    "attachAchievementForCustomer": "Attach Achievement for Customer",
+    "achievement": "Achievement",
+    "selectAchievement": "Select Achievement",
+    "revokeAchievement": "Revoke Achievement "
   },
   "Dashboard": {
     "MyAchievements": "My Achievements",
@@ -429,7 +453,8 @@
     "password": {
       "errors": {
         "invalid": "Invalid password",
-        "required": "Password is required"
+        "required": "Password is required",
+        "confirm": "Please Confirm Your Password"
       },
       "placeholder": "*******",
       "title": "Password"
@@ -438,7 +463,13 @@
     "pickaDate": "Pick a Date",
     "selectGender": "Select Gender",
     "signIn": "Sign In",
-    "update": "Update"
+    "update": "Update",
+    "emailAddress": "Email Address",
+    "password_confirmation": {
+      "title": "Confirm Password",
+      "placeholder": "Confrim Password"
+    },
+    "acceptInvite": "Accept Invite"
   },
   "SignUp": {
     "Enter your name": "Enter your name",
@@ -536,5 +567,6 @@
     "id": "Id",
     "actions": "Actions",
     "openMenu": "Open menu"
-  }
+  },
+  "partialPayment": "Partial Payment"
 }

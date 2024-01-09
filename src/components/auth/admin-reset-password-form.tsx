@@ -111,7 +111,7 @@ export const AdminResetPasswordForm = () => {
   return (
     <div>
       <div className="w-full flex flex-col gap-2">
-        <Label className="w-full">Email Address</Label>
+        <Label className="w-full">{t("emailAddress")}</Label>
         <Input disabled value={email} />
       </div>
 
