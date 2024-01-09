@@ -12,6 +12,8 @@ export async function PUT(request: NextRequest) {
     "slug"
   )}`;
 
+  console.log("🚀 ~ file: route.ts:9 ~ PUT ~ data:", data);
+
   return fetch(route, {
     method: "POST",
     cache: "no-cache",
@@ -23,6 +25,7 @@ export async function PUT(request: NextRequest) {
     body: data,
   })
     .then(async (value) => {
+      console.log(value);
       if (value.ok) {
         const data = await value.json();
 

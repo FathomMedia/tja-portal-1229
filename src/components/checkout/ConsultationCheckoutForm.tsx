@@ -235,6 +235,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         number_of_travelers: formData.plus,
         budget: formData.budget,
         budget_priority: formData.bPriority,
+        budget_includes: formData.budgetIncludes,
         vacation_type: formData.vType,
         accommodation_type: formData.accommodationTypes,
         activities: formData.activityTypes,

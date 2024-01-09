@@ -3,11 +3,12 @@
 import React, { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { TAdmins } from "@/lib/types";
+import { TAdminInvitations, TAdmins } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
+import { columnsAdminInvitations } from "./columns-admin-invitations";
 
 export const AdminComponent = () => {
   const locale = useLocale();
@@ -22,6 +23,16 @@ export const AdminComponent = () => {
       ),
   });
 
+  const { data: adminInvitations, isFetching: isFetchingInvitation } =
+    useQuery<TAdminInvitations>({
+      queryKey: [`/admins/invitations`, page],
+      queryFn: () =>
+        apiReqQuery({
+          endpoint: `/admins/invitations?page=${page}`,
+          locale,
+        }).then((res) => res.json()),
+    });
+
   return (
     <DashboardSection title={t("admins")} className="flex w-full">
       <DataTable
@@ -31,6 +42,19 @@ export const AdminComponent = () => {
         meta={admins?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
       />
+
+      <div className=" my-[3rem]">
+        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2 my-4">
+          Sent invitations
+        </h2>
+        <DataTable
+          columns={columnsAdminInvitations}
+          data={adminInvitations?.data ?? []}
+          isFetching={isFetchingInvitation}
+          meta={adminInvitations?.meta ?? null}
+          onPageSelect={(goTO) => setPage(goTO)}
+        />
+      </div>
     </DashboardSection>
   );
 };

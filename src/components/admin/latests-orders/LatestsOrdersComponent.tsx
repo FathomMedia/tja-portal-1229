@@ -116,7 +116,7 @@ export const LatestsOrdersComponent = () => {
                       {isAdventure ? adventure.title : consultation.tier}
                     </TableCell>
                     <TableCell className="text-start">
-                      {order.isFullyPaid ? (
+                      {order.isFullyPaid || order.type === "consultation" ? (
                         <CheckCircle2 className="text-primary" />
                       ) : (
                         <LucideMinusCircle className="text-destructive" />

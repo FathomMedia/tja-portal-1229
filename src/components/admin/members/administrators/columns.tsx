@@ -3,52 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { TAdmin } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ClipboardCopy,
-  MinusCircle,
-  MoreHorizontal,
-  PlusCircle,
-} from "lucide-react";
+import { CheckCircle2, ClipboardCopy, LucideMinusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { toast } from "sonner";
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Icons } from "@/components/ui/icons";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns: ColumnDef<TAdmin>[] = [
   {
@@ -125,15 +83,10 @@ export const columns: ColumnDef<TAdmin>[] = [
       <DisplayTranslatedText text="verified" translation="Dashboard" />
     ),
     cell: ({ row }) => {
-      const customer = row.original;
-
-      return (
-        <Badge variant={customer.verified ? "destructive" : "info"}>
-          {/* <DisplayTranslatedText
-            text={customer.verified}
-            translation="Dashboard"
-          /> */}
-        </Badge>
+      return row.original.verified ? (
+        <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
+      ) : (
+        <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
       );
     },
   },
@@ -151,15 +104,10 @@ export const columns: ColumnDef<TAdmin>[] = [
       <DisplayTranslatedText text="isAccepted" translation="Dashboard" />
     ),
     cell: ({ row }) => {
-      const customer = row.original;
-
-      return (
-        <Badge variant={customer.isAccepted ? "destructive" : "info"}>
-          {/* <DisplayTranslatedText
-            text={customer}
-            translation="Dashboard"
-          /> */}
-        </Badge>
+      return row.original.isAccepted ? (
+        <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
+      ) : (
+        <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
       );
     },
   },
@@ -176,7 +124,7 @@ export const columns: ColumnDef<TAdmin>[] = [
     cell: ({ row }) => {
       const admin = row.original;
 
-      // return <Actions customer={customer} />;
+      // return <Actions admin={admin} />;
     },
   },
 ];
