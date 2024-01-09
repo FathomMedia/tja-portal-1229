@@ -5,7 +5,6 @@ import { CouponsListComponent } from "./coupons/CouponsListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LevelsListComponent } from "./levels/LevelsListComponent";
-import { ConsultationListComponent } from "./levels/ConsultationOrdersComponent";
 import { useTranslations } from "next-intl";
 
 export const JourneysMilesComponent = () => {
