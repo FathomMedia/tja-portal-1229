@@ -53,7 +53,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
           <div className={cn("flex gap-3 items-center")}>
             <Avatar className="">
               {user.avatar && <AvatarImage src={user.avatar} />}
-              <AvatarFallback className="text-primary-foreground bg-primary">
+              <AvatarFallback className="text-primary-foreground font-semibold bg-primary">
                 {user.name.slice(0, 2)}
               </AvatarFallback>
             </Avatar>
