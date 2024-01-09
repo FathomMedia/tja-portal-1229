@@ -59,14 +59,14 @@ export const columns: ColumnDef<TAdmin>[] = [
     accessorKey: "name",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="Name" translation="SignUp" />
+        <DisplayTranslatedText text="name" translation="Dashboard" />
       </div>
     ),
   },
   {
     accessorKey: "email",
     header: () => (
-      <DisplayTranslatedText text="emailAddress" translation="SignUp" />
+      <DisplayTranslatedText text="email" translation="Dashboard" />
     ),
     cell: ({ row }) => {
       return (
@@ -91,7 +91,9 @@ export const columns: ColumnDef<TAdmin>[] = [
   },
   {
     accessorKey: "gender",
-    header: () => <DisplayTranslatedText text="gender" translation="SignUp" />,
+    header: () => (
+      <DisplayTranslatedText text="gender" translation="Dashboard" />
+    ),
     cell: ({ row }) => {
       return (
         <Badge
@@ -102,9 +104,9 @@ export const columns: ColumnDef<TAdmin>[] = [
           }
         >
           {row.original.gender === "M" ? (
-            <DisplayTranslatedText text="male" translation="SignUp" />
+            <DisplayTranslatedText text="male" translation="Dashboard" />
           ) : (
-            <DisplayTranslatedText text="female" translation="SignUp" />
+            <DisplayTranslatedText text="female" translation="Dashboard" />
           )}
         </Badge>
       );

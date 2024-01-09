@@ -62,7 +62,8 @@
     "adventureTitle": "عنوان المغامرة",
     "adventureStartDate": "تاريخ البدأ",
     "adventureEndDate": "تاريخ الإنتهاء",
-    "totalPriceWithCurrency": "السعر الإجمالي"
+    "totalPriceWithCurrency": "السعر الإجمالي",
+    "actions": "الإجراءات"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -279,7 +280,8 @@
     "unsuspend": "إلغاء التعليق",
     "update": "تحديث",
     "updateCustomer": "تحديث العميل",
-    "view": "منظر"
+    "view": "التفاصيل",
+    "actions": "الإجراءات"
   },
   "Dashboard": {
     "MyAchievements": "انجازاتي",
@@ -303,7 +305,7 @@
     "deleteCoupon": "حذف القسيمة",
     "details": "التفاصيل",
     "editCoupon": "تحرير القسيمة",
-    "email": "بريد إلكتروني",
+    "email": "البريد الإلكتروني",
     "fixed": "قيمة ثابتة",
     "getInTouch": "ابقى على تواصل",
     "hello": "مرحبًا،",
@@ -329,7 +331,7 @@
     "name": "الاسم",
     "noAvailableCouponsToRedeem": "لا توجد قسائم متاحة.",
     "nothingFound": "لم يتم العثور على شيء",
-    "orders": "طلبات",
+    "orders": "الطلبات",
     "percentage": "نسبة مئوية",
     "phone": "هاتف",
     "products": "الخدمات",
@@ -343,7 +345,18 @@
     "value": "القيمة",
     "70points": "70 نقطة",
     "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "ملاحظة، تفعيل قسائم المغامرات سوف يعيد تعيين رصيد نقاطك إلى",
-    "availableCoupons": "القسائم المتوفرة"
+    "availableCoupons": "القسائم المتوفرة",
+    "achievements": "الإنجازات",
+    "admins": "المشرفين",
+    "gender": "الجنس",
+    "role": "الوظيفة",
+    "verified": "مثبت",
+    "invitedBy": "تمت الدعوة عن طريق",
+    "isAccepted": "قبل الدعوة",
+    "actions": "الإجراءات",
+    "members": "الأعضاء",
+    "description": "الوصف",
+    "title": "العنوان"
   },
   "DeleteProfile": {
     "cancel": "إلغاء",

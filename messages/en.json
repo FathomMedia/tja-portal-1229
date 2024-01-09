@@ -63,7 +63,8 @@
     "adventureTitle": "Adventure Title",
     "adventureStartDate": "Start Date",
     "adventureEndDate": "End Date",
-    "totalPriceWithCurrency": "Total Price"
+    "totalPriceWithCurrency": "Total Price",
+    "actions": "Actions"
   },
   "Auth": {
     "OTP": "OTP",
@@ -354,7 +355,18 @@
     "value": "Value",
     "70points": "70 Points",
     "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "Note, Redeeming adventure coupons resets your point balance to",
-    "availableCoupons": "Available Coupons"
+    "availableCoupons": "Available Coupons",
+    "achievements": "Achievements",
+    "admins": "Admins",
+    "gender": "Gender",
+    "role": "Role",
+    "verified": "Verified",
+    "invitedBy": "Invited By",
+    "isAccepted": "Is Accepted",
+    "actions": "Actions",
+    "members": "Members",
+    "description": "Description",
+    "title": "Title"
   },
   "DeleteProfile": {
     "cancel": "Cancel",

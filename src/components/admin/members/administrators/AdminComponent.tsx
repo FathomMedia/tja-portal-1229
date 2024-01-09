@@ -6,11 +6,12 @@ import { columns } from "./columns";
 import { TAdmins } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
 export const AdminComponent = () => {
   const locale = useLocale();
+  const t = useTranslations("Dashboard");
 
   const [page, setPage] = useState(1);
   const { data: admins, isFetching } = useQuery<TAdmins>({
@@ -22,7 +23,7 @@ export const AdminComponent = () => {
   });
 
   return (
-    <DashboardSection title={"Admins"} className="flex w-full">
+    <DashboardSection title={t("admins")} className="flex w-full">
       <DataTable
         columns={columns}
         data={admins?.data ?? []}

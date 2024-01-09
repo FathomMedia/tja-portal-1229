@@ -7,11 +7,12 @@ import { TCustomers } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { locale } from "dayjs";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
 export const CustomersComponent = () => {
   const locale = useLocale();
+  const t = useTranslations("Dashboard");
 
   const [page, setPage] = useState(1);
   const { data: customers, isFetching } = useQuery<TCustomers>({
@@ -23,7 +24,7 @@ export const CustomersComponent = () => {
   });
 
   return (
-    <DashboardSection title={"Customers"} className="flex w-full">
+    <DashboardSection title={t("customers")} className="flex w-full">
       <DataTable
         columns={columns}
         data={customers?.data ?? []}
