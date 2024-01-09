@@ -161,7 +161,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </div>
           {/* description */}
           {booking.adventure.description && (
-            <p className="text-sm p-4 bg-muted rounded-sm text-muted-foreground">
+            <p className="text-sm p-4 bg-muted/50 rounded-sm text-muted-foreground">
               {booking.adventure.description}
             </p>
           )}
@@ -184,20 +184,20 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   }
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem value="item-2">
+              <AccordionItem className="@container" value="item-2">
                 <AccordionTrigger>{t("packingList")}</AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="bg-white/50 rounded-md p-4 @xl:p-10 prose-sm mb-2">
                   <EditorViewer data={booking.adventure.package} />
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-3">
                 <AccordionTrigger>{t("links")}</AccordionTrigger>
                 <AccordionContent>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center flex-wrap gap-4">
                     <Link
                       href={"#"}
                       className={cn(
-                        buttonVariants({ variant: "ghost" }),
+                        buttonVariants({ variant: "outline" }),
                         "w-fit gap-2 uppercase"
                       )}
                     >
@@ -223,205 +223,218 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </div>
 
           {/* Invoices */}
-          <div className="rounded-md overflow-clip border">
-            <Table className="">
-              <TableHeader className="">
-                <TableRow className="">
-                  <TableHead className=" text-start ">{t("id")}</TableHead>
-                  <TableHead className=" text-start ">{t("amount")}</TableHead>
-                  <TableHead className=" text-start ">{t("vat")}</TableHead>
-                  <TableHead className=" text-start ">{t("isPaid")}</TableHead>
-                  <TableHead className=" text-start ">{t("date")}</TableHead>
-                  <TableHead className=" text-start ">{t("invoice")}</TableHead>
-                  <TableHead className=" text-start ">{t("receipt")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="">
-                {booking.partialInvoice && (
-                  <TableRow className={cn()}>
-                    <TableCell className="font-medium">
-                      {booking.partialInvoice.id}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {formatePrice({
-                        locale,
-                        price: booking.partialInvoice.totalAmount,
-                      })}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.partialInvoice.vat}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.partialInvoice.isPaid ? (
-                        <CheckCircle2 className="text-primary" />
-                      ) : (
-                        <LucideMinusCircle className="text-destructive" />
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {dayjs(booking.partialInvoice.receipt.created_at).format(
-                        "DD/MM/YYYY"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.partialInvoice.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.partialInvoice.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.partialInvoice.receipt.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.partialInvoice.receipt.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
+          <div className="flex flex-col gap-4">
+            <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
+              {t("invoices")}
+            </h2>
+            <div className="rounded-md overflow-clip border">
+              <Table className="">
+                <TableHeader className="">
+                  <TableRow className="">
+                    <TableHead className=" text-start ">{t("id")}</TableHead>
+                    <TableHead className=" text-start ">
+                      {t("amount")}
+                    </TableHead>
+                    <TableHead className=" text-start ">{t("vat")}</TableHead>
+                    <TableHead className=" text-start ">
+                      {t("isPaid")}
+                    </TableHead>
+                    <TableHead className=" text-start ">{t("date")}</TableHead>
+                    <TableHead className=" text-start ">
+                      {t("invoice")}
+                    </TableHead>
+                    <TableHead className=" text-start ">
+                      {t("receipt")}
+                    </TableHead>
                   </TableRow>
-                )}
-                {booking.remainingInvoice && (
-                  <TableRow className={cn()}>
-                    <TableCell className="font-medium">
-                      {booking.remainingInvoice.id}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {formatePrice({
-                        locale,
-                        price: booking.remainingInvoice.totalAmount,
-                      })}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.remainingInvoice.vat}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.remainingInvoice.isPaid ? (
-                        <CheckCircle2 className="text-primary" />
-                      ) : (
-                        <LucideMinusCircle className="text-destructive" />
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {dayjs(
-                        booking.remainingInvoice.receipt.created_at
-                      ).format("DD/MM/YYYY")}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.remainingInvoice.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.remainingInvoice.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.remainingInvoice.receipt.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.remainingInvoice.receipt.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )}
-                {booking.fullInvoice && (
-                  <TableRow className={cn()}>
-                    <TableCell className="font-medium">
-                      {booking.fullInvoice.id}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {formatePrice({
-                        locale,
-                        price: booking.fullInvoice.totalAmount,
-                      })}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.fullInvoice.vat}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {booking.fullInvoice.isPaid ? (
-                        <CheckCircle2 className="text-primary" />
-                      ) : (
-                        <LucideMinusCircle className="text-destructive" />
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      {dayjs(booking.fullInvoice.receipt.created_at).format(
-                        "DD/MM/YYYY"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.fullInvoice.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.fullInvoice.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-start">
-                      {booking.fullInvoice.receipt.path ? (
-                        <Link
-                          className={cn(buttonVariants({ variant: "ghost" }))}
-                          href={booking.fullInvoice.receipt.path}
-                        >
-                          {t("download")}{" "}
-                          <span>
-                            <Download className="w-4 h-4 ms-2" />
-                          </span>
-                        </Link>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )}
-                {!booking.partialInvoice &&
-                  !booking.remainingInvoice &&
-                  !booking.fullInvoice && (
-                    <TableRow>
-                      <TableCell colSpan={8} className="h-24 text-start">
-                        {t("nothingFound")}
+                </TableHeader>
+                <TableBody className="">
+                  {booking.partialInvoice && (
+                    <TableRow className={cn()}>
+                      <TableCell className="font-medium">
+                        {booking.partialInvoice.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatePrice({
+                          locale,
+                          price: booking.partialInvoice.totalAmount,
+                        })}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.partialInvoice.vat}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.partialInvoice.isPaid ? (
+                          <CheckCircle2 className="text-primary" />
+                        ) : (
+                          <LucideMinusCircle className="text-destructive" />
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {dayjs(
+                          booking.partialInvoice.receipt.created_at
+                        ).format("DD/MM/YYYY")}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.partialInvoice.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.partialInvoice.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.partialInvoice.receipt.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.partialInvoice.receipt.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
                       </TableCell>
                     </TableRow>
                   )}
-              </TableBody>
-            </Table>
+                  {booking.remainingInvoice && (
+                    <TableRow className={cn()}>
+                      <TableCell className="font-medium">
+                        {booking.remainingInvoice.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatePrice({
+                          locale,
+                          price: booking.remainingInvoice.totalAmount,
+                        })}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.remainingInvoice.vat}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.remainingInvoice.isPaid ? (
+                          <CheckCircle2 className="text-primary" />
+                        ) : (
+                          <LucideMinusCircle className="text-destructive" />
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {dayjs(
+                          booking.remainingInvoice.receipt.created_at
+                        ).format("DD/MM/YYYY")}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.remainingInvoice.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.remainingInvoice.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.remainingInvoice.receipt.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.remainingInvoice.receipt.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {booking.fullInvoice && (
+                    <TableRow className={cn()}>
+                      <TableCell className="font-medium">
+                        {booking.fullInvoice.id}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatePrice({
+                          locale,
+                          price: booking.fullInvoice.totalAmount,
+                        })}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.fullInvoice.vat}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {booking.fullInvoice.isPaid ? (
+                          <CheckCircle2 className="text-primary" />
+                        ) : (
+                          <LucideMinusCircle className="text-destructive" />
+                        )}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {dayjs(booking.fullInvoice.receipt.created_at).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.fullInvoice.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.fullInvoice.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-start">
+                        {booking.fullInvoice.receipt.path ? (
+                          <Link
+                            className={cn(buttonVariants({ variant: "ghost" }))}
+                            href={booking.fullInvoice.receipt.path}
+                          >
+                            {t("download")}{" "}
+                            <span>
+                              <Download className="w-4 h-4 ms-2" />
+                            </span>
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {!booking.partialInvoice &&
+                    !booking.remainingInvoice &&
+                    !booking.fullInvoice && (
+                      <TableRow>
+                        <TableCell colSpan={8} className="h-24 text-start">
+                          {t("nothingFound")}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         </div>
       )}
