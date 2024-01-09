@@ -19,9 +19,11 @@ export async function middleware(request: NextRequest) {
   if (!currentLocale || currentLocale === "") {
     currentLocale = availableLocales[0];
   }
+  console.log("pathname", pathname);
 
-  const authPath = `authentication`;
-  if (pathname !== authPath) {
+  const authPath = `/authentication/`;
+  if (!pathname.includes(authPath)) {
+    // if (pathname !== authPath) {
     const token = request.cookies.get("authToken");
 
     // check if there is a token

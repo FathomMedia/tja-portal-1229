@@ -35,25 +35,27 @@ export const AdminComponent = () => {
 
   return (
     <DashboardSection title={t("admins")} className="flex w-full">
-      <DataTable
-        columns={columns}
-        data={admins?.data ?? []}
-        isFetching={isFetching}
-        meta={admins?.meta ?? null}
-        onPageSelect={(goTO) => setPage(goTO)}
-      />
-
-      <div className=" my-[3rem]">
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2 my-4">
-          Sent invitations
-        </h2>
+      <div className=" flex flex-col">
         <DataTable
-          columns={columnsAdminInvitations}
-          data={adminInvitations?.data ?? []}
-          isFetching={isFetchingInvitation}
-          meta={adminInvitations?.meta ?? null}
+          columns={columns}
+          data={admins?.data ?? []}
+          isFetching={isFetching}
+          meta={admins?.meta ?? null}
           onPageSelect={(goTO) => setPage(goTO)}
         />
+
+        <div className=" my-[3rem]">
+          <h2 className="text-2xl text-primary font-black font-helveticaNeue border-s-4 border-primary ps-2 my-4">
+            Sent invitations
+          </h2>
+          <DataTable
+            columns={columnsAdminInvitations}
+            data={adminInvitations?.data ?? []}
+            isFetching={isFetchingInvitation}
+            meta={adminInvitations?.meta ?? null}
+            onPageSelect={(goTO) => setPage(goTO)}
+          />
+        </div>
       </div>
     </DashboardSection>
   );
