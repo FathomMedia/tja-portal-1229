@@ -1,5 +1,3 @@
-import { WeekNumberLabel } from "react-day-picker";
-
 export type TUser = {
   name: string;
   email: string;
@@ -166,11 +164,35 @@ export type TAdventureBookingOrder = {
 };
 export type TInvoice = {
   id: number;
+  type: string;
+  path: string;
+  customer: {
+    id: number;
+    userId: number;
+    name: string;
+    email: string;
+    phone: string;
+  };
+  isPartial: boolean;
+  isPaid: boolean;
+  vat: string;
+  totalAmount: number;
+  amountDue: number;
+  priceBeforeDiscount: number;
+  receipt: TReceipt;
+};
+
+export type TReceipt = {
+  id: number;
+  invoice_id: number;
   amount: number;
-  amountWithCurrency: null | string;
-  paymentType: string;
-  paymentMethod: null | string;
-  datePaid: null | string;
+  path: string | null;
+  transaction_id: string;
+  payment_method: string;
+  company_id: string;
+  created_at: Date | null;
+  updated_at: Date | null;
+  deleted_at: Date | null;
 };
 
 export type TOrder = {
