@@ -99,10 +99,10 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         if (paymentSession?.session?.PaymentURL) {
           push(paymentSession?.session?.PaymentURL);
         } else {
-          toast.error("Couldn't create a payment session", { duration: 6000 });
+          toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
         }
       } else {
-        toast.error("Couldn't create a payment session", { duration: 6000 });
+        toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
       }
     },
     async onError(error) {
@@ -592,7 +592,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     {mutation.isPending && (
                       <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                     )}
-                    Place Order
+                    {t("placeOrder")}
                   </Button>
                 </CardFooter>
               </Card>
@@ -666,12 +666,13 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 render={({ field }) => (
                   <FormItem className=" w-full">
                     <FormLabel>
-                      {t("whyDidYouChooseThisDistention?")}
+                      {t("whyDidYouChooseThisDistention")}
                       <span className="text-destructive ms-1">*</span>
                     </FormLabel>
                     <FormControl>
+                      {/* Why you choose this distention?... */}
                       <Textarea
-                        placeholder="Why you choose this distention?..."
+                        placeholder={t("whyDidYouChooseThisDistention")}
                         className=" border-primary-foreground bg-muted/20 text-primary-foreground placeholder:text-primary-foreground/50 resize-none"
                         {...field}
                       />
@@ -689,7 +690,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   name="addOns"
                   render={({ field }) => (
                     <FormItem className=" w-full">
-                      <FormLabel>{"Addons"}</FormLabel>
+                      <FormLabel>{t("Addons")}</FormLabel>
                       <FormControl>
                         <AddonsSelect
                           addons={adventure.addOns}
@@ -717,7 +718,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 render={({ field }) => (
                   <FormItem className=" w-full">
                     <div className="flex items-center justify-between flex-wrap">
-                      <FormLabel>{"Coupons"}</FormLabel>
+                      <FormLabel>{t("coupons")}</FormLabel>
                       <Link
                         className={cn(
                           buttonVariants({ variant: "link" }),
@@ -725,7 +726,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                         )}
                         href={`/${locale}/dashboard/journeys-miles`}
                       >
-                        Get Coupons
+                        {t("getCoupons")}
                       </Link>
                     </div>
                     {isFetchingMyCoupons && (
@@ -760,7 +761,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                       (myCoupons.length === 0 && (
                         <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
                           <p className="text-sm font-medium">
-                            {"You don't have any redeemed coupons"}
+                            {t("youDontHaveAnyRedeemedCoupons")}
                           </p>
                         </div>
                       ))}

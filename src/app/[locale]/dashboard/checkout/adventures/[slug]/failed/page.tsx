@@ -28,7 +28,7 @@ export default function Page({
   return (
     <div>
       <div className="flex flex-col bg-red-100 text-red-500 text-xl  font-helveticaNeue font-black  p-4 h-60 justify-center items-center">
-        <p>Failed !!!</p>
+        <p>{t("failed")}</p>
       </div>
 
       {isFetchingAdventure && <Skeleton className="w-full h-72" />}

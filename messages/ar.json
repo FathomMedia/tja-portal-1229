@@ -63,7 +63,9 @@
     "adventureStartDate": "تاريخ البدأ",
     "adventureEndDate": "تاريخ الإنتهاء",
     "totalPriceWithCurrency": "السعر الإجمالي",
-    "actions": "الإجراءات"
+    "actions": "الإجراءات",
+    "failed": "!فشل",
+    "success": "!نجاح"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -79,7 +81,7 @@
     "addons": "الإضافات",
     "adventure": "المغامرة",
     "applePay": "الدفع عن طريق أبل",
-    "benefitPay": "بنفت البحرين",
+    "benefitPay": "بنفت بي البحرين",
     "creditCard": "البطاقة الإئتمانية",
     "discount": "الخصم",
     "january": "يناير",
@@ -90,7 +92,22 @@
     "remaining": "المتبقي",
     "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
     "toBePaidLater": "(تُدفع لاحقًا)",
-    "total": "الإجمالي"
+    "total": "الإجمالي",
+    "CouldntCreateAPaymentSession": "تعذر إنشاء جلسة دفع",
+    "benefitPay-debit-card-for-Bahraini-only": "بنفت بي - بطاقة الخصم (البحرين فقط)",
+    "placeOrder": "وضع الطلب",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "country": "البلد",
+    "continent": "القارة",
+    "Addons": "الإضافات",
+    "coupons": "القسائم",
+    "getCoupons": "الحصول على قسائم",
+    "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم متوفرة",
+    "consultation": "إستشارة",
+    "partialPayment": "دفع جزئي",
+    "fullPayment": "دفع المبلغ بالكامل",
+    "whyDidYouChooseThisDistention": "لماذا أخترت هذه الوجهة؟..."
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",
@@ -281,14 +298,21 @@
     "update": "تحديث",
     "updateCustomer": "تحديث العميل",
     "view": "التفاصيل",
-    "actions": "الإجراءات"
+    "actions": "الإجراءات",
+    "achievements": "الإنجازات",
+    "attach": "إرفاق",
+    "attachAchievement": "إرفاق الإنجاز",
+    "attachAchievementForCustomer": "إرفاق الإنجاز للزبون",
+    "achievement": "إنجاز",
+    "selectAchievement": "إختيار إنجاز",
+    "revokeAchievement": "سحب الإنجاز"
   },
   "Dashboard": {
     "MyAchievements": "انجازاتي",
     "accountDetails": "تفاصيل الحساب",
     "active": "نشط",
     "add": "إضافة",
-    "admin": "مسؤل",
+    "admin": "مسؤول",
     "adventure": "مغامرة",
     "adventures": "المغامرات",
     "applyTo": "يطبق على",
@@ -347,7 +371,7 @@
     "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "ملاحظة، تفعيل قسائم المغامرات سوف يعيد تعيين رصيد نقاطك إلى",
     "availableCoupons": "القسائم المتوفرة",
     "achievements": "الإنجازات",
-    "admins": "المشرفين",
+    "admins": "المسؤولين",
     "gender": "الجنس",
     "role": "الوظيفة",
     "verified": "مثبت",
@@ -419,7 +443,8 @@
     "password": {
       "errors": {
         "invalid": "كلمة المرور غير صحيحة",
-        "required": "كلمة المرور مطلوبة"
+        "required": "كلمة المرور مطلوبة",
+        "confirm": "يرجى تأكيد كلمة المرور الخاصة بك"
       },
       "placeholder": "*******",
       "title": "كلمة المرور"
@@ -428,7 +453,13 @@
     "pickaDate": "اختر التاريخ",
     "selectGender": "اختيار الجنس",
     "signIn": "تسجيل دخول",
-    "update": "تحديث"
+    "update": "تحديث",
+    "emailAddress": "البريد الإلكتروني",
+    "password_confirmation": {
+      "title": "تأكيد كلمة المرور",
+      "placeholder": "تأكيد كلمة المرور"
+    },
+    "acceptInvite": "قبول الدعوة"
   },
   "SignUp": {
     "Enter your name": "أدخل أسمك",

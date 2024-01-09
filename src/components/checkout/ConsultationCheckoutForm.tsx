@@ -275,10 +275,10 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         if (paymentSession?.session?.PaymentURL) {
           push(paymentSession?.session?.PaymentURL);
         } else {
-          toast.error("Couldn't create a payment session", { duration: 6000 });
+          toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
         }
       } else {
-        toast.error("Couldn't create a payment session", { duration: 6000 });
+        toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
       }
     },
     async onError(error) {
@@ -375,7 +375,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                     )}
                                     href={`/${locale}/dashboard/journeys-miles`}
                                   >
-                                    Get Coupons
+                                    {t("getCoupons")}
                                   </Link>
                                 </div>
                                 {isFetchingMyCoupons && (
@@ -408,7 +408,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                   (myCoupons.length === 0 && (
                                     <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center cursor-pointer min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
                                       <p className="text-sm font-medium">
-                                        {"You don't have any redeemed coupons"}
+                                        {t("youDontHaveAnyRedeemedCoupons")}
                                       </p>
                                     </div>
                                   ))}
@@ -709,7 +709,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                           {isLoading && (
                             <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                           )}
-                          Place Order
+                          {t("placeOrder")}
                         </Button>
                       </CardFooter>
                     </Card>
