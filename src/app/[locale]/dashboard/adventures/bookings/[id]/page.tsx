@@ -12,6 +12,7 @@ import { cn, formatePrice } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { format } from "date-fns";
 import dayjs from "dayjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
@@ -43,15 +44,29 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         </div>
       )}
       {booking && !isFetchingAdventure && (
-        <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto border border-white bg-white">
-          <div className="w-full md:w-1/3 aspect-video md:aspect-square bg-white relative grid place-items-center">
+        <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl  p-4  mx-auto border border-white bg-white">
+          <div className="w-full md:w-1/3 aspect-video rounded-md overflow-clip md:aspect-square bg-white relative grid place-items-center">
             <Image
               width={200}
               height={200}
               src={booking.adventure.image ?? "/assets/images/adventure.jpg"}
               alt={booking.adventure.title}
-              className="rounded-md w-full h-full object-cover"
+              className=" w-full h-full  object-cover"
             />
+
+            <div className="text-sm flex items-center z-20 top-4 left-4 absolute gap-3 uppercase ">
+              <Avatar className="w-12 border h-12 min-w-fit">
+                {booking.adventure.continentImage && (
+                  <AvatarImage
+                    className="object-cover"
+                    src={booking.adventure.continentImage}
+                  />
+                )}
+                <AvatarFallback className=" text-muted rounded-full bg-transparent border">
+                  {booking.adventure.continent.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+            </div>
           </div>
           <div className="w-full @container md:w-2/3 bg-white flex flex-col justify-between space-y-2 p-3">
             <div className="flex flex-col gap-2 ">
@@ -73,6 +88,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <h3 className="font-black font-helveticaNeue text-primary md:text-3xl text-xl">
                 {booking.adventure.title}
               </h3>
+
               <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
                 {t("bookedAt")}{" "}
                 <p>{dayjs(booking.dateBooked).format("DD/MM/YYYY")}</p>

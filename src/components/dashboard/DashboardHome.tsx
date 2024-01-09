@@ -31,10 +31,7 @@ export const DashboardHome = () => {
       queryKey: ["/profile/bookings"],
       queryFn: () =>
         apiReqQuery({ endpoint: "/profile/bookings", locale }).then((res) =>
-          res.json().then((v) => {
-            console.log(v);
-            return v;
-          })
+          res.json()
         ),
     });
 

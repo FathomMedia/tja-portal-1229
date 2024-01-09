@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
   if (!currentLocale || currentLocale === "") {
     currentLocale = availableLocales[0];
   }
-  console.log("pathname", pathname);
 
   const authPath = `authentication`;
   if (!pathname.includes(authPath)) {
