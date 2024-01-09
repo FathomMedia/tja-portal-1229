@@ -160,7 +160,7 @@ const DropdownMenuLabel = React.forwardRef<
       ref={ref}
       dir={dir}
       className={cn(
-        "px-2 py-1.5 text-sm font-semibold",
+        "px-2 py-1.5 text-sm  font-helveticaNeue font-black ",
         inset && "pl-8",
         className
       )}

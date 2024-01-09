@@ -74,7 +74,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   return (
     <div className="max-w-4xl flex flex-col gap-10 pb-20">
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
           {t("editLevel")}
         </h2>
       </div>
@@ -82,7 +82,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       {level && !isFetchingLevel && <LevelsForm level={level} />}
 
       <Separator />
-      <h2 className="text-2xl text-destructive font-semibold border-s-4 border-destructive ps-2">
+      <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
         {t("dangerArea")}
       </h2>
       <div>

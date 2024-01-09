@@ -41,7 +41,7 @@ export const AddonsSelect: FC<TAddonsSelect> = ({
         >
           <div className="flex flex-col gap-3 justify-between">
             <div>
-              <p className="text-sm font-medium">{add.title}</p>
+              <p className="text-sm font-medium">{add.name}</p>
             </div>
             <p className="text-sm font-bold text-secondary">
               {formatePrice({ locale, price: add.price })}

@@ -333,7 +333,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                       <Badge
                         variant={"outline"}
                         size={"default"}
-                        className="text-xl font-semibold"
+                        className="text-xl  font-helveticaNeue font-black "
                       >
                         {customer.points}
                       </Badge>

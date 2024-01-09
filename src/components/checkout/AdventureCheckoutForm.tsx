@@ -37,17 +37,13 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { toast } from "sonner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { Skeleton } from "../ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ImageOff } from "lucide-react";
 
 type TAdventureCheckoutForm = {
   initAdventure: TAdventure;
@@ -141,8 +137,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
     addOns: z.array(
       z.object({
         id: z.number(),
-        title: z.string(),
+        name: z.string(),
         price: z.number(),
+        priceWithCurrency: z.string(),
       })
     ),
     coupon: z
@@ -374,7 +371,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                               field.onChange(val);
                             }}
                             defaultValue={field.value}
-                            className="grid @sm/paymentMethod:grid-cols-3 grid-cols-1 gap-4"
+                            className="grid @sm/paymentMethod:grid-cols-2 grid-cols-1 gap-4"
                           >
                             <div>
                               <RadioGroupItem
@@ -406,7 +403,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 {t("benefitPay")}
                               </Label>
                             </div>
-                            <div>
+                            {/* <div>
                               <RadioGroupItem
                                 value="applepay"
                                 id="applepay"
@@ -419,7 +416,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 <Icons.apple className="mb-3 h-6 w-6" />
                                 {t("applePay")}
                               </Label>
-                            </div>
+                            </div> */}
                           </RadioGroup>
                         </FormControl>
                         {field.value === "benefitpay" && (
@@ -611,7 +608,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                 <div className="relative aspect-[13/5] @xl:aspect-square w-full @xl:w-1/4 rounded-lg overflow-clip">
                   <Image
                     priority
-                    src={"/assets/images/adventure.jpg"}
+                    src={adventure.image ?? "/assets/images/adventure.jpg"}
                     className="object-cover w-full h-full bg-muted/25"
                     width={300}
                     height={100}
@@ -639,9 +636,11 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                           </Badge>
                         </div>
                       </div>
-                      <p className="md:text-lg text-muted text-base">
-                        {adventure.description}
-                      </p>
+                      {adventure.description && (
+                        <p className=" text-muted p-2 bg-black/10 rounded-sm text-sm">
+                          {adventure.description}
+                        </p>
+                      )}
                     </div>
                     <p className="text-muted mb-4">
                       <span className="font-bold">{t("country")}</span>{" "}
@@ -759,7 +758,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     {/* if user have no redeemed coupons  */}
                     {!myCoupons ||
                       (myCoupons.length === 0 && (
-                        <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center cursor-pointer min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
+                        <div className="p-4 rounded-md select-none min-w-[15rem] flex justify-center text-center items-center min-h-[5rem]  gap-3 text-primary-foreground border-2 border-border/60 border-dashed ">
                           <p className="text-sm font-medium">
                             {"You don't have any redeemed coupons"}
                           </p>

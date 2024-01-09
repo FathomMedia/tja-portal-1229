@@ -6,6 +6,9 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardSection } from "@/components/DashboardSection";
+import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export default function Page() {
   const locale = useLocale();
@@ -26,43 +29,82 @@ export default function Page() {
   });
 
   return (
-    <DashboardSection title={t("adventures")} className="flex flex-col gap-2">
+    <DashboardSection
+      title={t("adventures")}
+      className="flex @container flex-col gap-2"
+    >
       {isFetchingPaginatedAdventures && (
-        <>
-          <Skeleton className="w-full h-40" />
-          <Skeleton className="w-full h-40" />
-          <Skeleton className="w-full h-40" />
-        </>
+        <div className="grid grid-cols-1 @lg:grid-cols-2 @3xl:grid-cols-3 gap-4">
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+          <Skeleton className="w-full h-96" />
+        </div>
       )}
-      {paginatedAdventures &&
-        !isFetchingPaginatedAdventures &&
-        paginatedAdventures.data.map((adventure, i) => (
-          <Link href={`adventures/${adventure.slug}`} key={i}>
-            <div className="w-full p-5 bg-white flex items-end gap-4 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-              <div className="grow">
-                <div>
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <div className="grid grid-cols-1 @lg:grid-cols-2 @3xl:grid-cols-3 gap-4">
+        {paginatedAdventures &&
+          !isFetchingPaginatedAdventures &&
+          paginatedAdventures.data.map((adventure, i) => (
+            <Link
+              className="h-96 overflow-clip group relative rounded-md "
+              href={`adventures/${adventure.slug}`}
+              key={i}
+            >
+              <div className="flex flex-col h-full p-4 justify-between">
+                <div className="text-sm flex items-center gap-3 uppercase text-muted">
+                  <Avatar className="w-12  h-12 min-w-fit">
+                    {adventure.continentImage && (
+                      <AvatarImage
+                        className="object-cover"
+                        src={adventure.continentImage}
+                      />
+                    )}
+                    <AvatarFallback className=" text-muted rounded-full bg-transparent border">
+                      {adventure.continent.slice(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <p>{adventure.continent}</p>
+                </div>
+                <div className="flex flex-col flex-1 gap-3 justify-end">
+                  {adventure.isFull && (
+                    <Badge
+                      variant={"outline"}
+                      className="text-muted w-fit text-xs"
+                    >
+                      {t("fullyBooked")}
+                      size={"sm"}
+                    </Badge>
+                  )}
+                  {!adventure.isFull && adventure.availableSeats <= 5 && (
+                    <Badge
+                      variant={"outline"}
+                      size={"sm"}
+                      className="text-muted w-fit text-xs"
+                    >
+                      {adventure.availableSeats} {t("seatsLeft")}
+                    </Badge>
+                  )}
+                  <h5 className="mb-2 text-2xl min-h-[4rem] font-helveticaNeue font-black text-primary-foreground">
                     <p>{adventure.title}</p>
                   </h5>
-                </div>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {adventure.description}
-                </p>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {adventure.country}
-                </p>
-                <div className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#1E473F] rounded-lg hover:bg-black focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  {t("discover")}
+                  <div className="flex items-center gap-2 flex-wrap text-muted text-sm">
+                    <p>{adventure.startDate}</p>
+                    <span>-</span>
+                    <p>{adventure.endDate}</p>
+                  </div>
                 </div>
               </div>
-              <div>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  {adventure.priceWithCurrency}
-                </p>
+              <div className="absolute -z-10 inset-0 bg-gradient-to-t from-black to-primary  group-hover:scale-105 duration-500">
+                <Image
+                  className="h-full w-full object-cover group-hover:opacity-60 opacity-40 duration-500"
+                  width={440}
+                  height={240}
+                  alt={adventure.title}
+                  src={adventure.image ?? "/assets/images/adventure.jpg"}
+                />
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+      </div>
       {!paginatedAdventures && !isFetchingPaginatedAdventures && (
         <div className="text-center text-muted-foreground bg-muted p-4 rounded-md">
           <p>Failed to retrieve adventures</p>

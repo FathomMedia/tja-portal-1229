@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <div className="max-w-4xl flex flex-col gap-10 pb-20">
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
           {t("newAchievement")}
         </h2>
       </div>

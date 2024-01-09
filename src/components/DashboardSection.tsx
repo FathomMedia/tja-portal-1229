@@ -13,7 +13,7 @@ export const DashboardSection: FC<PropsWithChildren<TDashboardSection>> = ({
 }) => {
   return (
     <div className="flex flex-col grow gap-4">
-      <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+      <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
         {title}
       </h2>
       <div className={cn("grow", className)}>{children}</div>

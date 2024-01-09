@@ -563,7 +563,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                             priority={false}
                           ></Image>
                         </div>
-                        <p className=" text-md text-primary font-semibold">
+                        <p className=" text-md text-primary  font-helveticaNeue font-black ">
                           {t(card.title)}
                         </p>
                         <div className="flex flex-col gap-5">

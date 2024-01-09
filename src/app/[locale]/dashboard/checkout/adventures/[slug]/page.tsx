@@ -21,7 +21,9 @@ export default async function Page({
   }).then(async (val) => {
     if (val.ok) {
       const resData = await val.json();
+
       const data: TAdventure = resData.data;
+
       return data;
     }
     return null;

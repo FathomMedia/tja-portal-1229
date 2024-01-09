@@ -11,8 +11,25 @@ import { ReCaptchaProvider } from "next-recaptcha-v3";
 import { Toaster } from "@/components/ui/sonner";
 
 import TanstackProvider from "@/providers/TanstackProvider";
+import localFont from "next/font/local";
 
-const inter = Inter({ subsets: ["latin"] });
+const helveticaNeue = localFont({
+  src: [
+    {
+      path: "../fonts/helveticaNeue/HelveticaNeueLTStd-Bd.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../fonts/helveticaNeue/HelveticaNeueLTStd-BlkCn.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-helveticaNeue",
+});
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "The Journey Adventures",
@@ -34,8 +51,12 @@ export default function RootLayout({
   if (!locales.includes(locale as any)) notFound();
 
   return (
-    <html dir={isRtlLang(locale) ? "rtl" : "ltr"} lang={locale}>
-      <body className={cn(inter.className)}>
+    <html
+      dir={isRtlLang(locale) ? "rtl" : "ltr"}
+      lang={locale}
+      className={cn(inter.variable, helveticaNeue.variable)}
+    >
+      <body>
         <ReCaptchaProvider>
           <NextIntlClientProvider
             timeZone={timezone}

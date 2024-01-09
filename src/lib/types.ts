@@ -68,10 +68,12 @@ export type TAdventure = {
   continent: string;
   price: number;
   slug: string;
+  availableSeats: number;
   capacity: number;
   startDate: string;
   endDate: string;
   image: string | null;
+  continentImage: string | null;
   giftPoints: number;
   gender: string;
   genderValue: string;
@@ -95,8 +97,9 @@ export type TAdventure = {
 
 export type TAddon = {
   id: number;
-  title: string;
+  name: string;
   price: number;
+  priceWithCurrency: string;
 };
 
 export interface Links {
@@ -147,12 +150,44 @@ export type TOrders = {
   data: TOrder[];
 };
 
+export type TAdventureBookingOrder = {
+  id: number;
+  customer: TCustomer;
+  adventure: TAdventure;
+  dateBooked: Date;
+  isFullyPaid: boolean;
+  isPartiallyPaid: boolean;
+  addOns: any[];
+  totalPrice: number;
+  totalPriceWithCurrency: string;
+  partialInvoice: TInvoice | null;
+  fullInvoice: TInvoice | null;
+  remainingInvoice: TInvoice | null;
+};
+export type TInvoice = {
+  id: number;
+  amount: number;
+  amountWithCurrency: null | string;
+  paymentType: string;
+  paymentMethod: null | string;
+  datePaid: null | string;
+};
+
 export type TOrder = {
   id: number;
   type: string;
   dateBooked: string;
   details: TAdventure | TConsultation;
-  invoice: null;
+  invoice:
+    | {
+        id: number;
+        path: string | null;
+        isPartial: boolean;
+        isPaid: boolean;
+        totalAmount: number;
+        date: string;
+      }[]
+    | null;
   isFullyPaid: boolean;
   isPartiallyPaid: boolean;
   customer: {

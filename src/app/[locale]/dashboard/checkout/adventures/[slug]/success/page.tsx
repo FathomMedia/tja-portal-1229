@@ -38,7 +38,7 @@ export default function Page({
 
   return (
     <div>
-      <div className="flex flex-col bg-green-100 text-green-500 text-xl font-semibold p-4 h-60 justify-center items-center">
+      <div className="flex flex-col bg-green-100 text-green-500 text-xl  font-helveticaNeue font-black  p-4 h-60 justify-center items-center">
         <p>Success !!!</p>
       </div>
 

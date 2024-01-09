@@ -64,7 +64,6 @@ export const AdventureForm: FC<TAdventureForm> = ({
   countries,
   addons,
 }) => {
-  console.log("🚀 ~ file: AdventureForm.tsx:67 ~ adventure:", adventure);
   const locale = useLocale();
   const t = useTranslations("Adventures");
 
@@ -636,7 +635,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
-                              {item.title}
+                              {item.name}
                             </FormLabel>
                           </div>
                           <div className="flex items-center gap-2">
@@ -684,13 +683,13 @@ export const AdventureForm: FC<TAdventureForm> = ({
                               }}
                             />
                           </div>
+                          <FormMessage />
                         </FormItem>
                       );
                     }}
                   />
                 ))}
               </div>
-              <FormMessage />
             </FormItem>
           )}
         />

@@ -57,7 +57,10 @@ export default function Page({
     queryKey: [`/add-ons`],
     queryFn: () =>
       apiReqQuery({ endpoint: `/add-ons`, locale }).then((res) =>
-        res.json().then((resData) => resData.data)
+        res.json().then((resData) => {
+          console.log(resData);
+          return resData.data;
+        })
       ),
     staleTime: Infinity,
   });
@@ -97,7 +100,7 @@ export default function Page({
   return (
     <div className="max-w-4xl flex flex-col gap-10 pb-20">
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
           {t("editAdventure")}
         </h2>
       </div>
@@ -118,7 +121,7 @@ export default function Page({
         )}
 
       <Separator />
-      <h2 className="text-2xl text-destructive font-semibold border-s-4 border-destructive ps-2">
+      <h2 className="text-2xl text-destructive  font-helveticaNeue font-black  border-s-4 border-destructive ps-2">
         {t("dangerArea")}
       </h2>
       <div>

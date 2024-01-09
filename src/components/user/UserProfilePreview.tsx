@@ -71,7 +71,9 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
                 <h2>{t("hello")}</h2>
               )}
 
-              <h2 className="text-xl font-semibold">{user.name}</h2>
+              <h2 className="text-xl  font-helveticaNeue font-black ">
+                {user.name}
+              </h2>
             </div>
           </div>
         )}

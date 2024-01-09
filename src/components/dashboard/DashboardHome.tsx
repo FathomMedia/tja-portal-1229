@@ -11,8 +11,9 @@ import { LoadingComp } from "../LoadingComp";
 import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
 import { CheckCircle, Download } from "lucide-react";
-import { Button } from "../ui/button";
-import { formatePrice } from "@/lib/utils";
+import { Button, buttonVariants } from "../ui/button";
+import { cn, formatePrice } from "@/lib/utils";
+import Link from "next/link";
 
 export const DashboardHome = () => {
   const locale = useLocale();
@@ -30,7 +31,10 @@ export const DashboardHome = () => {
       queryKey: ["/profile/bookings"],
       queryFn: () =>
         apiReqQuery({ endpoint: "/profile/bookings", locale }).then((res) =>
-          res.json()
+          res.json().then((v) => {
+            console.log(v);
+            return v;
+          })
         ),
     });
 
@@ -52,7 +56,7 @@ export const DashboardHome = () => {
                 <p className="text-sm text-muted-foreground">
                   {t("currentTier")}
                 </p>
-                <h2 className="text-2xl text-primary font-semibold">
+                <h2 className="text-2xl text-primary  font-helveticaNeue font-black ">
                   {user?.level.name}
                 </h2>
               </div>
@@ -63,7 +67,7 @@ export const DashboardHome = () => {
                 <p className="text-sm text-muted-foreground">
                   {t("daysTravelled")}
                 </p>
-                <h2 className="text-2xl text-primary font-semibold">{`${
+                <h2 className="text-2xl text-primary  font-helveticaNeue font-black ">{`${
                   user?.daysTravelled + " " + t("days")
                 } `}</h2>
               </div>
@@ -204,7 +208,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
               </Badge>
             )}
           </div>
-          <h3 className="font-black text-primary md:text-3xl text-xl">
+          <h3 className="font-black font-helveticaNeue text-primary md:text-3xl text-xl">
             {adventure.title}
           </h3>
           <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
@@ -221,29 +225,26 @@ const Adventure = ({ order }: { order: TOrder }) => {
         </div>
         <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
           {order.isFullyPaid && (
-            <Button
-              onClick={() => {
-                throw new Error("Not implemented");
-              }}
+            <Link
+              href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
               type="button"
-              variant={"ghost"}
-              size={"sm"}
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
             >
-              {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" />
-            </Button>
+              {/* {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" /> */}
+              {t("viewMore")}
+            </Link>
           )}
           {!order.isFullyPaid && (
-            <Button
-              onClick={() => {
-                throw new Error("Not implemented");
-              }}
+            <Link
+              href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
               type="button"
-              variant={"ghost"}
-              size={"sm"}
-              className="text-secondary underline hover:text-secondary hover:bg-secondary/10"
+              className={
+                (cn(buttonVariants({ variant: "ghost", size: "sm" })),
+                "text-secondary underline hover:text-secondary hover:bg-secondary/10")
+              }
             >
               {t("completePayment")}
-            </Button>
+            </Link>
           )}
 
           <div className="flex items-baseline gap-2">

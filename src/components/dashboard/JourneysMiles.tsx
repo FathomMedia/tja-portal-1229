@@ -35,6 +35,8 @@ import { Icons } from "../ui/icons";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { ImageOff } from "lucide-react";
 
 export const JourneysMiles: FC = () => {
   const locale = useLocale();
@@ -95,14 +97,17 @@ export const JourneysMiles: FC = () => {
             {
               <div className="flex gap-4 items-center">
                 <div className="relative aspect-square w-14 min-w-fit ">
-                  {user?.level.badge && (
-                    <Image
-                      className="w-full h-full object-cover rounded-full"
-                      fill
-                      src={user?.level.badge}
-                      alt="Badge"
-                    />
-                  )}
+                  <Avatar className="w-14  h-14 min-w-fit max-sm:w-16 max-sm:h-16">
+                    {user?.level.badge && (
+                      <AvatarImage
+                        className=" object-cover"
+                        src={user?.level.badge}
+                      />
+                    )}
+                    <AvatarFallback className="border border-muted-foreground rounded-full">
+                      {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="flex flex-col">
                   <p className="w-full text-sm text-primary">{t("level")}</p>

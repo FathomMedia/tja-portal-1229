@@ -224,7 +224,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   return (
     <div className="max-w-4xl flex flex-col gap-10 pb-20 @container">
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
           {t("customer")}
         </h2>
       </div>
@@ -256,7 +256,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         </div>
       )}
       <Separator />
-      <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+      <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
         {t("journeyMiles")}
       </h2>
       {isFetchingCustomer && <Skeleton className="w-full h-64" />}
@@ -264,7 +264,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         <CustomerAccountDetails customer={customer} />
       )}
       <Separator />
-      <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+      <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
         {t("redeemedCoupons")}
       </h2>
       <div className="grid gap-3 @container grid-cols-1 @md:grid-cols-2">
@@ -387,7 +387,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       </div>
       <Separator />
       <div className="flex justify-between flex-wrap items-center">
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
           {t("achievements")}
         </h2>
         <Dialog>
@@ -568,7 +568,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       </div>
 
       <Separator />
-      <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+      <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
         {t("status")}
       </h2>
       <div>

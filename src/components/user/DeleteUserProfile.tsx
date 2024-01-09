@@ -89,7 +89,7 @@ export const DeleteProfile = () => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className=" my-4">
-              <h2 className=" text-primary font-semibold ">
+              <h2 className=" text-primary  font-helveticaNeue font-black  ">
                 {t("areYouSure?")}
               </h2>
             </DialogTitle>

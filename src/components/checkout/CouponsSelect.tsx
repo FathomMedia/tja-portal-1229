@@ -5,7 +5,6 @@ import { cn, formatePrice } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import React, { FC, useState } from "react";
-import { Badge } from "../ui/badge";
 
 type TCouponsSelect = {
   coupons: TCoupon[];

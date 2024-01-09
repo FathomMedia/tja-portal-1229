@@ -29,7 +29,7 @@ export default function Page() {
   return (
     <div className="max-w-4xl flex flex-col gap-10">
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
           {t("updateProfile")}
         </h2>
       </div>
@@ -37,7 +37,7 @@ export default function Page() {
       {user && !isFetchingUser && <AdminAccountDetails user={user} />}
       <Separator />
       <div className=" space-y-4">
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
           {t("updateEmail")}
         </h2>
         {isFetchingUser && <Skeleton className="w-full max-w-sm h-6" />}
@@ -50,7 +50,7 @@ export default function Page() {
       <UserUpdateEmail />
       <Separator />
       <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
+        <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
           {t("changePassword")}
         </h2>
       </div>
