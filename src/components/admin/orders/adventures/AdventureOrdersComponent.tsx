@@ -6,11 +6,12 @@ import { columns } from "./columns";
 import { TAdventureBookings } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 
 export const AdventureOrdersComponent = () => {
   const locale = useLocale();
+  const t = useTranslations("Adventures");
 
   const [page, setPage] = useState(1);
   const { data: adventureOrders, isFetching } = useQuery<TAdventureBookings>({
@@ -23,7 +24,7 @@ export const AdventureOrdersComponent = () => {
   });
 
   return (
-    <DashboardSection title={"Adventure Orders"} className="flex w-full">
+    <DashboardSection title={t("adventureOrders")} className="flex w-full">
       <DataTable
         columns={columns}
         data={adventureOrders?.data ?? []}

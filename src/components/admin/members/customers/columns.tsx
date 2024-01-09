@@ -289,7 +289,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/members/customers/edit/${customer.customerId}`}
@@ -420,7 +420,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                 <DialogFooter className="sm:justify-start">
                   <DialogClose asChild>
                     <Button className="" type="button" variant="ghost">
-                      Close
+                      {t("close")}
                     </Button>
                   </DialogClose>
                 </DialogFooter>
@@ -439,7 +439,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                 {mutation.isPending && (
                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                 )}
-                Unsuspend
+                {t("unsuspend")}
               </Button>
             ) : (
               <Dialog>
@@ -448,7 +448,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                     className="text-destructive w-full rounded-sm bg-destructive/0 hover:text-destructive hover:bg-destructive/10  border-transparent hover:border-transparent"
                     variant="outline"
                   >
-                    Suspend
+                    {t("suspend")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-lg">
@@ -466,7 +466,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                   <DialogFooter className="sm:justify-start">
                     <DialogClose asChild>
                       <Button className="" type="button" variant="ghost">
-                        Close
+                        {t("close")}
                       </Button>
                     </DialogClose>
                     <>
@@ -478,7 +478,7 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
                         {mutation.isPending && (
                           <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                         )}
-                        Suspend
+                        {t("suspend")}
                       </Button>
                     </>
                   </DialogFooter>

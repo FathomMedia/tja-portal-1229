@@ -107,7 +107,7 @@ export default function Page() {
       </div>
       {!paginatedAdventures && !isFetchingPaginatedAdventures && (
         <div className="text-center text-muted-foreground bg-muted p-4 rounded-md">
-          <p>Failed to retrieve adventures</p>
+          <p>{t("failedToRetrieveAdventures")}</p>
         </div>
       )}
     </DashboardSection>

@@ -51,7 +51,20 @@
     "title": "Title",
     "upcoming": "Upcoming",
     "update": "Update",
-    "wordpressLink": "Wordpress Link"
+    "wordpressLink": "Wordpress Link",
+    "failedToRetrieveAdventures": "Failed to retrieve adventures",
+    "adventures": "Adventures",
+    "adventureOrders": "Adventures Orders",
+    "columns": "Columns",
+    "name": "Name",
+    "id": "Id",
+    "email": "Email",
+    "phone": "Phone",
+    "adventureTitle": "Adventure Title",
+    "adventureStartDate": "Start Date",
+    "adventureEndDate": "End Date",
+    "totalPriceWithCurrency": "Total Price",
+    "actions": "Actions"
   },
   "Auth": {
     "OTP": "OTP",
@@ -216,10 +229,24 @@
     "wildlifeExperiences": "Wildlife Experiences",
     "youHaveYoSelectAtLeastOneItem": "You have to select at least one item.",
     "yourDestination": "Your destination",
-    "ziplining": "Ziplining"
+    "ziplining": "Ziplining",
+    "bookAConsultation": "Book a consultation ",
+    "calculate": "Calculate",
+    "price": "Price"
   },
   "Coupons": {
-    "newCoupon": "New Coupon"
+    "newCoupon": "New Coupon",
+    "coupons": "Coupons",
+    "levels": "Levels",
+    "redeem": "Redeem",
+    "redeemCoupon": "Redeem Coupon",
+    "70points": "70 Points",
+    "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "Note, Redeeming adventure coupons resets your point balance to",
+    "redeemingThisCouponWillNotImpactYourPointsBalance": "Redeeming this coupon will not impact your points balance",
+    "close": "Close",
+    "agree": "Agree",
+    "myRedeemedCoupons": "My redeemed coupons",
+    "Coupons": "Coupons"
   },
   "Customer": {
     "addOrRemovePointsForCustomer": "Add or remove points for customer",
@@ -325,7 +352,21 @@
     "theJourneyMilesLevels": "The Journey Miles Levels",
     "type": "Type",
     "update": "Update",
-    "value": "Value"
+    "value": "Value",
+    "70points": "70 Points",
+    "noteRedeemingAdventureCouponsResetsYourPointBalanceTo": "Note, Redeeming adventure coupons resets your point balance to",
+    "availableCoupons": "Available Coupons",
+    "achievements": "Achievements",
+    "admins": "Admins",
+    "gender": "Gender",
+    "role": "Role",
+    "verified": "Verified",
+    "invitedBy": "Invited By",
+    "isAccepted": "Is Accepted",
+    "actions": "Actions",
+    "members": "Members",
+    "description": "Description",
+    "title": "Title"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
@@ -472,5 +513,28 @@
   "upComingAdventures": "Up Coming Adventures",
   "updateEmail": "Update Email",
   "updateProfile": "Update Profile ",
-  "yourEmail": "Your Email"
+  "yourEmail": "Your Email",
+  "Orders": {
+    "adventures": "Adventures",
+    "consultation": "Consultations",
+    "viewCustomer": "View Customer",
+    "viewBooking": "View Booking",
+    "openMenu": "Open menu",
+    "actions": "Actions",
+    "downloadInvoice": "Download Invoice"
+  },
+  "Products": {
+    "adventures": "Adventures",
+    "consultation": "Consultations",
+    "consultations": "Consultations"
+  },
+  "Consultations": {
+    "nothingFound": "Nothing Found",
+    "numberOfDays": "Number of days",
+    "price": "Price",
+    "packageType": "Package Type",
+    "id": "Id",
+    "actions": "Actions",
+    "openMenu": "Open menu"
+  }
 }

@@ -424,16 +424,16 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="More-Discovering">
-                      {t("moreDiscovering ")}
+                    <SelectItem value="moreDiscovering">
+                      {t("moreDiscovering")}
                     </SelectItem>
-                    <SelectItem value="More-Adventurous">
+                    <SelectItem value="veryAdventurous">
                       {t("veryAdventurous")}
                     </SelectItem>
-                    <SelectItem value="Mix-of-A-B">
+                    <SelectItem value="mixofAandB">
                       {t("mixofAandB")}
                     </SelectItem>
-                    <SelectItem value="Very-Relaxing">
+                    <SelectItem value="veryRelaxing">
                       {t("veryRelaxing")}
                     </SelectItem>
                   </SelectContent>

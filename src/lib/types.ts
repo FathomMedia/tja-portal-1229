@@ -225,6 +225,12 @@ export type TAdmins = {
   meta: TMeta;
 };
 
+export type TAdminInvitations = {
+  data: TAdminInvitation[];
+  links: Links;
+  meta: TMeta;
+};
+
 export type TCustomers = {
   data: TCustomer[];
   links: Links;
@@ -291,6 +297,22 @@ export type TConsultationBooking = {
   dateBooked: string;
   startDate: string;
   endDate: string;
+  class: string;
+  numberOfTravelers: number;
+  destination: string;
+  departureAirport: string;
+  budget: string;
+  budgetPriority: string;
+  budgetIncludes: string[];
+  vacationType: string;
+  accommodationType: string[];
+  bestTravelExperience: string | null;
+  phobias: string | null;
+  activities: string[];
+  invoice: null;
+  coupon: TCoupon;
+  adventureMeaning: string[];
+  morningActivity: string;
 };
 
 export type TPagination = {
@@ -335,4 +357,16 @@ export type TAdmin = {
   invitedBy: TLevel;
   isAccepted: boolean;
   acceptedAt: string | null;
+};
+
+export type TAdminInvitation = {
+  adminId: number;
+  userId: number;
+  name: string;
+  email: string;
+  gender: string;
+  invitedBy: TLevel;
+  isAccepted: boolean;
+  acceptedAt: string | null;
+  invitedAt: string | null;
 };

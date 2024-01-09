@@ -193,19 +193,14 @@ const Actions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {/* <DropdownMenuItem asChild>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
             <Link
-              href={`/${locale}/admin/customers/edit/${consultationBooking.customer.id}`}
+              href={`/${locale}/admin/orders/consultation/${consultationBooking.id}`}
             >
-              View Customer
+              View Form
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href={`/${locale}/admin/booking/${consultationBooking.id}`}>
-              View Booking
-            </Link>
-          </DropdownMenuItem> */}
-          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             {
               <Button

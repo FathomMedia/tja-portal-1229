@@ -67,7 +67,7 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const t = useTranslations("Adventures");
+  const t = useTranslations("Consultations");
 
   return (
     <div className="rounded-md overflow-clip border w-full">

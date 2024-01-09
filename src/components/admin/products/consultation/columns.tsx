@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
 import { ConsultationForm } from "./ConsultationForm";
@@ -22,14 +22,14 @@ export const columns: ColumnDef<TConsultation>[] = [
   {
     accessorKey: "id",
     header: () => (
-      <DisplayTranslatedText text="id" translation="Consultation" />
+      <DisplayTranslatedText text="id" translation="Consultations" />
     ),
   },
   {
-    accessorKey: "tierType",
+    accessorKey: "packageType",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="tier" translation="Consultation" />
+        <DisplayTranslatedText text="packageType" translation="Consultations" />
       </div>
     ),
     cell: ({ row }) => {
@@ -39,7 +39,7 @@ export const columns: ColumnDef<TConsultation>[] = [
   {
     accessorKey: "numberOfDays",
     header: () => (
-      <DisplayTranslatedText text="No. of Days" translation="Consultation" />
+      <DisplayTranslatedText text="numberOfDays" translation="Consultations" />
     ),
     cell: ({ row }) => {
       return <p className=" ">{row.original.numberOfDays}</p>;
@@ -48,7 +48,7 @@ export const columns: ColumnDef<TConsultation>[] = [
   {
     accessorKey: "price",
     header: () => (
-      <DisplayTranslatedText text="Price" translation="Consultation" />
+      <DisplayTranslatedText text="price" translation="Consultations" />
     ),
     cell: ({ row }) => {
       return <p className="">{row.original.priceWithCurrency}</p>;
@@ -72,18 +72,19 @@ export const AddNew = () => {
 
 const Actions = ({ consultation }: { consultation: TConsultation }) => {
   const locale = useLocale();
+  const t = useTranslations("Consultations");
 
   return (
     <div className=" w-full flex justify-end">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <ConsultationForm consultation={consultation} />
