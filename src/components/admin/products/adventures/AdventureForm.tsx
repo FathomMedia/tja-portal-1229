@@ -84,8 +84,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
     price: z.number().positive().min(0.01, "Price must be at least 0.01"),
     start_date: z.date(),
     end_date: z.date(),
-    capacity: z.number().positive().min(0, "Capacity must be at least 0"),
-    gift_points: z.number().positive().min(0, "Gift Points must be at least 0"),
+    capacity: z.number().min(0, "Capacity must be at least 0"),
+    gift_points: z.number().min(0, "Gift Points must be at least 0"),
     gender: z.enum(["M", "F", "A"]),
     image: z.any().optional(),
     add_ons: z.array(

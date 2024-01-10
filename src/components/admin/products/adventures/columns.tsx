@@ -40,6 +40,9 @@ export const columns: ColumnDef<TAdventure>[] = [
         <DisplayTranslatedText text="title" translation="Adventures" />
       </div>
     ),
+    cell: ({ row }) => {
+      return <Title adventure={row.original} />;
+    },
   },
   {
     accessorKey: "image",
@@ -250,5 +253,17 @@ const Actions = ({ adventure }: { adventure: TAdventure }) => {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+const Title = ({ adventure }: { adventure: TAdventure }) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary"
+      href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+    >
+      {adventure.title}
+    </Link>
   );
 };

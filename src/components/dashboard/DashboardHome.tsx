@@ -54,7 +54,7 @@ export const DashboardHome = () => {
                   {t("currentTier")}
                 </p>
                 <h2 className="text-2xl text-primary  font-helveticaNeue font-black ">
-                  {user?.level.name}
+                  {user?.level?.name}
                 </h2>
               </div>
               {/* divider */}

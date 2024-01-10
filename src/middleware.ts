@@ -3,10 +3,22 @@ import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { availableLocales } from "./config";
 
+const authPath = `authentication`;
+
 export async function middleware(request: NextRequest) {
   const { pathname, locale, origin } = request.nextUrl;
   // handle route if valid user
-  var currentLocale = availableLocales[0];
+  var currentLocale: string;
+  availableLocales.some((someLocale) => {
+    if (pathname.includes(`/${someLocale}/`)) {
+      currentLocale = someLocale;
+      return true;
+    }
+    return false;
+  });
+
+  currentLocale ??= availableLocales[0];
+  // var currentLocale = availableLocales[0];
   availableLocales.some((someLocale) => {
     const isMatching = locale === someLocale;
     if (isMatching) {
@@ -20,10 +32,25 @@ export async function middleware(request: NextRequest) {
     currentLocale = availableLocales[0];
   }
 
-  const authPath = `authentication`;
+  const token = request.cookies.get("authToken");
+
+  if (
+    !pathname ||
+    pathname === "/" ||
+    pathname === `/${currentLocale}` ||
+    pathname === `/${currentLocale}/`
+  ) {
+    if (!token) {
+      request.nextUrl.pathname = `/${currentLocale}/${authPath}`;
+    } else {
+      request.nextUrl.pathname = `/${currentLocale}/dashboard`;
+    }
+
+    return NextResponse.redirect(request.nextUrl, request);
+  }
+
   if (!pathname.includes(authPath)) {
     // if (pathname !== authPath) {
-    const token = request.cookies.get("authToken");
 
     // check if there is a token
     if (!token) {
@@ -52,7 +79,7 @@ export async function middleware(request: NextRequest) {
         // check if the user is verified
         if (!isVerified) {
           // redirect to verify email if not verified
-          request.nextUrl.pathname = `${currentLocale}/${authPath}/verify-email`;
+          request.nextUrl.pathname = `/${currentLocale}/${authPath}/verify-email`;
         } else {
           // Admins should not access dashboard pages and non-admins should not access admin pages
           if (isAdmin) {
