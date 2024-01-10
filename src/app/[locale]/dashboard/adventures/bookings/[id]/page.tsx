@@ -184,12 +184,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   }
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem className="@container" value="item-2">
+              {/* <AccordionItem className="@container" value="item-2">
                 <AccordionTrigger>{t("packingList")}</AccordionTrigger>
                 <AccordionContent className="bg-white/50 rounded-md p-4 @xl:p-10 prose-sm mb-2">
                   <EditorViewer data={booking.adventure.package} />
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
               <AccordionItem value="item-3">
                 <AccordionTrigger>{t("links")}</AccordionTrigger>
                 <AccordionContent>
@@ -272,7 +272,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                       </TableCell>
                       <TableCell className="font-medium">
                         {dayjs(
-                          booking.partialInvoice.receipt.created_at
+                          booking.partialInvoice.receipt?.created_at
                         ).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell className="text-start">
@@ -291,10 +291,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.partialInvoice.receipt.path ? (
+                        {booking.partialInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.partialInvoice.receipt.path}
+                            href={booking.partialInvoice.receipt?.path}
                           >
                             {t("download")}{" "}
                             <span>
@@ -330,7 +330,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                       </TableCell>
                       <TableCell className="font-medium">
                         {dayjs(
-                          booking.remainingInvoice.receipt.created_at
+                          booking.remainingInvoice.receipt?.created_at
                         ).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell className="text-start">
@@ -349,10 +349,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.remainingInvoice.receipt.path ? (
+                        {booking.remainingInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.remainingInvoice.receipt.path}
+                            href={booking.remainingInvoice.receipt?.path}
                           >
                             {t("download")}{" "}
                             <span>
@@ -387,7 +387,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {dayjs(booking.fullInvoice.receipt.created_at).format(
+                        {dayjs(booking.fullInvoice.receipt?.created_at).format(
                           "DD/MM/YYYY"
                         )}
                       </TableCell>
@@ -397,7 +397,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                             className={cn(buttonVariants({ variant: "ghost" }))}
                             href={booking.fullInvoice.path}
                           >
-                            {t("download")}{" "}
+                            {t("download")}
                             <span>
                               <Download className="w-4 h-4 ms-2" />
                             </span>
@@ -407,12 +407,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.fullInvoice.receipt.path ? (
+                        {booking.fullInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.fullInvoice.receipt.path}
+                            href={booking.fullInvoice.receipt?.path}
                           >
-                            {t("download")}{" "}
+                            {t("download")}
                             <span>
                               <Download className="w-4 h-4 ms-2" />
                             </span>

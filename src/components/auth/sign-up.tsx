@@ -210,6 +210,7 @@ export const SignUp = () => {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      defaultMonth={field.value}
                       disabled={(date) =>
                         date > dayjs().subtract(minAge, "year").toDate() ||
                         date < dayjs().subtract(maxAge, "year").toDate()
