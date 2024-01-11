@@ -71,6 +71,9 @@ export type TAdventure = {
   startDate: string;
   endDate: string;
   image: string | null;
+  fitnessGuide: string | null;
+  travelGuide: string | null;
+  packingList: string | null;
   continentImage: string | null;
   giftPoints: number;
   gender: string;
@@ -83,9 +86,6 @@ export type TAdventure = {
   isUpcoming: boolean;
   numberOfBookings: number;
   addOns: TAddon[];
-  package: string | null;
-  englishPackage: string | null;
-  arabicPackage: string | null;
   priceWithCurrency: string;
   isPartialAllowed: boolean;
   partialPrice: number;

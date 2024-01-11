@@ -4,7 +4,7 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,7 +16,7 @@ import {
   Download,
 } from "lucide-react";
 import { cn, formatePrice } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { format } from "date-fns";
 import dayjs from "dayjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -127,28 +127,16 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
                 {booking.isFullyPaid && (
                   <Link
-                    href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
+                    href={booking.adventure.link}
                     type="button"
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "sm" })
                     )}
                   >
-                    {/* {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" /> */}
                     {t("viewMore")}
                   </Link>
                 )}
-                {!booking.isFullyPaid && (
-                  <Link
-                    href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
-                    type="button"
-                    className={
-                      (cn(buttonVariants({ variant: "ghost", size: "sm" })),
-                      "text-secondary underline hover:text-secondary hover:bg-secondary/10")
-                    }
-                  >
-                    {t("completePayment")}
-                  </Link>
-                )}
+                {!booking.isFullyPaid && <PayRemaining booking={booking} />}
 
                 <div className="flex items-baseline gap-2">
                   <p className="text-sm text-muted-foreground">{t("total")}</p>
@@ -184,12 +172,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   }
                 </AccordionContent>
               </AccordionItem>
-              <AccordionItem className="@container" value="item-2">
+              {/* <AccordionItem className="@container" value="item-2">
                 <AccordionTrigger>{t("packingList")}</AccordionTrigger>
                 <AccordionContent className="bg-white/50 rounded-md p-4 @xl:p-10 prose-sm mb-2">
                   <EditorViewer data={booking.adventure.package} />
                 </AccordionContent>
-              </AccordionItem>
+              </AccordionItem> */}
               <AccordionItem value="item-3">
                 <AccordionTrigger>{t("links")}</AccordionTrigger>
                 <AccordionContent>
@@ -272,7 +260,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                       </TableCell>
                       <TableCell className="font-medium">
                         {dayjs(
-                          booking.partialInvoice.receipt.created_at
+                          booking.partialInvoice.receipt?.created_at
                         ).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell className="text-start">
@@ -291,10 +279,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.partialInvoice.receipt.path ? (
+                        {booking.partialInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.partialInvoice.receipt.path}
+                            href={booking.partialInvoice.receipt?.path}
                           >
                             {t("download")}{" "}
                             <span>
@@ -330,7 +318,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                       </TableCell>
                       <TableCell className="font-medium">
                         {dayjs(
-                          booking.remainingInvoice.receipt.created_at
+                          booking.remainingInvoice.receipt?.created_at
                         ).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell className="text-start">
@@ -349,10 +337,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.remainingInvoice.receipt.path ? (
+                        {booking.remainingInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.remainingInvoice.receipt.path}
+                            href={booking.remainingInvoice.receipt?.path}
                           >
                             {t("download")}{" "}
                             <span>
@@ -387,7 +375,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {dayjs(booking.fullInvoice.receipt.created_at).format(
+                        {dayjs(booking.fullInvoice.receipt?.created_at).format(
                           "DD/MM/YYYY"
                         )}
                       </TableCell>
@@ -397,7 +385,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                             className={cn(buttonVariants({ variant: "ghost" }))}
                             href={booking.fullInvoice.path}
                           >
-                            {t("download")}{" "}
+                            {t("download")}
                             <span>
                               <Download className="w-4 h-4 ms-2" />
                             </span>
@@ -407,12 +395,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         )}
                       </TableCell>
                       <TableCell className="text-start">
-                        {booking.fullInvoice.receipt.path ? (
+                        {booking.fullInvoice.receipt?.path ? (
                           <Link
                             className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.fullInvoice.receipt.path}
+                            href={booking.fullInvoice.receipt?.path}
                           >
-                            {t("download")}{" "}
+                            {t("download")}
                             <span>
                               <Download className="w-4 h-4 ms-2" />
                             </span>
@@ -441,3 +429,213 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     </div>
   );
 }
+
+import React, { FC } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Icons } from "@/components/ui/icons";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+type TPayRemaining = {
+  booking: TAdventureBookingOrder;
+};
+
+export const PayRemaining: FC<TPayRemaining> = ({ booking }) => {
+  const t = useTranslations("Adventures");
+  const locale = useLocale();
+  const { push } = useRouter();
+
+  const formSchema = z.object({
+    paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+  });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      paymentMethod: "card",
+    },
+  });
+
+  const mutation = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) => {
+      var dataToRequest = {
+        payment_method: values.paymentMethod,
+      };
+      return fetch(`/api/book/adventure-remaining`, {
+        method: "POST",
+        body: JSON.stringify({
+          bookingId: booking.id,
+          dataToRequest: dataToRequest,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const paymentSession = await data.json();
+
+        if (paymentSession?.session?.PaymentURL) {
+          push(paymentSession?.session?.PaymentURL);
+        } else {
+          toast.error(t("couldntCreateAPaymentSession"), { duration: 6000 });
+        }
+      } else {
+        toast.error(t("couldntCreateAPaymentSession"), { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    mutation.mutate(values);
+  }
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size={"sm"}
+          className={cn(
+            "text-secondary underline hover:text-secondary hover:bg-secondary/10"
+          )}
+        >
+          {t("completePayment")}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-lg">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-10"
+          >
+            <DialogHeader className="gap-1">
+              <DialogTitle>{t("completePayment")}</DialogTitle>
+              <DialogDescription className="gap-1 flex flex-wrap">
+                {t("payTheRemainingAmountOf")}
+                {booking.remainingInvoice &&
+                  formatePrice({
+                    locale,
+                    price: booking.remainingInvoice?.totalAmount,
+                  })}
+              </DialogDescription>
+            </DialogHeader>
+
+            <FormField
+              control={form.control}
+              name="paymentMethod"
+              render={({ field }) => (
+                <FormItem className="@container/paymentMethod w-full  bg-white/50 p-3 rounded-2xl">
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={(val) => {
+                        // setSelectedPaymentMethod(val);
+                        field.onChange(val);
+                      }}
+                      defaultValue={field.value}
+                      className="grid @sm/paymentMethod:grid-cols-2  grid-cols-1 gap-4"
+                    >
+                      <div>
+                        <RadioGroupItem
+                          value="card"
+                          id="card"
+                          className="peer sr-only"
+                        />
+                        <Label
+                          htmlFor="card"
+                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                        >
+                          <Icons.card className="h-6 w-6" />
+                          {t("creditCard")}
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem
+                          value="benefitpay"
+                          id="benefitpay"
+                          className="peer sr-only"
+                        />
+                        <Label
+                          htmlFor="benefitpay"
+                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                        >
+                          <div className="mb-3">
+                            <Icons.benefitPay className="h-6 w-6" />
+                          </div>
+                          {t("benefitPay")}
+                        </Label>
+                      </div>
+                      {/* <div>
+                              <RadioGroupItem
+                                value="applepay"
+                                id="applepay"
+                                className="peer sr-only"
+                              />
+                              <Label
+                                htmlFor="applepay"
+                                className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                              >
+                                <Icons.apple className="mb-3 h-6 w-6" />
+                                {t("applePay")}
+                              </Label>
+                            </div> */}
+                    </RadioGroup>
+                  </FormControl>
+                  {field.value === "benefitpay" && (
+                    <p className="text-muted-foreground text-sm">
+                      {t("benefitPay-debit-card-for-Bahraini-only")}
+                    </p>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter className="sm:justify-start">
+              <DialogClose asChild>
+                <Button className="" type="button" variant="ghost">
+                  {t("close")}
+                </Button>
+              </DialogClose>
+              <>
+                <Button
+                  disabled={mutation.isPending}
+                  type="submit"
+                  variant={"secondary"}
+                >
+                  {mutation.isPending && (
+                    <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                  )}
+                  {t("payNow")}
+                </Button>
+              </>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
