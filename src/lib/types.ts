@@ -341,6 +341,7 @@ export type TConsultationBooking = {
   coupon: TCoupon;
   adventureMeaning: string[];
   morningActivity: string;
+  isCancelled: boolean;
 };
 
 export type TPagination = {

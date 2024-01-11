@@ -266,6 +266,7 @@ const Actions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/members/customers/edit/${adventureBooking.customer.id}`}
@@ -279,20 +280,6 @@ const Actions = ({
             >
               {t("viewBooking")}
             </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            {
-              <Button
-                className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-                variant="outline"
-              >
-                {/* {mutation.isPending && (
-                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                )} */}
-                {t("downloadInvoice")}
-              </Button>
-            }
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

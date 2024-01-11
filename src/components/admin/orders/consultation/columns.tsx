@@ -129,7 +129,6 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
       </div>
     ),
   },
-
   {
     accessorKey: "totalPriceWithCurrency",
     header: () => (
@@ -138,6 +137,31 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
       </div>
     ),
     cell: ({ row }) => <p>{row.original.consultation.priceWithCurrency}</p>,
+  },
+  {
+    accessorKey: "isCancelled",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <DisplayTranslatedText text="isCancelled" translation="Adventures" />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.isCancelled ? (
+        <div className=" flex justify-center">
+          <Badge className=" uppercase" variant={"destructive"}>
+            Cancelled
+          </Badge>
+        </div>
+      ) : (
+        <div></div>
+      );
+    },
   },
   {
     id: "actions",
