@@ -13,14 +13,22 @@ import dayjs, { locale } from "dayjs";
 import { CheckCircle2, LucideMinusCircle, Download } from "lucide-react";
 import { buttonVariants } from "../ui/button";
 import { useLocale, useTranslations } from "next-intl";
-import { TAdventureBookingOrder } from "@/lib/types";
+import { TAdventureBookingOrder, TInvoice } from "@/lib/types";
 import Link from "next/link";
 
 type TAdventureInvoices = {
-  booking: TAdventureBookingOrder;
+  invoices?: (TInvoice | null)[];
+  //   partialInvoice?: TInvoice | null;
+  //   remainingInvoice?: TInvoice | null;
+  //   fullInvoice?: TInvoice | null;
 };
 
-export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
+export const AdventureInvoices: FC<TAdventureInvoices> = ({
+  invoices,
+  //   partialInvoice,
+  //   remainingInvoice,
+  //   fullInvoice,
+}) => {
   const locale = useLocale();
   const t = useTranslations("Adventures");
 
@@ -39,37 +47,88 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
           </TableRow>
         </TableHeader>
         <TableBody className="">
-          {booking.partialInvoice && (
+          {invoices?.map(
+            (invoice, i) =>
+              invoice && (
+                <TableRow key={i} className={cn()}>
+                  <TableCell className="font-medium">{invoice.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {formatePrice({
+                      locale,
+                      price: invoice.totalAmount,
+                    })}
+                  </TableCell>
+                  <TableCell className="font-medium">{invoice.vat}</TableCell>
+                  <TableCell className="font-medium">
+                    {invoice.isPaid ? (
+                      <CheckCircle2 className="text-primary" />
+                    ) : (
+                      <LucideMinusCircle className="text-destructive" />
+                    )}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {dayjs(invoice.receipt?.created_at).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell className="text-start">
+                    {invoice.path ? (
+                      <Link
+                        className={cn(buttonVariants({ variant: "ghost" }))}
+                        href={invoice.path}
+                      >
+                        {t("download")}{" "}
+                        <span>
+                          <Download className="w-4 h-4 ms-2" />
+                        </span>
+                      </Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                  <TableCell className="text-start">
+                    {invoice.receipt?.path ? (
+                      <Link
+                        className={cn(buttonVariants({ variant: "ghost" }))}
+                        href={invoice.receipt?.path}
+                      >
+                        {t("download")}{" "}
+                        <span>
+                          <Download className="w-4 h-4 ms-2" />
+                        </span>
+                      </Link>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+              )
+          )}
+          {/* {partialInvoice && (
             <TableRow className={cn()}>
-              <TableCell className="font-medium">
-                {booking.partialInvoice.id}
-              </TableCell>
+              <TableCell className="font-medium">{partialInvoice.id}</TableCell>
               <TableCell className="font-medium">
                 {formatePrice({
                   locale,
-                  price: booking.partialInvoice.totalAmount,
+                  price: partialInvoice.totalAmount,
                 })}
               </TableCell>
               <TableCell className="font-medium">
-                {booking.partialInvoice.vat}
+                {partialInvoice.vat}
               </TableCell>
               <TableCell className="font-medium">
-                {booking.partialInvoice.isPaid ? (
+                {partialInvoice.isPaid ? (
                   <CheckCircle2 className="text-primary" />
                 ) : (
                   <LucideMinusCircle className="text-destructive" />
                 )}
               </TableCell>
               <TableCell className="font-medium">
-                {dayjs(booking.partialInvoice.receipt?.created_at).format(
-                  "DD/MM/YYYY"
-                )}
+                {dayjs(partialInvoice.receipt?.created_at).format("DD/MM/YYYY")}
               </TableCell>
               <TableCell className="text-start">
-                {booking.partialInvoice.path ? (
+                {partialInvoice.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.partialInvoice.path}
+                    href={partialInvoice.path}
                   >
                     {t("download")}{" "}
                     <span>
@@ -81,10 +140,10 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
                 )}
               </TableCell>
               <TableCell className="text-start">
-                {booking.partialInvoice.receipt?.path ? (
+                {partialInvoice.receipt?.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.partialInvoice.receipt?.path}
+                    href={partialInvoice.receipt?.path}
                   >
                     {t("download")}{" "}
                     <span>
@@ -97,37 +156,37 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
               </TableCell>
             </TableRow>
           )}
-          {booking.remainingInvoice && (
+          {remainingInvoice && (
             <TableRow className={cn()}>
               <TableCell className="font-medium">
-                {booking.remainingInvoice.id}
+                {remainingInvoice.id}
               </TableCell>
               <TableCell className="font-medium">
                 {formatePrice({
                   locale,
-                  price: booking.remainingInvoice.totalAmount,
+                  price: remainingInvoice.totalAmount,
                 })}
               </TableCell>
               <TableCell className="font-medium">
-                {booking.remainingInvoice.vat}
+                {remainingInvoice.vat}
               </TableCell>
               <TableCell className="font-medium">
-                {booking.remainingInvoice.isPaid ? (
+                {remainingInvoice.isPaid ? (
                   <CheckCircle2 className="text-primary" />
                 ) : (
                   <LucideMinusCircle className="text-destructive" />
                 )}
               </TableCell>
               <TableCell className="font-medium">
-                {dayjs(booking.remainingInvoice.receipt?.created_at).format(
+                {dayjs(remainingInvoice.receipt?.created_at).format(
                   "DD/MM/YYYY"
                 )}
               </TableCell>
               <TableCell className="text-start">
-                {booking.remainingInvoice.path ? (
+                {remainingInvoice.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.remainingInvoice.path}
+                    href={remainingInvoice.path}
                   >
                     {t("download")}{" "}
                     <span>
@@ -139,10 +198,10 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
                 )}
               </TableCell>
               <TableCell className="text-start">
-                {booking.remainingInvoice.receipt?.path ? (
+                {remainingInvoice.receipt?.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.remainingInvoice.receipt?.path}
+                    href={remainingInvoice.receipt?.path}
                   >
                     {t("download")}{" "}
                     <span>
@@ -155,37 +214,31 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
               </TableCell>
             </TableRow>
           )}
-          {booking.fullInvoice && (
+          {fullInvoice && (
             <TableRow className={cn()}>
-              <TableCell className="font-medium">
-                {booking.fullInvoice.id}
-              </TableCell>
+              <TableCell className="font-medium">{fullInvoice.id}</TableCell>
               <TableCell className="font-medium">
                 {formatePrice({
                   locale,
-                  price: booking.fullInvoice.totalAmount,
+                  price: fullInvoice.totalAmount,
                 })}
               </TableCell>
+              <TableCell className="font-medium">{fullInvoice.vat}</TableCell>
               <TableCell className="font-medium">
-                {booking.fullInvoice.vat}
-              </TableCell>
-              <TableCell className="font-medium">
-                {booking.fullInvoice.isPaid ? (
+                {fullInvoice.isPaid ? (
                   <CheckCircle2 className="text-primary" />
                 ) : (
                   <LucideMinusCircle className="text-destructive" />
                 )}
               </TableCell>
               <TableCell className="font-medium">
-                {dayjs(booking.fullInvoice.receipt?.created_at).format(
-                  "DD/MM/YYYY"
-                )}
+                {dayjs(fullInvoice.receipt?.created_at).format("DD/MM/YYYY")}
               </TableCell>
               <TableCell className="text-start">
-                {booking.fullInvoice.path ? (
+                {fullInvoice.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.fullInvoice.path}
+                    href={fullInvoice.path}
                   >
                     {t("download")}
                     <span>
@@ -197,10 +250,10 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
                 )}
               </TableCell>
               <TableCell className="text-start">
-                {booking.fullInvoice.receipt?.path ? (
+                {fullInvoice.receipt?.path ? (
                   <Link
                     className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={booking.fullInvoice.receipt?.path}
+                    href={fullInvoice.receipt?.path}
                   >
                     {t("download")}
                     <span>
@@ -212,16 +265,22 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ booking }) => {
                 )}
               </TableCell>
             </TableRow>
-          )}
-          {!booking.partialInvoice &&
-            !booking.remainingInvoice &&
-            !booking.fullInvoice && (
+          )} */}
+          {!invoices ||
+            (invoices.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} className="h-24 text-start">
                   {t("nothingFound")}
                 </TableCell>
               </TableRow>
-            )}
+            ))}
+          {/* {!partialInvoice && !remainingInvoice && !fullInvoice && (
+            <TableRow>
+              <TableCell colSpan={8} className="h-24 text-start">
+                {t("nothingFound")}
+              </TableCell>
+            </TableRow>
+          )} */}
         </TableBody>
       </Table>
     </div>
