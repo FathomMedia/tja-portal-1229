@@ -48,10 +48,6 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
   const t = useTranslations("Adventures");
 
-  const searchParams = useSearchParams();
-
-  const isRedirect = Boolean(searchParams.get("redirected"));
-
   const { data: booking, isFetching: isFetchingAdventure } =
     useQuery<TAdventureBookingOrder>({
       queryKey: [`/adventure-bookings/${id}`],
@@ -153,7 +149,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             {!booking.isFullyPaid && (
               <Alert className="text-primary-foreground border-primary-foreground bg-primary">
                 <DollarSign className="h-4 w-4 !text-primary-foreground" />
-                <AlertTitle>Pending payment!</AlertTitle>
+                <AlertTitle>{t("pendingPayment")}</AlertTitle>
                 <AlertDescription className="text-xs">
                   {`Complete your payment for ${booking.adventure.title} before ${booking.adventure.startDate} to secure spot.`}{" "}
                   <span>
@@ -497,7 +493,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               >
                 {t("whatsApp")}{" "}
                 <span>
-                  <ArrowRightCircleIcon className="w-4 h-4 text-center" />
+                  <ArrowRightCircleIcon className="w-4 h-4 text-center rtl:rotate-180" />
                 </span>
               </Link>
               <Link
@@ -509,12 +505,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               >
                 {t("feedbackForm")}{" "}
                 <span>
-                  <ArrowRightCircleIcon className="w-4 h-4 text-center" />
+                  <ArrowRightCircleIcon className="w-4 h-4 text-center rtl:rotate-180" />
                 </span>
               </Link>
             </div>
           </div>
-
+          <Separator className="my-4" />
           {/* Invoices */}
           <div className="flex flex-col gap-4">
             <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
