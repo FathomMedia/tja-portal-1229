@@ -15,12 +15,13 @@ import { buttonVariants } from "../ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import { TAdventureBookingOrder, TInvoice } from "@/lib/types";
 import Link from "next/link";
+import { Badge } from "../ui/badge";
 
 type TAdventureInvoices = {
-  invoices?: (TInvoice | null)[];
-  //   partialInvoice?: TInvoice | null;
-  //   remainingInvoice?: TInvoice | null;
-  //   fullInvoice?: TInvoice | null;
+  invoices?: {
+    type: "partial" | "remaining" | "full";
+    invoice: TInvoice | null;
+  }[];
 };
 
 export const AdventureInvoices: FC<TAdventureInvoices> = ({
@@ -38,6 +39,7 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({
         <TableHeader className="">
           <TableRow className="">
             <TableHead className=" text-start ">{t("id")}</TableHead>
+            <TableHead className=" text-start ">{t("type")}</TableHead>
             <TableHead className=" text-start ">{t("amount")}</TableHead>
             <TableHead className=" text-start ">{t("vat")}</TableHead>
             <TableHead className=" text-start ">{t("isPaid")}</TableHead>
@@ -48,32 +50,49 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({
         </TableHeader>
         <TableBody className="">
           {invoices?.map(
-            (invoice, i) =>
-              invoice && (
+            (item, i) =>
+              item.invoice && (
                 <TableRow key={i} className={cn()}>
-                  <TableCell className="font-medium">{invoice.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {item.invoice.id}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {
+                      <Badge
+                        className="uppercase"
+                        size={"sm"}
+                        variant={"outline"}
+                      >
+                        {item.type}
+                      </Badge>
+                    }
+                  </TableCell>
                   <TableCell className="font-medium">
                     {formatePrice({
                       locale,
-                      price: invoice.totalAmount,
+                      price: item.invoice.totalAmount,
                     })}
                   </TableCell>
-                  <TableCell className="font-medium">{invoice.vat}</TableCell>
                   <TableCell className="font-medium">
-                    {invoice.isPaid ? (
+                    {item.invoice.vat}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {item.invoice.isPaid ? (
                       <CheckCircle2 className="text-primary" />
                     ) : (
                       <LucideMinusCircle className="text-destructive" />
                     )}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {dayjs(invoice.receipt?.created_at).format("DD/MM/YYYY")}
+                    {dayjs(item.invoice.receipt?.created_at).format(
+                      "DD/MM/YYYY"
+                    )}
                   </TableCell>
                   <TableCell className="text-start">
-                    {invoice.path ? (
+                    {item.invoice.path ? (
                       <Link
                         className={cn(buttonVariants({ variant: "ghost" }))}
-                        href={invoice.path}
+                        href={item.invoice.path}
                       >
                         {t("download")}{" "}
                         <span>
@@ -85,10 +104,10 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({
                     )}
                   </TableCell>
                   <TableCell className="text-start">
-                    {invoice.receipt?.path ? (
+                    {item.invoice.receipt?.path ? (
                       <Link
                         className={cn(buttonVariants({ variant: "ghost" }))}
-                        href={invoice.receipt?.path}
+                        href={item.invoice.receipt?.path}
                       >
                         {t("download")}{" "}
                         <span>
