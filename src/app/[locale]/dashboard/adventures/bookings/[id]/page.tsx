@@ -235,7 +235,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
                 {booking.isFullyPaid && (
                   <Link
-                    href={booking.adventure.link}
+                    href={booking.adventure.link ?? "#"}
                     type="button"
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "sm" })

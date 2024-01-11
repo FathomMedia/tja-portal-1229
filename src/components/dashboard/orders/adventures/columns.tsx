@@ -1,6 +1,10 @@
 "use client";
 
-import { TAdventureBooking } from "@/lib/types";
+import {
+  TAdventure,
+  TAdventureBooking,
+  TAdventureBookingOrder,
+} from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   CheckCircle2,
@@ -37,7 +41,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
         <DisplayTranslatedText text="adventureTitle" translation="Adventures" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.adventure.title}</p>,
+    cell: ({ row }) => <Title booking={row.original} />,
   },
   {
     accessorKey: "image",
@@ -159,5 +163,18 @@ const Actions = ({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+const Title = ({ booking }: { booking: TAdventureBooking }) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary"
+      href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
+    >
+      {booking.adventure.title}
+    </Link>
   );
 };

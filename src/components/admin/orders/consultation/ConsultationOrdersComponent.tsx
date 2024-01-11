@@ -28,11 +28,14 @@ export const ConsultationOrdersComponent = () => {
     });
 
   return (
-    <DashboardSection title={"Consultation Orders"} className="flex w-full">
-      {/* <Button
+    <DashboardSection
+      title={"Consultation Orders"}
+      className="flex flex-col w-full"
+    >
+      <Button
         onClick={() =>
           apiReqQuery({
-            endpoint: `${api}/consultation-bookings/export`,
+            endpoint: `/consultation-bookings/export`,
             method: "GET",
             locale,
           }).then(async (res) => {
@@ -47,7 +50,7 @@ export const ConsultationOrdersComponent = () => {
         }
       >
         Download CSV
-      </Button> */}
+      </Button>
       <DataTable
         columns={columns}
         data={consultationOrders?.data ?? []}
