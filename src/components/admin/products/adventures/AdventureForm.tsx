@@ -110,8 +110,6 @@ export const AdventureForm: FC<TAdventureForm> = ({
         price: z.number().min(0, "Price must be at least 0"),
       })
     ),
-    // package: z.string().min(1, "package is required"),
-    // arabic_package: z.string().min(1, "Arabic package is required"),
   });
 
   const defaultStartDate = adventure

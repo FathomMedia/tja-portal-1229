@@ -161,6 +161,9 @@ export type TAdventureBookingOrder = {
   partialInvoice: TInvoice | null;
   fullInvoice: TInvoice | null;
   remainingInvoice: TInvoice | null;
+  passportId: string | null;
+  ticket: string | null;
+  otherDocument: string | null;
 };
 export type TInvoice = {
   id: number;

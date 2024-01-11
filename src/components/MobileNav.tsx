@@ -38,7 +38,7 @@ export function MobileNav({
     const data = await res.json();
     if (res.ok) {
       toast.success(data.message);
-      queryClient.invalidateQueries({ queryKey: ["/users/profile"] });
+      queryClient.invalidateQueries();
       push(`/${locale}/authentication`);
     } else {
       toast.error(data.message);
