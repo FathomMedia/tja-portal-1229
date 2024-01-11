@@ -86,6 +86,9 @@ export type TAdventure = {
   isUpcoming: boolean;
   numberOfBookings: number;
   addOns: TAddon[];
+  package: string | null;
+  englishPackage: string | null;
+  arabicPackage: string | null;
   priceWithCurrency: string;
   isPartialAllowed: boolean;
   partialPrice: number;
@@ -164,6 +167,8 @@ export type TAdventureBookingOrder = {
   passportId: string | null;
   ticket: string | null;
   otherDocument: string | null;
+  reason: string;
+  isCancelled: boolean;
 };
 export type TInvoice = {
   id: number;
@@ -308,6 +313,7 @@ export type TAdventureBooking = {
   addOns: any[];
   totalPrice: number;
   totalPriceWithCurrency: string;
+  isCancelled: boolean;
 };
 
 export type TConsultationBooking = {
@@ -338,6 +344,7 @@ export type TConsultationBooking = {
   coupon: TCoupon;
   adventureMeaning: string[];
   morningActivity: string;
+  isCancelled: boolean;
 };
 
 export type TPagination = {

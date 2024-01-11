@@ -36,7 +36,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Icons } from "@/components/ui/icons";
+import { toast } from "sonner";
 
 type TConsultationBookingForm = {
   consultationBooking: TConsultationBooking;
@@ -49,6 +51,38 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
+  const queryClient = useQueryClient();
+
+  const cancelMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/book/remove-customer-from-adventure`, {
+        method: "PUT",
+        body: JSON.stringify({
+          id: consultationBooking.id,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        queryClient.invalidateQueries({
+          queryKey: [`/consultation-bookings/${consultationBooking.id}`],
+        });
+        toast.success(message);
+        // push(`/${locale}/admin/achievements`);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
 
   return (
     <div className=" flex flex-col gap-12 @container p-4 rounded-sm">
@@ -373,59 +407,67 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
               </Table>
             </div>
           </div>
-          <Separator />
-          <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
-            {t("dangerArea")}
-          </h2>
-          <div>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col grow items-start">
-                {consultationBooking && (
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="text-muted-foreground font-normal"
-                      >
-                        {t("deleteConsultationBooking")}
-                        {/* Delete Consultation Booking */}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-lg">
-                      <DialogHeader className="gap-1">
-                        <DialogTitle>{t("deleteAchievement")}</DialogTitle>
-                        <DialogDescription className="gap-1 flex flex-wrap">
-                          {t("areYouSureYouWantToDelete")}
-                          {/* Are you sure you want to delete this booking? */}
-                        </DialogDescription>
-                      </DialogHeader>
-
-                      <DialogFooter className="sm:justify-start">
-                        <DialogClose asChild>
-                          <Button className="" type="button" variant="ghost">
-                            {t("close")}
-                          </Button>
-                        </DialogClose>
-                        <>
-                          {/* <Button
-                            disabled={deleteMutation.isPending}
-                            onClick={() => deleteMutation.mutate()}
-                            type="button"
-                            variant={"destructive"}
+          {!consultationBooking.isCancelled && (
+            <div className=" pt-4 flex flex-col gap-6">
+              <Separator />
+              <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
+                {t("dangerArea")}
+              </h2>
+              <div>
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col grow items-start">
+                    {consultationBooking && (
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="text-muted-foreground font-normal"
                           >
-                            {deleteMutation.isPending && (
-                              <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                            )}
-                            {t("deleteAchievement")}
-                          </Button> */}
-                        </>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                )}
+                            {t("cancelConsultationBooking")}
+                            {/* Cancel Consultation Booking */}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-lg">
+                          <DialogHeader className="gap-1">
+                            <DialogTitle>{t("deleteAchievement")}</DialogTitle>
+                            <DialogDescription className="gap-1 flex flex-wrap">
+                              {t("areYouSureYouWantToCancel")}
+                              {/* Are you sure you want to cancel this booking? */}
+                            </DialogDescription>
+                          </DialogHeader>
+
+                          <DialogFooter className="sm:justify-start">
+                            <DialogClose asChild>
+                              <Button
+                                className=""
+                                type="button"
+                                variant="ghost"
+                              >
+                                {t("close")}
+                              </Button>
+                            </DialogClose>
+                            <>
+                              <Button
+                                disabled={cancelMutation.isPending}
+                                onClick={() => cancelMutation.mutate()}
+                                type="button"
+                                variant={"destructive"}
+                              >
+                                {cancelMutation.isPending && (
+                                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                                )}
+                                {t("cancelConsultation")}
+                              </Button>
+                            </>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
