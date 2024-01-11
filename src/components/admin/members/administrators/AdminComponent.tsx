@@ -46,7 +46,7 @@ export const AdminComponent = () => {
 
         <div className=" my-[3rem]">
           <h2 className="text-2xl text-primary font-black font-helveticaNeue border-s-4 border-primary ps-2 my-4">
-            Sent invitations
+            {t("sentInvitations")}
           </h2>
           <DataTable
             columns={columnsAdminInvitations}

@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -221,30 +221,31 @@ export const AddNew = () => {
 
 const Actions = ({ adventure }: { adventure: TAdventure }) => {
   const locale = useLocale();
+  const t = useTranslations("Dashboard");
 
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
             >
-              Edit
+              {t("edit")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/products/adventures/bookings/${adventure.slug}`}
             >
-              View Bookings
+              {t("viewBooking")}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

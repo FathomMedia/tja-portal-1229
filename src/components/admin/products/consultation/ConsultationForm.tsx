@@ -171,7 +171,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
               size={"sm"}
               className="relative flex cursor-default select-none items-center justify-start text-start rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 w-full"
             >
-              Edit
+              {t("edit")}
             </Button>
           ) : (
             <div className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100">
@@ -184,23 +184,19 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
           {consultation ? (
             <DialogHeader>
               <DialogTitle className=" text-primary text-xl">
-                Update a consultation package
+                {t("updateAConsultationPackage")}
               </DialogTitle>
               <DialogDescription>
-                {
-                  "Edit a consultation package here. Click save once you're done."
-                }
+                {t("editAConsultationPackageHere")}
               </DialogDescription>
             </DialogHeader>
           ) : (
             <DialogHeader>
               <DialogTitle className=" text-primary text-xl">
-                Create a consultation package
+                {t("createAConsultationPackage")}
               </DialogTitle>
               <DialogDescription>
-                {
-                  "Create a consultation package here. Click save once you're done."
-                }
+                {t("createAConsultationPackageHere")}
               </DialogDescription>
             </DialogHeader>
           )}
@@ -216,7 +212,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
                   render={({ field }) => (
                     <FormItem className=" w-full mb-2">
                       <FormLabel className="text-base">
-                        {"Package Type"}
+                        {t("packageType")}
                         <span className="text-destructive ms-1">*</span>
                       </FormLabel>
                       <Select
@@ -247,7 +243,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
                   render={({ field }) => (
                     <FormItem className=" w-full mb-2">
                       <FormLabel className="text-base">
-                        {"No. of days"}
+                        {t("numberOfDays")}
                         <span className="text-destructive ms-1">*</span>
                       </FormLabel>
                       <Select
@@ -309,7 +305,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
                     {/* {mutation.isPending && (
                               <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                             )} */}
-                    {"Save changes"}
+                    {t("saveChanges")}
                   </Button>
                 </div>
               </div>
@@ -319,23 +315,22 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
             <div className=" w-full flex justify-center mt-4">
               <AlertDialog>
                 <AlertDialogTrigger className=" text-xs text-red-500">
-                  Delete package?
+                  {t("deletePackage")}
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogTitle>{t("areYouSure")}</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      this data.
+                      {t("thisActionCannotBeUndone")}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                     <Button
                       className=" text-sm bg-transparent text-red-400 hover:bg-transparent"
                       onClick={() => onDeletePackage(consultation)}
                     >
-                      Yes, delete
+                      {t("yesDelete")}
                     </Button>
                   </AlertDialogFooter>
                 </AlertDialogContent>

@@ -37,19 +37,19 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
       {/* Checkout Details */}
       <div className="">
         <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 mb-4">
-          Customer Details
+          {t("customerDetails")}
         </h2>
         <div className=" grid grid-cols-1 @lg:grid-cols-2 gap-8">
           <div>
-            <Label>Name</Label>
+            <Label>{t("name")}</Label>
             <Input disabled value={consultationBooking.customer.name ?? ""} />
           </div>
           <div>
-            <Label>Email</Label>
+            <Label>{t("email")}</Label>
             <Input disabled value={consultationBooking.customer.email ?? ""} />
           </div>
           <div>
-            <Label>Phone</Label>
+            <Label>{t("phone")}</Label>
             <Input disabled value={consultationBooking.customer.phone ?? ""} />
           </div>
         </div>
@@ -58,25 +58,25 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
       {/* Consultation Details */}
       <div>
         <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 my-4">
-          Package Details
+          {t("packageDetails")}
         </h2>
         <div className=" grid grid-cols-1 @lg:grid-cols-2 gap-8">
           <div>
-            <Label>Tier</Label>
+            <Label>{t("package")}</Label>
             <Input
               disabled
               value={consultationBooking.consultation.tier.toUpperCase() ?? ""}
             />
           </div>
           <div>
-            <Label>Number of Days</Label>
+            <Label>{t("numberOfDays")}</Label>
             <Input
               disabled
               value={consultationBooking.consultation.numberOfDays ?? ""}
             />
           </div>
           <div>
-            <Label>Price</Label>
+            <Label>{t("price")}</Label>
             <Input
               disabled
               value={consultationBooking.consultation.priceWithCurrency ?? ""}
@@ -88,20 +88,20 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
       {/* Form Details */}
       <div>
         <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 my-4">
-          Form Details
+          {t("formDetails")}
         </h2>
         <div className=" flex flex-col gap-8">
           <div className="grid grid-cols-1 @lg:grid-cols-2 gap-8">
             <div>
-              <Label>Start Date</Label>
+              <Label>{t("startDate")}</Label>
               <Input disabled value={consultationBooking.startDate ?? ""} />
             </div>
             <div>
-              <Label>End Date</Label>
+              <Label>{t("endDate")}</Label>
               <Input disabled value={consultationBooking.endDate ?? ""} />
             </div>
             <div>
-              <Label>Date Booked</Label>
+              <Label>{t("dateBooked")}</Label>
               <Input disabled value={consultationBooking.dateBooked ?? ""} />
             </div>
           </div>
@@ -194,7 +194,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
             <Input disabled value={consultationBooking.phobias ?? "N/A"} />
           </div>
           <div>
-            <Label>Coupon</Label>
+            <Label>{t("coupon")}</Label>
             <Input disabled value={consultationBooking.coupon?.code ?? "N/A"} />
           </div>
         </div>

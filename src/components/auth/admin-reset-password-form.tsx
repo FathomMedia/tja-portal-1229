@@ -165,7 +165,7 @@ export const AdminResetPasswordForm = () => {
               {isLoading && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
-              Accept Invite
+              {t("acceptInvite")}
             </Button>
           </form>
         </Form>

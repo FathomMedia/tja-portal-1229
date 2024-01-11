@@ -249,7 +249,31 @@
     "ziplining": "Ziplining",
     "bookAConsultation": "Book a consultation ",
     "calculate": "Calculate",
-    "price": "Price"
+    "price": "Price",
+    "consultationOrders": "Consultation Orders",
+    "tier": "Package",
+    "numberOfDays": "Number of days",
+    "packageDetails": "Package Details",
+    "phone": "Phone",
+    "name": "Name",
+    "email": "Email",
+    "package": "Package",
+    "formDetails": "Form Details",
+    "dateBooked": "Date Booked",
+    "customerDetails": "Customer Details",
+    "coupon": "Coupons",
+    "edit": "Edit",
+    "updateAConsultationPackage": "Update a consultation package",
+    "editAConsultationPackageHere": "Edit a consultation package here. Click save once you're done.",
+    "createAConsultationPackageHere": "Create a consultation package here. Click save once you're done.",
+    "createAConsultationPackage": "Create a consultation package",
+    "priceInBHD": "Price in BHD",
+    "saveChanges": "Save Changes",
+    "deletePackage": "Delete Package?",
+    "thisActionCannotBeUndone": "This action cannot be undone. This will permanently delete this data.",
+    "areYouSure": "Are you sure?",
+    "cancel": "Cancel",
+    "yesDelete": "Yes, delete"
   },
   "Coupons": {
     "newCoupon": "New Coupon",
@@ -390,7 +414,30 @@
     "actions": "Actions",
     "members": "Members",
     "description": "Description",
-    "title": "Title"
+    "title": "Title",
+    "newAchievement": "New Achievement",
+    "englishTitle": "English Title",
+    "arabicTitle": "Arabic Title",
+    "englishDescription": "English Description",
+    "arabicDescription": "Arabic Description",
+    "badge": "Badge",
+    "openMenu": "Open Menu",
+    "edit": "Edit",
+    "male": "Male",
+    "female": "Female",
+    "invitedAt": "Invited at",
+    "sentInvitations": "Sent Invitations",
+    "levels": "Levels",
+    "deleteLevel": "Delete Level",
+    "editLevel": "Edit Level",
+    "arabicName": "Arabic Name",
+    "englishName": "English Name",
+    "viewForm": "View Form",
+    "downloadInvoice": "Download Invoice",
+    "viewBookings": "View Bookings",
+    "viewBooking": "View Booking",
+    "editAchievement": "Edit Achievement",
+    "deleteAchievement": "Delete Achievement"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
@@ -433,7 +480,8 @@
     "changePassword": "Change Password",
     "updateEmail": "Update Email",
     "updatePassword": "Update Password",
-    "updateProfile": "Update Profile"
+    "updateProfile": "Update Profile",
+    "yourEmail": "Your Email"
   },
   "SignInWithPassword": {
     "dob": "Date of birth",
@@ -568,5 +616,16 @@
     "actions": "Actions",
     "openMenu": "Open menu"
   },
-  "partialPayment": "Partial Payment"
+  "partialPayment": "Partial Payment",
+  "AdminInvite": {
+    "inviteAnAdmin": "Invite an admin",
+    "name": "Name",
+    "enterYourName": "Enter your name",
+    "emailAddress": "Email Address ",
+    "gender": "Gender",
+    "selectGender": "Select gender",
+    "male": "Male",
+    "female": "Female",
+    "Invite": "New invite"
+  }
 }

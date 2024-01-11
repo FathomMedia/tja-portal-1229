@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
 
@@ -97,10 +97,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     accessorKey: "consultationNumberOfDays",
     header: () => (
       <div className="">
-        <DisplayTranslatedText
-          text="Number of Days"
-          translation="Consultation"
-        />
+        <DisplayTranslatedText text="numberOfDays" translation="Consultation" />
       </div>
     ),
     cell: ({ row }) => (
@@ -151,6 +148,7 @@ const Actions = ({
   consultationBooking: TConsultationBooking;
 }) => {
   const locale = useLocale();
+  const t = useTranslations("Dashboard");
 
   // const queryClient = useQueryClient();
 
@@ -192,13 +190,13 @@ const Actions = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link
               href={`/${locale}/admin/orders/consultation/${consultationBooking.id}`}
             >
-              View Form
+              {t("viewForm")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -210,7 +208,7 @@ const Actions = ({
                 {/* {mutation.isPending && (
                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                 )} */}
-                Download Invoice
+                {t("downloadInvoice")}
               </Button>
             }
           </DropdownMenuItem>

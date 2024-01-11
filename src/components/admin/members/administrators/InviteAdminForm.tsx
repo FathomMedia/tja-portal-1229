@@ -126,7 +126,7 @@ export const InviteAdminForm: FC<TInviteAdminForm> = ({ adminInvitation }) => {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className=" text-primary text-xl">
-              Invite an admin
+              {t("inviteAnAdmin")}
             </DialogTitle>
           </DialogHeader>
 
@@ -140,10 +140,10 @@ export const InviteAdminForm: FC<TInviteAdminForm> = ({ adminInvitation }) => {
                 name="name"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("Name")}</FormLabel>
+                    <FormLabel>{t("name")}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={t("Enter your name")}
+                        placeholder={t("enterYourName")}
                         className=" border-primary"
                         type="text"
                         {...field}
@@ -184,7 +184,7 @@ export const InviteAdminForm: FC<TInviteAdminForm> = ({ adminInvitation }) => {
                     >
                       <FormControl>
                         <SelectTrigger className="rounded-full border-primary">
-                          <SelectValue placeholder={t("Select gender")} />
+                          <SelectValue placeholder={t("selectGender")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
