@@ -14,10 +14,11 @@ import {
   CheckCircle2,
   LucideMinusCircle,
   Download,
+  DollarSign,
 } from "lucide-react";
 import { cn, formatePrice } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { format } from "date-fns";
+
 import dayjs from "dayjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -26,7 +27,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import EditorViewer from "@/components/editor/EditorViewer";
 import {
   Table,
   TableBody,
@@ -36,10 +36,25 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
-
   const t = useTranslations("Adventures");
+
+  const searchParams = useSearchParams();
+  const [toasted, setToasted] = useState(false);
+
+  useEffect(() => {
+    const isRedirect = Boolean(searchParams.get("redirected"));
+
+    if (isRedirect && !toasted) {
+      toast.success("Your reservation is confirmed!");
+      setToasted(true);
+    }
+
+    return () => {};
+  }, [searchParams, toasted]);
 
   const { data: booking, isFetching: isFetchingAdventure } =
     useQuery<TAdventureBookingOrder>({
@@ -67,6 +82,27 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       )}
       {booking && !isFetchingAdventure && (
         <div className="flex flex-col w-full gap-3">
+          {/* Alerts */}
+          <div className="flex flex-col w-full gap-4">
+            {!booking.isFullyPaid && (
+              <Alert className="text-primary-foreground border-primary-foreground bg-primary">
+                <DollarSign className="h-4 w-4 !text-primary-foreground" />
+                <AlertTitle>Pending payment!</AlertTitle>
+                <AlertDescription className="text-xs">
+                  {`Complete your payment for ${booking.adventure.title} before ${booking.adventure.startDate} to secure spot.`}{" "}
+                  <span>
+                    {
+                      <PayRemaining
+                        text={t("clickHereToCompletePayment")}
+                        booking={booking}
+                        className="text-current text-xs font-normal hover:text-current hover:bg-white/10"
+                      />
+                    }
+                  </span>
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
           <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4 border border-white bg-white">
             <div className="w-full md:w-1/3 aspect-video rounded-md overflow-clip md:aspect-square bg-white relative grid place-items-center">
               <Image
@@ -430,7 +466,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   );
 }
 
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -445,8 +481,8 @@ import { Icons } from "@/components/ui/icons";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Toaster, toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -458,9 +494,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 type TPayRemaining = {
   booking: TAdventureBookingOrder;
+  text?: string;
+  className?: string;
 };
 
-export const PayRemaining: FC<TPayRemaining> = ({ booking }) => {
+export const PayRemaining: FC<TPayRemaining> = ({
+  booking,
+  text,
+  className,
+}) => {
   const t = useTranslations("Adventures");
   const locale = useLocale();
   const { push } = useRouter();
@@ -517,13 +559,14 @@ export const PayRemaining: FC<TPayRemaining> = ({ booking }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="ghost"
+          variant="link"
           size={"sm"}
           className={cn(
-            "text-secondary underline hover:text-secondary hover:bg-secondary/10"
+            "text-secondary underline hover:text-secondary hover:bg-secondary/10 px-1 py-0",
+            className
           )}
         >
-          {t("completePayment")}
+          {text ?? t("completePayment")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
@@ -552,7 +595,6 @@ export const PayRemaining: FC<TPayRemaining> = ({ booking }) => {
                   <FormControl>
                     <RadioGroup
                       onValueChange={(val) => {
-                        // setSelectedPaymentMethod(val);
                         field.onChange(val);
                       }}
                       defaultValue={field.value}
@@ -588,20 +630,6 @@ export const PayRemaining: FC<TPayRemaining> = ({ booking }) => {
                           {t("benefitPay")}
                         </Label>
                       </div>
-                      {/* <div>
-                              <RadioGroupItem
-                                value="applepay"
-                                id="applepay"
-                                className="peer sr-only"
-                              />
-                              <Label
-                                htmlFor="applepay"
-                                className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-                              >
-                                <Icons.apple className="mb-3 h-6 w-6" />
-                                {t("applePay")}
-                              </Label>
-                            </div> */}
                     </RadioGroup>
                   </FormControl>
                   {field.value === "benefitpay" && (
