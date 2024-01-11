@@ -166,7 +166,15 @@ const Actions = ({ order }: { order: TOrder }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/${locale}/admin/booking/${order.id}`}>View</Link>
+            <Link
+              href={
+                order.type === "adventure"
+                  ? `/${locale}/admin/orders/adventures/${order.id}`
+                  : `/${locale}/admin/orders/consultation/${order.id}`
+              }
+            >
+              View
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>

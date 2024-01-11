@@ -36,7 +36,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
         <DisplayTranslatedText text="Name" translation="SignUp" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.customer.name}</p>,
+    cell: ({ row }) => <ConsultationName consultationBooking={row.original} />,
   },
   {
     accessorKey: "email",
@@ -202,20 +202,32 @@ const Actions = ({
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            {
-              <Button
-                className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-                variant="outline"
-              >
-                {/* {mutation.isPending && (
-                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                )} */}
-                Download Invoice
-              </Button>
-            }
+            <Link
+              className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
+              href={`${consultationBooking.invoice.path}`}
+            >
+              Download Invoice
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+const ConsultationName = ({
+  consultationBooking,
+}: {
+  consultationBooking: TConsultationBooking;
+}) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary"
+      href={`/${locale}/admin/orders/consultation/${consultationBooking.id}`}
+    >
+      {consultationBooking.customer.name}
+    </Link>
   );
 };

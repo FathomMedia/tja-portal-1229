@@ -73,6 +73,7 @@ type TConsultationCheckoutForm = {
     adventureToYouIs: string[];
     activityTypes: string[];
     travelExperience: string;
+    fearsSelection?: string | undefined;
     otherFears?: string | undefined;
     tripType: string;
   };
@@ -243,6 +244,8 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         adventure_meaning: formData.adventureToYouIs,
         morning_activity: formData.tripType,
         departure_airport: formData.airport,
+        best_travel_experience: formData.travelExperience,
+        phobias: formData.otherFears || formData.fearsSelection,
         // ...(values.paymentMethod === "card" && {
         //   card_holder_name: values.cardName,
         //   card_number: values.cardNumber,
@@ -251,10 +254,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         //   card_cvv: values.cardCVV,
         // }),
       };
-      console.log(
-        "🚀 ~ file: ConsultationCheckoutForm.tsx:255 ~ dataToRequest:",
-        dataToRequest
-      );
 
       return fetch(`/api/book/consultation`, {
         method: "POST",
@@ -457,7 +456,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                     field.onChange(val);
                                   }}
                                   defaultValue={field.value}
-                                  className="grid grid-cols-3 gap-4"
+                                  className="grid grid-cols-2 gap-4"
                                 >
                                   <div>
                                     <RadioGroupItem
@@ -489,7 +488,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                       {t("benefitPay")}
                                     </Label>
                                   </div>
-                                  <div>
+                                  {/* <div>
                                     <RadioGroupItem
                                       value="applepay"
                                       id="applepay"
@@ -502,7 +501,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                       <Icons.apple className="mb-3 h-6 w-6" />
                                       {t("applePay")}
                                     </Label>
-                                  </div>
+                                  </div> */}
                                 </RadioGroup>
                               </FormControl>
                               {field.value === "benefitpay" && (

@@ -165,7 +165,7 @@ export type TAdventureBookingOrder = {
 export type TInvoice = {
   id: number;
   type: string;
-  path: string;
+  path: string | null;
   customer: {
     id: number;
     userId: number;
@@ -328,10 +328,10 @@ export type TConsultationBooking = {
   budgetIncludes: string[];
   vacationType: string;
   accommodationType: string[];
-  bestTravelExperience: string | null;
+  bestTravelExperience: string;
   phobias: string | null;
   activities: string[];
-  invoice: null;
+  invoice: TInvoice;
   coupon: TCoupon;
   adventureMeaning: string[];
   morningActivity: string;

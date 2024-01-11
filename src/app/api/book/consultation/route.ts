@@ -27,9 +27,10 @@ export async function POST(request: NextRequest) {
       adventure_meaning: string[];
       morning_activity: string;
       departure_airport: string;
+      best_travel_experience: string;
+      phobias: string | null;
     };
   } = await request.json();
-
   const bookingResponse = await apiReq({
     endpoint: `/consultation-bookings/${data.id}/book`,
     locale,
