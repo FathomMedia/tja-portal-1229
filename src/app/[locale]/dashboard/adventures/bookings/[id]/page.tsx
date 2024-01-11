@@ -43,18 +43,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const t = useTranslations("Adventures");
 
   const searchParams = useSearchParams();
-  const [toasted, setToasted] = useState(false);
 
-  useEffect(() => {
-    const isRedirect = Boolean(searchParams.get("redirected"));
-
-    if (isRedirect && !toasted) {
-      toast.success("Your reservation is confirmed!");
-      setToasted(true);
-    }
-
-    return () => {};
-  }, [searchParams, toasted]);
+  const isRedirect = Boolean(searchParams.get("redirected"));
 
   const { data: booking, isFetching: isFetchingAdventure } =
     useQuery<TAdventureBookingOrder>({
@@ -84,6 +74,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         <div className="flex flex-col w-full gap-3">
           {/* Alerts */}
           <div className="flex flex-col w-full gap-4">
+            {isRedirect && (
+              <Alert>
+                <CheckCircle2 className="h-4 w-4 " />
+                <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
+                <AlertDescription className="text-xs">
+                  {t("yourBookingIsConfirmd")}
+                </AlertDescription>
+              </Alert>
+            )}
             {!booking.isFullyPaid && (
               <Alert className="text-primary-foreground border-primary-foreground bg-primary">
                 <DollarSign className="h-4 w-4 !text-primary-foreground" />
@@ -251,7 +250,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
               {t("invoices")}
             </h2>
-            <div className="rounded-md overflow-clip border">
+            <AdventureInvoices booking={booking} />
+            {/* <div className="rounded-md overflow-clip border">
               <Table className="">
                 <TableHeader className="">
                   <TableRow className="">
@@ -458,7 +458,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     )}
                 </TableBody>
               </Table>
-            </div>
+            </div> */}
           </div>
         </div>
       )}
@@ -482,7 +482,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -492,6 +492,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { AdventureInvoices } from "@/components/booking/AdventureInvoices";
 type TPayRemaining = {
   booking: TAdventureBookingOrder;
   text?: string;
