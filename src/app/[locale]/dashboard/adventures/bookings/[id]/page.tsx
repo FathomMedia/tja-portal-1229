@@ -13,6 +13,9 @@ import {
   MessageSquareDashed,
   CheckCircle2,
   DollarSign,
+  Globe,
+  Plane,
+  Download,
 } from "lucide-react";
 import { cn, formatePrice } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
@@ -137,9 +140,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     </Badge>
                   )}
                 </div>
-                <h3 className="font-black font-helveticaNeue text-primary md:text-3xl text-xl">
-                  {booking.adventure.title}
-                </h3>
+                <Link
+                  href={booking.adventure.link ?? "#"}
+                  className="font-black flex items-center gap-1 font-helveticaNeue w-fit hover:underline text-primary md:text-3xl text-xl"
+                >
+                  {booking.adventure.title}{" "}
+                  <span>
+                    <Globe className="mb-1" />
+                  </span>
+                </Link>
                 <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
                   {t("bookedAt")}
                   <p>{dayjs(booking.dateBooked).format("DD/MM/YYYY")}</p>
@@ -179,9 +188,62 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
 
           {/* Trip Toolkit */}
 
-          <div className="flex flex-col @xl:flex-row">
-            <div></div>
-            <div></div>
+          <div className="flex flex-col @xl:flex-row items-center gap-3">
+            <div className="flex flex-col gap-2">
+              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                <span>
+                  <Plane className="w-4 h-4 fill-primary" />
+                </span>{" "}
+                {t("tripToolkit")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {t("importantResourcesForASeamlessAndUnforgettableJourney")}
+              </p>
+            </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              {booking.adventure.travelGuide && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "text-primary border-primary hover:text-primary"
+                  )}
+                  href={booking.adventure.travelGuide}
+                >
+                  {t("travelGuide")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+              {booking.adventure.fitnessGuide && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "text-primary border-primary hover:text-primary"
+                  )}
+                  href={booking.adventure.fitnessGuide}
+                >
+                  {t("fitnessGuide")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+              {booking.adventure.packingList && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "text-primary border-primary hover:text-primary"
+                  )}
+                  href={booking.adventure.packingList}
+                >
+                  {t("packingList")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+            </div>
           </div>
           {/* flight details */}
           <div></div>
