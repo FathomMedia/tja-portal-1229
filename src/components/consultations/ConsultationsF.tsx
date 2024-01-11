@@ -133,6 +133,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
       adventureToYouIs: [],
       activityTypes: [],
       travelExperience: "",
+      fearsSelection: "",
       otherFears: "",
     },
   });
@@ -146,12 +147,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
   }, [chosenPackage, startDate, endDate, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // TODO : pass values to checkout sheet
-
     setFormData(values);
-    console.log(formData);
     setIsOpen(true);
   }
 
@@ -240,9 +236,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                   <SelectContent>
                     <SelectItem value="Economy">{t("economy")}</SelectItem>
                     <SelectItem value="Business">{t("business")}</SelectItem>
-                    <SelectItem value="First Class">
-                      {t("firstClass")}
-                    </SelectItem>
+                    <SelectItem value="First">{t("firstClass")}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
