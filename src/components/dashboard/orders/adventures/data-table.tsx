@@ -10,7 +10,12 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -38,12 +43,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import React from "react";
 
@@ -83,7 +82,7 @@ export function DataTable<TData, TValue>({
   const t = useTranslations("Adventures");
 
   return (
-    <div className=" w-full">
+    <div className="w-full">
       <div className=" flex justify-end py-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -105,7 +104,7 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {t(column.id)}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -113,7 +112,7 @@ export function DataTable<TData, TValue>({
         </DropdownMenu>
       </div>
       <div className="rounded-md overflow-clip border">
-        <Table className="w-full">
+        <Table className=" w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -167,8 +166,8 @@ export function DataTable<TData, TValue>({
             {!isFetching && table.getRowModel().rows?.length
               ? table.getRowModel().rows.map((row) => (
                   <TableRow
-                    className="group"
                     key={row.id}
+                    className="group"
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (

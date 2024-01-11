@@ -43,7 +43,7 @@ export default function Page() {
       <div className="grid grid-cols-1 @lg:grid-cols-2 @3xl:grid-cols-3 gap-4">
         {paginatedAdventures &&
           !isFetchingPaginatedAdventures &&
-          paginatedAdventures.data.map((adventure, i) => (
+          paginatedAdventures.data?.map((adventure, i) => (
             <Link
               className="h-96 overflow-clip group relative rounded-md "
               href={`adventures/${adventure.slug}`}

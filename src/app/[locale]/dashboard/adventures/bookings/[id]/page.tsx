@@ -4,42 +4,53 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import {
   CheckCircle,
-  MessageCircle,
-  MessageSquareDashed,
   CheckCircle2,
-  LucideMinusCircle,
+  DollarSign,
+  Globe,
+  Plane,
   Download,
+  Phone,
+  ArrowRightCircleIcon,
+  File,
 } from "lucide-react";
 import { cn, formatePrice } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { format } from "date-fns";
+
 import dayjs from "dayjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import React from "react";
+import { useSearchParams } from "next/navigation";
+import { AdventureInvoices } from "@/components/booking/AdventureInvoices";
+import { PayRemaining } from "@/components/booking/PayRemainingAdventure";
+import { Separator } from "@/components/ui/separator";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import EditorViewer from "@/components/editor/EditorViewer";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
-
   const t = useTranslations("Adventures");
+
+  const searchParams = useSearchParams();
+
+  const isRedirect = Boolean(searchParams.get("redirected"));
 
   const { data: booking, isFetching: isFetchingAdventure } =
     useQuery<TAdventureBookingOrder>({
@@ -50,8 +61,71 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         ),
     });
 
+  const formSchema = z.object({
+    passport_id: z.any().optional(),
+    ticket: z.any().optional(),
+    other_document: z.any().optional(),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {},
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (values: z.infer<typeof formSchema>) => {
+      const formData = new FormData();
+
+      if (values.passport_id) {
+        formData.append("passport_id", values.passport_id);
+      }
+      if (values.ticket) {
+        formData.append("ticket", values.ticket);
+      }
+      if (values.other_document) {
+        formData.append("other_document", values.other_document);
+      }
+
+      return fetch(`/api/adventure/update-adventure`, {
+        method: "PUT",
+        headers: {
+          "Accept-Language": locale,
+        },
+        body: formData,
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message, { duration: 6000 });
+        queryClient.invalidateQueries({ queryKey: ["/adventure-bookings"] });
+        queryClient.invalidateQueries({
+          queryKey: ["/profile/adventure-bookings"],
+        });
+        queryClient.invalidateQueries({ queryKey: ["/profile/bookings"] });
+        booking &&
+          queryClient.invalidateQueries({
+            queryKey: [`/adventure-bookings/${booking.id}`],
+          });
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    mutation.mutate(values);
+  }
+
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full @container">
       {isFetchingAdventure && (
         <div className="flex flex-col gap-4">
           <Skeleton className="w-full h-72" />
@@ -67,6 +141,34 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       )}
       {booking && !isFetchingAdventure && (
         <div className="flex flex-col w-full gap-3">
+          {/* Alerts */}
+          <div className="flex flex-col w-full gap-4">
+            <Alert>
+              <CheckCircle2 className="h-4 w-4 " />
+              <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
+              <AlertDescription className="text-xs">
+                {t("yourBookingIsConfirmd")}
+              </AlertDescription>
+            </Alert>
+            {!booking.isFullyPaid && (
+              <Alert className="text-primary-foreground border-primary-foreground bg-primary">
+                <DollarSign className="h-4 w-4 !text-primary-foreground" />
+                <AlertTitle>Pending payment!</AlertTitle>
+                <AlertDescription className="text-xs">
+                  {`Complete your payment for ${booking.adventure.title} before ${booking.adventure.startDate} to secure spot.`}{" "}
+                  <span>
+                    {
+                      <PayRemaining
+                        text={t("clickHereToCompletePayment")}
+                        booking={booking}
+                        className="text-current text-xs font-normal hover:text-current hover:bg-white/10"
+                      />
+                    }
+                  </span>
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
           <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4 border border-white bg-white">
             <div className="w-full md:w-1/3 aspect-video rounded-md overflow-clip md:aspect-square bg-white relative grid place-items-center">
               <Image
@@ -108,9 +210,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     </Badge>
                   )}
                 </div>
-                <h3 className="font-black font-helveticaNeue text-primary md:text-3xl text-xl">
-                  {booking.adventure.title}
-                </h3>
+                <Link
+                  href={booking.adventure.link ?? "#"}
+                  className="font-black flex items-center gap-1 font-helveticaNeue w-fit hover:underline text-primary md:text-3xl text-xl"
+                >
+                  {booking.adventure.title}{" "}
+                  <span>
+                    <Globe className="mb-1" />
+                  </span>
+                </Link>
                 <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
                   {t("bookedAt")}
                   <p>{dayjs(booking.dateBooked).format("DD/MM/YYYY")}</p>
@@ -127,28 +235,16 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
                 {booking.isFullyPaid && (
                   <Link
-                    href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
+                    href={booking.adventure.link ?? "#"}
                     type="button"
                     className={cn(
                       buttonVariants({ variant: "ghost", size: "sm" })
                     )}
                   >
-                    {/* {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" /> */}
                     {t("viewMore")}
                   </Link>
                 )}
-                {!booking.isFullyPaid && (
-                  <Link
-                    href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
-                    type="button"
-                    className={
-                      (cn(buttonVariants({ variant: "ghost", size: "sm" })),
-                      "text-secondary underline hover:text-secondary hover:bg-secondary/10")
-                    }
-                  >
-                    {t("completePayment")}
-                  </Link>
-                )}
+                {!booking.isFullyPaid && <PayRemaining booking={booking} />}
 
                 <div className="flex items-baseline gap-2">
                   <p className="text-sm text-muted-foreground">{t("total")}</p>
@@ -159,67 +255,264 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               </div>
             </div>
           </div>
-          {/* description */}
-          {booking.adventure.description && (
-            <p className="text-sm p-4 bg-muted/50 rounded-sm text-muted-foreground">
-              {booking.adventure.description}
-            </p>
-          )}
-          {/* flight details */}
-          <div></div>
-          {/* details */}
-          <div>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>{t("itinerary")}</AccordionTrigger>
-                <AccordionContent>
-                  {t("itineraryContent")}{" "}
-                  {
-                    <Link
-                      className={cn("text-primary hover:underline font-bold")}
-                      href={booking.adventure.link}
-                    >
-                      {t("yourAdventureHere")}
-                    </Link>
-                  }
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem className="@container" value="item-2">
-                <AccordionTrigger>{t("packingList")}</AccordionTrigger>
-                <AccordionContent className="bg-white/50 rounded-md p-4 @xl:p-10 prose-sm mb-2">
-                  <EditorViewer data={booking.adventure.package} />
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>{t("links")}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex items-center flex-wrap gap-4">
-                    <Link
-                      href={"#"}
-                      className={cn(
-                        buttonVariants({ variant: "outline" }),
-                        "w-fit gap-2 uppercase"
+
+          {/* Trip Toolkit */}
+          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+            <div className="flex flex-col gap-1">
+              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                <span>
+                  <Plane className="w-4 h-4 fill-primary" />
+                </span>{" "}
+                {t("tripToolkit")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {t("importantResourcesForASeamlessAndUnforgettableJourney")}
+              </p>
+            </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              {booking.adventure.travelGuide && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "xs" }),
+                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                  )}
+                  href={booking.adventure.travelGuide}
+                >
+                  {t("travelGuide")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+              {booking.adventure.fitnessGuide && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "xs" }),
+                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                  )}
+                  href={booking.adventure.fitnessGuide}
+                >
+                  {t("fitnessGuide")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+              {booking.adventure.packingList && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "xs" }),
+                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                  )}
+                  href={booking.adventure.packingList}
+                >
+                  {t("packingList")}{" "}
+                  <span>
+                    <Download className="w-4 h-4 text-center" />
+                  </span>
+                </Link>
+              )}
+            </div>
+          </div>
+          <Separator className="my-4" />
+          {/* Upload Documents */}
+          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+            <div className="flex flex-col gap-1">
+              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                <span>
+                  <File className="w-4 h-4 fill-primary " />
+                </span>{" "}
+                {t("uploadYourDocuments")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {t(
+                  "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip"
+                )}
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="grid gap-6 grid-cols-1 items-end"
+                >
+                  {/* fields */}
+                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                    <FormField
+                      control={form.control}
+                      name="passport_id"
+                      render={({ field }) => (
+                        <FormItem className=" w-full">
+                          <div className="flex items-center justify-between">
+                            <FormLabel>{t("passport_id")}</FormLabel>
+                            {booking?.passportId && (
+                              <Link
+                                href={booking.passportId}
+                                target="_blank"
+                                className={cn(
+                                  buttonVariants({
+                                    variant: "info",
+                                    size: "xs",
+                                  })
+                                )}
+                              >
+                                {t("view")}
+                              </Link>
+                            )}
+                          </div>
+                          <FormControl>
+                            <Input
+                              dir="ltr"
+                              className=" border-primary"
+                              {...field}
+                              value={undefined}
+                              onChange={(event) => {
+                                const file = event.target.files?.[0];
+
+                                if (file) {
+                                  field.onChange(file);
+                                }
+                              }}
+                              type="file"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
                       )}
-                    >
-                      <MessageSquareDashed className="w-5 h-5" />
-                      <p className="group-hover:underline">
-                        {t("feedbackForm")}
-                      </p>
-                    </Link>
-                    <Link
-                      href={"#"}
-                      className={cn(
-                        buttonVariants({ variant: "default" }),
-                        "w-fit gap-2 uppercase"
-                      )}
-                    >
-                      <MessageCircle className="w-5 h-5" />
-                      <p className="group-hover:underline">{t("whatsapp")}</p>
-                    </Link>
+                    />
                   </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                    <FormField
+                      control={form.control}
+                      name="ticket"
+                      render={({ field }) => (
+                        <FormItem className=" w-full">
+                          <div className="flex items-center justify-between">
+                            <FormLabel>{t("ticket")}</FormLabel>
+                            {booking?.ticket && (
+                              <Link
+                                href={booking.ticket}
+                                target="_blank"
+                                className={cn(
+                                  buttonVariants({
+                                    variant: "info",
+                                    size: "xs",
+                                  })
+                                )}
+                              >
+                                {t("view")}
+                              </Link>
+                            )}
+                          </div>
+                          <FormControl>
+                            <Input
+                              dir="ltr"
+                              className=" border-primary"
+                              {...field}
+                              value={undefined}
+                              onChange={(event) => {
+                                const file = event.target.files?.[0];
+
+                                if (file) {
+                                  field.onChange(file);
+                                }
+                              }}
+                              type="file"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                    <FormField
+                      control={form.control}
+                      name="other_document"
+                      render={({ field }) => (
+                        <FormItem className=" w-full">
+                          <div className="flex items-center justify-between">
+                            <FormLabel>{t("other_document")}</FormLabel>
+                            {booking?.otherDocument && (
+                              <Link
+                                href={booking.otherDocument}
+                                target="_blank"
+                                className={cn(
+                                  buttonVariants({
+                                    variant: "info",
+                                    size: "xs",
+                                  })
+                                )}
+                              >
+                                {t("view")}
+                              </Link>
+                            )}
+                          </div>
+                          <FormControl>
+                            <Input
+                              dir="ltr"
+                              className=" border-primary"
+                              {...field}
+                              value={undefined}
+                              onChange={(event) => {
+                                const file = event.target.files?.[0];
+
+                                if (file) {
+                                  field.onChange(file);
+                                }
+                              }}
+                              type="file"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </form>
+              </Form>
+            </div>
+          </div>
+          <Separator className="my-4" />
+          {/* Get In Touch */}
+          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+            <div className="flex flex-col gap-1">
+              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                <span>
+                  <Phone className="w-4 h-4 fill-primary" />
+                </span>{" "}
+                {t("getInTouch")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {t("haveAnyQuestionsAboutYourTripDonTHesitateToReachOut")}
+              </p>
+            </div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <Link
+                className={cn(
+                  buttonVariants({ variant: "default", size: "xs" }),
+                  " flex items-center gap-1 text-sm rounded-full"
+                )}
+                href={"#"}
+              >
+                {t("whatsApp")}{" "}
+                <span>
+                  <ArrowRightCircleIcon className="w-4 h-4 text-center" />
+                </span>
+              </Link>
+              <Link
+                className={cn(
+                  buttonVariants({ variant: "default", size: "xs" }),
+                  " flex items-center gap-1 text-sm rounded-full"
+                )}
+                href={"#"}
+              >
+                {t("feedbackForm")}{" "}
+                <span>
+                  <ArrowRightCircleIcon className="w-4 h-4 text-center" />
+                </span>
+              </Link>
+            </div>
           </div>
 
           {/* Invoices */}
@@ -227,214 +520,22 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             <h2 className="text-2xl text-primary font-helveticaNeue font-black border-s-4 border-primary ps-2">
               {t("invoices")}
             </h2>
-            <div className="rounded-md overflow-clip border">
-              <Table className="">
-                <TableHeader className="">
-                  <TableRow className="">
-                    <TableHead className=" text-start ">{t("id")}</TableHead>
-                    <TableHead className=" text-start ">
-                      {t("amount")}
-                    </TableHead>
-                    <TableHead className=" text-start ">{t("vat")}</TableHead>
-                    <TableHead className=" text-start ">
-                      {t("isPaid")}
-                    </TableHead>
-                    <TableHead className=" text-start ">{t("date")}</TableHead>
-                    <TableHead className=" text-start ">
-                      {t("invoice")}
-                    </TableHead>
-                    <TableHead className=" text-start ">
-                      {t("receipt")}
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody className="">
-                  {booking.partialInvoice && (
-                    <TableRow className={cn()}>
-                      <TableCell className="font-medium">
-                        {booking.partialInvoice.id}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {formatePrice({
-                          locale,
-                          price: booking.partialInvoice.totalAmount,
-                        })}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.partialInvoice.vat}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.partialInvoice.isPaid ? (
-                          <CheckCircle2 className="text-primary" />
-                        ) : (
-                          <LucideMinusCircle className="text-destructive" />
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {dayjs(
-                          booking.partialInvoice.receipt.created_at
-                        ).format("DD/MM/YYYY")}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.partialInvoice.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.partialInvoice.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.partialInvoice.receipt.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.partialInvoice.receipt.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  {booking.remainingInvoice && (
-                    <TableRow className={cn()}>
-                      <TableCell className="font-medium">
-                        {booking.remainingInvoice.id}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {formatePrice({
-                          locale,
-                          price: booking.remainingInvoice.totalAmount,
-                        })}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.remainingInvoice.vat}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.remainingInvoice.isPaid ? (
-                          <CheckCircle2 className="text-primary" />
-                        ) : (
-                          <LucideMinusCircle className="text-destructive" />
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {dayjs(
-                          booking.remainingInvoice.receipt.created_at
-                        ).format("DD/MM/YYYY")}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.remainingInvoice.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.remainingInvoice.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.remainingInvoice.receipt.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.remainingInvoice.receipt.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  {booking.fullInvoice && (
-                    <TableRow className={cn()}>
-                      <TableCell className="font-medium">
-                        {booking.fullInvoice.id}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {formatePrice({
-                          locale,
-                          price: booking.fullInvoice.totalAmount,
-                        })}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.fullInvoice.vat}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.fullInvoice.isPaid ? (
-                          <CheckCircle2 className="text-primary" />
-                        ) : (
-                          <LucideMinusCircle className="text-destructive" />
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {dayjs(booking.fullInvoice.receipt.created_at).format(
-                          "DD/MM/YYYY"
-                        )}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.fullInvoice.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.fullInvoice.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                      <TableCell className="text-start">
-                        {booking.fullInvoice.receipt.path ? (
-                          <Link
-                            className={cn(buttonVariants({ variant: "ghost" }))}
-                            href={booking.fullInvoice.receipt.path}
-                          >
-                            {t("download")}{" "}
-                            <span>
-                              <Download className="w-4 h-4 ms-2" />
-                            </span>
-                          </Link>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  {!booking.partialInvoice &&
-                    !booking.remainingInvoice &&
-                    !booking.fullInvoice && (
-                      <TableRow>
-                        <TableCell colSpan={8} className="h-24 text-start">
-                          {t("nothingFound")}
-                        </TableCell>
-                      </TableRow>
-                    )}
-                </TableBody>
-              </Table>
-            </div>
+            <AdventureInvoices
+              invoices={[
+                {
+                  type: "partial",
+                  invoice: booking.partialInvoice,
+                },
+                {
+                  type: "remaining",
+                  invoice: booking.remainingInvoice,
+                },
+                {
+                  type: "full",
+                  invoice: booking.fullInvoice,
+                },
+              ]}
+            />
           </div>
         </div>
       )}

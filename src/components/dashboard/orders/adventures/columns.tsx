@@ -1,6 +1,10 @@
 "use client";
 
-import { TAdventureBooking } from "@/lib/types";
+import {
+  TAdventure,
+  TAdventureBooking,
+  TAdventureBookingOrder,
+} from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   CheckCircle2,
@@ -24,73 +28,11 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TAdventureBooking>[] = [
   {
     accessorKey: "id",
     header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
-  },
-  {
-    accessorKey: "name",
-    header: () => (
-      <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="name" translation="Adventures" />
-      </div>
-    ),
-    cell: ({ row }) => <p>{row.original.customer.name}</p>,
-  },
-  {
-    accessorKey: "email",
-    header: () => (
-      <DisplayTranslatedText text="email" translation="Adventures" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Email copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.email);
-          }}
-        >
-          {row.original.customer.email}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "phone",
-    header: () => (
-      <DisplayTranslatedText text="phone" translation="Adventures" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <Button
-          variant={"ghost"}
-          size={"sm"}
-          className="flex items-center gap-1 text-xs w-fit hover:cursor-copy group"
-          onClick={() => {
-            toast.message("Phone copied to your clipboard.", {
-              icon: <ClipboardCopy className="w-3 h-3" />,
-            });
-            navigator.clipboard.writeText(row.original.customer.phone);
-          }}
-        >
-          {row.original.customer.phone}
-          <span>
-            <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
-          </span>
-        </Button>
-      );
-    },
   },
   {
     accessorKey: "adventureTitle",
@@ -99,7 +41,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
         <DisplayTranslatedText text="adventureTitle" translation="Adventures" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.adventure.title}</p>,
+    cell: ({ row }) => <Title booking={row.original} />,
   },
   {
     accessorKey: "image",
@@ -140,31 +82,6 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
         <CheckCircle2 className="text-primary w-5 h-5 mx-auto " />
       ) : (
         <LucideMinusCircle className="text-destructive w-5 h-5 mx-auto " />
-      );
-    },
-  },
-  {
-    accessorKey: "isCancelled",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <DisplayTranslatedText text="isCancelled" translation="Adventures" />
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return row.original.isCancelled ? (
-        <div className=" flex justify-center">
-          <Badge className=" uppercase" variant={"destructive"}>
-            Cancelled
-          </Badge>
-        </div>
-      ) : (
-        <div></div>
       );
     },
   },
@@ -225,36 +142,6 @@ const Actions = ({
   const locale = useLocale();
   const t = useTranslations("Orders");
 
-  // const queryClient = useQueryClient();
-
-  // const mutation = useMutation({
-  //   mutationFn: () => {
-  //     return fetch(`/api/user/handleSuspend`, {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         customerId: customer.customerId,
-  //       }),
-  //       headers: {
-  //         "Accept-Language": locale,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //   },
-  //   async onSuccess(data) {
-  //     if (data.ok) {
-  //       const { message } = await data.json();
-  //       toast.success(message);
-  //       queryClient.invalidateQueries({ queryKey: ["/customers"] });
-  //     } else {
-  //       const { message } = await data.json();
-  //       toast.error(message, { duration: 6000 });
-  //     }
-  //   },
-  //   async onError(error) {
-  //     toast.error(error.message, { duration: 6000 });
-  //   },
-  // });
-
   return (
     <div>
       <DropdownMenu>
@@ -266,17 +153,9 @@ const Actions = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link
-              href={`/${locale}/admin/members/customers/edit/${adventureBooking.customer.id}`}
-            >
-              {t("viewCustomer")}
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link
-              href={`/${locale}/admin/orders/adventures/${adventureBooking.id}`}
+              href={`/${locale}/dashboard/adventures/bookings/${adventureBooking.id}`}
             >
               {t("viewBooking")}
             </Link>
@@ -284,5 +163,18 @@ const Actions = ({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+const Title = ({ booking }: { booking: TAdventureBooking }) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary"
+      href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
+    >
+      {booking.adventure.title}
+    </Link>
   );
 };

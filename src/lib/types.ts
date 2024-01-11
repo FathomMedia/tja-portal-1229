@@ -71,6 +71,9 @@ export type TAdventure = {
   startDate: string;
   endDate: string;
   image: string | null;
+  fitnessGuide: string | null;
+  travelGuide: string | null;
+  packingList: string | null;
   continentImage: string | null;
   giftPoints: number;
   gender: string;
@@ -161,11 +164,16 @@ export type TAdventureBookingOrder = {
   partialInvoice: TInvoice | null;
   fullInvoice: TInvoice | null;
   remainingInvoice: TInvoice | null;
+  passportId: string | null;
+  ticket: string | null;
+  otherDocument: string | null;
+  reason: string;
+  isCancelled: boolean;
 };
 export type TInvoice = {
   id: number;
   type: string;
-  path: string;
+  path: string | null;
   customer: {
     id: number;
     userId: number;
@@ -305,6 +313,7 @@ export type TAdventureBooking = {
   addOns: any[];
   totalPrice: number;
   totalPriceWithCurrency: string;
+  isCancelled: boolean;
 };
 
 export type TConsultationBooking = {
@@ -328,13 +337,14 @@ export type TConsultationBooking = {
   budgetIncludes: string[];
   vacationType: string;
   accommodationType: string[];
-  bestTravelExperience: string | null;
+  bestTravelExperience: string;
   phobias: string | null;
   activities: string[];
-  invoice: null;
+  invoice: TInvoice;
   coupon: TCoupon;
   adventureMeaning: string[];
   morningActivity: string;
+  isCancelled: boolean;
 };
 
 export type TPagination = {

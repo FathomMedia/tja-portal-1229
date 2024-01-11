@@ -43,7 +43,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     queryKey: [`/consultation-bookings/${id}`],
     queryFn: () =>
       apiReqQuery({ endpoint: `/consultation-bookings/${id}`, locale }).then(
-        (res) => res.json().then((resData) => resData.data)
+        (res) =>
+          res.json().then((resData) => {
+            return resData.data;
+          })
       ),
   });
 
@@ -58,8 +61,6 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       {consultationBooking && (
         <ViewConsultationOrderForm consultationBooking={consultationBooking} />
       )}
-      {/* {consultationBooking && (
-      )} */}
     </div>
   );
 }

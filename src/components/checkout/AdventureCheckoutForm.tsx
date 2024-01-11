@@ -67,13 +67,6 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         ...(values.addOns.length > 0 && {
           add_ons: values.addOns.map((addon) => addon.id),
         }),
-        // ...(values.paymentMethod === "card" && {
-        //   card_holder_name: values.cardName,
-        //   card_number: values.cardNumber,
-        //   card_expiry_month: values.cardExpMonth,
-        //   card_expiry_year: values.cardExpYear,
-        //   card_cvv: values.cardCVV,
-        // }),
       };
       console.log(
         "🚀 ~ file: AdventureCheckoutForm.tsx:81 ~ dataToRequest:",

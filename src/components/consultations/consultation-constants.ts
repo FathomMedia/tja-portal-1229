@@ -167,3 +167,11 @@ export const cardOptionsSelect: {
     ],
   },
 ];
+
+export const activitiesOptions = [
+  ...cardOptionsSelect.map((i) => [...i.options]).flat(),
+];
+
+export const accommodationOptions = [
+  ...accommodationTypes.map((i) => [i.title]).flat(),
+];

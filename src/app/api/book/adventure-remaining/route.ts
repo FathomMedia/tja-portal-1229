@@ -9,30 +9,14 @@ export async function POST(request: NextRequest) {
   const locale = request.headers.get("accept-language") ?? "en";
 
   const data: {
-    id: number;
+    bookingId: string;
     dataToRequest: {
-      coupon: string | null;
       payment_method: "benefitpay" | "applepay" | "card";
-      start_date: Date;
-      end_date: Date;
-      class: string;
-      number_of_travelers: number;
-      budget: string;
-      budget_priority: string;
-      budget_includes: string[];
-      vacation_type: string;
-      accommodation_type: string[];
-      activities: string[];
-      destination: string;
-      adventure_meaning: string[];
-      morning_activity: string;
-      departure_airport: string;
-      best_travel_experience: string;
-      phobias: string | null;
     };
   } = await request.json();
+
   const bookingResponse = await apiReq({
-    endpoint: `/consultation-bookings/${data.id}/book`,
+    endpoint: `/adventure-bookings/${data.bookingId}/remaining`,
     locale,
     method: "POST",
     token: token?.value,
