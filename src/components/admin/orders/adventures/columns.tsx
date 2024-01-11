@@ -24,6 +24,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TAdventureBooking>[] = [
   {
@@ -143,6 +144,31 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     },
   },
   {
+    accessorKey: "isCancelled",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <DisplayTranslatedText text="isCancelled" translation="Adventures" />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.isCancelled ? (
+        <div className=" flex justify-center">
+          <Badge className=" uppercase" variant={"destructive"}>
+            Cancelled
+          </Badge>
+        </div>
+      ) : (
+        <div></div>
+      );
+    },
+  },
+  {
     accessorKey: "adventureStartDate",
     header: () => (
       <div className="min-w-[6rem]">
@@ -174,7 +200,6 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
       </div>
     ),
   },
-
   {
     accessorKey: "totalPriceWithCurrency",
     header: () => (
@@ -249,7 +274,9 @@ const Actions = ({
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/${locale}/admin/booking/${adventureBooking.id}`}>
+            <Link
+              href={`/${locale}/admin/orders/adventures/${adventureBooking.id}`}
+            >
               {t("viewBooking")}
             </Link>
           </DropdownMenuItem>

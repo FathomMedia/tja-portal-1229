@@ -86,6 +86,9 @@ export type TAdventure = {
   isUpcoming: boolean;
   numberOfBookings: number;
   addOns: TAddon[];
+  package: string | null;
+  englishPackage: string | null;
+  arabicPackage: string | null;
   priceWithCurrency: string;
   isPartialAllowed: boolean;
   partialPrice: number;
@@ -161,6 +164,8 @@ export type TAdventureBookingOrder = {
   partialInvoice: TInvoice | null;
   fullInvoice: TInvoice | null;
   remainingInvoice: TInvoice | null;
+  reason: string;
+  isCancelled: boolean;
 };
 export type TInvoice = {
   id: number;
@@ -305,6 +310,7 @@ export type TAdventureBooking = {
   addOns: any[];
   totalPrice: number;
   totalPriceWithCurrency: string;
+  isCancelled: boolean;
 };
 
 export type TConsultationBooking = {
