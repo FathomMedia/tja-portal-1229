@@ -99,8 +99,8 @@ export type TAdventure = {
 export type TAddon = {
   id: number;
   name: string;
-  arabicName: string;
-  englishName: string;
+  arabicName?: string;
+  englishName?: string;
   price: number;
   priceWithCurrency: string;
 };
