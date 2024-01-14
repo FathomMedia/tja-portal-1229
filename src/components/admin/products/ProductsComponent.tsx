@@ -5,12 +5,16 @@ import { AdventureListComponent } from "./adventures/AdventureListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ConsultationListComponent } from "./consultation/ConsultationListComponent";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { AddOnListComponent } from "./add-ons/AddOnListComponent";
+import { isRtlLang } from "rtl-detect";
 
 export const ProductsComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const t = useTranslations("Products");
+
+  const locale = useLocale();
 
   const searchParams = useSearchParams();
 
@@ -29,6 +33,7 @@ export const ProductsComponent = () => {
   return (
     <div className="flex w-full">
       <Tabs
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
         value={searchParams.get("type") ?? "adventures"}
         onValueChange={(val) => {
           push(
@@ -41,12 +46,16 @@ export const ProductsComponent = () => {
         <TabsList className="w-fit">
           <TabsTrigger value="adventures">{t("adventures")}</TabsTrigger>
           <TabsTrigger value="consultation">{t("consultations")}</TabsTrigger>
+          <TabsTrigger value="addOns">{t("addOns")}</TabsTrigger>
         </TabsList>
         <TabsContent value="adventures">
           <AdventureListComponent />
         </TabsContent>
         <TabsContent value="consultation">
           <ConsultationListComponent />
+        </TabsContent>
+        <TabsContent value="addOns">
+          <AddOnListComponent />
         </TabsContent>
       </Tabs>
     </div>
