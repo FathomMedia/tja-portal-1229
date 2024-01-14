@@ -156,7 +156,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
           </Badge>
         </div>
       ) : (
-        <div></div>
+        <div className=" flex items-center justify-center">-</div>
       );
     },
   },
@@ -223,14 +223,16 @@ const Actions = ({
               {t("viewForm")}
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link
-              className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-              href={`${consultationBooking.invoice.path}`}
-            >
-              Download Invoice
-            </Link>
-          </DropdownMenuItem>
+          {consultationBooking?.invoice?.path && (
+            <DropdownMenuItem asChild>
+              <Link
+                className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
+                href={`${consultationBooking.invoice.path}`}
+              >
+                Download Invoice
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

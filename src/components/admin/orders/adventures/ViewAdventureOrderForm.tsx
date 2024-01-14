@@ -41,11 +41,10 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
 
   const cancelMutation = useMutation({
     mutationFn: () => {
-      return fetch(`/api/book/remove-customer-from-adventure`, {
+      return fetch(`/api/book/cancel-adventure-booking`, {
         method: "PUT",
         body: JSON.stringify({
           id: adventureBooking.id,
-          adventureTitle: adventureBooking.adventure.title,
         }),
         headers: {
           "Accept-Language": locale,
@@ -59,9 +58,13 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings/${adventureBooking.id}`],
         });
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings`],
+        });
         toast.success(message);
         // push(`/${locale}/admin/achievements`);
       } else {
+        console.log(data);
         const { message } = await data.json();
         toast.error(message, { duration: 6000 });
       }
