@@ -99,7 +99,22 @@
     "date": "Date",
     "invoice": "Invoice",
     "receipt": "Receipt",
-    "download": "Download"
+    "download": "Download",
+    "toSecureSpot": "to secure your spot.",
+    "before": "before",
+    "completeYourPayment": "Complete your payment for",
+    "completePayment": "Complete Payment",
+    "payTheRemainingAmountOf": "Pay the remaining amount of",
+    "creditCard": "Credit Card",
+    "benefitPay": "Benefit Pay",
+    "benefitPay-debit-card-for-Bahraini-only": "Benefit Pay debit card available in bahrain only.",
+    "payNow": "Pay Now",
+    "documents": "Documents",
+    "fitness_guide": "Fitness Guide",
+    "travel_guide": "Travel Guide",
+    "packing_list": "Packing List",
+    "period": "Period",
+    "travelDuration": "Travel Duration"
   },
   "Auth": {
     "OTP": "OTP",
@@ -503,7 +518,9 @@
     "startDate": "Start Date",
     "tier": "Tier",
     "total": "Total",
-    "upComingAdventures": "Upcoming adventures"
+    "upComingAdventures": "Upcoming adventures",
+    "viewMore": "View More",
+    "viewBooking": "View Booking"
   },
   "Index": {
     "title": "Hello world!"
