@@ -115,7 +115,8 @@
     "packing_list": "Packing List",
     "period": "Period",
     "travelDuration": "Travel Duration",
-    "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session."
+    "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session.",
+    "search": "Search..."
   },
   "Auth": {
     "OTP": "OTP",
@@ -667,7 +668,8 @@
     "packageType": "Package Type",
     "id": "Id",
     "actions": "Actions",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "search": "Search..."
   },
   "partialPayment": "Partial Payment",
   "AdminInvite": {

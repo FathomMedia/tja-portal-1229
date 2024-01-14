@@ -113,7 +113,8 @@
     "packing_list": "قائمة التعبئة",
     "period": "فترة",
     "travelDuration": "مدة السفر",
-    "couldntCreateAPaymentSession": "حدث خطأ ما، وتعذر إنشاء جلسة دفع."
+    "couldntCreateAPaymentSession": "حدث خطأ ما، وتعذر إنشاء جلسة دفع.",
+    "search": "يبحث..."
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -655,7 +656,8 @@
     "numberOfDays": "عدد الأيام",
     "price": "السعر",
     "packageType": "نوع الباقة",
-    "id": "الرقم التعريفي"
+    "id": "الرقم التعريفي",
+    "search": "يبحث..."
   },
   "AdminInvite": {
     "inviteAnAdmin": "ارسال دعوة لمنصب مسؤول",

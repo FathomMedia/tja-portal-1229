@@ -14,12 +14,13 @@ export const ConsultationListComponent = () => {
   const t = useTranslations("Products");
 
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   // TODO: change to Consultation
   const { data: consultationList, isFetching } = useQuery<TConsultations>({
-    queryKey: [`/consultations`, page],
+    queryKey: [`/consultations`, page, search],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/consultations?page=${page}`,
+        endpoint: `/consultations?page=${page}&search=${search}`,
         locale,
       }).then((res) => res.json()),
   });
@@ -32,6 +33,7 @@ export const ConsultationListComponent = () => {
         isFetching={isFetching}
         meta={consultationList?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
+        onSearch={(q) => setSearch(q)}
       />
     </DashboardSection>
   );
