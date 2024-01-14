@@ -81,7 +81,7 @@ export const PayRemaining: FC<TPayRemaining> = ({
         if (paymentSession?.session?.PaymentURL) {
           push(paymentSession?.session?.PaymentURL);
         } else {
-          toast.error(t("couldntCreateAPaymentSession"), { duration: 6000 });
+          toast.error(paymentSession.message, { duration: 6000 });
         }
       } else {
         toast.error(t("couldntCreateAPaymentSession"), { duration: 6000 });

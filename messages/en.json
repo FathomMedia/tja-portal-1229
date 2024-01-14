@@ -114,7 +114,8 @@
     "travel_guide": "Travel Guide",
     "packing_list": "Packing List",
     "period": "Period",
-    "travelDuration": "Travel Duration"
+    "travelDuration": "Travel Duration",
+    "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session."
   },
   "Auth": {
     "OTP": "OTP",
