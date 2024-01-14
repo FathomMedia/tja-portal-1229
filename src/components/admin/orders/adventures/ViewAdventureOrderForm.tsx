@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { AdventureInvoices } from "@/components/booking/AdventureInvoices";
 import { format } from "date-fns";
 import { Icons } from "@/components/ui/icons";
+import { parseDateFromAPI } from "@/lib/utils";
 
 type TAdventureBookingForm = {
   adventureBooking: TAdventureBookingOrder;
@@ -157,8 +158,10 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             {/* Date Booked */}
           </Label>
           <div className="p-2 rounded-md border text-sm">
-            {format(new Date(adventureBooking.dateBooked), "dd/MM/yyyy") ??
-              noValue}
+            {format(
+              parseDateFromAPI(adventureBooking.dateBooked.toString()),
+              "dd/MM/yyyy"
+            ) ?? noValue}
           </div>
         </div>
         <div>
