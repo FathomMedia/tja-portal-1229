@@ -88,7 +88,7 @@ export default function Page() {
                   </h5>
                   <div className="flex items-center gap-2 flex-wrap text-muted text-sm">
                     <p>{adventure.startDate}</p>
-                    <span>-</span>
+                    <span>{"->"}</span>
                     <p>{adventure.endDate}</p>
                   </div>
                 </div>

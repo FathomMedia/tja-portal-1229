@@ -421,12 +421,12 @@ export const AdventureForm: FC<TAdventureForm> = ({
           control={form.control}
           name="dateRange"
           render={({ field }) => (
-            <FormItem className=" w-full sm:col-span-2">
-              <FormLabel>{t("period")}</FormLabel>
+            <FormItem className=" w-full sm:col-span-2 @container">
+              <FormLabel>{t("travelDuration")}</FormLabel>
               <FormControl>
                 <Calendar
                   defaultMonth={field.value.from}
-                  className="w-fit max-sm:mx-auto p-3 rounded-3xl border-primary border"
+                  className="w-fit  p-3 rounded-3xl border-primary border"
                   mode="range"
                   selected={field.value}
                   onSelect={(r) => field.onChange(r)}
@@ -434,6 +434,11 @@ export const AdventureForm: FC<TAdventureForm> = ({
                 />
               </FormControl>
               <FormMessage />
+              <div className="mt-2 w-full text-muted-foreground text-sm flex items-center @md:flex-row flex-col gap-3">
+                <p>{dayjs(field.value.from).format("DD/MM/YYYY")}</p>
+                <p className="hidden @md:inline-block">{"->"}</p>
+                <p>{dayjs(field.value.to).format("DD/MM/YYYY")}</p>
+              </div>
             </FormItem>
           )}
         />

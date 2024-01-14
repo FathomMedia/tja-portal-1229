@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Crown, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { buttonVariants } from "../ui/button";
@@ -52,7 +52,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
         {!isFetchingUser && user && (
           <div className={cn("flex gap-3 items-center")}>
             <Avatar className="">
-              {user.avatar && <AvatarImage src={user.avatar} />}
+              {user.level.badge && <AvatarImage src={user.level.badge} />}
               <AvatarFallback className="text-primary-foreground font-semibold bg-primary">
                 {user.name.slice(0, 2)}
               </AvatarFallback>

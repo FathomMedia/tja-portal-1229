@@ -81,7 +81,7 @@
     "packingList": "قائمة التعبئة",
     "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip": "تأكد من تحميل جميع المستندات المطلوبة لضمان رحلة سلسة.",
     "passport_id": "رقم جواز السفر",
-    "view": "منظر",
+    "view": "عرض",
     "ticket": "تذكرة",
     "other_document": "وثيقة أخرى",
     "getInTouch": "ابقى على تواصل",
@@ -98,7 +98,21 @@
     "date": "تاريخ",
     "invoice": "فاتورة",
     "receipt": "إيصال",
-    "download": "تحميل"
+    "download": "تحميل",
+    "toSecureSpot": "لتأمين مكانك.",
+    "before": "قبل",
+    "completeYourPayment": "أكمل دفعتك ل",
+    "completePayment": "دفع كامل",
+    "payTheRemainingAmountOf": "دفع المبلغ المتبقي من",
+    "benefitPay": "بنفت بي",
+    "benefitPay-debit-card-for-Bahraini-only": "بطاقة الخصم Benefit Pay متوفرة في البحرين فقط.",
+    "payNow": "ادفع الآن",
+    "documents": "وثائق",
+    "fitness_guide": "دليل اللياقة البدنية",
+    "travel_guide": "دليل السفر",
+    "packing_list": "قائمة التعبئة",
+    "period": "فترة",
+    "travelDuration": "مدة السفر"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -309,7 +323,8 @@
     "close": "إغلاق",
     "agree": "موافقة",
     "myRedeemedCoupons": "قسائمي",
-    "Coupons": "القسائم"
+    "Coupons": "القسائم",
+    "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم مستردة."
   },
   "Customer": {
     "addOrRemovePointsForCustomer": "إضافة أو إزالة النقاط للعميل",
@@ -493,7 +508,10 @@
     "startDate": "تاريخ البدء",
     "tier": "الفئة",
     "total": "المجموع",
-    "upComingAdventures": "المغامرات القادمة"
+    "upComingAdventures": "المغامرات القادمة",
+    "viewMore": "عرض المزيد",
+    "viewBooking": "عرض الحجز",
+    "bookOne": "احجز واحدا؟"
   },
   "Index": {
     "title": "اهلا بالعالم"
@@ -648,5 +666,9 @@
     "male": "ذكر",
     "female": "أنثى",
     "Invite": "ارسال دعوة"
+  },
+  "Achievements": {
+    "achieved": "حقق",
+    "toBeAchieved": "ليتم إنجازه"
   }
 }

@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { LoadingComp } from "../LoadingComp";
 import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
-import { CheckCircle, Download } from "lucide-react";
+import { CheckCircle, Download, Globe } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { cn, formatePrice } from "@/lib/utils";
 import Link from "next/link";
@@ -94,8 +94,17 @@ export const DashboardHome = () => {
                   );
                 })}
                 {upComingAdventures.length == 0 && (
-                  <div className="bg-muted rounded-lg p-3 text-muted-foreground">
+                  <div className="bg-muted rounded-lg p-3 flex flex-wrap items-center text-muted-foreground">
                     <p>{t("noUpcoming")}</p>
+                    <Link
+                      href={`/${locale}/dashboard/adventures`}
+                      className={cn(
+                        buttonVariants({ variant: "link" }),
+                        "w-fit"
+                      )}
+                    >
+                      {t("bookOne")}
+                    </Link>
                   </div>
                 )}
               </div>
@@ -178,7 +187,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
   const t = useTranslations("Home");
   const locale = useLocale();
   return (
-    <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto border border-white bg-white">
+    <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white">
       <div className="w-full md:w-1/3 aspect-video md:aspect-square bg-white relative grid place-items-center">
         <Image
           width={200}
@@ -188,7 +197,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
           className="rounded-md w-full h-full object-cover"
         />
       </div>
-      <div className="w-full @container md:w-2/3 bg-white flex flex-col justify-between space-y-2 p-3">
+      <div className="w-full @container md:w-2/3 bg-white group  flex flex-col justify-between space-y-2 p-3">
         <div className="flex flex-col gap-2 ">
           <div className="flex justify-between item-center">
             <p className="text-gray-500 font-light hidden md:block">
@@ -205,9 +214,15 @@ const Adventure = ({ order }: { order: TOrder }) => {
               </Badge>
             )}
           </div>
-          <h3 className="font-black font-helveticaNeue text-primary md:text-3xl text-xl">
-            {adventure.title}
-          </h3>
+          <Link
+            href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
+            className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl"
+          >
+            {adventure.title}{" "}
+            <span>
+              <Globe className="mb-2" />
+            </span>
+          </Link>
           <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
             {t("bookedAt")} <p>{order.dateBooked}</p>
           </div>
@@ -225,10 +240,15 @@ const Adventure = ({ order }: { order: TOrder }) => {
             <Link
               href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
               type="button"
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "flex items-center gap-1"
+              )}
             >
-              {/* {t("downloadReceipt")} <Download className="ms-2 w-4 h-4" /> */}
-              {t("viewMore")}
+              {t("viewBooking")}
+              <span>
+                <Globe className="w-4 h-5" />
+              </span>
             </Link>
           )}
           {!order.isFullyPaid && (

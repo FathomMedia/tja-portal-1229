@@ -618,10 +618,16 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                       </h3>
                       <div className="flex justify-between item-center">
                         <div className="flex flex-wrap gap-2">
-                          <Badge variant={"secondary"}>
+                          <Badge
+                            className="flex items-center gap-1"
+                            variant={"secondary"}
+                          >
                             {t("startDate")} <p>{adventure.startDate}</p>
                           </Badge>
-                          <Badge variant={"secondary"}>
+                          <Badge
+                            className="flex items-center gap-1"
+                            variant={"secondary"}
+                          >
                             {t("endDate")} <p>{adventure.endDate}</p>
                           </Badge>
                           <Badge variant={"info"}>

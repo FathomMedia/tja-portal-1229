@@ -18,7 +18,7 @@ import {
   ArrowRightCircleIcon,
   File,
 } from "lucide-react";
-import { cn, formatePrice } from "@/lib/utils";
+import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
 import dayjs from "dayjs";
@@ -47,6 +47,9 @@ import { Input } from "@/components/ui/input";
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
   const t = useTranslations("Adventures");
+
+  const searchParams = useSearchParams();
+  const isRedirected = Boolean(searchParams.get("redirected"));
 
   const { data: booking, isFetching: isFetchingAdventure } =
     useQuery<TAdventureBookingOrder>({
@@ -136,22 +139,29 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         </div>
       )}
       {booking && !isFetchingAdventure && (
-        <div className="flex flex-col w-full gap-3">
+        <div className="flex flex-col w-full gap-6">
           {/* Alerts */}
           <div className="flex flex-col w-full gap-4">
-            <Alert>
-              <CheckCircle2 className="h-4 w-4 " />
-              <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
-              <AlertDescription className="text-xs">
-                {t("yourBookingIsConfirmd")}
-              </AlertDescription>
-            </Alert>
-            {!booking.isFullyPaid && (
+            {isRedirected && (
               <Alert className="text-primary-foreground border-primary-foreground bg-primary">
+                <CheckCircle2 className="h-4 w-4 !text-primary-foreground " />
+                <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
+                <AlertDescription className="text-xs">
+                  {t("yourBookingIsConfirmd")}
+                </AlertDescription>
+              </Alert>
+            )}
+            {!booking.isFullyPaid && (
+              <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
                 <DollarSign className="h-4 w-4 !text-primary-foreground" />
                 <AlertTitle>{t("pendingPayment")}</AlertTitle>
                 <AlertDescription className="text-xs">
-                  {`Complete your payment for ${booking.adventure.title} before ${booking.adventure.startDate} to secure spot.`}{" "}
+                  {`${t("completeYourPayment")} ${booking.adventure.title} ${t(
+                    "before"
+                  )} ${dayjs(parseDateFromAPI(booking.adventure.startDate))
+                    .subtract(40, "days")
+                    .format("DD-MM-YYYY")} ${t("toSecureSpot")}`}
+
                   <span>
                     {
                       <PayRemaining
@@ -253,7 +263,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </div>
 
           {/* Trip Toolkit */}
-          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
             <div className="flex flex-col gap-1">
               <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
                 <span>
@@ -471,7 +481,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           </div>
           <Separator className="my-4" />
           {/* Get In Touch */}
-          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
             <div className="flex flex-col gap-1">
               <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
                 <span>

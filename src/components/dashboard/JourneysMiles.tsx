@@ -185,7 +185,7 @@ const LevelsTable = ({
             key={i}
             className={cn(
               level.id === userLevelId &&
-                "bg-primary text-primary-foreground hover:bg-primary/80"
+                "bg-primary text-primary-foreground hover:bg-primary/80 "
             )}
           >
             <TableCell className="font-medium">{level.name}</TableCell>
@@ -231,7 +231,7 @@ const RedeemedCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
         ))}
         {coupons.length === 0 && (
           <div className="p-3 min-h-[5rem] flex justify-center items-center bg-muted rounded-md text-muted-foreground">
-            <p className="text-sm">{"You don't have any redeemed coupons"}</p>
+            <p className="text-sm">{t("youDontHaveAnyRedeemedCoupons")}</p>
           </div>
         )}
       </div>
