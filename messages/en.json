@@ -335,7 +335,8 @@
     "close": "Close",
     "agree": "Agree",
     "myRedeemedCoupons": "My redeemed coupons",
-    "Coupons": "Coupons"
+    "Coupons": "Coupons",
+    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons."
   },
   "Customer": {
     "addOrRemovePointsForCustomer": "Add or remove points for customer",
@@ -520,7 +521,8 @@
     "total": "Total",
     "upComingAdventures": "Upcoming adventures",
     "viewMore": "View More",
-    "viewBooking": "View Booking"
+    "viewBooking": "View Booking",
+    "bookOne": "Book one?"
   },
   "Index": {
     "title": "Hello world!"

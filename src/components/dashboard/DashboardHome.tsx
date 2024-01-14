@@ -94,8 +94,17 @@ export const DashboardHome = () => {
                   );
                 })}
                 {upComingAdventures.length == 0 && (
-                  <div className="bg-muted rounded-lg p-3 text-muted-foreground">
+                  <div className="bg-muted rounded-lg p-3 flex flex-wrap items-center text-muted-foreground">
                     <p>{t("noUpcoming")}</p>
+                    <Link
+                      href={`/${locale}/dashboard/adventures`}
+                      className={cn(
+                        buttonVariants({ variant: "link" }),
+                        "w-fit"
+                      )}
+                    >
+                      {t("bookOne")}
+                    </Link>
                   </div>
                 )}
               </div>

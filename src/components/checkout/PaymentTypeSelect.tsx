@@ -45,10 +45,12 @@ export const PaymentTypeSelect: FC<TPaymentTypeSelect> = ({
           </div>
           <div className="flex items-start text-muted-foreground gap-2">
             <CalendarClock className="w-4 h-4" />
-            <p className="text-xs">{`Pay Later - ${partialRemaining}`}</p>
+            <p className="text-xs">{`${t(
+              "toBePaidLater"
+            )} - ${partialRemaining}`}</p>
           </div>
           <div>
-            <p className="text-sm font-bold text-secondary">Pay Now</p>
+            <p className="text-sm font-bold text-secondary">{t("payNow")}</p>
             <p className="text-sm font-bold text-secondary">{`${partialPrice}`}</p>
           </div>
         </div>

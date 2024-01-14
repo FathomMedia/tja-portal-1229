@@ -323,7 +323,8 @@
     "close": "إغلاق",
     "agree": "موافقة",
     "myRedeemedCoupons": "قسائمي",
-    "Coupons": "القسائم"
+    "Coupons": "القسائم",
+    "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم مستردة."
   },
   "Customer": {
     "addOrRemovePointsForCustomer": "إضافة أو إزالة النقاط للعميل",
@@ -509,7 +510,8 @@
     "total": "المجموع",
     "upComingAdventures": "المغامرات القادمة",
     "viewMore": "عرض المزيد",
-    "viewBooking": "عرض الحجز"
+    "viewBooking": "عرض الحجز",
+    "bookOne": "احجز واحدا؟"
   },
   "Index": {
     "title": "اهلا بالعالم"
