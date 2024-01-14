@@ -33,25 +33,6 @@ export const ConsultationOrdersComponent = () => {
       title={"Consultation Orders"}
       className="flex flex-col w-full"
     >
-      <Button
-        onClick={() =>
-          apiReqQuery({
-            endpoint: `/consultation-bookings/export`,
-            method: "GET",
-            locale,
-          }).then(async (res) => {
-            const blob = await res.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "consultation-bookings.csv";
-            a.click();
-            window.URL.revokeObjectURL(url);
-          })
-        }
-      >
-        Download CSV
-      </Button>
       <DataTable
         columns={columns}
         data={consultationOrders?.data ?? []}

@@ -164,7 +164,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
           </Badge>
         </div>
       ) : (
-        <div></div>
+        <div className=" flex items-center justify-center">-</div>
       );
     },
   },

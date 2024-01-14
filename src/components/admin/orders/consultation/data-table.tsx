@@ -28,6 +28,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Download,
 } from "lucide-react";
 import { isRtlLang } from "rtl-detect";
 import { Separator } from "@/components/ui/separator";
@@ -46,6 +47,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import React from "react";
+import { apiReqQuery } from "@/lib/apiHelpers";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -80,37 +82,64 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const t = useTranslations("Adventures");
+  const t = useTranslations("Consultation");
+  const locale = useLocale();
 
   return (
     <div className=" w-full">
-      <div className=" flex justify-end py-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto rounded-lg">
-              {t("columns")}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value: any) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex gap-2 justify-end py-2">
+        <Button
+          variant={"outline"}
+          className="ml-auto rounded-lg flex items-center gap-1"
+          onClick={() =>
+            apiReqQuery({
+              endpoint: `/consultation-bookings/export`,
+              method: "GET",
+              locale,
+            }).then(async (res) => {
+              const blob = await res.blob();
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "consultation-bookings.csv";
+              a.click();
+              window.URL.revokeObjectURL(url);
+            })
+          }
+        >
+          Download CSV
+          <span>
+            <Download className="w-4 h-4" />
+          </span>
+        </Button>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto rounded-lg">
+                {t("columns")}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value: any) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md overflow-clip border">
         <Table className="w-full">

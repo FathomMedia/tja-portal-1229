@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { apiReq } from "@/lib/apiHelpers";
-import { TAdventureBookingOrder } from "@/lib/types";
 
 export async function PUT(request: NextRequest) {
   const cookieStore = cookies();
@@ -9,7 +8,7 @@ export async function PUT(request: NextRequest) {
 
   const locale = request.headers.get("accept-language") ?? "en";
 
-  const data: TAdventureBookingOrder = await request.json();
+  const data: { id: number } = await request.json();
 
   const dataResponse = await apiReq({
     endpoint: `/adventure-bookings/${data.id}/cancel`,
