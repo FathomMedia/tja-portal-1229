@@ -58,7 +58,6 @@ export default function Page({
     queryFn: () =>
       apiReqQuery({ endpoint: `/add-ons`, locale }).then((res) =>
         res.json().then((resData) => {
-          console.log(resData);
           return resData.data;
         })
       ),

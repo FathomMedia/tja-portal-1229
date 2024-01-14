@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { apiReqQuery } from "@/lib/apiHelpers";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
 import {
   Sheet,
@@ -14,14 +14,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, RefreshCcw } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { buttonVariants } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { MobileNav } from "../MobileNav";
 import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 type TUserProfilePreview = {
   items: {
@@ -36,6 +37,8 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
 
   const locale = useLocale();
 
+  const queryClient = useQueryClient();
+
   const { data: user, isFetching: isFetchingUser } = useQuery<TUser>({
     queryKey: ["/users/profile"],
     queryFn: () =>
@@ -48,7 +51,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
     <div className="p-6 text-primary rounded-lg flex flex-col gap-2">
       {/* profile avatar */}
 
-      <div className="flex justify-between gap-4 items-center">
+      <div className="flex justify-between gap-4 items-center flex-wrap">
         {!isFetchingUser && user && (
           <div className={cn("flex gap-3 items-center")}>
             <Avatar className="">
@@ -78,7 +81,16 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
           </div>
         )}
         {isFetchingUser && <Skeleton className="h-14 w-full max-w-xs" />}
-        <div className="flex gap-3">
+        <div className="flex gap-3 min-w-fit">
+          <Button
+            onClick={() => queryClient.invalidateQueries()}
+            type="button"
+            variant={"outline"}
+            className="border-primary text-primary"
+            size={"icon"}
+          >
+            <RefreshCcw />
+          </Button>
           <LanguageSwitcher />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger

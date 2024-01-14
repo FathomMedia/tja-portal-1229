@@ -112,7 +112,8 @@
     "travel_guide": "دليل السفر",
     "packing_list": "قائمة التعبئة",
     "period": "فترة",
-    "travelDuration": "مدة السفر"
+    "travelDuration": "مدة السفر",
+    "couldntCreateAPaymentSession": "حدث خطأ ما، وتعذر إنشاء جلسة دفع."
   },
   "Auth": {
     "OTP": "رمز التحقق",

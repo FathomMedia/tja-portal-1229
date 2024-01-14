@@ -19,7 +19,7 @@ import {
   File,
 } from "lucide-react";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 import dayjs from "dayjs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -43,6 +43,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { Icons } from "@/components/ui/icons";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
@@ -77,6 +78,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     mutationFn: async (values: z.infer<typeof formSchema>) => {
       const formData = new FormData();
 
+      booking && formData.append("id", booking.id.toString());
+
       if (values.passport_id) {
         formData.append("passport_id", values.passport_id);
       }
@@ -87,7 +90,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         formData.append("other_document", values.other_document);
       }
 
-      return fetch(`/api/adventure/update-adventure`, {
+      return fetch(`/api/adventure/update-booking-documents`, {
         method: "PUT",
         headers: {
           "Accept-Language": locale,
@@ -475,6 +478,16 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                       )}
                     />
                   </div>
+                  <Button
+                    className="w-full max-w-[268px] mt-5"
+                    variant={"secondary"}
+                    type="submit"
+                  >
+                    {mutation.isPending && (
+                      <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                    )}
+                    {t("update")}
+                  </Button>
                 </form>
               </Form>
             </div>
@@ -497,7 +510,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <Link
                 className={cn(
                   buttonVariants({ variant: "default", size: "xs" }),
-                  " flex items-center gap-1 text-sm rounded-full"
+                  " flex items-center gap-1 text-xs ps-3 font-normal rounded-full"
                 )}
                 href={"#"}
               >
@@ -509,7 +522,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
               <Link
                 className={cn(
                   buttonVariants({ variant: "default", size: "xs" }),
-                  " flex items-center gap-1 text-sm rounded-full"
+                  " flex items-center gap-1 text-xs ps-3 font-normal rounded-full"
                 )}
                 href={"#"}
               >
