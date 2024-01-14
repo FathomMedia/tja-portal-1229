@@ -677,5 +677,9 @@
     "male": "Male",
     "female": "Female",
     "Invite": "New invite"
+  },
+  "Achievements": {
+    "achieved": "Achieved",
+    "toBeAchieved": "To Be Achieved"
   }
 }

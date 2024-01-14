@@ -664,5 +664,9 @@
     "male": "ذكر",
     "female": "أنثى",
     "Invite": "ارسال دعوة"
+  },
+  "Achievements": {
+    "achieved": "حقق",
+    "toBeAchieved": "ليتم إنجازه"
   }
 }
