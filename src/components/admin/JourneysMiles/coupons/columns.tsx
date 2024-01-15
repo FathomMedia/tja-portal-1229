@@ -71,7 +71,10 @@ export const columns: ColumnDef<TCoupon>[] = [
       return (
         <div className="">
           <Badge variant={"outline"} size={"sm"} className={cn("uppercase")}>
-            {row.original.type}
+            <DisplayTranslatedText
+              text={row.original.type}
+              translation="Coupons"
+            />
           </Badge>
         </div>
       );

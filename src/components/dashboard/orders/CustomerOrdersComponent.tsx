@@ -6,11 +6,13 @@ import { AdventureOrdersComponent } from "./adventures/AdventureOrdersComponent"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ConsultationOrdersComponent } from "./consultation/ConsultationOrdersComponent";
+import { isRtlLang } from "rtl-detect";
 
 export const CustomerOrdersComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const t = useTranslations("Orders");
+  const locale = useLocale();
 
   const searchParams = useSearchParams();
 
@@ -29,6 +31,7 @@ export const CustomerOrdersComponent = () => {
   return (
     <div className="flex w-full">
       <Tabs
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
         value={searchParams.get("type") ?? "adventures"}
         onValueChange={(val) => {
           push(

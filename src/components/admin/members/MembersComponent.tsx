@@ -5,13 +5,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CustomersComponent } from "./customers/CustomersComponent";
 import { AdminComponent } from "./administrators/AdminComponent";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { isRtlLang } from "rtl-detect";
 
 export const MembersComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const t = useTranslations("Dashboard");
-
+  const locale = useLocale();
   const searchParams = useSearchParams();
 
   const createQueryString = useCallback(
@@ -29,6 +30,7 @@ export const MembersComponent = () => {
   return (
     <div className="flex w-full">
       <Tabs
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
         value={searchParams.get("type") ?? "customers"}
         onValueChange={(val) => {
           push(

@@ -144,6 +144,7 @@ export enum OrderType {
 export type TConsultation = {
   id: number;
   tier: string;
+  tierValue: string;
   numberOfDays: number;
   price: number;
   priceWithCurrency: string;

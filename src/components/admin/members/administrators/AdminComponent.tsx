@@ -35,7 +35,7 @@ export const AdminComponent = () => {
 
   return (
     <DashboardSection title={t("admins")} className="flex w-full">
-      <div className=" flex flex-col">
+      <div className=" flex flex-col w-full">
         <DataTable
           columns={columns}
           data={admins?.data ?? []}

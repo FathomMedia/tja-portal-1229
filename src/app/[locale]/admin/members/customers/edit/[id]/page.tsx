@@ -270,7 +270,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       <div className="grid gap-3 @container grid-cols-1 @md:grid-cols-2">
         {isFetchingMyCoupons && <Skeleton className="w-full h-28" />}
         {!isFetchingMyCoupons && myCoupons && myCoupons.length === 0 && (
-          <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-28 flex flex-col justify-center items-center">
+          <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-28 flex flex-col justify-center items-center text-start">
             <p>{t("nothingFound")}</p>
           </div>
         )}
@@ -470,7 +470,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         {!isFetchingMyAchievements &&
           myAchievements &&
           myAchievements.length === 0 && (
-            <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-28 flex flex-col justify-center items-center">
+            <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-28 flex flex-col justify-center text-start items-center">
               <p>{t("nothingFound")}</p>
             </div>
           )}

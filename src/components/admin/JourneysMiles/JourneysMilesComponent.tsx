@@ -5,12 +5,14 @@ import { CouponsListComponent } from "./coupons/CouponsListComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { LevelsListComponent } from "./levels/LevelsListComponent";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { isRtlLang } from "rtl-detect";
 
 export const JourneysMilesComponent = () => {
   const { push } = useRouter();
   const pathname = usePathname();
   const t = useTranslations("Coupons");
+  const locale = useLocale();
 
   const searchParams = useSearchParams();
 
@@ -29,6 +31,7 @@ export const JourneysMilesComponent = () => {
   return (
     <div className="flex w-full">
       <Tabs
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
         value={searchParams.get("type") ?? "coupons"}
         onValueChange={(val) => {
           push(

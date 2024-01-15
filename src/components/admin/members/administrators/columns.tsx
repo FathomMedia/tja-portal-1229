@@ -74,7 +74,14 @@ export const columns: ColumnDef<TAdmin>[] = [
     accessorKey: "role",
     header: () => <DisplayTranslatedText text="role" translation="Dashboard" />,
     cell: ({ row }) => {
-      return <Badge variant={"outline"}>{row.original.role}</Badge>;
+      return (
+        <Badge variant={"outline"}>
+          <DisplayTranslatedText
+            text={row.original.role.toLowerCase()}
+            translation="Dashboard"
+          />
+        </Badge>
+      );
     },
   },
   {

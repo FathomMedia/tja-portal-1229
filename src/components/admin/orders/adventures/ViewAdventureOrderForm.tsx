@@ -36,7 +36,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
   adventureBooking,
 }) => {
   const locale = useLocale();
-  const t = useTranslations("AdventureBooking");
+  const t = useTranslations("Adventures");
   const queryClient = useQueryClient();
 
   const cancelMutation = useMutation({
@@ -62,7 +62,40 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
           queryKey: [`/adventure-bookings`],
         });
         toast.success(message);
-        // push(`/${locale}/admin/achievements`);
+      } else {
+        console.log(data);
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  const markAsPaidMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/book/mark-adventure-booking-as-paid`, {
+        method: "PUT",
+        body: JSON.stringify({
+          id: adventureBooking.id,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings`],
+        });
+        toast.success(message);
       } else {
         console.log(data);
         const { message } = await data.json();
@@ -177,7 +210,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         </div>
 
         <div>
-          <Label>Invoice</Label>
+          <Label>{t("invoice")}</Label>
           <div className="rounded-md overflow-clip border">
             <AdventureInvoices
               invoices={[
@@ -191,7 +224,9 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             />
           </div>
         </div>
-        {!adventureBooking.isCancelled && (
+
+        {/* markAsPaidMutation */}
+        {
           <div className="flex flex-col gap-6">
             <Separator />
             <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
@@ -199,55 +234,115 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             </h2>
             <div>
               <div className="flex flex-col gap-4">
-                <div className="flex flex-col grow items-start">
-                  {adventureBooking && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          className="text-muted-foreground font-normal"
-                        >
-                          {t("cancelAdventureBooking")}
-                          {/* Cancel Adventure Booking */}
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-lg">
-                        <DialogHeader className="gap-1">
-                          <DialogTitle>{t("deleteAchievement")}</DialogTitle>
-                          <DialogDescription className="gap-1 flex flex-wrap">
-                            {t("areYouSureYouWantToCancel")}
-                            {/* Are you sure you want to cancel this booking? */}
-                          </DialogDescription>
-                        </DialogHeader>
+                <div className="flex flex-col divide-y grow gap-4 items-start">
+                  {adventureBooking && !adventureBooking.isCancelled && (
+                    <div>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="text-muted-foreground font-normal"
+                          >
+                            {t("cancelAdventureBooking")}
+                            {/* Cancel Adventure Booking */}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-lg">
+                          <DialogHeader className="gap-1">
+                            <DialogTitle>
+                              {t("cancelAdventureBooking")}
+                            </DialogTitle>
+                            <DialogDescription className="gap-1 flex flex-col flex-wrap">
+                              <p>{t("areYouSureYouWantToCancel")}</p>
+                              <p>{t("thisActionCannotBeUndone")}</p>
+                              {/* Are you sure you want to cancel this booking? */}
+                            </DialogDescription>
+                          </DialogHeader>
 
-                        <DialogFooter className="sm:justify-start">
-                          <DialogClose asChild>
-                            <Button className="" type="button" variant="ghost">
-                              {t("close")}
-                            </Button>
-                          </DialogClose>
-                          <>
-                            <Button
-                              disabled={cancelMutation.isPending}
-                              onClick={() => cancelMutation.mutate()}
-                              type="button"
-                              variant={"destructive"}
-                            >
-                              {cancelMutation.isPending && (
-                                <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                              )}
-                              {t("cancelBooking")}
-                            </Button>
-                          </>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
+                          <DialogFooter className="sm:justify-start">
+                            <DialogClose asChild>
+                              <Button
+                                className=""
+                                type="button"
+                                variant="ghost"
+                              >
+                                {t("close")}
+                              </Button>
+                            </DialogClose>
+                            <>
+                              <Button
+                                disabled={cancelMutation.isPending}
+                                onClick={() => cancelMutation.mutate()}
+                                type="button"
+                                variant={"destructive"}
+                              >
+                                {cancelMutation.isPending && (
+                                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                                )}
+                                {t("cancelBooking")}
+                              </Button>
+                            </>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  )}
+
+                  {adventureBooking && !adventureBooking.isFullyPaid && (
+                    <div>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="text-muted-foreground font-normal"
+                          >
+                            {t("markAsPaid")}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-lg">
+                          <DialogHeader className="gap-1">
+                            <DialogTitle>{t("markAsPaid")}</DialogTitle>
+                            <DialogDescription className="gap-1 flex flex-wrap">
+                              <p>
+                                {t("areYouSureYouWantToMarkThisBookingAsPaid")}
+                              </p>
+                              <p>{t("thisActionCannotBeUndone")}</p>
+                            </DialogDescription>
+                          </DialogHeader>
+
+                          <DialogFooter className="sm:justify-start">
+                            <DialogClose asChild>
+                              <Button
+                                className=""
+                                type="button"
+                                variant="ghost"
+                              >
+                                {t("close")}
+                              </Button>
+                            </DialogClose>
+                            <>
+                              <Button
+                                disabled={markAsPaidMutation.isPending}
+                                onClick={() => markAsPaidMutation.mutate()}
+                                type="button"
+                                variant={"destructive"}
+                              >
+                                {markAsPaidMutation.isPending && (
+                                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                                )}
+                                {t("markAsPaid")}
+                              </Button>
+                            </>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
                   )}
                 </div>
               </div>
             </div>
           </div>
-        )}
+        }
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export const ConsultationOrdersComponent = () => {
 
   return (
     <DashboardSection
-      title={"Consultation Orders"}
+      title={t("consultationOrders")}
       className="flex flex-col w-full"
     >
       <DataTable

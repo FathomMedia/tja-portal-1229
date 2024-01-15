@@ -158,7 +158,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     },
     cell: ({ row }) => {
       return row.original.isCancelled ? (
-        <div className=" flex justify-center">
+        <div className="flex justify-center">
           <Badge className=" uppercase" variant={"destructive"}>
             Cancelled
           </Badge>
@@ -203,7 +203,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
   {
     accessorKey: "totalPriceWithCurrency",
     header: () => (
-      <div className="min-w-[8rem]">
+      <div className="min-w-[10rem]">
         <DisplayTranslatedText
           text="totalPriceWithCurrency"
           translation="Adventures"
@@ -224,36 +224,6 @@ const Actions = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations("Orders");
-
-  // const queryClient = useQueryClient();
-
-  // const mutation = useMutation({
-  //   mutationFn: () => {
-  //     return fetch(`/api/user/handleSuspend`, {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         customerId: customer.customerId,
-  //       }),
-  //       headers: {
-  //         "Accept-Language": locale,
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //   },
-  //   async onSuccess(data) {
-  //     if (data.ok) {
-  //       const { message } = await data.json();
-  //       toast.success(message);
-  //       queryClient.invalidateQueries({ queryKey: ["/customers"] });
-  //     } else {
-  //       const { message } = await data.json();
-  //       toast.error(message, { duration: 6000 });
-  //     }
-  //   },
-  //   async onError(error) {
-  //     toast.error(error.message, { duration: 6000 });
-  //   },
-  // });
 
   return (
     <div>

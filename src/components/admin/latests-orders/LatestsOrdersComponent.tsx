@@ -153,7 +153,7 @@ export const LatestsOrdersComponent = () => {
 
 const Actions = ({ order }: { order: TOrder }) => {
   const locale = useLocale();
-
+  const t = useTranslations("Dashboard");
   return (
     <div>
       <DropdownMenu>
@@ -164,7 +164,8 @@ const Actions = ({ order }: { order: TOrder }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link
               href={
@@ -173,22 +174,19 @@ const Actions = ({ order }: { order: TOrder }) => {
                   : `/${locale}/admin/orders/consultation/${order.id}`
               }
             >
-              View
+              {t("view")}
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
+          {/* <DropdownMenuItem asChild>
             <Button
               onClick={() => {}}
               className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
               variant="outline"
             >
-              {/* {mutation.isPending && (
-                  <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                )} */}
+              
               Download Invoice
             </Button>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

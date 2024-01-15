@@ -75,7 +75,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tier: consultation?.tier ?? undefined,
+      tier: consultation?.tierValue ?? undefined,
       numOfDays: consultation?.numberOfDays ?? undefined,
       price: consultation?.price ?? undefined,
     },
@@ -176,7 +176,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({ consultation }) => {
           ) : (
             <div className="flex flex-col items-center text-blue-500 text-xs gap-1 hover:bg-muted p-1 rounded-sm duration-100">
               <PlusCircle className="w-4 h-4" />
-              <DisplayTranslatedText text="add" translation="Consultation" />
+              <p>{t("add")}</p>
             </div>
           )}
         </DialogTrigger>
