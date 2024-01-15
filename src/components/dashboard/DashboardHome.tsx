@@ -143,6 +143,8 @@ export const DashboardHome = () => {
 
 const Consultation = ({ order }: { order: TOrder }) => {
   const t = useTranslations("Home");
+  const locale = useLocale();
+
   const consultation = order.details as TConsultation;
   return (
     <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
@@ -158,26 +160,47 @@ const Consultation = ({ order }: { order: TOrder }) => {
       <div className="w-full md:w-2/3 bg-white flex flex-col justify-between space-y-2 p-3">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between item-center">
-            <p className="text-gray-500 font-medium hidden md:block">
+            <p className="font-light text-gray-500 hidden md:block">
               {t("consultation")}
             </p>
             <div className="flex flex-wrap md:flex-row gap-2">
-              <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("tier")}:<p>{consultation.tier}</p>
-              </div>
-              <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                {t("days")}:<p>{consultation.numberOfDays}</p>
-              </div>
+              {!order.isCancelled ? (
+                <div></div>
+              ) : (
+                <Badge className="bg-destructive/40 text-destructive hover:bg-destructive/30 hover:text-destructive font-light uppercase">
+                  {t("cancelled")}
+                </Badge>
+              )}
+
+              {order.isPaid ? (
+                <Badge className="bg-teal-400/40 text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
+                  {t("paid")}
+                  <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
+                </Badge>
+              ) : (
+                <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
+                  {t("error")}
+                </Badge>
+              )}
             </div>
+          </div>
+          <div className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
+            <p>{consultation.tier}</p>
+          </div>
+          <div className=" flex">
+            {t("days")}:<p>{consultation.numberOfDays}</p>
           </div>
           <div className="text-xs font-medium text-foreground flex gap-1">
             {t("bookedAt")}:<p>{order.dateBooked}</p>
           </div>
         </div>
-        <p className="text-xl font-black text-gray-800 ">
-          {consultation.price}
-          <span className="font-normal text-gray-600 text-base"> BHD</span>
-        </p>
+
+        <div className="flex items-baseline gap-2 justify-end">
+          <p className="text-sm text-muted-foreground">{t("total")}</p>
+          <p className="text-xl font-black text-primary ">
+            {formatePrice({ locale, price: consultation.price })}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -203,16 +226,25 @@ const Adventure = ({ order }: { order: TOrder }) => {
             <p className="text-gray-500 font-light hidden md:block">
               {t("adventure")}
             </p>
-            {order.isFullyPaid ? (
-              <Badge className="bg-teal-400/40 text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
-                {t("paid")}
-                <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
-              </Badge>
-            ) : (
-              <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
-                {t("pendingPayment")}
-              </Badge>
-            )}
+            <div className=" flex gap-2">
+              {!order.isCancelled ? (
+                <div></div>
+              ) : (
+                <Badge className="bg-destructive/40 text-destructive hover:bg-destructive/30 hover:text-destructive font-light uppercase">
+                  {t("cancelled")}
+                </Badge>
+              )}
+              {order.isFullyPaid ? (
+                <Badge className="bg-teal-400/40 text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
+                  {t("paid")}
+                  <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
+                </Badge>
+              ) : (
+                <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
+                  {t("pendingPayment")}
+                </Badge>
+              )}
+            </div>
           </div>
           <Link
             href={`/${locale}/dashboard/adventures/bookings/${order.id}`}

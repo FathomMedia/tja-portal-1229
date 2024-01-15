@@ -17,6 +17,7 @@ import {
   Phone,
   ArrowRightCircleIcon,
   File,
+  AlertCircleIcon,
 } from "lucide-react";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -151,6 +152,23 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                 <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
                 <AlertDescription className="text-xs">
                   {t("yourBookingIsConfirmd")}
+                </AlertDescription>
+              </Alert>
+            )}
+            {booking.isCancelled && (
+              <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
+                <AlertCircleIcon className="h-4 w-4 !text-primary-foreground" />
+                <AlertTitle>{t("bookingCancelled")}</AlertTitle>
+                <AlertDescription className="text-xs">
+                  {`${t("yourBookingWasCancelled")} `}
+                  {/* Your booking has been cancelled. Please contact support for more information.*/}
+                  <span>
+                    {
+                      <Link href="https://thejourneyadventures.com/get-in-touch/">
+                        {t("here")}
+                      </Link>
+                    }
+                  </span>
                 </AlertDescription>
               </Alert>
             )}
