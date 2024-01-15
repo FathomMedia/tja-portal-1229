@@ -15,12 +15,15 @@ export const CustomersComponent = () => {
   const t = useTranslations("Dashboard");
 
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
   const { data: customers, isFetching } = useQuery<TCustomers>({
-    queryKey: [`/customers`, page],
+    queryKey: [`/customers`, page, search],
     queryFn: () =>
-      apiReqQuery({ endpoint: `/customers?page=${page}`, locale }).then((res) =>
-        res.json()
-      ),
+      apiReqQuery({
+        endpoint: `/customers?page=${page}&search=${search}`,
+        locale,
+      }).then((res) => res.json()),
   });
 
   return (
@@ -31,6 +34,7 @@ export const CustomersComponent = () => {
         isFetching={isFetching}
         meta={customers?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
+        onSearch={(q) => setSearch(q)}
       />
     </DashboardSection>
   );

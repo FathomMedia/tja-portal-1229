@@ -35,6 +35,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
+import debounce from "lodash.debounce";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,6 +51,7 @@ interface DataTableProps<TData, TValue> {
   isFetching: boolean;
   meta: TMeta | null;
   onPageSelect: (goTo: number) => void;
+  onSearch: (q: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -50,6 +60,7 @@ export function DataTable<TData, TValue>({
   isFetching,
   meta,
   onPageSelect,
+  onSearch,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -60,93 +71,113 @@ export function DataTable<TData, TValue>({
 
   const t = useTranslations("Adventures");
 
+  const debouncedResults = useMemo(() => {
+    return debounce((e) => onSearch(e.target.value), 300);
+  }, [onSearch]);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
+
   return (
-    <div className="rounded-md overflow-clip border w-full">
-      <Table className="w-full">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    className="text-start first:sticky last:sticky end-0 start-0 bg-background"
-                    key={header.id}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {isFetching && (
-            <>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-20 text-center"
-                >
-                  <Skeleton className=" w-full h-full" />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-20 text-center"
-                >
-                  <Skeleton className=" w-full h-full" />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-20 text-center"
-                >
-                  <Skeleton className=" w-full h-full" />
-                </TableCell>
-              </TableRow>
-            </>
-          )}
-          {!isFetching && table.getRowModel().rows?.length
-            ? table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="last:sticky first:sticky start-0 end-0 last:bg-background first:bg-background first:group-hover/row:bg-muted last:shadow"
+    <div className="w-full flex flex-col gap-3">
+      <div>
+        <Input
+          className="max-w-sm rounded-md"
+          placeholder={t("search")}
+          type="text"
+          onChange={debouncedResults}
+        />
+      </div>
+      <div className="rounded-md  overflow-clip border w-full">
+        <Table className="w-full">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      className="text-start first:sticky last:sticky end-0 start-0 bg-background"
+                      key={header.id}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            : !isFetching && (
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {isFetching && (
+              <>
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-20 text-center"
                   >
-                    {t("nothingFound")}
+                    <Skeleton className=" w-full h-full" />
                   </TableCell>
                 </TableRow>
-              )}
-        </TableBody>
-      </Table>
-      <Separator />
-      {/* Pagination */}
-      {meta && <TablePagination meta={meta} onPageSelect={onPageSelect} />}
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-20 text-center"
+                  >
+                    <Skeleton className=" w-full h-full" />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-20 text-center"
+                  >
+                    <Skeleton className=" w-full h-full" />
+                  </TableCell>
+                </TableRow>
+              </>
+            )}
+            {!isFetching && table.getRowModel().rows?.length
+              ? table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell
+                        key={cell.id}
+                        className="last:sticky first:sticky start-0 end-0 last:bg-background first:bg-background first:group-hover/row:bg-muted last:shadow"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : !isFetching && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      {t("nothingFound")}
+                    </TableCell>
+                  </TableRow>
+                )}
+          </TableBody>
+        </Table>
+        <Separator />
+        {/* Pagination */}
+        {meta && <TablePagination meta={meta} onPageSelect={onPageSelect} />}
+      </div>
     </div>
   );
 }
