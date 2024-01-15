@@ -30,7 +30,7 @@ export default function Page({
     });
 
   return (
-    <div className="flex flex-col grow gap-4">
+    <div className="flex flex-col grow gap-4 max-w-4xl">
       <div>
         <Alert className="text-primary-foreground border-primary-foreground bg-secondary">
           <AlertCircleIcon className="h-4 w-4 !text-primary-foreground " />

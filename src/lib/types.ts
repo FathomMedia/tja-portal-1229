@@ -221,12 +221,14 @@ export type TOrder = {
       }[]
     | null;
   isFullyPaid: boolean;
+  isPaid: boolean;
   isPartiallyPaid: boolean;
   customer: {
     name: string;
     email: string;
     phone: string;
   };
+  isCancelled: boolean;
 };
 
 export type TAchievements = {
