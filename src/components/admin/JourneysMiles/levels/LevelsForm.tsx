@@ -22,6 +22,7 @@ import { TLevel } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageOff } from "lucide-react";
+import { MAX_IMAGE_SIZE } from "@/config";
 
 type TLevelsForm = {
   level?: TLevel;
@@ -35,7 +36,13 @@ export const LevelsForm: FC<TLevelsForm> = ({ level }) => {
     .object({
       name: z.string().min(1, "Name is required"),
       arabic_name: z.string().min(1, "Arabic name is required"),
-      badge: z.any().optional(),
+      badge: z
+        .any()
+        .optional()
+        .refine(
+          (file) => (file ? file.size <= MAX_IMAGE_SIZE : true),
+          `Max file size is 2MB.`
+        ),
       minDays: z.number().min(1).optional(),
       maxDays: z.number().min(1).optional(),
     })

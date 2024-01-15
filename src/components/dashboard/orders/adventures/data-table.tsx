@@ -184,10 +184,10 @@ export function DataTable<TData, TValue>({
                   </TableRow>
                 ))
               : !isFetching && (
-                  <TableRow>
+                  <TableRow className="">
                     <TableCell
                       colSpan={columns.length}
-                      className="h-24 text-center"
+                      className="h-24 text-start"
                     >
                       {t("nothingFound")}
                     </TableCell>

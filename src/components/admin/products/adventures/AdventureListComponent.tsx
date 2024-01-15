@@ -15,14 +15,14 @@ export const AdventureListComponent = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [gender, setGender] = useState("");
-  const [country, setCountry] = useState("");
+
+  var filterGender = gender !== "" ? `&gender=${gender}` : "";
 
   const { data: adventure, isFetching } = useQuery<TAdventures>({
-    queryKey: [`/adventures`, page, search, gender, country],
+    queryKey: [`/adventures`, page, search, gender],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/adventures?page=${page}&search=${search}`,
-        // endpoint: `/adventures?page=${page}&search=${search}&gender=${gender}&country=${country}`,
+        endpoint: `/adventures?page=${page}&search=${search}${filterGender}`,
         locale,
       }).then((res) => res.json()),
   });
@@ -36,9 +36,10 @@ export const AdventureListComponent = () => {
         meta={adventure?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
         onSearch={(q) => setSearch(q)}
-        // onGender={(gen) => setGender(gen)}
-        // onCountry={(cont) => setCountry(cont)}
+        onGender={(gen) => setGender(gen)}
       />
     </DashboardSection>
   );
 };
+
+// ${country !== "" && `&country=${country}`}

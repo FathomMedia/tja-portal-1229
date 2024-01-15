@@ -23,6 +23,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageOff } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { MAX_IMAGE_SIZE } from "@/config";
 
 type TAchievementsForm = {
   achievement?: TAchievement;
@@ -37,7 +38,13 @@ export const AchievementsForm: FC<TAchievementsForm> = ({ achievement }) => {
     arabic_title: z.string().min(1, "Arabic title is required"),
     description: z.string().min(1, "Description is required"),
     arabic_description: z.string().min(1, "Arabic description is required"),
-    badge: z.any().optional(),
+    badge: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_IMAGE_SIZE : true),
+        `Max file size is 2MB.`
+      ),
   });
 
   // 1. Define your form.

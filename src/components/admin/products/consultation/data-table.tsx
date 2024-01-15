@@ -37,9 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useMemo, useState } from "react";
-import debounce from "lodash.debounce";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,7 +45,8 @@ interface DataTableProps<TData, TValue> {
   isFetching: boolean;
   meta: TMeta | null;
   onPageSelect: (goTo: number) => void;
-  onSearch: (q: string) => void;
+
+  onTier: (q: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -56,7 +55,8 @@ export function DataTable<TData, TValue>({
   isFetching,
   meta,
   onPageSelect,
-  onSearch,
+
+  onTier,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -73,25 +73,34 @@ export function DataTable<TData, TValue>({
 
   const t = useTranslations("Consultations");
 
-  const debouncedResults = useMemo(() => {
-    return debounce((e) => onSearch(e.target.value), 300);
-  }, [onSearch]);
-
-  useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
-    };
-  });
-
   return (
     <div className="w-full flex flex-col gap-3">
-      <div>
-        <Input
-          className="max-w-sm rounded-md"
-          placeholder={t("search")}
-          type="text"
-          onChange={debouncedResults}
-        />
+      <div className="flex items-center justify-end">
+        {/* Filters */}
+        <div className="justify-end">
+          <div className="relative">
+            <Select onValueChange={onTier}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={t("packageType")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="silver">{t("silver")}</SelectItem>
+                <SelectItem value="gold">{t("gold")}</SelectItem>
+                <SelectItem value="platinum">{t("platinum")}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              className="absolute text-secondary -top-[70%] right-0"
+              variant={"ghost"}
+              size={"xs"}
+              onClick={() => {
+                onTier("");
+              }}
+            >
+              {t("clear")}
+            </Button>
+          </div>
+        </div>
       </div>
       <div className="rounded-md overflow-clip border w-full">
         <Table className="w-full">

@@ -117,7 +117,12 @@
     "travelDuration": "Travel Duration",
     "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session.",
     "search": "Search...",
-    "availableSeats": "Available Seats"
+    "availableSeats": "Available Seats",
+    "all": "All",
+    "resetFilters": "Reset Filters",
+    "clear": "Clear",
+    "ladiesOnly": "Ladies Only",
+    "maleOnly": "Male Only"
   },
   "Auth": {
     "OTP": "OTP",
@@ -671,7 +676,11 @@
     "id": "Id",
     "actions": "Actions",
     "openMenu": "Open menu",
-    "search": "Search..."
+    "search": "Search...",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "clear": "Clear"
   },
   "partialPayment": "Partial Payment",
   "AdminInvite": {

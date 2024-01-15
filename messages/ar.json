@@ -115,7 +115,12 @@
     "travelDuration": "مدة السفر",
     "couldntCreateAPaymentSession": "حدث خطأ ما، وتعذر إنشاء جلسة دفع.",
     "search": "يبحث...",
-    "availableSeats": "المقاعد المتاحة"
+    "availableSeats": "المقاعد المتاحة",
+    "all": "الجميع",
+    "resetFilters": "إعادة تعيين المرشحات",
+    "clear": "واضح",
+    "ladiesOnly": "سيدات فقط",
+    "maleOnly": "الذكور فقط"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -659,7 +664,11 @@
     "price": "السعر",
     "packageType": "نوع الباقة",
     "id": "الرقم التعريفي",
-    "search": "يبحث..."
+    "search": "يبحث...",
+    "silver": "فضة",
+    "gold": "ذهب",
+    "platinum": "البلاتين",
+    "clear": "واضح"
   },
   "AdminInvite": {
     "inviteAnAdmin": "ارسال دعوة لمنصب مسؤول",
