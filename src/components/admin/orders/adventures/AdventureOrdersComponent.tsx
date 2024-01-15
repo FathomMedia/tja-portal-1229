@@ -14,11 +14,13 @@ export const AdventureOrdersComponent = () => {
   const t = useTranslations("Adventures");
 
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
   const { data: adventureOrders, isFetching } = useQuery<TAdventureBookings>({
-    queryKey: [`/adventure-bookings`, page],
+    queryKey: [`/adventure-bookings`, page, search],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/adventure-bookings?page=${page}`,
+        endpoint: `/adventure-bookings?page=${page}&search=${search}`,
         locale,
       }).then((res) => res.json()),
   });
@@ -31,6 +33,7 @@ export const AdventureOrdersComponent = () => {
         isFetching={isFetching}
         meta={adventureOrders?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
+        onSearch={(q) => setSearch(q)}
       />
     </DashboardSection>
   );

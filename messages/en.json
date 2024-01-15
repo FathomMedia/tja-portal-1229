@@ -676,7 +676,11 @@
     "id": "Id",
     "actions": "Actions",
     "openMenu": "Open menu",
-    "search": "Search..."
+    "search": "Search...",
+    "silver": "Silver",
+    "gold": "Gold",
+    "platinum": "Platinum",
+    "clear": "Clear"
   },
   "partialPayment": "Partial Payment",
   "AdminInvite": {

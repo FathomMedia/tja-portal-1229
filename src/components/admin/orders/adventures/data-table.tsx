@@ -44,9 +44,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import { apiReqQuery } from "@/lib/apiHelpers";
+import { Input } from "@/components/ui/input";
+import debounce from "lodash.debounce";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -54,6 +56,7 @@ interface DataTableProps<TData, TValue> {
   isFetching: boolean;
   meta: TMeta | null;
   onPageSelect: (goTo: number) => void;
+  onSearch: (q: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -62,6 +65,7 @@ export function DataTable<TData, TValue>({
   isFetching,
   meta,
   onPageSelect,
+  onSearch,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] =
@@ -84,60 +88,78 @@ export function DataTable<TData, TValue>({
   const t = useTranslations("Adventures");
   const locale = useLocale();
 
+  const debouncedResults = useMemo(() => {
+    return debounce((e) => onSearch(e.target.value), 300);
+  }, [onSearch]);
+
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
+
   return (
     <div className=" w-full">
-      <div className="flex gap-2 justify-end py-2">
-        <Button
-          variant={"outline"}
-          className="ml-auto rounded-lg flex items-center gap-1"
-          onClick={() =>
-            apiReqQuery({
-              endpoint: `/adventure-bookings/export`,
-              method: "GET",
-              locale,
-            }).then(async (res) => {
-              const blob = await res.blob();
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = url;
-              a.download = "adventure-bookings.csv";
-              a.click();
-              window.URL.revokeObjectURL(url);
-            })
-          }
-        >
-          Download CSV
-          <span>
-            <Download className="w-4 h-4" />
-          </span>
-        </Button>
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto rounded-lg">
-                {t("columns")}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value: any) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {t(column.id)}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+      <div className="flex items-center justify-between">
+        <Input
+          className="max-w-sm rounded-md"
+          placeholder={t("search")}
+          type="text"
+          onChange={debouncedResults}
+        />
+        <div className="flex gap-2 justify-end py-2">
+          <Button
+            variant={"outline"}
+            className="ml-auto rounded-lg flex items-center gap-1"
+            onClick={() =>
+              apiReqQuery({
+                endpoint: `/adventure-bookings/export`,
+                method: "GET",
+                locale,
+              }).then(async (res) => {
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "adventure-bookings.csv";
+                a.click();
+                window.URL.revokeObjectURL(url);
+              })
+            }
+          >
+            Download CSV
+            <span>
+              <Download className="w-4 h-4" />
+            </span>
+          </Button>
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto rounded-lg">
+                  {t("columns")}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value: any) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {t(column.id)}
+                      </DropdownMenuCheckboxItem>
+                    );
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
       <div className="rounded-md overflow-clip border">

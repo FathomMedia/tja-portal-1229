@@ -44,6 +44,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
+import { MAX_ADMIN_FILE_SIZE } from "@/config";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
@@ -62,9 +63,27 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     });
 
   const formSchema = z.object({
-    passport_id: z.any().optional(),
-    ticket: z.any().optional(),
-    other_document: z.any().optional(),
+    passport_id: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
+    ticket: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
+    other_document: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({

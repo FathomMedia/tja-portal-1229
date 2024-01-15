@@ -61,6 +61,7 @@ import Editor from "@/components/editor/editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DateRange, DayPicker } from "react-day-picker";
 import Link from "next/link";
+import { MAX_ADMIN_FILE_SIZE, MAX_IMAGE_SIZE } from "@/config";
 
 type TAdventureForm = {
   adventure?: TAdventure;
@@ -100,10 +101,34 @@ export const AdventureForm: FC<TAdventureForm> = ({
     capacity: z.number().min(0, "Capacity must be at least 0"),
     gift_points: z.number().min(0, "Gift Points must be at least 0"),
     gender: z.enum(["M", "F", "A"]),
-    image: z.any().optional(),
-    travel_guide: z.any().optional(),
-    fitness_guide: z.any().optional(),
-    packing_list: z.any().optional(),
+    image: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_IMAGE_SIZE : true),
+        `Max file size is 2MB.`
+      ),
+    travel_guide: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
+    fitness_guide: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
+    packing_list: z
+      .any()
+      .optional()
+      .refine(
+        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+        `Max file size is 10MB.`
+      ),
     add_ons: z.array(
       z.object({
         id: z.number(),
@@ -140,8 +165,6 @@ export const AdventureForm: FC<TAdventureForm> = ({
       gift_points: adventure?.giftPoints ?? 0,
       gender: (adventure?.genderValue ?? "A") as any,
       add_ons: adventure?.addOns ?? [],
-      // package: adventure?.englishPackage ?? "",
-      // arabic_package: adventure?.arabicPackage ?? "",
     },
   });
 
@@ -442,103 +465,6 @@ export const AdventureForm: FC<TAdventureForm> = ({
             </FormItem>
           )}
         />
-
-        {/* <FormField
-          control={form.control}
-          name="start_date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-2 w-full">
-              <FormLabel>{t("startDate")}</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl className="w-full flex">
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal border-primary",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP", {
-                          locale: locale === "ar" ? ar : enUS,
-                        })
-                      ) : (
-                        <span>{t("pickaDate")}</span>
-                      )}
-                      <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    locale={locale === "ar" ? ar : enUS}
-                    captionLayout={"dropdown"}
-                    fromYear={dayjs().subtract(20, "year").year()}
-                    toYear={dayjs().add(3, "year").year()}
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > dayjs().add(20, "year").toDate() ||
-                      date < dayjs().subtract(3, "year").toDate()
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="end_date"
-          render={({ field }) => (
-            <FormItem className="flex flex-col gap-2 w-full">
-              <FormLabel>{t("endDate")}</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl className="w-full flex">
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full pl-3 text-left font-normal border-primary",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP", {
-                          locale: locale === "ar" ? ar : enUS,
-                        })
-                      ) : (
-                        <span>{t("pickaDate")}</span>
-                      )}
-                      <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    locale={locale === "ar" ? ar : enUS}
-                    captionLayout={"dropdown"}
-                    fromYear={dayjs().subtract(20, "year").year()}
-                    toYear={dayjs().add(3, "year").year()}
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > dayjs().add(20, "year").toDate() ||
-                      date < dayjs().subtract(3, "year").toDate()
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        /> */}
 
         <FormField
           control={form.control}

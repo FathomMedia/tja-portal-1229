@@ -14,13 +14,16 @@ export const ConsultationListComponent = () => {
   const t = useTranslations("Products");
 
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
-  // TODO: change to Consultation
+
+  const [tier, setTier] = useState("");
+
+  var filterTier = tier !== "" ? `&tier=${tier}` : "";
+
   const { data: consultationList, isFetching } = useQuery<TConsultations>({
-    queryKey: [`/consultations`, page, search],
+    queryKey: [`/consultations`, page, tier],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/consultations?page=${page}&search=${search}`,
+        endpoint: `/consultations?page=${page}${filterTier}`,
         locale,
       }).then((res) => res.json()),
   });
@@ -33,7 +36,7 @@ export const ConsultationListComponent = () => {
         isFetching={isFetching}
         meta={consultationList?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
-        onSearch={(q) => setSearch(q)}
+        onTier={(tie) => setTier(tie)}
       />
     </DashboardSection>
   );

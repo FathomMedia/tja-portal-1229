@@ -664,7 +664,11 @@
     "price": "السعر",
     "packageType": "نوع الباقة",
     "id": "الرقم التعريفي",
-    "search": "يبحث..."
+    "search": "يبحث...",
+    "silver": "فضة",
+    "gold": "ذهب",
+    "platinum": "البلاتين",
+    "clear": "واضح"
   },
   "AdminInvite": {
     "inviteAnAdmin": "ارسال دعوة لمنصب مسؤول",
