@@ -49,10 +49,10 @@ export default function Page({
               <div className="flex justify-between item-center">
                 <div className="flex flex-wrap md:flex-row gap-2">
                   <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                    {t("startDate")}:<p>{adventure.startDate}</p>
+                    {t("startDate")} <p>{adventure.startDate}</p>
                   </div>
                   <div className="bg-gray-200  px-3 py-1 rounded-full text-xs font-medium text-gray-800 flex gap-1">
-                    {t("endDate")}:<p>{adventure.endDate}</p>
+                    {t("endDate")} <p>{adventure.endDate}</p>
                   </div>
                 </div>
               </div>
