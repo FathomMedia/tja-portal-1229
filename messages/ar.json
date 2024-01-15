@@ -120,7 +120,9 @@
     "resetFilters": "إعادة تعيين المرشحات",
     "clear": "واضح",
     "ladiesOnly": "سيدات فقط",
-    "maleOnly": "الذكور فقط"
+    "maleOnly": "الذكور فقط",
+    "searchCustomer": "بحث عن العملاء...",
+    "downloadCSV": "قم بتنزيل ملف CSV"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -317,7 +319,11 @@
     "thisActionCannotBeUndone": "سيؤدي هذا إلى حذف هذه البيانات نهائيًا. لايمكن التراجع عن هذا الإجراء",
     "areYouSure": "هل انت متأكد؟",
     "cancel": "إلغاء",
-    "yesDelete": "نعم، قم بالحذف"
+    "yesDelete": "نعم، قم بالحذف",
+    "searchCustomer": "بحث عن العملاء...",
+    "columns": "أعمدة",
+    "downloadCSV": "قم بتنزيل ملف CSV",
+    "download": "تحميل"
   },
   "Coupons": {
     "newCoupon": "قسيمة جديدة",

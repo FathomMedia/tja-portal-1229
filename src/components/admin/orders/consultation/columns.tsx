@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<TConsultationBooking>[] = [
   {
@@ -83,12 +84,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
       </div>
     ),
     cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        // className={(row.original.consultation.tier == "silver" && "bg-[#C0C0C0]",
-        //   row.original.consultation.tier == "gold" && "bg-[#FFD700]")
-        // }
-      >
+      <Badge variant="outline">
         {row.original.consultation.tier.toUpperCase()}
       </Badge>
     ),

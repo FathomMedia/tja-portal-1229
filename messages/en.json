@@ -122,7 +122,9 @@
     "resetFilters": "Reset Filters",
     "clear": "Clear",
     "ladiesOnly": "Ladies Only",
-    "maleOnly": "Male Only"
+    "maleOnly": "Male Only",
+    "searchCustomer": "Search customer...",
+    "downloadCSV": "Download CSV"
   },
   "Auth": {
     "OTP": "OTP",
@@ -329,7 +331,11 @@
     "thisActionCannotBeUndone": "This action cannot be undone. This will permanently delete this data.",
     "areYouSure": "Are you sure?",
     "cancel": "Cancel",
-    "yesDelete": "Yes, delete"
+    "yesDelete": "Yes, delete",
+    "searchCustomer": "Search customre...",
+    "columns": "Columns",
+    "downloadCSV": "Download CSV",
+    "download": "Download"
   },
   "Coupons": {
     "newCoupon": "New Coupon",

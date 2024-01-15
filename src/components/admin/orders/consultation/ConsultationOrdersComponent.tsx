@@ -8,22 +8,20 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
-import Link from "next/link";
-import { api } from "@/config";
-import { Button } from "@/components/ui/button";
 
 export const ConsultationOrdersComponent = () => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
 
   const [page, setPage] = useState(1);
-  // TODO: change to Consultation
+  const [search, setSearch] = useState("");
+
   const { data: consultationOrders, isFetching } =
     useQuery<TConsultationBookings>({
-      queryKey: [`/consultation-bookings`, page],
+      queryKey: [`/consultation-bookings`, page, search],
       queryFn: () =>
         apiReqQuery({
-          endpoint: `/consultation-bookings?page=${page}`,
+          endpoint: `/consultation-bookings?page=${page}&search=${search}`,
           locale,
         }).then((res) => res.json()),
     });
@@ -39,6 +37,7 @@ export const ConsultationOrdersComponent = () => {
         isFetching={isFetching}
         meta={consultationOrders?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
+        onSearch={(q) => setSearch(q)}
       />
     </DashboardSection>
   );

@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
       <div>
         <Input
           className="max-w-sm rounded-md"
-          placeholder={t("search")}
+          placeholder={t("searchCustomer")}
           type="text"
           onChange={debouncedResults}
         />

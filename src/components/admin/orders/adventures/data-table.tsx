@@ -100,10 +100,10 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className=" w-full">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <Input
           className="max-w-sm rounded-md"
-          placeholder={t("search")}
+          placeholder={t("searchCustomer")}
           type="text"
           onChange={debouncedResults}
         />
@@ -127,7 +127,8 @@ export function DataTable<TData, TValue>({
               })
             }
           >
-            Download CSV
+            <span className="hidden sm:inline-block">{t("download")}</span>
+            <span className="">{"CSV"}</span>
             <span>
               <Download className="w-4 h-4" />
             </span>
