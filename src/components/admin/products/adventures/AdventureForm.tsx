@@ -597,8 +597,8 @@ export const AdventureForm: FC<TAdventureForm> = ({
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="A">{t("mixed")}</SelectItem>
-                  <SelectItem value="M">{t("male")}</SelectItem>
-                  <SelectItem value="F">{t("female")}</SelectItem>
+                  <SelectItem value="M">{t("maleOnly")}</SelectItem>
+                  <SelectItem value="F">{t("ladiesOnly")}</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

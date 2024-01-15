@@ -117,7 +117,12 @@
     "travelDuration": "Travel Duration",
     "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session.",
     "search": "Search...",
-    "availableSeats": "Available Seats"
+    "availableSeats": "Available Seats",
+    "all": "All",
+    "resetFilters": "Reset Filters",
+    "clear": "Clear",
+    "ladiesOnly": "Ladies Only",
+    "maleOnly": "Male Only"
   },
   "Auth": {
     "OTP": "OTP",

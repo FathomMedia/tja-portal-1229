@@ -48,6 +48,7 @@ interface DataTableProps<TData, TValue> {
   meta: TMeta | null;
   onPageSelect: (goTo: number) => void;
   onSearch: (q: string) => void;
+  onGender: (gen: string) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,6 +58,7 @@ export function DataTable<TData, TValue>({
   meta,
   onPageSelect,
   onSearch,
+  onGender,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
@@ -85,12 +87,39 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="flex flex-col gap-3 w-full">
-      <Input
-        className="max-w-sm rounded-md"
-        placeholder={t("search")}
-        type="text"
-        onChange={debouncedResults}
-      />
+      <div className="flex items-center justify-between w-full">
+        <Input
+          className="max-w-sm rounded-md"
+          placeholder={t("search")}
+          type="text"
+          onChange={debouncedResults}
+        />
+        {/* Filters */}
+        <div className="justify-end">
+          <div className="relative">
+            <Select onValueChange={onGender}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={t("gender")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="A">{t("mixed")}</SelectItem>
+                <SelectItem value="F">{t("ladiesOnly")}</SelectItem>
+                <SelectItem value="M">{t("maleOnly")}</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              className="absolute text-secondary -top-[70%] right-0"
+              variant={"ghost"}
+              size={"xs"}
+              onClick={() => {
+                onGender("");
+              }}
+            >
+              {t("clear")}
+            </Button>
+          </div>
+        </div>
+      </div>
       <div className="rounded-md overflow-clip border w-full">
         <Table className="w-full">
           <TableHeader>
