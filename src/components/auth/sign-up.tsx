@@ -144,7 +144,7 @@ export const SignUp = () => {
             control={form.control}
             name="phone"
             render={({ field }) => (
-              <FormItem className=" w-full">
+              <FormItem dir="ltr" className=" w-full">
                 <FormLabel>{t("Phone")}</FormLabel>
                 <FormControl>
                   <PhoneNumberInput
@@ -166,6 +166,7 @@ export const SignUp = () => {
               <FormLabel>{t("emailAddress")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder="name@example.com"
                   className=" border-primary"
                   type="email"
@@ -257,6 +258,7 @@ export const SignUp = () => {
               <FormLabel>{t("Password")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder="Password"
                   className=" border-primary"
                   type="password"
@@ -275,6 +277,7 @@ export const SignUp = () => {
               <FormLabel>{t("confirmPassword")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder={t("Password")}
                   className=" border-primary"
                   type="password"
