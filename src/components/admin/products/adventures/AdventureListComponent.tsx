@@ -12,14 +12,17 @@ import { DashboardSection } from "@/components/DashboardSection";
 export const AdventureListComponent = () => {
   const locale = useLocale();
   const t = useTranslations("Products");
-  const [search, setSearch] = useState("");
-
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [gender, setGender] = useState("");
+  const [country, setCountry] = useState("");
+
   const { data: adventure, isFetching } = useQuery<TAdventures>({
-    queryKey: [`/adventures`, page, search],
+    queryKey: [`/adventures`, page, search, gender, country],
     queryFn: () =>
       apiReqQuery({
         endpoint: `/adventures?page=${page}&search=${search}`,
+        // endpoint: `/adventures?page=${page}&search=${search}&gender=${gender}&country=${country}`,
         locale,
       }).then((res) => res.json()),
   });
@@ -33,6 +36,8 @@ export const AdventureListComponent = () => {
         meta={adventure?.meta ?? null}
         onPageSelect={(goTO) => setPage(goTO)}
         onSearch={(q) => setSearch(q)}
+        // onGender={(gen) => setGender(gen)}
+        // onCountry={(cont) => setCountry(cont)}
       />
     </DashboardSection>
   );

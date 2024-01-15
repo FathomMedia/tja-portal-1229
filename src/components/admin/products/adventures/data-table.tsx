@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
   const t = useTranslations("Adventures");
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 w-full">
       <Input
         className="max-w-sm rounded-md"
         placeholder={t("search")}

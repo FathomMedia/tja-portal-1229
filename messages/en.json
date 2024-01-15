@@ -116,7 +116,8 @@
     "period": "Period",
     "travelDuration": "Travel Duration",
     "couldntCreateAPaymentSession": "Something went wrong, couldn't create a payment session.",
-    "search": "Search..."
+    "search": "Search...",
+    "availableSeats": "Available Seats"
   },
   "Auth": {
     "OTP": "OTP",
@@ -659,7 +660,8 @@
   "Products": {
     "adventures": "Adventures",
     "consultation": "Consultations",
-    "consultations": "Consultations"
+    "consultations": "Consultations",
+    "addOns": "Addons"
   },
   "Consultations": {
     "nothingFound": "Nothing Found",

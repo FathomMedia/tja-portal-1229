@@ -77,7 +77,48 @@ export const columns: ColumnDef<TAdventure>[] = [
       <DisplayTranslatedText text="capacity" translation="Adventures" />
     ),
     cell: ({ row }) => {
-      return <Badge variant={"outline"}>{row.original.capacity}</Badge>;
+      return (
+        <div className="w-full flex justify-center">
+          <Badge variant={"outline"}>{row.original.capacity}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "availableSeats",
+    header: () => (
+      <div className="text-center">
+        <DisplayTranslatedText text="availableSeats" translation="Adventures" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="w-full flex justify-center">
+          <Badge variant={"outline"}>{row.original.availableSeats}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "isFull",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <DisplayTranslatedText text="full" translation="Adventures" />
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+
+    cell: ({ row }) => {
+      return row.original.isFull ? (
+        <CheckCircle2 className="text-secondary w-5 h-5 mx-auto " />
+      ) : (
+        <Circle className="text-muted w-5 h-5 mx-auto " />
+      );
     },
   },
   {
@@ -104,7 +145,6 @@ export const columns: ColumnDef<TAdventure>[] = [
         <DisplayTranslatedText text="gender" translation="Adventures" />
       </div>
     ),
-    // cell: ({ row }) => <p>{row.original.partialPriceWithCurrency ?? "-"}</p>,
   },
   {
     accessorKey: "isUpcoming",
@@ -122,28 +162,6 @@ export const columns: ColumnDef<TAdventure>[] = [
 
     cell: ({ row }) => {
       return row.original.isUpcoming ? (
-        <CheckCircle2 className="text-secondary w-5 h-5 mx-auto " />
-      ) : (
-        <Circle className="text-muted w-5 h-5 mx-auto " />
-      );
-    },
-  },
-  {
-    accessorKey: "isFull",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <DisplayTranslatedText text="full" translation="Adventures" />
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-
-    cell: ({ row }) => {
-      return row.original.isFull ? (
         <CheckCircle2 className="text-secondary w-5 h-5 mx-auto " />
       ) : (
         <Circle className="text-muted w-5 h-5 mx-auto " />

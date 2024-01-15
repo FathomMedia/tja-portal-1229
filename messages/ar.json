@@ -114,7 +114,8 @@
     "period": "فترة",
     "travelDuration": "مدة السفر",
     "couldntCreateAPaymentSession": "حدث خطأ ما، وتعذر إنشاء جلسة دفع.",
-    "search": "يبحث..."
+    "search": "يبحث...",
+    "availableSeats": "المقاعد المتاحة"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -647,7 +648,8 @@
   "Products": {
     "adventures": "المغامرات",
     "consultation": "الإستشارات",
-    "consultations": "الإستشارات"
+    "consultations": "الإستشارات",
+    "addOns": "إضافات"
   },
   "Consultations": {
     "nothingFound": "لم يتم العثور على شيء",
