@@ -179,7 +179,7 @@ export const LatestsOrdersComponent = () => {
                   ? `/${locale}/admin/orders/adventures/${order.id}`
                   : `/${locale}/admin/orders/consultation/${order.id}`
               }
-              className="flex gap-3 w-full flex-col @md:flex-row @md:items-center hover:bg-muted/20 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+              className="flex gap-3 w-full  flex-col @md:flex-row @md:items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
               key={i}
             >
               <div className="flex gap-3 grow items-center">
@@ -216,7 +216,10 @@ export const LatestsOrdersComponent = () => {
                     {t("pendingPayment")}
                   </Badge>
                 )}
-                <Badge className="w-fit font-light" variant={"outline"}>
+                <Badge
+                  className="w-fit font-light bg-background"
+                  variant={"outline"}
+                >
                   {isAdventure ? t("adventure") : t("consultation")}
                 </Badge>
               </div>

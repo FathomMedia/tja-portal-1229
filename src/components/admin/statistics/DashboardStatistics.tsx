@@ -127,7 +127,7 @@ export const DashboardStatistics = () => {
         </div>
       </div>
       {/* grid of top customers and adventures */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-6">
+      <div className="grid grid-cols-1 2xl:grid-cols-3 gap-4 2xl:gap-6">
         <div className="p-4 gap-3 col-span-1 rounded-lg  @container border-border border flex flex-col h-full">
           <p className="text-lg font-semibold text-primary">
             {t("topCustomers")}
@@ -143,7 +143,7 @@ export const DashboardStatistics = () => {
             statistics?.topCustomers.map((customer, i) => (
               <Link
                 href={`/${locale}/admin/members/customers/edit/${customer.id}`}
-                className="flex flex-col @md:flex-row gap-3 @md:items-center hover:bg-muted/20 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                className="flex flex-col @md:flex-row gap-3 @md:items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
                 key={i}
               >
                 <div className="flex gap-3 grow items-center">
@@ -162,7 +162,7 @@ export const DashboardStatistics = () => {
                     {t("points")}
                   </p>
                   <Badge
-                    className="w-fit flex items-center gap-1 font-light"
+                    className="w-fit flex bg-background items-center gap-1 font-light"
                     variant={"outline"}
                   >
                     {customer.totalPoints}{" "}
@@ -189,7 +189,7 @@ export const DashboardStatistics = () => {
             statistics?.topAdventuresThisQuarter.map((adventure, i) => (
               <Link
                 href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
-                className="flex gap-3 items-center hover:bg-muted/20 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
                 key={i}
               >
                 <Avatar className="w-10 h-10">
@@ -208,16 +208,16 @@ export const DashboardStatistics = () => {
                   <p className=" font-light text-xs text-muted-foreground">
                     {t("customers")}
                   </p>
-                  <Badge className="w-fit font-light" variant={"outline"}>
+                  <Badge
+                    className="w-fit font-light bg-background"
+                    variant={"outline"}
+                  >
                     {adventure.totalCustomers}
                   </Badge>
                 </div>
               </Link>
             ))}
         </div>
-      </div>
-      {/* Upcoming adventures */}
-      <div className="grid gap4 grid-cols-1 xl:gap-6">
         <div className="p-4 gap-3 col-span-1 @container rounded-lg border-border border flex flex-col h-full">
           <p className="text-lg font-semibold text-primary">
             {t("upComingAdventures")}
@@ -233,7 +233,7 @@ export const DashboardStatistics = () => {
             statistics?.upcomingAdventures.map((adventure, i) => (
               <Link
                 href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
-                className="flex gap-3 items-center hover:bg-muted/20 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
                 key={i}
               >
                 <Avatar className="w-10 h-10">
@@ -250,7 +250,10 @@ export const DashboardStatistics = () => {
                 </div>
                 <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
                   <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge className="w-fit font-light" variant={"outline"}>
+                    <Badge
+                      className="w-fit font-light bg-background"
+                      variant={"outline"}
+                    >
                       {adventure.startDate}
                     </Badge>
                   </div>
@@ -261,7 +264,10 @@ export const DashboardStatistics = () => {
                     <ArrowDown className="w-3 h-3" />
                   </span>
                   <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge className="w-fit font-light" variant={"outline"}>
+                    <Badge
+                      className="w-fit font-light bg-background"
+                      variant={"outline"}
+                    >
                       {adventure.endDate}
                     </Badge>
                   </div>
@@ -269,6 +275,66 @@ export const DashboardStatistics = () => {
               </Link>
             ))}
         </div>
+      </div>
+      {/* Upcoming adventures */}
+      <div className="grid gap4 grid-cols-1 xl:gap-6">
+        {/* <div className="p-4 gap-3 col-span-1 @container rounded-lg border-border border flex flex-col h-full">
+          <p className="text-lg font-semibold text-primary">
+            {t("upComingAdventures")}
+          </p>
+          {isFetching && (
+            <>
+              <Skeleton className="w-full h-16" />
+              <Skeleton className="w-full h-16" />
+              <Skeleton className="w-full h-16" />
+            </>
+          )}
+          {!isFetching &&
+            statistics?.upcomingAdventures.map((adventure, i) => (
+              <Link
+                href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
+                key={i}
+              >
+                <Avatar className="w-10 h-10">
+                  <AvatarImage
+                    className="object-cover"
+                    src={adventure.image ?? "/assets/images/adventure.jpg"}
+                  />
+                  <AvatarFallback>
+                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex text-sm flex-col grow">
+                  <p className="font-medium">{adventure.title}</p>
+                </div>
+                <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
+                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
+                    <Badge
+                      className="w-fit font-light bg-background"
+                      variant={"outline"}
+                    >
+                      {adventure.startDate}
+                    </Badge>
+                  </div>
+                  <span className="hidden @md:flex text-xs text-muted-foreground font-light">
+                    <ArrowRight className="w-3 h-3" />
+                  </span>
+                  <span className="flex @md:hidden text-xs text-muted-foreground font-light">
+                    <ArrowDown className="w-3 h-3" />
+                  </span>
+                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
+                    <Badge
+                      className="w-fit font-light bg-background"
+                      variant={"outline"}
+                    >
+                      {adventure.endDate}
+                    </Badge>
+                  </div>
+                </div>
+              </Link>
+            ))}
+        </div> */}
       </div>
     </div>
   );
