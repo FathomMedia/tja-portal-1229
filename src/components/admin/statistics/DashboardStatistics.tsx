@@ -119,7 +119,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg font-semibold text-primary">
             {t("topCustomers")}
           </p>
-          <div className="p-6 gap-3 col-span-1 rounded-lg @container bg-white/50 border-border border flex flex-col h-full">
+          <div className="p-6 gap-3  rounded-lg @container bg-white/50 border-border border flex flex-col h-full">
             {isFetching && (
               <>
                 <Skeleton className="w-full h-16" />

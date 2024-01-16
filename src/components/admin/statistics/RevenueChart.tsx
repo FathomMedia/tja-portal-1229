@@ -49,7 +49,7 @@ export const RevenueChart = () => {
   );
 
   return (
-    <div className="w-full h-full relative min-h-[8rem] xl:min-h-[14rem]">
+    <div className="w-full h-full relative min-h-[10rem] xl:min-h-[14rem]">
       {isFetching && (
         <Skeleton className={cn("w-full h-full z-10 absolute inset-0")} />
       )}

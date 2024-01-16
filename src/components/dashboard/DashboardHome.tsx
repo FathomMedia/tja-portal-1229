@@ -288,8 +288,6 @@ const Adventure = ({ order }: { order: TOrder }) => {
         <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
           {order.isFullyPaid && (
             <p
-              // href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-              // type="button"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
                 "flex items-center gap-1"
@@ -303,8 +301,6 @@ const Adventure = ({ order }: { order: TOrder }) => {
           )}
           {!order.isFullyPaid && (
             <p
-              // href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-              // type="button"
               className={
                 (cn(buttonVariants({ variant: "ghost", size: "sm" })),
                 "text-secondary underline hover:text-secondary hover:bg-secondary/10")
