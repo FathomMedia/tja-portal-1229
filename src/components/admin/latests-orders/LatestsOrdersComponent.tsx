@@ -17,7 +17,14 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CheckCircle2, LucideMinusCircle, MoreHorizontal } from "lucide-react";
+import {
+  CheckCircle,
+  CheckCircle2,
+  Divide,
+  ImageOff,
+  LucideMinusCircle,
+  MoreHorizontal,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
@@ -39,6 +46,8 @@ import {
   DialogClose,
 } from "@radix-ui/react-dialog";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export const LatestsOrdersComponent = () => {
   const locale = useLocale();
@@ -52,8 +61,8 @@ export const LatestsOrdersComponent = () => {
   });
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="rounded-md overflow-clip border">
+    <div className="flex @container flex-col gap-4 w-full">
+      {/* <div className="rounded-md overflow-clip border">
         <Table className="">
           <TableHeader className="">
             <TableRow className="">
@@ -146,7 +155,75 @@ export const LatestsOrdersComponent = () => {
         <div className="text-center text-sm p-4 text-muted-foreground">
           {t("latestOrders")}
         </div>
-      </div>
+      </div> */}
+
+      {isFetching && (
+        <>
+          <Skeleton className="w-full h-16" />
+          <Skeleton className="w-full h-16" />
+          <Skeleton className="w-full h-16" />
+        </>
+      )}
+
+      {!isFetching &&
+        orders &&
+        orders.data.map((order, i) => {
+          const isAdventure = order.type === "adventure";
+          const consultation: TConsultation = order.details as TConsultation;
+          const adventure: TAdventure = order.details as TAdventure;
+
+          return (
+            <Link
+              href={
+                isAdventure
+                  ? `/${locale}/admin/orders/adventures/${order.id}`
+                  : `/${locale}/admin/orders/consultation/${order.id}`
+              }
+              className="flex gap-3 w-full flex-col @md:flex-row @md:items-center hover:bg-muted/20 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+              key={i}
+            >
+              <div className="flex gap-3 grow items-center">
+                <Avatar className="w-10 h-10">
+                  {
+                    <AvatarImage
+                      className="object-cover"
+                      src={
+                        isAdventure
+                          ? adventure.image ?? "/assets/images/adventure.jpg"
+                          : "/assets/images/consultation"
+                      }
+                    />
+                  }
+                  <AvatarFallback>
+                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex text-sm flex-col grow ">
+                  <p className="font-medium">{order.customer.name}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {order.customer.email}
+                  </p>
+                </div>
+              </div>
+              <div className="flex text-sm @md:items-end gap-1 @md:flex-col w-fit">
+                {order.isFullyPaid ? (
+                  <Badge className="bg-teal-400/40 w-fit text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
+                    {t("paid")}
+                    <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
+                  </Badge>
+                ) : (
+                  <Badge className="bg-secondary/40 w-fit text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
+                    {t("pendingPayment")}
+                  </Badge>
+                )}
+                <Badge className="w-fit font-light" variant={"outline"}>
+                  {isAdventure ? t("adventure") : t("consultation")}
+                </Badge>
+              </div>
+              {/* <div></div> */}
+            </Link>
+          );
+        })}
     </div>
   );
 };

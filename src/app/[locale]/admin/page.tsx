@@ -1,13 +1,13 @@
-import { DashboardSection } from "@/components/DashboardSection";
-import { LatestsOrdersComponent } from "@/components/admin/latests-orders/LatestsOrdersComponent";
+import { DashboardStatistics } from "@/components/admin/statistics/DashboardStatistics";
 import { useTranslations } from "next-intl";
 
 export default function Page() {
   const t = useTranslations("Dashboard");
 
   return (
-    <DashboardSection title={t("home")}>
-      <LatestsOrdersComponent />
-    </DashboardSection>
+    <div className="pb-16">
+      {/* <LatestsOrdersComponent /> */}
+      <DashboardStatistics />
+    </div>
   );
 }
