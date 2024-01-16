@@ -14,6 +14,7 @@ import { CheckCircle, Download, Globe } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { cn, formatePrice } from "@/lib/utils";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export const DashboardHome = () => {
   const locale = useLocale();
@@ -205,20 +206,40 @@ const Consultation = ({ order }: { order: TOrder }) => {
     </div>
   );
 };
+
 const Adventure = ({ order }: { order: TOrder }) => {
   const adventure = order.details as TAdventure;
   const t = useTranslations("Home");
   const locale = useLocale();
   return (
-    <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white">
-      <div className="w-full md:w-1/3 aspect-video md:aspect-square bg-white relative grid place-items-center">
+    <Link
+      href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
+      className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white"
+    >
+      <div className="w-full md:w-1/3 aspect-video overflow-clip rounded-md md:aspect-square bg-white relative grid place-items-center">
         <Image
           width={200}
           height={200}
           src={adventure.image ?? "/assets/images/adventure.jpg"}
           alt={adventure.title}
-          className="rounded-md w-full h-full object-cover"
+          className=" w-full h-full object-cover"
         />
+
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 to-transparent"></div>
+        <div className="text-sm flex items-center gap-3 uppercase absolute top-5 start-5 text-muted">
+          <Avatar className="w-12  h-12 min-w-fit">
+            {adventure.continentImage && (
+              <AvatarImage
+                className="object-cover"
+                src={adventure.continentImage}
+              />
+            )}
+            <AvatarFallback className=" text-muted rounded-full bg-transparent border">
+              {adventure.continent.slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <p>{adventure.continent}</p>
+        </div>
       </div>
       <div className="w-full @container md:w-2/3 bg-white group  flex flex-col justify-between space-y-2 p-3">
         <div className="flex flex-col gap-2 ">
@@ -246,15 +267,12 @@ const Adventure = ({ order }: { order: TOrder }) => {
               )}
             </div>
           </div>
-          <Link
-            href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-            className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl"
-          >
+          <p className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
             {adventure.title}{" "}
             <span>
               <Globe className="mb-2" />
             </span>
-          </Link>
+          </p>
           <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
             {t("bookedAt")} <p>{order.dateBooked}</p>
           </div>
@@ -269,9 +287,9 @@ const Adventure = ({ order }: { order: TOrder }) => {
         </div>
         <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
           {order.isFullyPaid && (
-            <Link
-              href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-              type="button"
+            <p
+              // href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
+              // type="button"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
                 "flex items-center gap-1"
@@ -281,19 +299,19 @@ const Adventure = ({ order }: { order: TOrder }) => {
               <span>
                 <Globe className="w-4 h-5" />
               </span>
-            </Link>
+            </p>
           )}
           {!order.isFullyPaid && (
-            <Link
-              href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-              type="button"
+            <p
+              // href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
+              // type="button"
               className={
                 (cn(buttonVariants({ variant: "ghost", size: "sm" })),
                 "text-secondary underline hover:text-secondary hover:bg-secondary/10")
               }
             >
               {t("completePayment")}
-            </Link>
+            </p>
           )}
 
           <div className="flex items-baseline gap-2">
@@ -304,6 +322,6 @@ const Adventure = ({ order }: { order: TOrder }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
