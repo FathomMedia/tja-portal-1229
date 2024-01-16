@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const t = useTranslations("Adventures");
+  const t = useTranslations("Consultation");
 
   return (
     <div className=" w-full">
@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto rounded-lg">
-              Columns
+              {t("columns")}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {t(column.id)}
                   </DropdownMenuCheckboxItem>
                 );
               })}

@@ -160,7 +160,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
       return row.original.isCancelled ? (
         <div className="flex justify-center">
           <Badge className=" uppercase" variant={"destructive"}>
-            Cancelled
+            <DisplayTranslatedText text="cancelled" translation="Adventures" />
           </Badge>
         </div>
       ) : (

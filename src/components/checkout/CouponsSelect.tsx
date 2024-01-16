@@ -3,7 +3,7 @@
 import { TCoupon } from "@/lib/types";
 import { cn, formatePrice } from "@/lib/utils";
 import { CheckCircle2 } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React, { FC, useState } from "react";
 
 type TCouponsSelect = {
@@ -24,6 +24,7 @@ export const CouponsSelect: FC<TCouponsSelect> = ({
   );
 
   const locale = useLocale();
+  const t = useTranslations("Coupons");
 
   return (
     <div className="grid gap-3 @container grid-cols-1 @md:grid-cols-2">
@@ -47,12 +48,12 @@ export const CouponsSelect: FC<TCouponsSelect> = ({
               <div className="w-full">
                 <p className="text-sm font-medium break-all">{coupon.code}</p>
                 <p className="text-xs text-muted-foreground capitalize">
-                  {coupon.applyTo}
+                  {t(coupon.applyTo.toLocaleLowerCase())}
                 </p>
               </div>
               <p className="text-sm font-bold text-secondary">
                 {coupon.type === "percentage"
-                  ? `${coupon.percentOff}% off`
+                  ? `${coupon.percentOff}` + t("off")
                   : formatePrice({ locale, price: coupon.value! })}
               </p>
             </div>

@@ -268,12 +268,12 @@ const AvailableCoupons = ({ coupons }: { coupons: TCoupon[] }) => {
               <div className="w-full">
                 <p className="text-sm font-medium break-all">{coupon.code}</p>
                 <p className="text-xs text-muted-foreground capitalize">
-                  {coupon.applyTo}
+                  {t(coupon.applyTo.toLocaleLowerCase())}
                 </p>
               </div>
               <p className="text-sm font-bold text-secondary">
                 {coupon.type === "percentage"
-                  ? `${coupon.percentOff}% off`
+                  ? `${coupon.percentOff}` + t("off")
                   : formatePrice({ locale, price: coupon.value! })}
               </p>
               {/* Redeem confirmation */}
@@ -367,12 +367,12 @@ export const CouponRedeemDialog = ({ coupon }: { coupon: TCoupon }) => {
                 <div className="w-full">
                   <p className="text-sm font-medium break-all">{coupon.code}</p>
                   <p className="text-xs text-muted-foreground capitalize">
-                    {coupon.applyTo}
+                    {t(coupon.applyTo.toLocaleLowerCase())}
                   </p>
                 </div>
                 <p className="text-sm font-bold text-secondary">
                   {coupon.type === "percentage"
-                    ? `${coupon.percentOff}% off`
+                    ? `${coupon.percentOff}` + t("off")
                     : formatePrice({ locale, price: coupon.value! })}
                 </p>
               </div>

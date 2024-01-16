@@ -106,7 +106,7 @@
     "getInTouch": "Get In Touch",
     "giftPoints": "Gift Points",
     "haveAnyQuestionsAboutYourTripDonTHesitateToReachOut": "Have any questions about your trip don't hesitate to reach out.",
-    "id": "Id",
+    "id": "ID",
     "image": "Image",
     "importantResourcesForASeamlessAndUnforgettableJourney": "Important resources for a seamless and unforgettable journey",
     "invoice": "Invoice",
@@ -383,7 +383,11 @@
     "yesDelete": "Yes, delete",
     "youHaveYoSelectAtLeastOneItem": "You have to select at least one item.",
     "yourDestination": "Your destination",
-    "ziplining": "Ziplining"
+    "ziplining": "Ziplining",
+    "priceWithCurrency": "Price",
+    "isCancelled": "Cancelled",
+    "id": "ID",
+    "Actions": "Actions"
   },
   "Consultations": {
     "actions": "Actions",
@@ -416,7 +420,8 @@
     "redeem": "Redeem",
     "redeemCoupon": "Redeem Coupon",
     "redeemingThisCouponWillNotImpactYourPointsBalance": "Redeeming this coupon will not impact your points balance",
-    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons."
+    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons.",
+    "off": "% Off"
   },
   "Customer": {
     "achievement": "Achievement",
@@ -568,7 +573,9 @@
     "view": "View",
     "viewBooking": "View Booking",
     "viewBookings": "View Bookings",
-    "viewForm": "View Form"
+    "viewForm": "View Form",
+    "off": "% Off",
+    "consultationOrders": "Consultation Orders"
   },
   "DeleteProfile": {
     "cancel": "Cancel",

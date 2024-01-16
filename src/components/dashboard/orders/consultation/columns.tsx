@@ -27,10 +27,12 @@ import { Badge } from "@/components/ui/badge";
 export const columns: ColumnDef<TConsultationBooking>[] = [
   {
     accessorKey: "id",
-    header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
+    header: () => (
+      <DisplayTranslatedText text="id" translation="Consultation" />
+    ),
   },
   {
-    accessorKey: "consultationTier",
+    accessorKey: "tier",
     header: () => (
       <div className="min-w-[8rem]">
         <DisplayTranslatedText text="tier" translation="Consultation" />
@@ -48,13 +50,10 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "consultationNumberOfDays",
+    accessorKey: "numberOfDays",
     header: () => (
       <div className="">
-        <DisplayTranslatedText
-          text="Number of Days"
-          translation="Consultation"
-        />
+        <DisplayTranslatedText text="numberOfDays" translation="Consultation" />
       </div>
     ),
     cell: ({ row }) => (
@@ -62,14 +61,14 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "consultationStartDate",
+    accessorKey: "startDate",
     header: () => (
       <DisplayTranslatedText text="startDate" translation="Consultation" />
     ),
     cell: ({ row }) => <p>{row.original.startDate}</p>,
   },
   {
-    accessorKey: "consultationEndDate",
+    accessorKey: "endDate",
     header: () => (
       <DisplayTranslatedText text="endDate" translation="Consultation" />
     ),
@@ -85,7 +84,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
   },
 
   {
-    accessorKey: "totalPriceWithCurrency",
+    accessorKey: "priceWithCurrency",
     header: () => (
       <div className="min-w-[8rem]">
         <DisplayTranslatedText text="price" translation="Consultation" />

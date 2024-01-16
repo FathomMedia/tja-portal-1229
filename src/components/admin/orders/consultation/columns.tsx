@@ -28,13 +28,15 @@ import { cn } from "@/lib/utils";
 export const columns: ColumnDef<TConsultationBooking>[] = [
   {
     accessorKey: "id",
-    header: () => <DisplayTranslatedText text="id" translation="Dashboard" />,
+    header: () => (
+      <DisplayTranslatedText text="id" translation="Consultation" />
+    ),
   },
   {
     accessorKey: "name",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="Name" translation="SignUp" />
+        <DisplayTranslatedText text="name" translation="Consultation" />
       </div>
     ),
     cell: ({ row }) => <ConsultationName consultationBooking={row.original} />,
@@ -42,7 +44,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
   {
     accessorKey: "email",
     header: () => (
-      <DisplayTranslatedText text="emailAddress" translation="SignUp" />
+      <DisplayTranslatedText text="email" translation="Consultation" />
     ),
     cell: ({ row }) => {
       return (
@@ -69,7 +71,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     accessorKey: "phone",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="Phone" translation="SignUp" />
+        <DisplayTranslatedText text="phone" translation="Consultation" />
       </div>
     ),
     cell: ({ row }) => {
@@ -77,7 +79,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     },
   },
   {
-    accessorKey: "consultationTier",
+    accessorKey: "tier",
     header: () => (
       <div className="min-w-[8rem]">
         <DisplayTranslatedText text="tier" translation="Consultation" />
@@ -90,7 +92,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "consultationNumberOfDays",
+    accessorKey: "numberOfDays",
     header: () => (
       <div className="">
         <DisplayTranslatedText text="numberOfDays" translation="Consultation" />
@@ -101,14 +103,14 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "consultationStartDate",
+    accessorKey: "startDate",
     header: () => (
       <DisplayTranslatedText text="startDate" translation="Consultation" />
     ),
     cell: ({ row }) => <p>{row.original.startDate}</p>,
   },
   {
-    accessorKey: "consultationEndDate",
+    accessorKey: "endDate",
     header: () => (
       <DisplayTranslatedText text="endDate" translation="Consultation" />
     ),
@@ -123,10 +125,13 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
     ),
   },
   {
-    accessorKey: "totalPriceWithCurrency",
+    accessorKey: "priceWithCurrency",
     header: () => (
       <div className="min-w-[8rem]">
-        <DisplayTranslatedText text="price" translation="Consultation" />
+        <DisplayTranslatedText
+          text="priceWithCurrency"
+          translation="Consultation"
+        />
       </div>
     ),
     cell: ({ row }) => <p>{row.original.consultation.priceWithCurrency}</p>,
@@ -139,7 +144,10 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          <DisplayTranslatedText text="isCancelled" translation="Adventures" />
+          <DisplayTranslatedText
+            text="isCancelled"
+            translation="Consultation"
+          />
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -148,7 +156,10 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
       return row.original.isCancelled ? (
         <div className=" flex justify-center">
           <Badge className=" uppercase" variant={"destructive"}>
-            Cancelled
+            <DisplayTranslatedText
+              text="dateBooked"
+              translation="Consultation"
+            />
           </Badge>
         </div>
       ) : (
@@ -175,7 +186,7 @@ const Actions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{t("openMenu")}</span>
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -195,7 +206,7 @@ const Actions = ({
                 className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
                 href={`${consultationBooking.invoice.path}`}
               >
-                Download Invoice
+                {t("downloadInvoice")}
               </Link>
             </DropdownMenuItem>
           )}
