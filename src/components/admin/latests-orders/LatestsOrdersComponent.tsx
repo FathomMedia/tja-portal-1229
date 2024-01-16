@@ -78,7 +78,7 @@ export const LatestsOrdersComponent = () => {
                 <div className="flex text-sm flex-col grow ">
                   <p className="font-medium">{order.customer.name}</p>
                   <p className="text-muted-foreground text-xs">
-                    {order.customer.email}
+                    {order.dateBooked}
                   </p>
                 </div>
               </div>
@@ -94,57 +94,17 @@ export const LatestsOrdersComponent = () => {
                   </Badge>
                 )}
                 <Badge
-                  className="w-fit font-light bg-background"
+                  className="w-fit font-light bg-background text-ellipsis"
                   variant={"outline"}
                 >
-                  {isAdventure ? t("adventure") : t("consultation")}
+                  <p className="max-w-[8rem] w-full line-clamp-1">
+                    {isAdventure ? adventure.title : consultation.tier}
+                  </p>
                 </Badge>
               </div>
             </Link>
           );
         })}
-    </div>
-  );
-};
-
-const Actions = ({ order }: { order: TOrder }) => {
-  const locale = useLocale();
-  const t = useTranslations("Dashboard");
-  return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              href={
-                order.type === "adventure"
-                  ? `/${locale}/admin/orders/adventures/${order.id}`
-                  : `/${locale}/admin/orders/consultation/${order.id}`
-              }
-            >
-              {t("view")}
-            </Link>
-          </DropdownMenuItem>
-          {/* <DropdownMenuItem asChild>
-            <Button
-              onClick={() => {}}
-              className="text-info w-full rounded-sm bg-info/0 hover:text-info hover:bg-info/10  border-transparent hover:border-transparent"
-              variant="outline"
-            >
-              
-              Download Invoice
-            </Button>
-          </DropdownMenuItem> */}
-        </DropdownMenuContent>
-      </DropdownMenu>
     </div>
   );
 };

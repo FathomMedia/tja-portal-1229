@@ -11,6 +11,7 @@ import { cn, formatePrice } from "@/lib/utils";
 import {
   ArrowDown,
   ArrowRight,
+  BookHeartIcon,
   ImageOff,
   Map,
   Plane,
@@ -46,7 +47,7 @@ export const DashboardStatistics = () => {
       {!isFetching && statistics && (
         <div className="grid gap-4 xl:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           <StatisticsCard className="justify-between">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start gap-3 justify-between">
               <StatisticsHeader>{t("estimatedTotalRevenue")}</StatisticsHeader>
               <p className="text-sm text-muted-foreground">BHD</p>
             </div>
@@ -59,52 +60,32 @@ export const DashboardStatistics = () => {
           </StatisticsCard>
 
           <StatisticsCard className="justify-between">
-            <div className="flex items-center justify-between">
+            <div className="flex items-start gap-3 justify-between">
               <StatisticsHeader>{t("totalCustomers")}</StatisticsHeader>
               <Users className="w-4 h-4 text-muted-foreground" />
             </div>
             <StatisticsValue>{statistics.totalCustomers}</StatisticsValue>
           </StatisticsCard>
 
-          <StatisticsCard className="@container">
-            <div className="flex items-center justify-between">
-              <StatisticsHeader>{t("totalOrders")}</StatisticsHeader>
+          <StatisticsCard className="@container justify-between">
+            <div className="flex items-start gap-3 justify-between">
+              <StatisticsHeader>{t("totalAdventureBookings")}</StatisticsHeader>
               <Plane className="w-4 h-4 text-muted-foreground" />
             </div>
-            <div className="flex flex-col gap-2 @sm:flex-row">
-              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
-                <p className="text-primary text-sm">{t("adventures")}</p>
-                <StatisticsValue>
-                  {statistics.totalBookings.adventures}
-                </StatisticsValue>
-              </div>
-              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
-                <p className="text-primary text-sm">{t("consultations")}</p>
-                <StatisticsValue>
-                  {statistics.totalBookings.consultations}
-                </StatisticsValue>
-              </div>
-            </div>
+            <StatisticsValue>
+              {statistics.totalBookings.adventures}
+            </StatisticsValue>
           </StatisticsCard>
-          <StatisticsCard className="@container">
-            <div className="flex items-center justify-between">
-              <StatisticsHeader>{t("totalProducts")}</StatisticsHeader>
-              <Map className="w-4 h-4 text-muted-foreground" />
+          <StatisticsCard className="@container justify-between">
+            <div className="flex items-start gap-3 justify-between">
+              <StatisticsHeader>
+                {t("totalConseltationBookings")}
+              </StatisticsHeader>
+              <BookHeartIcon className="w-4 h-4 text-muted-foreground" />
             </div>
-            <div className="flex flex-col gap-2  @sm:flex-row">
-              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
-                <p className="text-primary text-sm">{t("adventures")}</p>
-                <StatisticsValue>
-                  {statistics.totalProducts.adventures}
-                </StatisticsValue>
-              </div>
-              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
-                <p className="text-primary text-sm">{t("consultations")}</p>
-                <StatisticsValue>
-                  {statistics.totalProducts.consultations}
-                </StatisticsValue>
-              </div>
-            </div>
+            <StatisticsValue>
+              {statistics.totalBookings.consultations}
+            </StatisticsValue>
           </StatisticsCard>
         </div>
       )}
@@ -115,7 +96,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg  font-semibold text-primary">
             {t("monthlyRevenue")}
           </p>
-          <div className="rounded-lg border-border border flex flex-col p-4 bg-white/50">
+          <div className="rounded-lg border-border border flex flex-col p-6 bg-white/50">
             <RevenueChart />
             <p className="text-xs text-muted-foreground">
               {t("valuesAreInBHD")}
@@ -127,7 +108,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg font-semibold text-primary">
             {t("latestOrders")}
           </p>
-          <div className="rounded-lg grow border-border bg-white/50 border p-4">
+          <div className="rounded-lg grow border-border bg-white/50 border p-6">
             <LatestsOrdersComponent />
           </div>
         </div>
@@ -138,7 +119,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg font-semibold text-primary">
             {t("topCustomers")}
           </p>
-          <div className="p-4 gap-3 col-span-1 rounded-lg @container bg-white/50 border-border border flex flex-col h-full">
+          <div className="p-6 gap-3 col-span-1 rounded-lg @container bg-white/50 border-border border flex flex-col h-full">
             {isFetching && (
               <>
                 <Skeleton className="w-full h-16" />
@@ -188,7 +169,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg font-semibold text-primary">
             {t("topAdventuresThisQuarter")}
           </p>
-          <div className="p-4 gap-3 col-span-1 rounded-lg border-border bg-white/50 border flex flex-col h-full">
+          <div className="p-6 gap-3 col-span-1 rounded-lg border-border bg-white/50 border flex flex-col h-full">
             {isFetching && (
               <>
                 <Skeleton className="w-full h-16" />
@@ -199,7 +180,7 @@ export const DashboardStatistics = () => {
             {!isFetching &&
               statistics?.topAdventuresThisQuarter.map((adventure, i) => (
                 <Link
-                  href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+                  href={`/${locale}/admin/products/adventures/bookings/${adventure.slug}`}
                   className="flex gap-3 items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
                   key={i}
                 >
@@ -235,7 +216,7 @@ export const DashboardStatistics = () => {
           <p className="text-lg font-semibold text-primary">
             {t("upComingAdventures")}
           </p>
-          <div className="p-4 gap-3  bg-white/50 @container rounded-lg border-border border flex flex-col h-full">
+          <div className="p-6 gap-3  bg-white/50 @container rounded-lg border-border border flex flex-col h-full">
             {isFetching && (
               <>
                 <Skeleton className="w-full h-16" />
@@ -246,7 +227,7 @@ export const DashboardStatistics = () => {
             {!isFetching &&
               statistics?.upcomingAdventures.map((adventure, i) => (
                 <Link
-                  href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+                  href={`/${locale}/admin/products/adventures/bookings/${adventure.slug}`}
                   className="flex gap-10 items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
                   key={i}
                 >
@@ -308,7 +289,7 @@ const StatisticsCard: FC<PropsWithChildren<TStatisticsCard>> = ({
   return (
     <div
       className={cn(
-        "rounded-lg border-border border bg-white/50 flex-col flex p-4 gap-2",
+        "rounded-lg border-border border bg-white/50 flex-col flex p-6 gap-4",
         className
       )}
     >
@@ -321,5 +302,9 @@ const StatisticsHeader: FC<PropsWithChildren> = ({ children }) => {
   return <p className="text-sm font-medium text-foreground">{children}</p>;
 };
 const StatisticsValue: FC<PropsWithChildren> = ({ children }) => {
-  return <p className="text-lg text-primary font-semibold">{children}</p>;
+  return (
+    <p className="text-xl text-primary font-bold font-helveticaNeue">
+      {children}
+    </p>
+  );
 };

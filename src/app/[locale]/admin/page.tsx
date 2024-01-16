@@ -6,8 +6,9 @@ export default function Page() {
   const t = useTranslations("Dashboard");
 
   return (
-    <DashboardSection hideBack title={t("statistics")} className="pb-16">
+    <div className="pb-16 flex flex-col gap-2">
+      <p className="text-lg  font-semibold text-primary">{t("statistics")}</p>
       <DashboardStatistics />
-    </DashboardSection>
+    </div>
   );
 }

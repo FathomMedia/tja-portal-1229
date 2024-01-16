@@ -168,7 +168,8 @@
     "whatsApp": "واتساب",
     "whyDidYouChooseThisDistention": "لماذا اخترت هذه الوجهة؟",
     "wordpressLink": "رابط موقع ووردبريس",
-    "yourBookingIsConfirmd": "تم تأكيد الحجز الخاص بك."
+    "yourBookingIsConfirmd": "تم تأكيد الحجز الخاص بك.",
+    "fullyBooked": "محجوز بالكامل"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -577,7 +578,9 @@
     "topAdventuresThisQuarter": "أفضل المغامرات هذا الربع",
     "upComingAdventures": "المغامرات القادمة",
     "paid": "مدفوع",
-    "pendingPayment": "في انتظار الدفع"
+    "pendingPayment": "في انتظار الدفع",
+    "totalAdventureBookings": "إجمالي حجوزات المغامرة",
+    "totalConseltationBookings": "إجمالي حجوزات الإستشارة"
   },
   "DeleteProfile": {
     "cancel": "إلغاء",

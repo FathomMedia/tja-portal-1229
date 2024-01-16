@@ -88,7 +88,7 @@ export const ViewAllAdventuresComponent = () => {
           paginatedAdventures.data?.map((adventure, i) => (
             <Link
               className="h-96 overflow-clip group relative rounded-md "
-              href={`adventures/${adventure.slug}`}
+              href={`/${locale}/dashboard/adventures/${adventure.slug}`}
               key={i}
             >
               <div className="flex flex-col h-full p-4 justify-between">

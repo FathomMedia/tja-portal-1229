@@ -170,7 +170,8 @@
     "whatsApp": "WhatsApp",
     "whyDidYouChooseThisDistention": "Why did you choose this destination?",
     "wordpressLink": "Wordpress Link",
-    "yourBookingIsConfirmd": "Your booking is confirmd."
+    "yourBookingIsConfirmd": "Your booking is confirmd.",
+    "fullyBooked": "Fully Booked"
   },
   "Auth": {
     "OTP": "OTP",
@@ -588,7 +589,9 @@
     "topAdventuresThisQuarter": "Top Adventures This Quarter",
     "upComingAdventures": "Upcoming Adventures",
     "paid": "Paid",
-    "pendingPayment": "Pending Payment"
+    "pendingPayment": "Pending Payment",
+    "totalAdventureBookings": "Total Adventure Bookings",
+    "totalConseltationBookings": "Total Conseltation Bookings"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
