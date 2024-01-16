@@ -1,40 +1,16 @@
 "use client";
-import { AdventureForm } from "@/components/admin/products/adventures/AdventureForm";
-import { Separator } from "@/components/ui/separator";
 
-import {
-  TAddon,
-  TAdventure,
-  TConsultationBooking,
-  TCountry,
-} from "@/lib/types";
+import { TConsultationBooking } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 
 import { apiReqQuery } from "@/lib/apiHelpers";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/ui/icons";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
 import { ViewConsultationOrderForm } from "@/components/admin/orders/consultation/ViewConsultationOrderForm";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
-
-  const t = useTranslations("Adventures");
-  const queryClient = useQueryClient();
-  const { push } = useRouter();
+  const t = useTranslations("Consultation");
 
   const {
     data: consultationBooking,
@@ -53,7 +29,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   return (
     <div className="max-w-4xl flex flex-col gap-10 pb-20">
       {isFetchingConsultationBooking && <Skeleton className="w-full h-96" />}
-      {consultationBooking && (
+      {!consultationBooking && !isFetchingConsultationBooking && (
+        <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-72 flex flex-col justify-center items-center">
+          <p>{t("nothingFound")}</p>
+        </div>
+      )}
+      {consultationBooking && !isFetchingConsultationBooking && (
         <ViewConsultationOrderForm consultationBooking={consultationBooking} />
       )}
     </div>
