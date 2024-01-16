@@ -55,6 +55,9 @@ module.exports = {
         md: "calc(0.5rem - 2px)",
         sm: "calc(0.5rem - 4px)",
       },
+      screens: {
+        "3xl": "1800px",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },

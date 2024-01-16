@@ -72,13 +72,13 @@ export const DashboardStatistics = () => {
               <Plane className="w-4 h-4 text-muted-foreground" />
             </div>
             <div className="flex flex-col gap-2 @sm:flex-row">
-              <div className="flex items-center gap-2 bg-muted/20 border p-2 justify-center rounded-sm w-full">
+              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
                 <p className="text-primary text-sm">{t("adventures")}</p>
                 <StatisticsValue>
                   {statistics.totalBookings.adventures}
                 </StatisticsValue>
               </div>
-              <div className="flex items-center gap-2 bg-muted/20 border p-2 justify-center rounded-sm w-full">
+              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
                 <p className="text-primary text-sm">{t("consultations")}</p>
                 <StatisticsValue>
                   {statistics.totalBookings.consultations}
@@ -92,13 +92,13 @@ export const DashboardStatistics = () => {
               <Map className="w-4 h-4 text-muted-foreground" />
             </div>
             <div className="flex flex-col gap-2  @sm:flex-row">
-              <div className="flex items-center gap-2 bg-muted/20 border p-2 justify-center rounded-sm w-full">
+              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
                 <p className="text-primary text-sm">{t("adventures")}</p>
                 <StatisticsValue>
                   {statistics.totalProducts.adventures}
                 </StatisticsValue>
               </div>
-              <div className="flex items-center gap-2 bg-muted/20 border p-2 justify-center rounded-sm w-full">
+              <div className="flex items-center gap-2 bg-muted/0 border p-2 justify-center rounded-sm w-full">
                 <p className="text-primary text-sm">{t("consultations")}</p>
                 <StatisticsValue>
                   {statistics.totalProducts.consultations}
@@ -111,170 +111,186 @@ export const DashboardStatistics = () => {
       {/* grid of chart and recent orders */}
       <div className="grid grid-cols-1 xl:grid-cols-7 gap-4 xl:gap-6">
         {/* chart */}
-        <div className="p-4 gap-3 col-span-1 xl:col-span-4 rounded-lg border-border border flex flex-col h-full">
-          <p className="text-lg font-semibold text-primary">
+        <div className=" gap-3 col-span-1 xl:col-span-4 flex flex-col h-full">
+          <p className="text-lg  font-semibold text-primary">
             {t("monthlyRevenue")}
           </p>
-          <RevenueChart />
-          <p className="text-xs text-muted-foreground">{t("valuesAreInBHD")}</p>
+          <div className="rounded-lg border-border border flex flex-col p-4 bg-white/50">
+            <RevenueChart />
+            <p className="text-xs text-muted-foreground">
+              {t("valuesAreInBHD")}
+            </p>
+          </div>
         </div>
         {/* recent orders */}
-        <div className="col-span-1 xl:col-span-3 rounded-lg border-border border flex flex-col h-full p-4 gap-3">
+        <div className="col-span-1 xl:col-span-3  flex flex-col h-full gap-3">
           <p className="text-lg font-semibold text-primary">
             {t("latestOrders")}
           </p>
-          <LatestsOrdersComponent />
+          <div className="rounded-lg grow border-border bg-white/50 border p-4">
+            <LatestsOrdersComponent />
+          </div>
         </div>
       </div>
-      {/* grid of top customers and adventures */}
-      <div className="grid grid-cols-1 2xl:grid-cols-3 gap-4 2xl:gap-6">
-        <div className="p-4 gap-3 col-span-1 rounded-lg  @container border-border border flex flex-col h-full">
+      {/* grid of top customers and top adventures upcoming adventures */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-3 gap-4 xl:gap-6 3xl:gap-6">
+        <div className="col-span-1 flex flex-col gap-2">
           <p className="text-lg font-semibold text-primary">
             {t("topCustomers")}
           </p>
-          {isFetching && (
-            <>
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-            </>
-          )}
-          {!isFetching &&
-            statistics?.topCustomers.map((customer, i) => (
-              <Link
-                href={`/${locale}/admin/members/customers/edit/${customer.id}`}
-                className="flex flex-col @md:flex-row gap-3 @md:items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
-                key={i}
-              >
-                <div className="flex gap-3 grow items-center">
-                  <Avatar className="w-10 h-10">
-                    <AvatarFallback>{customer.name.slice(0, 2)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex text-sm flex-col grow">
-                    <p className="font-medium">{customer.name}</p>
-                    <p className="text-muted-foreground text-xs">
-                      {customer.email}
-                    </p>
+          <div className="p-4 gap-3 col-span-1 rounded-lg @container bg-white/50 border-border border flex flex-col h-full">
+            {isFetching && (
+              <>
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+              </>
+            )}
+            {!isFetching &&
+              statistics?.topCustomers.map((customer, i) => (
+                <Link
+                  href={`/${locale}/admin/members/customers/edit/${customer.id}`}
+                  className="flex w-full gap-3 @md:items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                  key={i}
+                >
+                  <div className="flex overflow-clip flex-1 gap-3 grow items-center">
+                    <Avatar className="w-10 h-10">
+                      <AvatarFallback>
+                        {customer.name.slice(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex text-sm flex-col grow">
+                      <p className="font-medium">{customer.name}</p>
+                      <p className="text-muted-foreground text-xs w-full text-ellipsis">
+                        {customer.email}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex text-sm @md:items-end justify-center gap-1 items-center @md:flex-col w-fit">
-                  <p className=" font-light text-xs hidden @md:flex text-muted-foreground">
-                    {t("points")}
-                  </p>
-                  <Badge
-                    className="w-fit flex bg-background items-center gap-1 font-light"
-                    variant={"outline"}
-                  >
-                    {customer.totalPoints}{" "}
-                    <p className="@md:hidden font-light text-xs text-muted-foreground">
+                  <div className="flex text-sm justify-center gap-1 items-center @md:flex-col w-fit">
+                    <p className=" font-light text-xs hidden @md:flex text-muted-foreground">
                       {t("points")}
                     </p>
-                  </Badge>
-                </div>
-              </Link>
-            ))}
+                    <Badge
+                      className="w-fit flex bg-background items-center gap-1 font-light"
+                      variant={"outline"}
+                    >
+                      {customer.totalPoints}{" "}
+                      <p className="@md:hidden font-light text-xs text-muted-foreground">
+                        {t("points")}
+                      </p>
+                    </Badge>
+                  </div>
+                </Link>
+              ))}
+          </div>
         </div>
-        <div className="p-4 gap-3 col-span-1 rounded-lg border-border border flex flex-col h-full">
+        <div className="col-span-1 flex flex-col gap-2">
           <p className="text-lg font-semibold text-primary">
             {t("topAdventuresThisQuarter")}
           </p>
-          {isFetching && (
-            <>
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-            </>
-          )}
-          {!isFetching &&
-            statistics?.topAdventuresThisQuarter.map((adventure, i) => (
-              <Link
-                href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
-                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
-                key={i}
-              >
-                <Avatar className="w-10 h-10">
-                  <AvatarImage
-                    className="object-cover"
-                    src={adventure.image ?? "/assets/images/adventure.jpg"}
-                  />
-                  <AvatarFallback>
-                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex text-sm flex-col grow">
-                  <p className="font-medium">{adventure.title}</p>
-                </div>
-                <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                  <p className=" font-light text-xs text-muted-foreground">
-                    {t("customers")}
-                  </p>
-                  <Badge
-                    className="w-fit font-light bg-background"
-                    variant={"outline"}
-                  >
-                    {adventure.totalCustomers}
-                  </Badge>
-                </div>
-              </Link>
-            ))}
+          <div className="p-4 gap-3 col-span-1 rounded-lg border-border bg-white/50 border flex flex-col h-full">
+            {isFetching && (
+              <>
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+              </>
+            )}
+            {!isFetching &&
+              statistics?.topAdventuresThisQuarter.map((adventure, i) => (
+                <Link
+                  href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+                  className="flex gap-3 items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                  key={i}
+                >
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage
+                      className="object-cover"
+                      src={adventure.image ?? "/assets/images/adventure.jpg"}
+                    />
+                    <AvatarFallback>
+                      {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex text-sm flex-col grow">
+                    <p className="font-medium">{adventure.title}</p>
+                  </div>
+                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
+                    <p className=" font-light text-xs text-muted-foreground">
+                      {t("customers")}
+                    </p>
+                    <Badge
+                      className="w-fit font-light bg-background"
+                      variant={"outline"}
+                    >
+                      {adventure.totalCustomers}
+                    </Badge>
+                  </div>
+                </Link>
+              ))}
+          </div>
         </div>
         {/* Upcoming adventures */}
-        <div className="p-4 gap-3 col-span-1 @container rounded-lg border-border border flex flex-col h-full">
+        <div className="col-span-1 lg:col-span-2 3xl:col-span-1 flex flex-col gap-2">
           <p className="text-lg font-semibold text-primary">
             {t("upComingAdventures")}
           </p>
-          {isFetching && (
-            <>
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-            </>
-          )}
-          {!isFetching &&
-            statistics?.upcomingAdventures.map((adventure, i) => (
-              <Link
-                href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
-                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
-                key={i}
-              >
-                <Avatar className="w-10 h-10">
-                  <AvatarImage
-                    className="object-cover"
-                    src={adventure.image ?? "/assets/images/adventure.jpg"}
-                  />
-                  <AvatarFallback>
-                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex text-sm flex-col grow">
-                  <p className="font-medium">{adventure.title}</p>
-                </div>
-                <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
-                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge
-                      className="w-fit font-light bg-background"
-                      variant={"outline"}
-                    >
-                      {adventure.startDate}
-                    </Badge>
+          <div className="p-4 gap-3  bg-white/50 @container rounded-lg border-border border flex flex-col h-full">
+            {isFetching && (
+              <>
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+                <Skeleton className="w-full h-16" />
+              </>
+            )}
+            {!isFetching &&
+              statistics?.upcomingAdventures.map((adventure, i) => (
+                <Link
+                  href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
+                  className="flex gap-10 items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                  key={i}
+                >
+                  <div className="flex items-center gap-3 grow">
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage
+                        className="object-cover"
+                        src={adventure.image ?? "/assets/images/adventure.jpg"}
+                      />
+                      <AvatarFallback>
+                        {<ImageOff className="w-4 h-4 text-muted-foreground" />}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex text-sm flex-col grow">
+                      <p className="font-medium">{adventure.title}</p>
+                    </div>
                   </div>
-                  <span className="hidden @md:flex text-xs text-muted-foreground font-light">
-                    <ArrowRight className="w-3 h-3 rtl:rotate-180" />
-                  </span>
-                  <span className="flex @md:hidden text-xs text-muted-foreground font-light">
-                    <ArrowDown className="w-3 h-3" />
-                  </span>
-                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge
-                      className="w-fit font-light bg-background"
-                      variant={"outline"}
-                    >
-                      {adventure.endDate}
-                    </Badge>
+                  <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
+                    <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
+                      <Badge
+                        className="w-fit font-light bg-background"
+                        variant={"outline"}
+                      >
+                        {adventure.startDate}
+                      </Badge>
+                    </div>
+                    <span className="hidden @md:flex text-xs text-muted-foreground font-light">
+                      <ArrowRight className="w-3 h-3 rtl:rotate-180" />
+                    </span>
+                    <span className="flex @md:hidden text-xs text-muted-foreground font-light">
+                      <ArrowDown className="w-3 h-3" />
+                    </span>
+                    <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
+                      <Badge
+                        className="w-fit font-light bg-background"
+                        variant={"outline"}
+                      >
+                        {adventure.endDate}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+          </div>
         </div>
       </div>
     </div>
@@ -292,7 +308,7 @@ const StatisticsCard: FC<PropsWithChildren<TStatisticsCard>> = ({
   return (
     <div
       className={cn(
-        "rounded-lg border-border border  flex-col flex p-4 gap-2",
+        "rounded-lg border-border border bg-white/50 flex-col flex p-4 gap-2",
         className
       )}
     >
