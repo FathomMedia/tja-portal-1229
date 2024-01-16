@@ -564,7 +564,20 @@
     "viewBookings": "تصفح الحجوزات",
     "viewForm": "تفاصيل الإستمارة",
     "off": "٪ خصم",
-    "consultationOrders": "طلبات الإستشارة"
+    "consultationOrders": "طلبات الإستشارة",
+    "statistics": "إحصائيات",
+    "estimatedTotalRevenue": "إجمالي الإيرادات المقدرة",
+    "totalCustomers": "إجمالي العملاء",
+    "totalOrders": "إجمالي الطلبات",
+    "totalProducts": "إجمالي المنتجات",
+    "monthlyRevenue": "الإيرادات الشهرية",
+    "valuesAreInBHD": "ملاحظة: القيم بالدينار البحريني",
+    "topCustomers": "أهم العملاء",
+    "points": "نقاط",
+    "topAdventuresThisQuarter": "أفضل المغامرات هذا الربع",
+    "upComingAdventures": "المغامرات القادمة",
+    "paid": "مدفوع",
+    "pendingPayment": "في انتظار الدفع"
   },
   "DeleteProfile": {
     "cancel": "إلغاء",

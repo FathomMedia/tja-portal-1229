@@ -55,6 +55,7 @@ export const RevenueChart = () => {
       )}
       {!isFetching && statistics && statistics.length > 0 && (
         <Chart
+          dir="ltr"
           className={cn(
             "opacity-100 duration-200 w-full h-full ",
             isFetching && "opacity-0"

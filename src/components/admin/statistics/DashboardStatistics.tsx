@@ -45,7 +45,7 @@ export const DashboardStatistics = () => {
       )}
       {!isFetching && statistics && (
         <div className="grid gap-4 xl:gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
-          <StatisticsCard>
+          <StatisticsCard className="justify-between">
             <div className="flex items-center justify-between">
               <StatisticsHeader>{t("estimatedTotalRevenue")}</StatisticsHeader>
               <p className="text-sm text-muted-foreground">BHD</p>
@@ -58,7 +58,7 @@ export const DashboardStatistics = () => {
             </StatisticsValue>
           </StatisticsCard>
 
-          <StatisticsCard>
+          <StatisticsCard className="justify-between">
             <div className="flex items-center justify-between">
               <StatisticsHeader>{t("totalCustomers")}</StatisticsHeader>
               <Users className="w-4 h-4 text-muted-foreground" />
@@ -218,6 +218,7 @@ export const DashboardStatistics = () => {
               </Link>
             ))}
         </div>
+        {/* Upcoming adventures */}
         <div className="p-4 gap-3 col-span-1 @container rounded-lg border-border border flex flex-col h-full">
           <p className="text-lg font-semibold text-primary">
             {t("upComingAdventures")}
@@ -258,7 +259,7 @@ export const DashboardStatistics = () => {
                     </Badge>
                   </div>
                   <span className="hidden @md:flex text-xs text-muted-foreground font-light">
-                    <ArrowRight className="w-3 h-3" />
+                    <ArrowRight className="w-3 h-3 rtl:rotate-180" />
                   </span>
                   <span className="flex @md:hidden text-xs text-muted-foreground font-light">
                     <ArrowDown className="w-3 h-3" />
@@ -275,66 +276,6 @@ export const DashboardStatistics = () => {
               </Link>
             ))}
         </div>
-      </div>
-      {/* Upcoming adventures */}
-      <div className="grid gap4 grid-cols-1 xl:gap-6">
-        {/* <div className="p-4 gap-3 col-span-1 @container rounded-lg border-border border flex flex-col h-full">
-          <p className="text-lg font-semibold text-primary">
-            {t("upComingAdventures")}
-          </p>
-          {isFetching && (
-            <>
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-              <Skeleton className="w-full h-16" />
-            </>
-          )}
-          {!isFetching &&
-            statistics?.upcomingAdventures.map((adventure, i) => (
-              <Link
-                href={`/${locale}/admin/products/adventures/edit/${adventure.slug}`}
-                className="flex gap-3 items-center hover:bg-muted/60 bg-muted/20 p-2 rounded-lg border-border border hover:border-border duration-300"
-                key={i}
-              >
-                <Avatar className="w-10 h-10">
-                  <AvatarImage
-                    className="object-cover"
-                    src={adventure.image ?? "/assets/images/adventure.jpg"}
-                  />
-                  <AvatarFallback>
-                    {<ImageOff className="w-4 h-4 text-muted-foreground" />}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex text-sm flex-col grow">
-                  <p className="font-medium">{adventure.title}</p>
-                </div>
-                <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
-                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge
-                      className="w-fit font-light bg-background"
-                      variant={"outline"}
-                    >
-                      {adventure.startDate}
-                    </Badge>
-                  </div>
-                  <span className="hidden @md:flex text-xs text-muted-foreground font-light">
-                    <ArrowRight className="w-3 h-3" />
-                  </span>
-                  <span className="flex @md:hidden text-xs text-muted-foreground font-light">
-                    <ArrowDown className="w-3 h-3" />
-                  </span>
-                  <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
-                    <Badge
-                      className="w-fit font-light bg-background"
-                      variant={"outline"}
-                    >
-                      {adventure.endDate}
-                    </Badge>
-                  </div>
-                </div>
-              </Link>
-            ))}
-        </div> */}
       </div>
     </div>
   );

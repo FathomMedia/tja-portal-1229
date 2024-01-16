@@ -575,7 +575,20 @@
     "viewBookings": "View Bookings",
     "viewForm": "View Form",
     "off": "% Off",
-    "consultationOrders": "Consultation Orders"
+    "consultationOrders": "Consultation Orders",
+    "statistics": "Statistics",
+    "estimatedTotalRevenue": "Estimated Total Revenue",
+    "totalCustomers": "Total Customers",
+    "totalOrders": "Total Orders",
+    "totalProducts": "Total Products",
+    "monthlyRevenue": "Monthly Revenue",
+    "valuesAreInBHD": "Note: values are in BHD",
+    "topCustomers": "Top Customers",
+    "points": "Points",
+    "topAdventuresThisQuarter": "Top Adventures This Quarter",
+    "upComingAdventures": "Upcoming Adventures",
+    "paid": "Paid",
+    "pendingPayment": "Pending Payment"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
