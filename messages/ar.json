@@ -169,7 +169,10 @@
     "whyDidYouChooseThisDistention": "لماذا اخترت هذه الوجهة؟",
     "wordpressLink": "رابط موقع ووردبريس",
     "yourBookingIsConfirmd": "تم تأكيد الحجز الخاص بك.",
-    "fullyBooked": "محجوز بالكامل"
+    "fullyBooked": "محجوز بالكامل",
+    "seatsLeft": "مقاعد خالية",
+    "bookingCancelled": "تم إلغاء الحجز",
+    "thisBookingWasCancelledByAnAdmin": "تم إلغاء هذا الحجز من قبل المشرف."
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -376,7 +379,10 @@
     "priceWithCurrency": "السعر",
     "isCancelled": "ملغية",
     "id": "الرقم التعريفي",
-    "Actions": "الإجراءات"
+    "Actions": "الإجراءات",
+    "startDateMustBeInTheFuture": "يجب أن يكون تاريخ البدء في المستقبل.",
+    "endDateCannotBeBeforeStartDate": "لا يمكن أن يكون تاريخ الانتهاء أقدم من تاريخ البدء.",
+    "ifYouWakeUp": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟"
   },
   "Consultations": {
     "actions": "الإجراءات",
@@ -580,7 +586,11 @@
     "paid": "مدفوع",
     "pendingPayment": "في انتظار الدفع",
     "totalAdventureBookings": "إجمالي حجوزات المغامرة",
-    "totalConseltationBookings": "إجمالي حجوزات الإستشارة"
+    "totalConseltationBookings": "إجمالي حجوزات الإستشارة",
+    "theJourneyAdventures": "ذا جورني ادفينتجرز",
+    "fullyBooked": "محجوز بالكامل",
+    "seatsLeft": "مقاعد خالية",
+    "cancelled": "ألغيت"
   },
   "DeleteProfile": {
     "cancel": "إلغاء",
@@ -616,7 +626,9 @@
     "total": "المجموع",
     "upComingAdventures": "المغامرات القادمة",
     "viewBooking": "تفاصيل الحجز",
-    "viewMore": "عرض المزيد"
+    "viewMore": "عرض المزيد",
+    "cancelled": "ألغيت",
+    "error": "خطأ فني"
   },
   "Index": {
     "title": "اهلا بالعالم"
@@ -646,7 +658,8 @@
     "updateEmail": "تحديث البريد الإلكتروني",
     "updatePassword": "تحديث كلمة المرور",
     "updateProfile": "تحديث الملف الشخصي",
-    "yourEmail": "بريدك الإلكتروني الحالي"
+    "yourEmail": "بريدك الإلكتروني الحالي",
+    "dangerArea": "منطقة الخطر"
   },
   "SignInWithPassword": {
     "acceptInvite": "قبول الدعوة",

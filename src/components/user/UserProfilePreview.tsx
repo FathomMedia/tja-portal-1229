@@ -108,7 +108,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
             >
               <SheetHeader>
                 <SheetTitle className="text-primary">
-                  The Journey Adventures
+                  {t("theJourneyAdventures")}
                 </SheetTitle>
               </SheetHeader>
               <ScrollArea dir={isRtlLang(locale) ? "rtl" : "ltr"}>

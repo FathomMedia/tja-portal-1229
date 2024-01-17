@@ -1,5 +1,6 @@
 "use client";
 
+import { DashboardSection } from "@/components/DashboardSection";
 import { CalculateConsultation } from "@/components/consultations/CalculateConsultation";
 import { ConsultationForm } from "@/components/consultations/ConsultationsF";
 
@@ -26,12 +27,10 @@ export default function Page() {
     : "silver";
 
   return (
-    <div className="max-w-4xl flex flex-col gap-6">
-      <div>
-        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
-          {t("bookAConsultation")}
-        </h2>
-      </div>
+    <DashboardSection
+      title={t("bookAConsultation")}
+      className="max-w-4xl flex flex-col gap-6"
+    >
       <Suspense
         fallback={
           <div className="flex flex-col gap-4">
@@ -54,6 +53,6 @@ export default function Page() {
           />
         )}
       </Suspense>
-    </div>
+    </DashboardSection>
   );
 }

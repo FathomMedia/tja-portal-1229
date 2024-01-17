@@ -36,6 +36,7 @@ import { TConsultation } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Icons } from "../ui/icons";
+import { ar, enUS } from "date-fns/locale";
 
 type TCalculateConsultationForm = {
   onPackageChanged: (consultation: TConsultation) => void;
@@ -55,11 +56,18 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
 
   const [totalFullPrice, setTotalFullPrice] = useState<string | null>(null);
 
-  const formSchema = z.object({
-    package: z.string().min(1, t("destination.errors.required")),
-    start_date: z.date(),
-    end_date: z.date(),
-  });
+  const formSchema = z
+    .object({
+      package: z.string().min(1, t("destination.errors.required")),
+      start_date: z.date().refine((data) => data > new Date(), {
+        message: t("startDateMustBeInTheFuture"),
+      }),
+      end_date: z.date(),
+    })
+    .refine((data) => data.end_date > data.start_date, {
+      message: t("endDateCannotBeBeforeStartDate"),
+      path: ["end_date"],
+    });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -166,17 +174,20 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP")
+                              format(field.value, "PPP", {
+                                locale: locale === "ar" ? ar : enUS,
+                              })
                             ) : (
                               <span>{t("pickaDate")}</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
+                          locale={locale === "ar" ? ar : enUS}
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus
@@ -207,11 +218,13 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP")
+                              format(field.value, "PPP", {
+                                locale: locale === "ar" ? ar : enUS,
+                              })
                             ) : (
                               <span>{t("pickaDate")}</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -219,6 +232,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                         <Calendar
                           captionLayout={"dropdown"}
                           mode="single"
+                          locale={locale === "ar" ? ar : enUS}
                           selected={field.value}
                           onSelect={field.onChange}
                           initialFocus

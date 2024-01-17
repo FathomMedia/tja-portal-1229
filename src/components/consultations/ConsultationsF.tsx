@@ -599,9 +599,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
             render={({ field }) => (
               <FormItem className="space-y-3 ">
                 <FormLabel className="text-base">
-                  {
-                    "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
-                  }
+                  {t("ifYouWakeUp")}
                   <span className="text-destructive ms-1">*</span>
                 </FormLabel>
                 <FormControl>

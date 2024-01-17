@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
   const locale = request.headers.get("accept-language") ?? "en";
 
-  const bookingResponse = await apiReq({
+  return await apiReq({
     endpoint: `/consultation-bookings/calculate`,
     locale,
     method: "POST",
@@ -20,14 +20,16 @@ export async function POST(request: NextRequest) {
       tier: tier,
     },
   })
-    .then(async (res) => await res.json())
-    .catch((error) => {
-      return NextResponse.json(error, { status: 401 });
-    });
-  console.log(
-    "🚀 ~ file: route.ts:28 ~ POST ~ bookingResponse:",
-    bookingResponse
-  );
+    .then(async (res) => {
+      const data = await res.json();
 
-  return NextResponse.json(bookingResponse, { status: 200 });
+      if (res.ok) {
+        return NextResponse.json(data, { status: 200 });
+      }
+
+      return NextResponse.json(data, { status: res.status });
+    })
+    .catch((error) => {
+      return NextResponse.json({ data: null, error: error }, { status: 503 });
+    });
 }

@@ -104,7 +104,7 @@ export const DashboardStatistics = () => {
           </div>
         </div>
         {/* recent orders */}
-        <div className="col-span-1 xl:col-span-3  flex flex-col gap-3">
+        <div className="col-span-1 xl:col-span-3  flex flex-col gap-3 z-10">
           <p className="text-lg font-semibold text-primary">
             {t("latestOrders")}
           </p>

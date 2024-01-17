@@ -7,6 +7,7 @@ import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ViewAdventureOrderForm } from "@/components/admin/orders/adventures/ViewAdventureOrderForm";
+import { DashboardSection } from "@/components/DashboardSection";
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const locale = useLocale();
@@ -25,16 +26,14 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         ),
     });
   return (
-    <div className="max-w-4xl flex flex-col gap-10 pb-20">
-      <div>
-        <h2 className="text-2xl text-primary font-semibold border-s-4 border-primary ps-2">
-          {t("viewBooking")}
-        </h2>
-      </div>
+    <DashboardSection
+      title={t("viewBooking")}
+      className="max-w-4xl flex flex-col gap-10 pb-20"
+    >
       {isFetchingAdventureBooking && <Skeleton className="w-full h-96" />}
       {adventureBooking && (
         <ViewAdventureOrderForm adventureBooking={adventureBooking} />
       )}
-    </div>
+    </DashboardSection>
   );
 }

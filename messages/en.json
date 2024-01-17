@@ -171,7 +171,10 @@
     "whyDidYouChooseThisDistention": "Why did you choose this destination?",
     "wordpressLink": "Wordpress Link",
     "yourBookingIsConfirmd": "Your booking is confirmd.",
-    "fullyBooked": "Fully Booked"
+    "fullyBooked": "Fully Booked",
+    "seatsLeft": "Seats Left",
+    "bookingCancelled": "Booking Cancelled",
+    "thisBookingWasCancelledByAnAdmin": "This booking was cancelled by an admin."
   },
   "Auth": {
     "OTP": "OTP",
@@ -388,7 +391,10 @@
     "priceWithCurrency": "Price",
     "isCancelled": "Cancelled",
     "id": "ID",
-    "Actions": "Actions"
+    "Actions": "Actions",
+    "startDateMustBeInTheFuture": "Start date must be in the future.",
+    "endDateCannotBeBeforeStartDate": "End date cannot be earlier than start date.",
+    "ifYouWakeUp": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
   },
   "Consultations": {
     "actions": "Actions",
@@ -591,7 +597,11 @@
     "paid": "Paid",
     "pendingPayment": "Pending Payment",
     "totalAdventureBookings": "Total Adventure Bookings",
-    "totalConseltationBookings": "Total Conseltation Bookings"
+    "totalConseltationBookings": "Total Conseltation Bookings",
+    "theJourneyAdventures": "The Journey Adventures",
+    "fullyBooked": "Fully Booked",
+    "seatsLeft": "Seats Left",
+    "cancelled": "Cancelled"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
@@ -627,7 +637,9 @@
     "total": "Total",
     "upComingAdventures": "Upcoming adventures",
     "viewBooking": "View Booking",
-    "viewMore": "View More"
+    "viewMore": "View More",
+    "cancelled": "Cancelled",
+    "error": "Error"
   },
   "Index": {
     "title": "Hello world!"
@@ -657,7 +669,8 @@
     "updateEmail": "Update Email",
     "updatePassword": "Update Password",
     "updateProfile": "Update Profile",
-    "yourEmail": "Your Email"
+    "yourEmail": "Your Email",
+    "dangerArea": "Danger Area"
   },
   "SignInWithPassword": {
     "acceptInvite": "Accept Invite",

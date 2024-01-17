@@ -25,6 +25,8 @@ import { AdventureInvoices } from "@/components/booking/AdventureInvoices";
 import { format } from "date-fns";
 import { Icons } from "@/components/ui/icons";
 import { parseDateFromAPI } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 type TAdventureBookingForm = {
   adventureBooking: TAdventureBookingOrder;
@@ -109,6 +111,17 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
 
   return (
     <div className=" flex flex-col gap-12 @container p-4 rounded-sm">
+      {adventureBooking && adventureBooking.isCancelled && (
+        <div>
+          <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
+            <AlertCircleIcon className="h-4 w-4 !text-primary-foreground" />
+            <AlertTitle>{t("bookingCancelled")}</AlertTitle>
+            <AlertDescription className="text-xs">
+              {t("thisBookingWasCancelledByAnAdmin")}
+            </AlertDescription>
+          </Alert>
+        </div>
+      )}
       {/* Checkout Details */}
       <div className="">
         <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 mb-4">
@@ -226,7 +239,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         </div>
 
         {/* markAsPaidMutation */}
-        {
+        {adventureBooking && !adventureBooking.isCancelled && (
           <div className="flex flex-col gap-6">
             <Separator />
             <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
@@ -342,7 +355,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     </div>
   );

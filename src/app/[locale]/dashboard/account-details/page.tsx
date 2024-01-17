@@ -11,6 +11,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DashboardSection } from "@/components/DashboardSection";
 
 export default function Page() {
   const locale = useLocale();
@@ -26,12 +27,10 @@ export default function Page() {
   });
 
   return (
-    <div className="max-w-4xl flex flex-col gap-10">
-      <div>
-        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
-          {t("updateProfile")}
-        </h2>
-      </div>
+    <DashboardSection
+      title={t("updateProfile")}
+      className="max-w-4xl flex flex-col gap-10"
+    >
       {isFetchingUser && <Skeleton className="w-full h-64" />}
       {user && !isFetchingUser && <UserAccountDetails user={user} />}
       <Separator />
@@ -55,9 +54,12 @@ export default function Page() {
       </div>
       <UpdatePassword />
       <Separator />
-      <div>
+      <div className="flex flex-col gap-6">
+        <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
+          {t("dangerArea")}
+        </h2>
         <DeleteProfile />
       </div>
-    </div>
+    </DashboardSection>
   );
 }

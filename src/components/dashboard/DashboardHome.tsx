@@ -43,7 +43,7 @@ export const DashboardHome = () => {
     : [];
   const t = useTranslations("Home");
   return (
-    <DashboardSection title={t("myAccount")}>
+    <DashboardSection hideBack title={t("myAccount")}>
       <div className=" flex flex-col gap-4">
         <div className="flex gap-3">
           {isFetchingUser && <Skeleton className="h-20 w-full max-w-xs" />}
