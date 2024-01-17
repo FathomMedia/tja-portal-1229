@@ -246,7 +246,7 @@ export const DashboardStatistics = () => {
                       <p className="font-medium">{adventure.title}</p>
                     </div>
                   </div>
-                  <div className="flex flex-col @md:gap-3 @md:flex-row items-center">
+                  <div className="flex flex-col @md:gap-3 @md:flex-row items-center min-w-fit">
                     <div className="flex text-sm items-end justify-center gap-1 flex-col w-fit">
                       <Badge
                         className="w-fit font-light bg-background"
