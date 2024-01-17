@@ -174,7 +174,10 @@
     "fullyBooked": "Fully Booked",
     "seatsLeft": "Seats Left",
     "bookingCancelled": "Booking Cancelled",
-    "thisBookingWasCancelledByAnAdmin": "This booking was cancelled by an admin."
+    "thisBookingWasCancelledByAnAdmin": "This booking was cancelled by an admin.",
+    "restoreAdventureBooking": "Restore Adventure Booking",
+    "areYouSureYouWantToRestore": "Are you sure you want to restore this booking?",
+    "restoreBooking": "Restore Booking"
   },
   "Auth": {
     "OTP": "OTP",

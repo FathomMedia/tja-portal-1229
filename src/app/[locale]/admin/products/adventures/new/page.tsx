@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DashboardSection } from "@/components/DashboardSection";
 
 export default function Page() {
   const locale = useLocale();
@@ -32,18 +33,16 @@ export default function Page() {
   });
 
   return (
-    <div className="max-w-4xl flex flex-col gap-10 pb-20">
-      <div>
-        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
-          {t("newAdventure")}
-        </h2>
-      </div>
+    <DashboardSection
+      title={t("newAdventure")}
+      className="max-w-4xl flex flex-col gap-10 pb-20"
+    >
       {(isFetchingCountries || isFetchingAddons) && (
         <Skeleton className="w-full h-96" />
       )}
       {countries && addons && !isFetchingCountries && !isFetchingAddons && (
         <AdventureForm countries={countries} addons={addons} />
       )}
-    </div>
+    </DashboardSection>
   );
 }

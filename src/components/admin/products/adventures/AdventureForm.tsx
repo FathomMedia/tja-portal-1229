@@ -4,7 +4,6 @@ import React, { FC, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { enUS, ar } from "date-fns/locale";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -35,14 +34,7 @@ import { toast } from "sonner";
 import { cn, parseDateFromAPI } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
-import {
-  CalendarIcon,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsUpDown,
-  ImageOff,
-} from "lucide-react";
+import { Check, ChevronsUpDown, ImageOff } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { TAddon, TAdventure, TCountry } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -57,9 +49,7 @@ import {
 
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import Editor from "@/components/editor/editor";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DateRange, DayPicker } from "react-day-picker";
 import Link from "next/link";
 import { MAX_ADMIN_FILE_SIZE, MAX_IMAGE_SIZE } from "@/config";
 

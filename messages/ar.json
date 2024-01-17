@@ -172,7 +172,10 @@
     "fullyBooked": "محجوز بالكامل",
     "seatsLeft": "مقاعد خالية",
     "bookingCancelled": "تم إلغاء الحجز",
-    "thisBookingWasCancelledByAnAdmin": "تم إلغاء هذا الحجز من قبل المشرف."
+    "thisBookingWasCancelledByAnAdmin": "تم إلغاء هذا الحجز من قبل المشرف.",
+    "restoreAdventureBooking": "استعادة حجز المغامرة",
+    "areYouSureYouWantToRestore": "هل أنت متأكد أنك تريد استعادة هذا الحجز؟",
+    "restoreBooking": "استعادة الحجز"
   },
   "Auth": {
     "OTP": "رمز التحقق",

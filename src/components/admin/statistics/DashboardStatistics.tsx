@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, formatePrice } from "@/lib/utils";
+import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import {
   ArrowDown,
   ArrowRight,
@@ -20,6 +20,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import dayjs from "dayjs";
 
 export const DashboardStatistics = () => {
   const locale = useLocale();
@@ -251,7 +252,9 @@ export const DashboardStatistics = () => {
                         className="w-fit font-light bg-background"
                         variant={"outline"}
                       >
-                        {adventure.startDate}
+                        {dayjs(adventure.startDate, "MM-DD-YYYY").format(
+                          "DD-MM-YYYY"
+                        )}
                       </Badge>
                     </div>
                     <span className="hidden @md:flex text-xs text-muted-foreground font-light">
@@ -265,7 +268,9 @@ export const DashboardStatistics = () => {
                         className="w-fit font-light bg-background"
                         variant={"outline"}
                       >
-                        {adventure.endDate}
+                        {dayjs(adventure.endDate, "MM-DD-YYYY").format(
+                          "DD-MM-YYYY"
+                        )}
                       </Badge>
                     </div>
                   </div>

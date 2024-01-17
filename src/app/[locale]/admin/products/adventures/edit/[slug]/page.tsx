@@ -22,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { DashboardSection } from "@/components/DashboardSection";
 
 export default function Page({
   params: { slug },
@@ -97,12 +98,10 @@ export default function Page({
   });
 
   return (
-    <div className="max-w-4xl flex flex-col gap-10 pb-20">
-      <div>
-        <h2 className="text-2xl text-primary  font-helveticaNeue font-black  border-s-4 border-primary ps-2">
-          {t("editAdventure")}
-        </h2>
-      </div>
+    <DashboardSection
+      title={t("editAdventure")}
+      className="max-w-4xl flex flex-col gap-10 pb-20"
+    >
       {(isFetchingAdventure || isFetchingCountries || isFetchingAddons) && (
         <Skeleton className="w-full h-96" />
       )}
@@ -176,6 +175,6 @@ export default function Page({
           </div>
         )}
       </div>
-    </div>
+    </DashboardSection>
   );
 }

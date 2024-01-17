@@ -207,12 +207,6 @@ export const SignInWithEmailOTP = () => {
                 <FormItem className=" w-fit">
                   <FormLabel>{t("OTP")}</FormLabel>
                   <FormControl dir="ltr">
-                    {/* <Input
-                      placeholder={t("OTPSentToTheAboveEmail")}
-                      className=" border-primary"
-                      type="text"
-                      {...field}
-                    /> */}
                     <OtpInput
                       containerStyle={{
                         direction: "ltr",

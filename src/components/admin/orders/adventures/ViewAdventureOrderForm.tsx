@@ -239,7 +239,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         </div>
 
         {/* markAsPaidMutation */}
-        {adventureBooking && !adventureBooking.isCancelled && (
+        {
           <div className="flex flex-col gap-6">
             <Separator />
             <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
@@ -248,7 +248,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             <div>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col divide-y grow gap-4 items-start">
-                  {adventureBooking && !adventureBooking.isCancelled && (
+                  {adventureBooking && (
                     <div>
                       <Dialog>
                         <DialogTrigger asChild>
@@ -256,18 +256,25 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
                             variant="ghost"
                             className="text-muted-foreground font-normal"
                           >
-                            {t("cancelAdventureBooking")}
+                            {!adventureBooking.isCancelled
+                              ? t("cancelAdventureBooking")
+                              : t("restoreAdventureBooking")}
                             {/* Cancel Adventure Booking */}
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-lg">
                           <DialogHeader className="gap-1">
                             <DialogTitle>
-                              {t("cancelAdventureBooking")}
+                              {!adventureBooking.isCancelled
+                                ? t("cancelAdventureBooking")
+                                : t("restoreAdventureBooking")}
                             </DialogTitle>
                             <DialogDescription className="gap-1 flex flex-col flex-wrap">
-                              <p>{t("areYouSureYouWantToCancel")}</p>
-                              <p>{t("thisActionCannotBeUndone")}</p>
+                              <p>
+                                {!adventureBooking.isCancelled
+                                  ? t("areYouSureYouWantToCancel")
+                                  : t("areYouSureYouWantToRestore")}
+                              </p>
                               {/* Are you sure you want to cancel this booking? */}
                             </DialogDescription>
                           </DialogHeader>
@@ -287,12 +294,18 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
                                 disabled={cancelMutation.isPending}
                                 onClick={() => cancelMutation.mutate()}
                                 type="button"
-                                variant={"destructive"}
+                                variant={
+                                  !adventureBooking.isCancelled
+                                    ? "destructive"
+                                    : "info"
+                                }
                               >
                                 {cancelMutation.isPending && (
                                   <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                                 )}
-                                {t("cancelBooking")}
+                                {!adventureBooking.isCancelled
+                                  ? t("cancelBooking")
+                                  : t("restoreBooking")}
                               </Button>
                             </>
                           </DialogFooter>
@@ -355,7 +368,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               </div>
             </div>
           </div>
-        )}
+        }
       </div>
     </div>
   );
