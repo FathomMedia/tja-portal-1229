@@ -37,7 +37,7 @@
     "actions": "الإجراءات",
     "add": "إضافة",
     "addons": "إضافات",
-    "adventure": "مفامرة",
+    "adventure": "مغامرة",
     "adventureDetails": "تفاصيل المغامرة",
     "adventureEndDate": "تاريخ الإنتهاء",
     "adventureOrders": "طلبات المغامرات",
@@ -175,7 +175,8 @@
     "thisBookingWasCancelledByAnAdmin": "تم إلغاء هذا الحجز من قبل المشرف.",
     "restoreAdventureBooking": "استعادة حجز المغامرة",
     "areYouSureYouWantToRestore": "هل أنت متأكد أنك تريد استعادة هذا الحجز؟",
-    "restoreBooking": "استعادة الحجز"
+    "restoreBooking": "استعادة الحجز",
+    "pleaseUploadAtLeastOneDocuments": "يرجى تحميل مستند واحد على الأقل."
   },
   "Auth": {
     "OTP": "رمز التحقق",

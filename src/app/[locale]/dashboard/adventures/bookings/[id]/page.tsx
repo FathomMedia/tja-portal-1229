@@ -63,29 +63,49 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         ),
     });
 
-  const formSchema = z.object({
-    passport_id: z
-      .any()
-      .optional()
-      .refine(
-        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
-        `Max file size is 10MB.`
-      ),
-    ticket: z
-      .any()
-      .optional()
-      .refine(
-        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
-        `Max file size is 10MB.`
-      ),
-    other_document: z
-      .any()
-      .optional()
-      .refine(
-        (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
-        `Max file size is 10MB.`
-      ),
-  });
+  const formSchema = z
+    .object({
+      passport_id: z
+        .any()
+        .optional()
+        .refine(
+          (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+          `Max file size is 10MB.`
+        ),
+      ticket: z
+        .any()
+        .optional()
+        .refine(
+          (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+          `Max file size is 10MB.`
+        ),
+      other_document: z
+        .any()
+        .optional()
+        .refine(
+          (file) => (file ? file.size <= MAX_ADMIN_FILE_SIZE : true),
+          `Max file size is 10MB.`
+        ),
+    })
+    .superRefine(({ passport_id, ticket, other_document }, ctx) => {
+      if (!passport_id && !ticket && !other_document) {
+        ctx.addIssue({
+          code: "custom",
+          message: t("pleaseUploadAtLeastOneDocuments"),
+          path: ["passport_id"],
+        });
+        ctx.addIssue({
+          code: "custom",
+          message: t("pleaseUploadAtLeastOneDocuments"),
+          path: ["ticket"],
+        });
+        ctx.addIssue({
+          code: "custom",
+          message: t("pleaseUploadAtLeastOneDocuments"),
+          path: ["other_document"],
+        });
+      }
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -267,7 +287,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                 </Link>
                 <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
                   {t("bookedAt")}
-                  <p>{dayjs(booking.dateBooked).format("DD/MM/YYYY")}</p>
+                  <p>{booking.dateBooked.toString()}</p>
                 </div>
                 <div className=" gap-4 flex flex-col @md:flex-row text-sm text-primary py-6">
                   <p>

@@ -177,7 +177,8 @@
     "thisBookingWasCancelledByAnAdmin": "This booking was cancelled by an admin.",
     "restoreAdventureBooking": "Restore Adventure Booking",
     "areYouSureYouWantToRestore": "Are you sure you want to restore this booking?",
-    "restoreBooking": "Restore Booking"
+    "restoreBooking": "Restore Booking",
+    "pleaseUploadAtLeastOneDocuments": "Please Upload At Least One Documents."
   },
   "Auth": {
     "OTP": "OTP",
