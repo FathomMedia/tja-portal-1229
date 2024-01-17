@@ -92,7 +92,7 @@ export const DashboardStatistics = () => {
       {/* grid of chart and recent orders */}
       <div className="grid grid-cols-1 xl:grid-cols-7 gap-4 xl:gap-6">
         {/* chart */}
-        <div className=" gap-3 col-span-1 xl:col-span-4 flex flex-col h-full">
+        <div className="gap-3 col-span-1 xl:col-span-4 flex flex-col ">
           <p className="text-lg  font-semibold text-primary">
             {t("monthlyRevenue")}
           </p>
@@ -104,7 +104,7 @@ export const DashboardStatistics = () => {
           </div>
         </div>
         {/* recent orders */}
-        <div className="col-span-1 xl:col-span-3  flex flex-col h-full gap-3">
+        <div className="col-span-1 xl:col-span-3  flex flex-col gap-3">
           <p className="text-lg font-semibold text-primary">
             {t("latestOrders")}
           </p>
