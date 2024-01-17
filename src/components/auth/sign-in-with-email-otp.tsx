@@ -148,6 +148,7 @@ export const SignInWithEmailOTP = () => {
                   <FormLabel>{t("emailAddress")}</FormLabel>
                   <FormControl>
                     <Input
+                      dir="ltr"
                       placeholder="name@example.com"
                       className=" border-primary"
                       type="email"
@@ -188,6 +189,7 @@ export const SignInWithEmailOTP = () => {
                   <FormLabel>{t("emailAddress")}</FormLabel>
                   <FormControl>
                     <Input
+                      dir="ltr"
                       placeholder="name@example.com"
                       className=" border-primary"
                       type="email"
@@ -204,7 +206,7 @@ export const SignInWithEmailOTP = () => {
               render={({ field }) => (
                 <FormItem className=" w-fit">
                   <FormLabel>{t("OTP")}</FormLabel>
-                  <FormControl>
+                  <FormControl dir="ltr">
                     {/* <Input
                       placeholder={t("OTPSentToTheAboveEmail")}
                       className=" border-primary"
@@ -213,6 +215,7 @@ export const SignInWithEmailOTP = () => {
                     /> */}
                     <OtpInput
                       containerStyle={{
+                        direction: "ltr",
                         width: "fit-content",
                       }}
                       value={field.value}

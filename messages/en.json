@@ -184,7 +184,8 @@
     "emailAddress": "Email Address",
     "forgetPassword": "Forgot Password",
     "login": "Login",
-    "submit": "Submit"
+    "submit": "Submit",
+    "emailIsSentTo": "An email is sent to"
   },
   "Checkout": {
     "Addons": "Addons",
@@ -225,7 +226,9 @@
       }
     },
     "whyDidYouChooseThisDistention": "Why you choose this distention?...",
-    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons"
+    "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons",
+    "paymentType": "Payment type",
+    "checkout": "Checkout"
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",
@@ -408,7 +411,10 @@
     "platinum": "Platinum",
     "price": "Price",
     "search": "Search...",
-    "silver": "Silver"
+    "silver": "Silver",
+    "bookingFailed": "Booking Failed",
+    "failedToConfirmYourBooking": "Failed to confirm your booking, please try again.",
+    "goToConsultations": "Go To Consultations"
   },
   "Coupons": {
     "70points": "70 Points",

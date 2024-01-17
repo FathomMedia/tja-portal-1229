@@ -112,6 +112,7 @@ export const SignInWithPassword = () => {
               <FormLabel>{t("email.title")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder={t("email.placeholder")}
                   className=" border-primary"
                   type="email"
@@ -130,6 +131,7 @@ export const SignInWithPassword = () => {
               <FormLabel>{t("password.title")}</FormLabel>
               <FormControl>
                 <Input
+                  dir="ltr"
                   placeholder={t("password.placeholder")}
                   className=" border-primary"
                   type="password"

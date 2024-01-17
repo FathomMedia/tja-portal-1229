@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import OtpInput from "react-otp-input";
 import { Label } from "@/components/ui/label";
 import { useLocale, useTranslations } from "next-intl";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 import { TUser } from "@/lib/types";
 
@@ -96,18 +96,19 @@ export default function Page() {
             className="space-y-8 flex flex-col items-center"
           >
             <div className="w-full flex flex-col gap-2">
-              <Label className="w-full">An email is sent to</Label>
-              <Input disabled value={email} />
+              <Label className="w-full">{t("emailIsSentTo")}</Label>
+              <Input dir="ltr" disabled value={email} />
             </div>
             <FormField
               control={formOTP.control}
               name="otp"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>OTP</FormLabel>
+                  <FormLabel>{t("OTP")}</FormLabel>
                   <FormControl>
                     <OtpInput
                       containerStyle={{
+                        direction: "ltr",
                         width: "100%",
                       }}
                       value={field.value}

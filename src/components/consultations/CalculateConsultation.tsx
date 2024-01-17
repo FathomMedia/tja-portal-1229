@@ -98,7 +98,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     async onSuccess(data, values) {
       const { message, data: dataResponse } = await data.json();
       if (data.ok) {
-        toast.success(message, { duration: 6000 });
+        // toast.success(message, { duration: 6000 });
         onPackageChanged(dataResponse);
         startDate(values.start_date);
         endDate(values.end_date);

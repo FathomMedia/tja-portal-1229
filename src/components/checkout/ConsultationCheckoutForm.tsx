@@ -1,6 +1,6 @@
 "use client";
 
-import { TConsultation, TCoupon, TUser } from "@/lib/types";
+import { TConsultation, TCoupon } from "@/lib/types";
 import React, { FC, useEffect, useState } from "react";
 import { z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
@@ -16,14 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { CouponsSelect } from "./CouponsSelect";
 import Link from "next/link";
 import { cn, formatePrice } from "@/lib/utils";
-import { PaymentTypeSelect } from "./PaymentTypeSelect";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import {
@@ -35,25 +33,13 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { toast } from "sonner";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 import { ScrollArea } from "../ui/scroll-area";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { Skeleton } from "../ui/skeleton";
+import { isRtlLang } from "rtl-detect";
 
 type TConsultationCheckoutForm = {
   consultation: TConsultation;
@@ -108,100 +94,17 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         isUsed: z.number(),
       })
       .nullable(),
-    // Payment method
+
     paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
-    // cardName: z.string().optional(),
-    // cardNumber: z.string().optional(),
-    // cardExpMonth: z.string().optional(),
-    // cardExpYear: z.string().optional(),
-    // cardCVV: z.string().optional(),
   });
-  // .superRefine(
-  //   (
-  //     {
-  //       paymentMethod,
-  //       cardName,
-  //       cardNumber,
-  //       cardExpMonth,
-  //       cardExpYear,
-  //       cardCVV,
-  //     },
-  //     ctx
-  //   ) => {
-  //     if (paymentMethod === "card" && cardName === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card name is required",
-  //         path: ["cardName"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardNumber === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card number is required",
-  //         path: ["cardNumber"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardExpMonth === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card expiry month is required",
-  //         path: ["cardExpMonth"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardExpYear === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card expiry year is required",
-  //         path: ["cardExpYear"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardCVV === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card CVV is required",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //     if (
-  //       paymentMethod === "card" &&
-  //       ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
-  //     ) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card CVV is invalid",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //     if (
-  //       paymentMethod === "card" &&
-  //       ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
-  //     ) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card number is invalid",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //   }
-  // );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       coupon: null,
       paymentMethod: "card",
-      // cardName: "",
-      // cardNumber: "",
-      // cardExpMonth: "",
-      // cardExpYear: "",
-      // cardCVV: "",
     },
   });
-
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-    string | undefined
-  >(form.formState.defaultValues?.paymentMethod);
 
   const [discount, setDiscount] = useState<number>(0);
 
@@ -246,13 +149,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         departure_airport: formData.airport,
         best_travel_experience: formData.travelExperience,
         phobias: formData.otherFears || formData.fearsSelection,
-        // ...(values.paymentMethod === "card" && {
-        //   card_holder_name: values.cardName,
-        //   card_number: values.cardNumber,
-        //   card_expiry_month: values.cardExpMonth,
-        //   card_expiry_year: values.cardExpYear,
-        //   card_cvv: values.cardCVV,
-        // }),
       };
 
       return fetch(`/api/book/consultation`, {
@@ -286,15 +182,18 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // setIsLoading(true);
     mutation.mutate(values);
   }
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="flex flex-col" size={"lg"}>
+      <SheetContent
+        dir={isRtlLang(locale) ? "rtl" : "ltr"}
+        className="flex flex-col"
+        size={"lg"}
+      >
         <SheetHeader>
-          <SheetTitle className="text-primary"> Checkout </SheetTitle>
+          <SheetTitle className="text-primary"> {t("checkout")} </SheetTitle>
         </SheetHeader>
 
         <ScrollArea>
@@ -302,6 +201,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col"
+              dir={isRtlLang(locale) ? "rtl" : "ltr"}
             >
               <div className=" flex flex-col place-items-center lg:place-items-start">
                 {/* ----------------Billing Details---------------- */}
@@ -366,7 +266,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                             render={({ field }) => (
                               <FormItem className=" w-full">
                                 <div className="flex items-center justify-between flex-wrap">
-                                  <FormLabel>{"Coupons"}</FormLabel>
+                                  <FormLabel>{t("coupons")}</FormLabel>
                                   <Link
                                     className={cn(
                                       buttonVariants({ variant: "link" }),
@@ -415,7 +315,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                               </FormItem>
                             )}
                           />
-                          <Separator className="bg-muted/50" />
                         </div>
                         {/* ----------------Consultation Choices---------------- */}
                       </div>
@@ -452,7 +351,6 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                               <FormControl>
                                 <RadioGroup
                                   onValueChange={(val) => {
-                                    setSelectedPaymentMethod(val);
                                     field.onChange(val);
                                   }}
                                   defaultValue={field.value}

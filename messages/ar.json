@@ -182,7 +182,8 @@
     "emailAddress": "البريد الإلكتروني",
     "forgetPassword": "نسيت كلمة المرور",
     "login": "تسجيل الدخول",
-    "submit": "إرسال"
+    "submit": "إرسال",
+    "emailIsSentTo": "يتم إرسال بريد إلكتروني إلى"
   },
   "Checkout": {
     "Addons": "الإضافات",
@@ -214,7 +215,14 @@
     "toBePaidLater": "(تُدفع لاحقًا)",
     "total": "الإجمالي",
     "whyDidYouChooseThisDistention": "لماذا أخترت هذه الوجهة؟...",
-    "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم متوفرة"
+    "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم متوفرة",
+    "paymentType": "نوع الدفع",
+    "why": {
+      "errors": {
+        "required": "هذه الخانة مطلوبه"
+      }
+    },
+    "checkout": "الدفع"
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",
@@ -382,7 +390,8 @@
     "Actions": "الإجراءات",
     "startDateMustBeInTheFuture": "يجب أن يكون تاريخ البدء في المستقبل.",
     "endDateCannotBeBeforeStartDate": "لا يمكن أن يكون تاريخ الانتهاء أقدم من تاريخ البدء.",
-    "ifYouWakeUp": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟"
+    "ifYouWakeUp": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟",
+    "moreDiscovering": "المزيد من الاكتشافات والتنقل بين المدن مع بعض أنشطة المغامرات"
   },
   "Consultations": {
     "actions": "الإجراءات",
@@ -396,7 +405,10 @@
     "platinum": "الباقة البلاتينية",
     "price": "السعر",
     "search": "بحث...",
-    "silver": "الباقة الفضية"
+    "silver": "الباقة الفضية",
+    "bookingFailed": "فشل الحجز",
+    "failedToConfirmYourBooking": "فشل تأكيد حجزك، يرجى المحاولة مرة أخرى.",
+    "goToConsultations": "اذهب إلى الإستشارات"
   },
   "Coupons": {
     "70points": " نقطة 70 ",

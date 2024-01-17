@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { AddonsSelect } from "./AddonsSelect";
@@ -42,8 +41,6 @@ import { toast } from "sonner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { Skeleton } from "../ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { ImageOff } from "lucide-react";
 
 type TAdventureCheckoutForm = {
   initAdventure: TAdventure;
@@ -63,15 +60,10 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         is_partial: values.isPartialPayment,
         payment_method: values.paymentMethod,
         ...(values.coupon && { coupon: values.coupon.code }),
-
         ...(values.addOns.length > 0 && {
           add_ons: values.addOns.map((addon) => addon.id),
         }),
       };
-      console.log(
-        "🚀 ~ file: AdventureCheckoutForm.tsx:81 ~ dataToRequest:",
-        dataToRequest
-      );
 
       return fetch(`/api/book/adventure`, {
         method: "POST",
@@ -149,90 +141,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       })
       .nullable(),
     isPartialPayment: z.boolean(),
-    // // Billing Info
-    // customerName: z.string().min(1),
-    // address: z.string().min(1),
-    // city: z.string().min(1),
-    // country: z.string().min(1),
-    // email: z.string().email().min(1),
-    // phone: z.string().min(1),
-    // Payment method
+
     paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
-    // cardName: z.string().optional(),
-    // cardNumber: z.string().optional(),
-    // cardExpMonth: z.string().optional(),
-    // cardExpYear: z.string().optional(),
-    // cardCVV: z.string().optional(),
   });
-  // .superRefine(
-  //   (
-  //     {
-  //       paymentMethod,
-  //       cardName,
-  //       cardNumber,
-  //       cardExpMonth,
-  //       cardExpYear,
-  //       cardCVV,
-  //     },
-  //     ctx
-  //   ) => {
-  //     if (paymentMethod === "card" && cardName === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card name is required",
-  //         path: ["cardName"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardNumber === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card number is required",
-  //         path: ["cardNumber"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardExpMonth === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card expiry month is required",
-  //         path: ["cardExpMonth"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardExpYear === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card expiry year is required",
-  //         path: ["cardExpYear"],
-  //       });
-  //     }
-  //     if (paymentMethod === "card" && cardCVV === undefined) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card CVV is required",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //     if (
-  //       paymentMethod === "card" &&
-  //       ((cardCVV ?? []).length < 3 || (cardCVV ?? []).length > 3)
-  //     ) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card CVV is invalid",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //     if (
-  //       paymentMethod === "card" &&
-  //       ((cardNumber ?? []).length < 16 || (cardNumber ?? []).length > 16)
-  //     ) {
-  //       ctx.addIssue({
-  //         code: "custom",
-  //         message: "Card number is invalid",
-  //         path: ["cardCVV"],
-  //       });
-  //     }
-  //   }
-  // );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -241,24 +152,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       addOns: [],
       coupon: null,
       isPartialPayment: adventure?.isPartialAllowed ? true : false,
-      // customerName: user.name,
-      // email: user.email,
-      // phone: user.phone,
-      // address: "",
-      // city: "",
-      // country: "",
       paymentMethod: "card",
-      // cardName: "",
-      // cardNumber: "",
-      // cardExpMonth: "",
-      // cardExpYear: "",
-      // cardCVV: "",
     },
   });
-
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-    string | undefined
-  >(form.formState.defaultValues?.paymentMethod);
 
   const [addonsTotal, setAddonsTotal] = useState(0);
   const [totalAdventureWithAddons, setTotalAdventureWithAddons] = useState(0);
@@ -360,7 +256,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                         <FormControl>
                           <RadioGroup
                             onValueChange={(val) => {
-                              setSelectedPaymentMethod(val);
+                              // setSelectedPaymentMethod(val);
                               field.onChange(val);
                             }}
                             defaultValue={field.value}
@@ -421,167 +317,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                       </FormItem>
                     )}
                   />
-                  {/* card details */}
-                  {/* {selectedPaymentMethod === "card" && (
-                    <div className={cn("grid gap-6")}>
-                      <FormField
-                        control={form.control}
-                        name="cardName"
-                        render={({ field }) => (
-                          <FormItem className="grid gap-2 w-full">
-                            <FormLabel>
-                              {"Name"}
-                              <span className="text-destructive ms-1">*</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Name on card"
-                                className=" "
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="cardNumber"
-                        render={({ field }) => (
-                          <FormItem className="grid gap-2 w-full">
-                            <FormLabel>
-                              {"Card Number"}
-                              <span className="text-destructive ms-1">*</span>
-                            </FormLabel>
-                            <FormControl>
-                              <Input placeholder="" className=" " {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <div className="grid grid-cols-3 gap-4">
-                        <FormField
-                          control={form.control}
-                          name="cardExpMonth"
-                          render={({ field }) => (
-                            <FormItem className="grid gap-2 w-full">
-                              <FormLabel>
-                                {"Expires"}
-                                <span className="text-destructive ms-1">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Select
-                                  defaultValue={field.value}
-                                  onValueChange={field.onChange}
-                                >
-                                  <SelectTrigger
-                                    className="rounded-full"
-                                    id="month"
-                                  >
-                                    <SelectValue placeholder="Month" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="1">
-                                      {t("january")}
-                                    </SelectItem>
-                                    ,
-                                    <SelectItem value="2">
-                                      {t("february")}
-                                    </SelectItem>
-                                    <SelectItem value="3">
-                                      {t("March")}
-                                    </SelectItem>
-                                    <SelectItem value="4">
-                                      {t("april")}
-                                    </SelectItem>
-                                    <SelectItem value="5">
-                                      {t("may")}
-                                    </SelectItem>
-                                    <SelectItem value="6">June</SelectItem>
-                                    <SelectItem value="7">July</SelectItem>
-                                    <SelectItem value="8">August</SelectItem>
-                                    <SelectItem value="9">September</SelectItem>
-                                    <SelectItem value="10">October</SelectItem>
-                                    <SelectItem value="11">November</SelectItem>
-                                    <SelectItem value="12">December</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="cardExpYear"
-                          render={({ field }) => (
-                            <FormItem className="grid gap-2 w-full">
-                              <FormLabel>
-                                {"Year"}
-                                <span className="text-destructive ms-1">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Select
-                                  defaultValue={field.value}
-                                  onValueChange={field.onChange}
-                                >
-                                  <SelectTrigger
-                                    className="rounded-full"
-                                    id="year"
-                                  >
-                                    <SelectValue placeholder="Year" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {Array.from({ length: 10 }, (_, i) => (
-                                      <SelectItem
-                                        key={i}
-                                        value={`${
-                                          new Date().getFullYear() + i
-                                        }`}
-                                      >
-                                        {new Date().getFullYear() + i}
-                                      </SelectItem>
-                                    ))}
-                                  </SelectContent>
-                                </Select>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="cardCVV"
-                          render={({ field }) => (
-                            <FormItem className="grid gap-2 w-full">
-                              <FormLabel>
-                                {"CVV"}
-                                <span className="text-destructive ms-1">*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder="CVV"
-                                  className=" "
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  )} */}
                 </CardContent>
                 <CardFooter>
-                  <Button
-                    type="submit"
-                    // disabled={!form.formState.isValid}
-                    className="w-full mt-4"
-                  >
+                  <Button type="submit" className="w-full mt-4">
                     {mutation.isPending && (
                       <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
                     )}
@@ -778,7 +516,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   render={({ field }) => (
                     <FormItem className=" w-full">
                       <div className="flex items-center justify-between flex-wrap">
-                        <FormLabel>{"Payment type"}</FormLabel>
+                        <FormLabel>{t("paymentType")}</FormLabel>
                       </div>
                       <FormControl>
                         <PaymentTypeSelect

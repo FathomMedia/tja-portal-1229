@@ -33,7 +33,7 @@ export default function Page() {
     >
       <Suspense
         fallback={
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col  gap-4">
             <Skeleton className="w-full h-16 rounded-md" />
             <Skeleton className="w-full h-20 rounded-md" />
           </div>
