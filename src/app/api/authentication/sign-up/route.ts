@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
     email: string;
     password: string;
     phone: string;
+    language: string;
     password_confirmation: string;
   } = await request.json();
   const cookieStore = cookies();

@@ -37,6 +37,7 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PhoneNumberInput } from "../ui/phone";
+import { isRtlLang } from "rtl-detect";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -44,7 +45,7 @@ const maxAge = 95;
 
 export const SignUp = () => {
   const t = useTranslations("SignUp");
-  const { refresh } = useRouter();
+  const { push } = useRouter();
 
   const formSchema = z
     .object({
@@ -55,6 +56,7 @@ export const SignUp = () => {
       date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
       name: z.string().min(2, t("name.errors.required")),
       phone: z.string().min(2, t("phone.errors.required")),
+      preferred_language: z.enum(["ar", "en"]),
       gender: z.string().min(1).max(1),
       password: z.string().min(8, t("password.errors.required")),
       password_confirmation: z.string().min(8),
@@ -83,6 +85,8 @@ export const SignUp = () => {
       name: "",
       phone: "",
       gender: "",
+      preferred_language:
+        locale === "ar" || locale === "en" ? locale : undefined,
     },
   });
   // 2. Define a submit handler.
@@ -109,7 +113,7 @@ export const SignUp = () => {
 
     if (res.ok) {
       toast.success(message, { duration: 6000 });
-      refresh();
+      push(`/${locale}/authentication/verify-email`);
     } else {
       toast.error(message);
     }
@@ -158,25 +162,52 @@ export const SignUp = () => {
             )}
           />
         </div>
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className=" w-full">
-              <FormLabel>{t("emailAddress")}</FormLabel>
-              <FormControl>
-                <Input
-                  dir="ltr"
-                  placeholder="name@example.com"
-                  className=" border-primary"
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-3 items-center justify-between">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("emailAddress")}</FormLabel>
+                <FormControl>
+                  <Input
+                    dir="ltr"
+                    placeholder="name@example.com"
+                    className=" border-primary"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="preferred_language"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("preferredLanguage")}</FormLabel>
+                <Select
+                  dir={isRtlLang(locale) ? "rtl" : "ltr"}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="rounded-full border-primary">
+                      <SelectValue placeholder={t("preferredLanguage")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={"ar"}>العربية</SelectItem>
+                    <SelectItem value={"en"}>English</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="flex gap-3 flex-col sm:flex-row items-center w-full justify-between">
           <FormField
             control={form.control}

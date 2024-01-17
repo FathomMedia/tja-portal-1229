@@ -18,6 +18,7 @@ export type TUser = {
   joinedAt: string;
   verified: boolean;
   dateFormatted: string;
+  language: string;
 };
 
 export type TAchievement = {

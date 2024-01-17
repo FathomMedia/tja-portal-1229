@@ -20,7 +20,8 @@
     "toploader",
     "Travelled",
     "vhidden",
-    "ytimg"
+    "ytimg",
+    "العربية"
   ],
   "i18n-ally.localesPaths": ["messages"],
   "i18n-ally.keystyle": "nested"

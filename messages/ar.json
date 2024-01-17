@@ -756,7 +756,10 @@
     "submit": "تقديم",
     "update": "تحديث",
     "verifyEmail": "تأكيد البريد الإلكتروني",
-    "verifyOTP": "تأكيد رمز التحقق"
+    "verifyOTP": "تأكيد رمز التحقق",
+    "preferredLanguage": "اللغة المفضلة",
+    "selectPreferredLanguage": "اختر اللغة المفضلة...",
+    "arabic": "عربي"
   },
   "UpdatePassword": {
     "Old_Password": "كلمة المرور القديمة",

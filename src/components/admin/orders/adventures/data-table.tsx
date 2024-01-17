@@ -56,6 +56,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   isFetching: boolean;
   meta: TMeta | null;
+  slug: string;
   onPageSelect: (goTo: number) => void;
   onSearch: (q: string) => void;
 }
@@ -65,6 +66,7 @@ export function DataTable<TData, TValue>({
   data,
   isFetching,
   meta,
+  slug,
   onPageSelect,
   onSearch,
 }: DataTableProps<TData, TValue>) {
@@ -114,7 +116,7 @@ export function DataTable<TData, TValue>({
             className="ml-auto rounded-lg flex items-center gap-1"
             onClick={() =>
               apiReqQuery({
-                endpoint: `/adventure-bookings/export`,
+                endpoint: `/adventure-bookings/${slug}/export`,
                 method: "GET",
                 locale,
               }).then(async (res) => {

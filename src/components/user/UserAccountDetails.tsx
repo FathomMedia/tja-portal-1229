@@ -39,6 +39,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { TUser } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { PhoneNumberInput } from "../ui/phone";
+import { isRtlLang } from "rtl-detect";
 
 // minimum age for date of birth
 const minAge = 5;
@@ -57,6 +58,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
     date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
     gender: z.string().min(1).max(1),
     phone: z.string().min(1),
+    language: z.enum(["ar", "en"]),
   });
   const defaultDate = dayjs(user.dateFormatted).toDate();
 
@@ -68,6 +70,10 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
       date_of_birth: defaultDate,
       gender: user.gender,
       phone: user.phone,
+      language:
+        user.language === "ar" || user.language === "en"
+          ? user.language
+          : undefined,
     },
   });
 
@@ -86,6 +92,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
             gender: values.gender,
             phone: values.phone,
+            preferred_language: values.language,
           },
         }),
       });
@@ -217,6 +224,32 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
                   <SelectContent>
                     <SelectItem value="M">{t("male")}</SelectItem>
                     <SelectItem value="F">{t("female")}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="language"
+            render={({ field }) => (
+              <FormItem className=" w-full">
+                <FormLabel>{t("preferredLanguage")}</FormLabel>
+                <Select
+                  dir={isRtlLang(locale) ? "rtl" : "ltr"}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="rounded-full border-primary">
+                      <SelectValue placeholder={t("preferredLanguage")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value={"ar"}>العربية</SelectItem>
+                    <SelectItem value={"en"}>English</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

@@ -715,7 +715,8 @@
     "pickaDate": "Pick a Date",
     "selectGender": "Select Gender",
     "signIn": "Sign In",
-    "update": "Update"
+    "update": "Update",
+    "preferredLanguage": "Preferred Language"
   },
   "SignUp": {
     "Enter your name": "Enter your name",
@@ -761,7 +762,10 @@
     "submit": "Submit",
     "update": "Update",
     "verifyEmail": "Verify Email",
-    "verifyOTP": "Verify OTP"
+    "verifyOTP": "Verify OTP",
+    "preferredLanguage": "Preferred Language",
+    "selectPreferredLanguage": "Select preferred language...",
+    "arabic": "Arabic"
   },
   "UpdatePassword": {
     "Old_Password": "Old Password",

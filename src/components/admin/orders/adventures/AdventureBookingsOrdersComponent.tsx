@@ -31,6 +31,7 @@ export const AdventureBookingsOrdersComponent = ({
 
   return (
     <DataTable
+      slug={slug}
       columns={columns}
       data={adventureOrders?.data ?? []}
       isFetching={isFetching}
