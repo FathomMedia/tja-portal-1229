@@ -636,7 +636,7 @@
     "logout": "تسجيل خروج",
     "myAccount": "حسابي",
     "noOrdersFound": "لم يتم العثور على أية طلبات",
-    "noUpcoming": "ليس لديك أي مغامرات قادمة",
+    "noUpcoming": "ليس لديك أي مغامرات قادمة.",
     "paid": "مدفوع",
     "pendingPayment": "في انتظار الدفع",
     "startDate": "تاريخ البدء",
@@ -646,7 +646,9 @@
     "viewBooking": "تفاصيل الحجز",
     "viewMore": "عرض المزيد",
     "cancelled": "ألغيت",
-    "error": "خطأ فني"
+    "error": "خطأ فني",
+    "availablePoints": "النقاط المتاحة",
+    "bookYourAdventure": "احجز مغامرتك"
   },
   "Index": {
     "title": "اهلا بالعالم"

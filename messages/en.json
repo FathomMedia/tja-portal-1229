@@ -641,7 +641,7 @@
     "logout": "Logout",
     "myAccount": "My Account",
     "noOrdersFound": "No orders found",
-    "noUpcoming": "You don't have any upcoming adventures",
+    "noUpcoming": "You don't have any upcoming adventures.",
     "paid": "Paid",
     "pendingPayment": "Pending Payment",
     "startDate": "Start Date",
@@ -651,7 +651,9 @@
     "viewBooking": "View Booking",
     "viewMore": "View More",
     "cancelled": "Cancelled",
-    "error": "Error"
+    "error": "Error",
+    "availablePoints": "Available Points",
+    "bookYourAdventure": "Book Your Adventure"
   },
   "Index": {
     "title": "Hello world!"

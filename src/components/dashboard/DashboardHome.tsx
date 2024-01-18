@@ -48,26 +48,38 @@ export const DashboardHome = () => {
         <div className="flex gap-3">
           {isFetchingUser && <Skeleton className="h-20 w-full max-w-xs" />}
           {!isFetchingUser && (
-            <div className="flex border-b">
-              {/* Current Tier */}
-              <div className=" flex p-4 flex-col">
-                <p className="text-sm text-muted-foreground">
-                  {t("currentTier")}
-                </p>
-                <h2 className="text-2xl text-primary  font-helveticaNeue font-black ">
-                  {user?.level?.name}
-                </h2>
+            <div className="bg-[#2F9D83] rounded-xl flex sm:w-fit w-full flex-col">
+              <div className="flex items-center ">
+                {/* Current Tier */}
+                <div className=" flex-1 flex text-center flex-col px-4 sm:px-8 gap-1 py-3 sm:py-6">
+                  <p className="text-sm text-white/60">{t("currentTier")}</p>
+                  <h2 className="text-2xl text-white  font-helveticaNeue font-black ">
+                    {user?.level?.name}
+                  </h2>
+                </div>
+                {/* divider */}
+                <div className="w-[1px] h-full bg-white/60"></div>
+                {/* Days Travelled */}
+                <div className=" flex-1 flex p-4 flex-col px-4 min-w-fit sm:px-8 text-center gap-1 py-3 sm:py-6">
+                  <p className="text-sm text-white/60 min-w-fit">
+                    {t("daysTravelled")}
+                  </p>
+                  <h2 className="text-2xl text-white  font-helveticaNeue font-black ">{`${
+                    user?.daysTravelled + " " + t("days")
+                  } `}</h2>
+                </div>
+                <div className="w-[1px] hidden sm:block h-full bg-white/60"></div>
+                <div className="hidden sm:flex p-4 flex-col px-4 sm:px-8 text-center gap-1 py-3 sm:py-6">
+                  <p className="text-sm text-white/60">
+                    {t("availablePoints")}
+                  </p>
+                  <h2 className="text-2xl text-white  font-helveticaNeue font-black ">{`${user?.points} `}</h2>
+                </div>
               </div>
-              {/* divider */}
-              <div className="w-[1px] h-full bg-border"></div>
-              {/* Days Travelled */}
-              <div className=" flex p-4 flex-col">
-                <p className="text-sm text-muted-foreground">
-                  {t("daysTravelled")}
-                </p>
-                <h2 className="text-2xl text-primary  font-helveticaNeue font-black ">{`${
-                  user?.daysTravelled + " " + t("days")
-                } `}</h2>
+              <div className=" sm:hidden block h-[1px] w-full bg-white/60"></div>
+              <div className="sm:hidden flex p-4 flex-col items-center px-4 sm:px-8 text-center gap-1 py-3 sm:py-6">
+                <p className="text-sm text-white/60">{t("availablePoints")}</p>
+                <h2 className="text-2xl text-white  font-helveticaNeue font-black ">{`${user?.points} `}</h2>
               </div>
             </div>
           )}
@@ -78,7 +90,7 @@ export const DashboardHome = () => {
           </div>
         )}
         {!isFetchingLatestOrders && (
-          <div className="p-6 flex flex-col gap-4">
+          <div className=" py-6 flex flex-col gap-10">
             {/* Up coming adventures */}
             <div className="flex flex-col gap-2">
               <h1 className="text-xl text-primary">
@@ -95,16 +107,16 @@ export const DashboardHome = () => {
                   );
                 })}
                 {upComingAdventures.length == 0 && (
-                  <div className="bg-muted rounded-lg p-3 flex flex-wrap items-center text-muted-foreground">
+                  <div className="bg-muted rounded-lg gap-4 px-6 py-4 flex flex-wrap items-center text-muted-foreground">
                     <p>{t("noUpcoming")}</p>
                     <Link
                       href={`/${locale}/dashboard/adventures`}
                       className={cn(
-                        buttonVariants({ variant: "link" }),
+                        buttonVariants({ variant: "secondary" }),
                         "w-fit"
                       )}
                     >
-                      {t("bookOne")}
+                      {t("bookYourAdventure")}
                     </Link>
                   </div>
                 )}
