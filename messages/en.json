@@ -230,10 +230,11 @@
         "required": "This field is required"
       }
     },
-    "whyDidYouChooseThisDistention": "Why you choose this distention?...",
+    "whyDidYouChooseThisDistention": "Why did you choose this destination?",
     "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons",
     "paymentType": "Payment type",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "whyDidYouChooseThisDistentionDescription": "Enter your reason..."
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",

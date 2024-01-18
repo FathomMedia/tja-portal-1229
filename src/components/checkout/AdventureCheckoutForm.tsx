@@ -409,7 +409,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     <FormControl>
                       {/* Why you choose this distention?... */}
                       <Textarea
-                        placeholder={t("whyDidYouChooseThisDistention")}
+                        placeholder={t(
+                          "whyDidYouChooseThisDistentionDescription"
+                        )}
                         className=" border-primary-foreground bg-muted/20 text-primary-foreground placeholder:text-primary-foreground/50 resize-none"
                         {...field}
                       />

@@ -10,7 +10,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AccordionTriggerWithoutIcon,
 } from "../ui/accordion";
+import { Separator } from "../ui/separator";
 
 export function UserAuthForm() {
   const locale = useLocale();
@@ -67,13 +69,14 @@ export function UserAuthForm() {
               </span>
             </div>
           </div> */}
-          <Accordion className="w-full mt-6" type="single" collapsible>
+          <Separator className="mt-4" />
+          <Accordion className="w-full" type="single" collapsible>
             <AccordionItem value="item-1" className="border-b-0">
-              <AccordionTrigger className="text-muted-foreground text-sm font-medium">
+              <AccordionTriggerWithoutIcon className="text-muted-foreground text-sm font-medium justify-center">
                 {t("signInUsingOTP")}
-              </AccordionTrigger>
+              </AccordionTriggerWithoutIcon>
               <AccordionContent>
-                <div className="h-full w-full mb-auto">
+                <div className="h-full w-full mb-auto mt-4">
                   <SignInWithEmailOTP />
                 </div>
               </AccordionContent>

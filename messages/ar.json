@@ -219,7 +219,7 @@
     "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
     "toBePaidLater": "(تُدفع لاحقًا)",
     "total": "الإجمالي",
-    "whyDidYouChooseThisDistention": "لماذا أخترت هذه الوجهة؟...",
+    "whyDidYouChooseThisDistention": "لماذا أخترت هذه الوجهة؟",
     "youDontHaveAnyRedeemedCoupons": "ليس لديك أي قسائم متوفرة",
     "paymentType": "نوع الدفع",
     "why": {
@@ -227,7 +227,8 @@
         "required": "هذه الخانة مطلوبه"
       }
     },
-    "checkout": "الدفع"
+    "checkout": "الدفع",
+    "whyDidYouChooseThisDistentionDescription": "أدخل السبب..."
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",

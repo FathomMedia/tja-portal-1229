@@ -45,7 +45,7 @@ export const LanguageSwitcher: FC = () => {
         <Button
           variant="outline"
           size={"icon"}
-          className="border-primary min-w-fit"
+          className="border-primary min-w-fit h-10 w-10"
         >
           <Globe />
         </Button>

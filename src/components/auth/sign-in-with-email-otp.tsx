@@ -159,11 +159,7 @@ export const SignInWithEmailOTP = () => {
                 </FormItem>
               )}
             />
-            <Button
-              className="w-full max-w-[268px]"
-              variant={"secondary"}
-              type="submit"
-            >
+            <Button className="w-full " variant={"secondary"} type="submit">
               {isLoading && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}

@@ -64,9 +64,8 @@ export default function RootLayout({
       lang={locale}
       className={cn(inter.variable, helveticaNeue.variable)}
     >
-      {/* <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/> */}
       <body>
-        <ReCaptchaProvider>
+        <ReCaptchaProvider language={locale}>
           <NextIntlClientProvider
             timeZone={timezone}
             locale={locale}
