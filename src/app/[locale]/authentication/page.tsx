@@ -20,7 +20,7 @@ export default function Page() {
         alt="Auth Image"
       />
       {/* auth card */}
-      <div className="flex  flex-col lg:col-start-2   z-10 items-center justify-center p-10 lg:p-0   ">
+      <div className="flex  flex-col lg:col-start-2   z-10 items-center justify-center p-6 sm:10 lg:p-0   ">
         <div className="bg-white h-fit lg:h-full w-full  shadow-2xl rounded-2xl p-6 pt-10 sm:p-10 flex gap-10 items-center lg:rounded-none flex-col justify-center">
           <div className="max-w-2xl w-full flex flex-col gap-10 lg:gap-20">
             <div className="relative w-full h-16 sm:h-20">
