@@ -92,7 +92,7 @@ export const UserAccountDetails: FC<TUserAccountDetails> = ({ user }) => {
             date_of_birth: format(values.date_of_birth, "dd/MM/yyyy"),
             gender: values.gender,
             phone: values.phone,
-            preferred_language: values.language,
+            language: values.language,
           },
         }),
       });

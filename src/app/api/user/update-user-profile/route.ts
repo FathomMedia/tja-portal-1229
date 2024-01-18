@@ -6,6 +6,7 @@ export async function PUT(request: NextRequest) {
   const { dataToSend } = await request.json();
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
+  console.log("🚀 ~ PUT ~ dataToSend:", dataToSend);
 
   return await apiReq({
     endpoint: "/users/profile",

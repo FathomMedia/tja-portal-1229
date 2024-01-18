@@ -56,7 +56,7 @@ export const SignUp = () => {
       date_of_birth: z.date().max(dayjs().subtract(minAge, "year").toDate()),
       name: z.string().min(2, t("name.errors.required")),
       phone: z.string().min(2, t("phone.errors.required")),
-      preferred_language: z.enum(["ar", "en"]),
+      language: z.enum(["ar", "en"]),
       gender: z.string().min(1).max(1),
       password: z.string().min(8, t("password.errors.required")),
       password_confirmation: z.string().min(8),
@@ -85,8 +85,7 @@ export const SignUp = () => {
       name: "",
       phone: "",
       gender: "",
-      preferred_language:
-        locale === "ar" || locale === "en" ? locale : undefined,
+      language: locale === "ar" || locale === "en" ? locale : undefined,
     },
   });
   // 2. Define a submit handler.
@@ -184,7 +183,7 @@ export const SignUp = () => {
           />
           <FormField
             control={form.control}
-            name="preferred_language"
+            name="language"
             render={({ field }) => (
               <FormItem className=" w-full">
                 <FormLabel>{t("preferredLanguage")}</FormLabel>
