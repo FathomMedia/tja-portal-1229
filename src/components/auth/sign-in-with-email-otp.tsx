@@ -167,7 +167,7 @@ export const SignInWithEmailOTP = () => {
               {isLoading && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
-              {t("sendEmail")}
+              {t("signInWithEmailOTP")}
             </Button>
           </form>
         </Form>

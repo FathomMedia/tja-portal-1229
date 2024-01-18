@@ -152,7 +152,7 @@ export const SignUp = () => {
                 <FormControl>
                   <PhoneNumberInput
                     placeholder={t("Phone")}
-                    className=" border-primary w-full"
+                    className=" border-primary w-full bg-background"
                     {...field}
                   />
                 </FormControl>

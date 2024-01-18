@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const locale = useLocale();
   return (
-    <div className="flex flex-col gap-6 min-h-[100svh]">
+    <div className="flex flex-col h-[100svh]">
       <div className="flex sticky top-0 justify-between items-center h-20 bg-white px-6 py-4 shadow-lg shadow-accent">
         <div className="w-10 sm:block hidden"></div>
         <div className="relative h-full aspect-[3/1] ">
@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <LanguageSwitcher />
       </div>
-      <div>{children}</div>
+      <div className="grow">{children}</div>
     </div>
   );
 }

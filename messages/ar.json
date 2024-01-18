@@ -187,7 +187,8 @@
     "forgetPassword": "نسيت كلمة المرور",
     "login": "تسجيل الدخول",
     "submit": "إرسال",
-    "emailIsSentTo": "يتم إرسال بريد إلكتروني إلى"
+    "emailIsSentTo": "يتم إرسال بريد إلكتروني إلى",
+    "signInUsingOTP": "تسجيل الدخول باستخدام كلمة المرور لمرة واحدة؟"
   },
   "Checkout": {
     "Addons": "الإضافات",
@@ -760,7 +761,9 @@
     "verifyOTP": "تأكيد رمز التحقق",
     "preferredLanguage": "اللغة المفضلة",
     "selectPreferredLanguage": "اختر اللغة المفضلة...",
-    "arabic": "عربي"
+    "arabic": "عربي",
+    "welcomeBack": "مرحبًا بعودتك!",
+    "signInWithEmailOTP": "تسجيل الدخول باستخدام OTP"
   },
   "UpdatePassword": {
     "Old_Password": "كلمة المرور القديمة",

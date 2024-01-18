@@ -189,7 +189,8 @@
     "forgetPassword": "Forgot Password",
     "login": "Login",
     "submit": "Submit",
-    "emailIsSentTo": "An email is sent to"
+    "emailIsSentTo": "An email is sent to",
+    "signInUsingOTP": "Sign in using one time password?"
   },
   "Checkout": {
     "Addons": "Addons",
@@ -766,7 +767,9 @@
     "verifyOTP": "Verify OTP",
     "preferredLanguage": "Preferred Language",
     "selectPreferredLanguage": "Select preferred language...",
-    "arabic": "Arabic"
+    "arabic": "Arabic",
+    "welcomeBack": "Welcome Back!",
+    "signInWithEmailOTP": "Sign in with OTP"
   },
   "UpdatePassword": {
     "Old_Password": "Old Password",
