@@ -23,10 +23,13 @@ import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { TUser } from "@/lib/types";
+import ResendButton from "@/components/ResendButton";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Page() {
   const locale = useLocale();
   const { push } = useRouter();
+  const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState("");
@@ -87,8 +90,62 @@ export default function Page() {
       toast.error(message);
     }
   }
+
+  const resendMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/authentication/resend-verify-email`, {
+        method: "POST",
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        toast.success(message);
+      } else {
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  const handleResendClick = () => {
+    resendMutation.mutate();
+  };
+
+  async function logOut() {
+    const res = await fetch("/api/authentication/logout", {
+      headers: {
+        "Accept-Language": locale,
+      },
+    });
+    const data = await res.json();
+    if (res.ok) {
+      toast.success(data.message);
+      queryClient.invalidateQueries();
+      push(`/${locale}/authentication`);
+    } else {
+      toast.error(data.message);
+    }
+  }
+
   return (
     <div>
+      <div className="p-2">
+        <Button
+          variant={"ghost"}
+          className="text-muted-foreground"
+          onClick={logOut}
+        >
+          {t("logout")}
+        </Button>
+      </div>
       <div className="container max-w-md flex flex-col items-center py-6  md:py-20">
         <Form {...formOTP}>
           <form
@@ -104,7 +161,10 @@ export default function Page() {
               name="otp"
               render={({ field }) => (
                 <FormItem className=" w-full">
-                  <FormLabel>{t("OTP")}</FormLabel>
+                  <FormLabel className="flex items-center justify-between">
+                    <p>{t("OTP")}</p>{" "}
+                    <ResendButton handleClick={handleResendClick} />
+                  </FormLabel>
                   <FormControl>
                     <OtpInput
                       containerStyle={{
@@ -118,7 +178,7 @@ export default function Page() {
                       renderInput={(props) => (
                         <Input
                           {...props}
-                          className=" rounded-md !w-12"
+                          className=" rounded-md !w-12 !h-12"
                           type="text"
                         />
                       )}

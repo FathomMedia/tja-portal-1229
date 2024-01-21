@@ -20,6 +20,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { apiReq } from "@/lib/apiHelpers";
 import { toast } from "sonner";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import ResendButton from "../ResendButton";
 
 export const ForgetPasswordForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -252,7 +253,16 @@ export const ForgetPasswordForm = () => {
                 name="otp"
                 render={({ field }) => (
                   <FormItem className=" w-full">
-                    <FormLabel>{t("OTP")}</FormLabel>
+                    <FormLabel className="flex items-center justify-between">
+                      <p>{t("OTP")}</p>
+                      <ResendButton
+                        handleClick={() =>
+                          onSubmitEmail({
+                            email: form.control._fields.email?._f.value,
+                          })
+                        }
+                      />
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder={t("OTPSentToTheAboveEmail")}

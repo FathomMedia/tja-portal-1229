@@ -190,7 +190,8 @@
     "login": "Login",
     "submit": "Submit",
     "emailIsSentTo": "An email is sent to",
-    "signInUsingOTP": "Sign in using one time password?"
+    "signInUsingOTP": "Sign in using one time password?",
+    "logout": "Logout"
   },
   "Checkout": {
     "Addons": "Addons",
@@ -802,5 +803,10 @@
   "upComingAdventures": "Up Coming Adventures",
   "updateEmail": "Update Email",
   "updateProfile": "Update Profile ",
-  "yourEmail": "Your Email"
+  "yourEmail": "Your Email",
+  "Resend": {
+    "resend": "Resend",
+    "resendIn": "Resend in",
+    "seconds": "s"
+  }
 }

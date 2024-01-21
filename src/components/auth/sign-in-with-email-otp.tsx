@@ -22,6 +22,7 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiReq } from "@/lib/apiHelpers";
 import OtpInput from "react-otp-input";
+import ResendButton from "../ResendButton";
 
 export const SignInWithEmailOTP = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -201,7 +202,18 @@ export const SignInWithEmailOTP = () => {
               name="otp"
               render={({ field }) => (
                 <FormItem className=" w-fit">
-                  <FormLabel>{t("OTP")}</FormLabel>
+                  <FormLabel className="flex items-center justify-between">
+                    <p>{t("OTP")}</p>{" "}
+                    <ResendButton
+                      handleClick={() =>
+                        onSubmitEmail({
+                          email:
+                            searchParams.get("email") ??
+                            form.control._fields.email?._f.value,
+                        })
+                      }
+                    />
+                  </FormLabel>
                   <FormControl dir="ltr">
                     <OtpInput
                       containerStyle={{
@@ -215,7 +227,7 @@ export const SignInWithEmailOTP = () => {
                       renderInput={(props) => (
                         <Input
                           {...props}
-                          className="rounded-md !w-12 h-12"
+                          className="rounded-md !w-12 !h-12"
                           type="text"
                         />
                       )}
@@ -227,11 +239,7 @@ export const SignInWithEmailOTP = () => {
                 </FormItem>
               )}
             />
-            <Button
-              className="w-full max-w-[268px]"
-              variant={"secondary"}
-              type="submit"
-            >
+            <Button className="w-full" variant={"secondary"} type="submit">
               {isLoading && (
                 <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
               )}
