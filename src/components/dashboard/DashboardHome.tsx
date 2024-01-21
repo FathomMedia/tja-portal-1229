@@ -129,7 +129,7 @@ export const DashboardHome = () => {
               <div className="grid grid-cols-1 gap-3">
                 {latestOrders?.data?.map((order, i) => {
                   return (
-                    <div className="min-h-[10rem] " key={i}>
+                    <div className="min-h-[10rem] h-fit" key={i}>
                       {order.type === "adventure" && (
                         <Adventure order={order} />
                       )}
@@ -160,7 +160,7 @@ const Consultation = ({ order }: { order: TOrder }) => {
 
   const consultation = order.details as TConsultation;
   return (
-    <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
+    <div className="relative h-full flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
       <div className="w-full md:w-1/3 aspect-video bg-white relative grid place-items-center">
         <Image
           width={200}
@@ -226,7 +226,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
   return (
     <Link
       href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-      className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white"
+      className="relative h-full flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white"
     >
       <div className="w-full md:w-1/3 aspect-video overflow-clip rounded-md md:aspect-square bg-white relative grid place-items-center">
         <Image
