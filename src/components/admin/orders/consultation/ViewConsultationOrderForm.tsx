@@ -44,12 +44,14 @@ import { DashboardSection } from "@/components/DashboardSection";
 
 type TConsultationBookingForm = {
   consultationBooking: TConsultationBooking;
+  isCustomer?: boolean;
 };
 
 const noValue = "N/A";
 
 export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
   consultationBooking,
+  isCustomer,
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
@@ -97,20 +99,23 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
           <div className=" grid grid-cols-1 @lg:grid-cols-2 gap-8">
             <div>
               <Label>{t("name")}</Label>
-              <Input disabled value={consultationBooking.customer.name ?? ""} />
+              <Input
+                disabled
+                value={consultationBooking.customer?.name ?? ""}
+              />
             </div>
             <div>
               <Label>{t("email")}</Label>
               <Input
                 disabled
-                value={consultationBooking.customer.email ?? ""}
+                value={consultationBooking.customer?.email ?? ""}
               />
             </div>
             <div>
               <Label>{t("phone")}</Label>
               <Input
                 disabled
-                value={consultationBooking.customer.phone ?? ""}
+                value={consultationBooking.customer?.phone ?? ""}
               />
             </div>
           </div>
@@ -390,7 +395,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                 </Table>
               </div>
             </div>
-            {!consultationBooking.isCancelled && (
+            {!consultationBooking.isCancelled && !isCustomer && (
               <div className=" pt-4 flex flex-col gap-6">
                 <Separator />
                 <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">

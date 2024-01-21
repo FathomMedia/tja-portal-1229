@@ -48,6 +48,12 @@ export const LatestsOrdersComponent = () => {
         </>
       )}
 
+      {!isFetching && orders && orders.data?.length === 0 && (
+        <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-20 flex flex-col justify-center items-center">
+          <p>{t("nothingFound")}</p>
+        </div>
+      )}
+
       {!isFetching &&
         orders &&
         orders.data.map((order, i) => {
@@ -64,7 +70,7 @@ export const LatestsOrdersComponent = () => {
                       ? `/${locale}/admin/orders/adventures/${order.id}`
                       : `/${locale}/admin/orders/consultation/${order.id}`
                   }
-                  className="flex gap-3 w-full  flex-col @md:flex-row @md:items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
+                  className="flex gap-3 w-full flex-col @md:flex-row @md:items-center hover:bg-muted/60 bg-muted/0 p-2 rounded-lg border-border/0 border hover:border-border duration-300"
                 >
                   <div className="flex gap-3 grow items-center">
                     <Avatar className="w-10 h-10">
@@ -75,7 +81,7 @@ export const LatestsOrdersComponent = () => {
                             isAdventure
                               ? adventure.image ??
                                 "/assets/images/adventure.jpg"
-                              : "/assets/images/consultation"
+                              : "/assets/images/consultation.jpg"
                           }
                         />
                       }
@@ -97,16 +103,24 @@ export const LatestsOrdersComponent = () => {
                           {t("cancelled")}
                         </Badge>
                       )}
-                      {order.isFullyPaid ? (
+                      {!isAdventure && order.isPaid && (
                         <Badge className="bg-teal-400/40 w-fit text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
                           {t("paid")}
                           <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
                         </Badge>
-                      ) : (
-                        <Badge className="bg-secondary/40 w-fit text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
-                          {t("pendingPayment")}
-                        </Badge>
                       )}
+
+                      {isAdventure &&
+                        (order.isFullyPaid ? (
+                          <Badge className="bg-teal-400/40 w-fit text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
+                            {t("paid")}
+                            <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
+                          </Badge>
+                        ) : (
+                          <Badge className="bg-secondary/40 w-fit text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
+                            {t("pendingPayment")}
+                          </Badge>
+                        ))}
                     </div>
                     <Badge
                       className="w-fit font-light bg-background text-ellipsis"

@@ -89,6 +89,8 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
       });
     },
     async onSuccess(data) {
+      console.log(adventureBooking);
+      console.log(adventureBooking.id);
       if (data.ok) {
         const { message } = await data.json();
         queryClient.invalidateQueries({

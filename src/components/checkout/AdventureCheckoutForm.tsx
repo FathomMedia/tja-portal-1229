@@ -78,16 +78,15 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       });
     },
     async onSuccess(data) {
+      const paymentSession = await data.json();
       if (data.ok) {
-        const paymentSession = await data.json();
-
         if (paymentSession?.session?.PaymentURL) {
           push(paymentSession?.session?.PaymentURL);
         } else {
           toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
         }
       } else {
-        toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
+        toast.error(paymentSession?.message, { duration: 6000 });
       }
     },
     async onError(error) {

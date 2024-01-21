@@ -19,21 +19,22 @@ export async function POST(request: NextRequest) {
     };
   } = await request.json();
 
-  const bookingResponse = await apiReq({
+  return await apiReq({
     endpoint: `/adventures/${data.slug}/book`,
     locale,
     method: "POST",
     token: token?.value,
     values: data.dataToRequest,
   })
-    .then(async (res) => await res.json())
-    .catch((error) => {
-      return NextResponse.json(error, { status: 401 });
-    });
-  console.log(
-    "🚀 ~ file: route.ts:28 ~ POST ~ bookingResponse:",
-    bookingResponse
-  );
+    .then(async (res) => {
+      const bookingResponse = await res.json();
+      if (res.ok) {
+        return NextResponse.json(bookingResponse, { status: 200 });
+      }
 
-  return NextResponse.json(bookingResponse, { status: 200 });
+      return NextResponse.json(bookingResponse, { status: res.status });
+    })
+    .catch((error) => {
+      return NextResponse.json({ data: null, error: error }, { status: 503 });
+    });
 }
