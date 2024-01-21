@@ -39,7 +39,7 @@ export default function Page({
             <Image
               width={200}
               height={200}
-              src="/assets/images/adventure.jpg"
+              src={adventure.image ?? "/assets/images/adventure.jpg"}
               alt="tailwind logo"
               className="rounded-xl w-full h-full object-cover"
             />
