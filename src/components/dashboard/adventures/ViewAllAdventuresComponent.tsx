@@ -93,7 +93,7 @@ export const ViewAllAdventuresComponent = () => {
             >
               <div className="flex flex-col h-full p-4 justify-between">
                 <div className="text-sm flex items-center gap-3 uppercase text-muted">
-                  <Avatar className="w-12  h-12 min-w-fit">
+                  <Avatar className="w-12  h-12">
                     {adventure.continentImage && (
                       <AvatarImage
                         className="object-cover"

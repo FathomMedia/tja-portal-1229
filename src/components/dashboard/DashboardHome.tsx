@@ -239,7 +239,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
 
         <div className="absolute inset-0 bg-gradient-to-b from-primary/80 to-transparent"></div>
         <div className="text-sm flex items-center gap-3 uppercase absolute top-5 start-5 text-muted">
-          <Avatar className="w-12  h-12 min-w-fit">
+          <Avatar className="w-12  h-12">
             {adventure.continentImage && (
               <AvatarImage
                 className="object-cover"
