@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
+import { Separator } from "../ui/separator";
 
 type TUserProfilePreview = {
   items: {
@@ -51,7 +52,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
     <div className="p-6 text-primary rounded-lg flex flex-col gap-2">
       {/* profile avatar */}
 
-      <div className="flex justify-between gap-4 items-center flex-wrap">
+      <div className="flex justify-between gap-4 items-center">
         {!isFetchingUser && user && (
           <div className={cn("flex gap-3 items-center")}>
             <Avatar className="">
@@ -74,7 +75,7 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
                 <h2>{t("hello")}</h2>
               )}
 
-              <h2 className="text-xl  font-helveticaNeue font-black ">
+              <h2 className="text-xl line-clamp-1 font-helveticaNeue font-black ">
                 {user.name}
               </h2>
             </div>
@@ -86,12 +87,14 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
             onClick={() => queryClient.invalidateQueries()}
             type="button"
             variant={"outline"}
-            className="border-primary text-primary"
+            className="border-primary text-primary hidden sm:flex"
             size={"icon"}
           >
             <RefreshCcw />
           </Button>
-          <LanguageSwitcher />
+          <div className="hidden sm:flex">
+            <LanguageSwitcher />
+          </div>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               className={cn(
@@ -112,7 +115,29 @@ export const UserProfilePreview: FC<TUserProfilePreview> = ({ items }) => {
                 </SheetTitle>
               </SheetHeader>
               <ScrollArea dir={isRtlLang(locale) ? "rtl" : "ltr"}>
-                <MobileNav items={items} onNavigate={() => setOpen(false)} />
+                <MobileNav
+                  actions={
+                    <div className="flex w-full flex-col gap-4">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => queryClient.invalidateQueries()}
+                          type="button"
+                          variant={"outline"}
+                          className="border-primary text-primary  "
+                          size={"icon"}
+                        >
+                          <RefreshCcw />
+                        </Button>
+                        <div className=" ">
+                          <LanguageSwitcher />
+                        </div>
+                      </div>
+                      <Separator />
+                    </div>
+                  }
+                  items={items}
+                  onNavigate={() => setOpen(false)}
+                />
               </ScrollArea>
             </SheetContent>
           </Sheet>

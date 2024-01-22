@@ -8,6 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { ReactNode } from "react";
 
 interface MobileNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -15,12 +16,14 @@ interface MobileNavProps extends React.HTMLAttributes<HTMLElement> {
     title: string;
   }[];
   onNavigate: () => void;
+  actions?: ReactNode | undefined;
 }
 
 export function MobileNav({
   className,
   items,
   onNavigate,
+  actions,
   ...props
 }: MobileNavProps) {
   const pathname = usePathname();
@@ -49,6 +52,7 @@ export function MobileNav({
       className={cn("flex flex-col gap-4 items-start", className)}
       {...props}
     >
+      {actions}
       {items.map((item, i) => (
         <div onClick={onNavigate} key={item.href}>
           <Link
