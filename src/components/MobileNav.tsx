@@ -49,7 +49,7 @@ export function MobileNav({
   }
   return (
     <nav
-      className={cn("flex flex-col gap-4 items-start", className)}
+      className={cn("flex flex-col gap-4 items-start p-1", className)}
       {...props}
     >
       {actions}
