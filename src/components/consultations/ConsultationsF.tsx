@@ -356,42 +356,6 @@ export const ConsultationForm: FC<TConsultationForm> = ({
               </FormItem>
             )}
           />
-          {/* TODO: Change to radio */}
-          {/* <FormField
-            control={form.control}
-            name="bPriority"
-            render={({ field }) => (
-              <FormItem className=" w-full mb-2">
-                <FormLabel className="text-base">
-                  {t("budgetPriority")}
-                  <span className="text-destructive ms-1">*</span>
-                </FormLabel>
-                <Select
-                  dir={isRtlLang(locale) ? "rtl" : "ltr"}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-full border-primary">
-                      <SelectValue placeholder={t("selectOne")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="w-full">
-                    <SelectItem value="business_class_ticket">
-                      {t("business_class_ticket")}
-                    </SelectItem>
-                    <SelectItem value="accommodation_five_stars">
-                      {t("accommodation_five_stars")}
-                    </SelectItem>
-                    <SelectItem value="activities">
-                      {t("activitiesAndPrograms")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
           <FormField
             control={form.control}
@@ -441,45 +405,57 @@ export const ConsultationForm: FC<TConsultationForm> = ({
               </FormItem>
             )}
           />
-          {/* </div> */}
-          {/* )} */}
 
-          {/* {step === 3 && ( */}
-          {/* <div className="w-full  flex flex-col gap-6"> */}
           <FormField
             control={form.control}
             name="vType"
             render={({ field }) => (
-              <FormItem className=" w-full mb-2 ">
+              <FormItem className="space-y-3 ">
                 <FormLabel className="text-base">
                   {t("vacationType")}
                   <span className="text-destructive ms-1">*</span>
                 </FormLabel>
-                <Select
-                  dir={isRtlLang(locale) ? "rtl" : "ltr"}
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="rounded-full border-primary">
-                      <SelectValue placeholder={t("selectOne")} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="moreDiscovering">
-                      {t("moreDiscovering")}
-                    </SelectItem>
-                    <SelectItem value="veryAdventurous">
-                      {t("veryAdventurous")}
-                    </SelectItem>
-                    <SelectItem value="mixofAandB">
-                      {t("mixofAandB")}
-                    </SelectItem>
-                    <SelectItem value="veryRelaxing">
-                      {t("veryRelaxing")}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <RadioGroup
+                    dir={isRtlLang(locale) ? "rtl" : "ltr"}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-col space-y-1"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="moreDiscovering" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("moreDiscovering")}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="veryAdventurous" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("veryAdventurous")}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="mixofAandB" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("mixofAandB")}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="veryRelaxing" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("veryRelaxing")}
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
