@@ -404,7 +404,8 @@
     "Actions": "Actions",
     "startDateMustBeInTheFuture": "Start date must be in the future.",
     "endDateCannotBeBeforeStartDate": "End date cannot be earlier than start date.",
-    "ifYouWakeUp": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
+    "ifYouWakeUp": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?",
+    "noteMorePeopleMoreMoney": "Please note: For groups larger than 8 individuals, additional charges may be applicable."
   },
   "Consultations": {
     "actions": "Actions",

@@ -244,6 +244,9 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 )}
               />
             </div>
+            <p className="text-sm text-muted-foreground">
+              {t("noteMorePeopleMoreMoney")}
+            </p>
             <div className="w-full flex flex-col sm:flex-row sm:justify-center sm:items-center gap-4">
               <p className="text-muted-foreground text-lg">
                 <span className="font-bold">{t("price")}:</span>{" "}
