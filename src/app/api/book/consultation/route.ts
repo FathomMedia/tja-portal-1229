@@ -31,17 +31,22 @@ export async function POST(request: NextRequest) {
       phobias: string | null;
     };
   } = await request.json();
-  const bookingResponse = await apiReq({
+  return await apiReq({
     endpoint: `/consultation-bookings/${data.id}/book`,
     locale,
     method: "POST",
     token: token?.value,
     values: data.dataToRequest,
   })
-    .then(async (res) => await res.json())
-    .catch((error) => {
-      return NextResponse.json(error, { status: 401 });
-    });
+    .then(async (res) => {
+      const bookingResponse = await res.json();
+      if (res.ok) {
+        return NextResponse.json(bookingResponse, { status: 200 });
+      }
 
-  return NextResponse.json(bookingResponse, { status: 200 });
+      return NextResponse.json(bookingResponse, { status: res.status });
+    })
+    .catch((error) => {
+      return NextResponse.json({ data: null, error: error }, { status: 503 });
+    });
 }
