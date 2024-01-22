@@ -23,21 +23,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TMeta } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-import { isRtlLang } from "rtl-detect";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -47,6 +33,7 @@ import {
 import { useState } from "react";
 import React from "react";
 import { TablePagination } from "@/components/TablePagination";
+import Link from "next/link";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -82,6 +69,7 @@ export function DataTable<TData, TValue>({
   });
 
   const t = useTranslations("Consultation");
+  const locale = useLocale();
 
   return (
     <div className=" w-full">

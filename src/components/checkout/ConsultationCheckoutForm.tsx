@@ -1,7 +1,7 @@
 "use client";
 
 import { TConsultation, TCoupon } from "@/lib/types";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
@@ -185,20 +185,34 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
     mutation.mutate(values);
   }
 
+  const ref = useRef<HTMLFormElement>(null);
+
+  useEffect(
+    () => {
+      isOpen && ref.current && ref.current.scrollIntoView();
+
+      return () => {};
+    },
+    // @ts-ignore
+    [ref.current, isOpen]
+  );
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent
         dir={isRtlLang(locale) ? "rtl" : "ltr"}
         className="flex flex-col"
         size={"lg"}
+        side={window.innerWidth < 640 ? "bottom" : "right"}
       >
         <SheetHeader>
-          <SheetTitle className="text-primary"> {t("checkout")} </SheetTitle>
+          <SheetTitle className="text-primary">{t("checkout")}</SheetTitle>
         </SheetHeader>
 
         <ScrollArea>
           <Form {...form}>
             <form
+              ref={ref}
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex flex-col"
               dir={isRtlLang(locale) ? "rtl" : "ltr"}
@@ -248,7 +262,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
                                     </Badge>
                                     <Badge variant={"secondary"}>
                                       {t("endDate")}
-                                      {/* <p>{formData.endDate}</p> */}
+
                                       <p>
                                         :
                                         {format(formData.endDate, "dd/MM/yyyy")}

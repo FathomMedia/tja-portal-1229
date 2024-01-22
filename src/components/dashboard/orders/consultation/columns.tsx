@@ -38,16 +38,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
         <DisplayTranslatedText text="tier" translation="Consultation" />
       </div>
     ),
-    cell: ({ row }) => (
-      <Badge
-        variant="outline"
-        // className={(row.original.consultation.tier == "silver" && "bg-[#C0C0C0]",
-        //   row.original.consultation.tier == "gold" && "bg-[#FFD700]")
-        // }
-      >
-        {row.original.consultation.tier.toUpperCase()}
-      </Badge>
-    ),
+    cell: ({ row }) => <ConsultationTier consultationBooking={row.original} />,
   },
   {
     accessorKey: "numberOfDays",
@@ -138,7 +129,7 @@ const Actions = ({
   );
 };
 
-const ConsultationName = ({
+const ConsultationTier = ({
   consultationBooking,
 }: {
   consultationBooking: TConsultationBooking;
@@ -147,10 +138,14 @@ const ConsultationName = ({
 
   return (
     <Link
-      className="group-hover:text-secondary"
-      href={`/${locale}/admin/orders/consultation/${consultationBooking.id}`}
+      href={`/${locale}/dashboard/consultations/bookings/${consultationBooking.id}`}
     >
-      {consultationBooking.customer.name}
+      <Badge
+        className=" group-hover:text-secondary group-hover:border-secondary/30 duration-100"
+        variant="outline"
+      >
+        {consultationBooking.consultation.tier.toUpperCase()}
+      </Badge>
     </Link>
   );
 };

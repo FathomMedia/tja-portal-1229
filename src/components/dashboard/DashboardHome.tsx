@@ -160,7 +160,10 @@ const Consultation = ({ order }: { order: TOrder }) => {
 
   const consultation = order.details as TConsultation;
   return (
-    <div className="relative h-full flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white">
+    <Link
+      href={`/${locale}/dashboard/consultations/bookings/${order.id}`}
+      className="relative hover:shadow-xl h-full flex flex-col  duration-200 group md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white"
+    >
       <div className="w-full md:w-1/3 aspect-video bg-white relative grid place-items-center">
         <Image
           width={200}
@@ -198,7 +201,7 @@ const Consultation = ({ order }: { order: TOrder }) => {
             </div>
           </div>
           <div className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
-            <p>{consultation.tier}</p>
+            <p className="group-hover:underline">{consultation.tier}</p>
           </div>
           <div className=" flex">
             {t("days")}:<p>{consultation.numberOfDays}</p>
@@ -215,7 +218,7 @@ const Consultation = ({ order }: { order: TOrder }) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

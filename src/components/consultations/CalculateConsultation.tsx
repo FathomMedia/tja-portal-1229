@@ -244,14 +244,14 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                 )}
               />
             </div>
-            <div className="w-full flex justify-center items-center gap-4 sm:justify-between">
+            <div className="w-full flex flex-col sm:flex-row sm:justify-center sm:items-center gap-4">
               <p className="text-muted-foreground text-lg">
                 <span className="font-bold">{t("price")}:</span>{" "}
                 {totalFullPrice}
               </p>
 
               <Button
-                className="w-full max-w-[268px] "
+                className="w-full sm:max-w-[268px] "
                 variant={"secondary"}
                 type="submit"
               >

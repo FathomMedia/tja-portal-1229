@@ -309,7 +309,55 @@ export const ConsultationForm: FC<TConsultationForm> = ({
               </FormItem>
             )}
           />
+
           <FormField
+            control={form.control}
+            name="bPriority"
+            render={({ field }) => (
+              <FormItem className="space-y-3 ">
+                <FormLabel className="text-base">
+                  {t("budgetPriority")}
+                  <span className="text-destructive ms-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    dir={isRtlLang(locale) ? "rtl" : "ltr"}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-col space-y-1"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="business_class_ticket" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("business_class_ticket")}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="accommodation_five_stars" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("accommodation_five_stars")}
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="activities" />
+                      </FormControl>
+                      <FormLabel className="font-normal pr-2 pl-2">
+                        {t("activitiesAndPrograms")}
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* TODO: Change to radio */}
+          {/* <FormField
             control={form.control}
             name="bPriority"
             render={({ field }) => (
@@ -328,7 +376,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                       <SelectValue placeholder={t("selectOne")} />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="w-full">
                     <SelectItem value="business_class_ticket">
                       {t("business_class_ticket")}
                     </SelectItem>
@@ -343,7 +391,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}
