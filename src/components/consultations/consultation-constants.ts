@@ -91,7 +91,7 @@ export const accommodationTypes = [
   { title: "glamping", imageUrl: "/assets/images/glamping.jpg" },
   { title: "tents", imageUrl: "/assets/images/tents.jpg" },
   { title: "caravans", imageUrl: "/assets/images/caravans.jpg" },
-  { title: "hostels", imageUrl: "/assets/images/hostels.jpg" },
+  { title: "hostels", imageUrl: "/assets/images/hostels-image.jpg" },
   { title: "homestays", imageUrl: "/assets/images/homestays.jpg" },
   // Add more items as needed
 ];
