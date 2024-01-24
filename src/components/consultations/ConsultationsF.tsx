@@ -43,12 +43,14 @@ type TConsultationForm = {
   chosenPackage: TConsultation;
   startDate: Date;
   endDate: Date;
+  show: boolean;
 };
 
 export const ConsultationForm: FC<TConsultationForm> = ({
   chosenPackage,
   startDate,
   endDate,
+  show,
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
@@ -152,7 +154,7 @@ export const ConsultationForm: FC<TConsultationForm> = ({
   }
 
   return (
-    <div>
+    <div className={cn(show ? "" : "hidden")}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

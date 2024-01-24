@@ -14,6 +14,7 @@ export default function Page() {
   const t = useTranslations("Consultation");
 
   const allowedPackages = ["silver", "gold", "platinum"];
+  const [showForm, setShowForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TConsultation | null>(
     null
   );
@@ -40,13 +41,20 @@ export default function Page() {
         }
       >
         <CalculateConsultation
-          onPackageChanged={(val) => setSelectedPackage(val)}
+          onPackageChanged={(val) => {
+            setSelectedPackage(val);
+            setShowForm(true);
+          }}
           defaultTier={defaultTier}
           startDate={(val) => setStartDate(val)}
           endDate={(val) => setEndDate(val)}
+          hideForm={() => {
+            setShowForm(false);
+          }}
         />
         {selectedPackage && startDate && endDate && (
           <ConsultationForm
+            show={Boolean(selectedPackage && startDate && endDate && showForm)}
             chosenPackage={selectedPackage}
             startDate={startDate}
             endDate={endDate}

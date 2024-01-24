@@ -1,9 +1,8 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -33,8 +32,7 @@ import { cn } from "@/lib/utils";
 import { isRtlLang } from "rtl-detect";
 import { toast } from "sonner";
 import { TConsultation } from "@/lib/types";
-import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Icons } from "../ui/icons";
 import { ar, enUS } from "date-fns/locale";
 
@@ -43,6 +41,7 @@ type TCalculateConsultationForm = {
   startDate: (date: Date) => void;
   endDate: (date: Date) => void;
   defaultTier: string;
+  hideForm: () => void;
 };
 
 export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
@@ -50,6 +49,7 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
   defaultTier,
   startDate,
   endDate,
+  hideForm,
 }) => {
   const locale = useLocale();
   const t = useTranslations("Consultation");
@@ -98,7 +98,6 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
     async onSuccess(data, values) {
       const { message, data: dataResponse } = await data.json();
       if (data.ok) {
-        // toast.success(message, { duration: 6000 });
         onPackageChanged(dataResponse);
         startDate(values.start_date);
         endDate(values.end_date);
@@ -135,7 +134,10 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                   </FormLabel>
                   <Select
                     dir={isRtlLang(locale) ? "rtl" : "ltr"}
-                    onValueChange={field.onChange}
+                    onValueChange={(e) => {
+                      field.onChange(e);
+                      hideForm();
+                    }}
                     defaultValue={field.value}
                   >
                     <FormControl>
@@ -187,9 +189,13 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
+                          defaultMonth={field.value}
                           locale={locale === "ar" ? ar : enUS}
                           selected={field.value}
-                          onSelect={field.onChange}
+                          onSelect={(e) => {
+                            field.onChange(e);
+                            hideForm();
+                          }}
                           initialFocus
                         />
                       </PopoverContent>
@@ -230,11 +236,14 @@ export const CalculateConsultation: FC<TCalculateConsultationForm> = ({
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
-                          captionLayout={"dropdown"}
                           mode="single"
                           locale={locale === "ar" ? ar : enUS}
                           selected={field.value}
-                          onSelect={field.onChange}
+                          defaultMonth={field.value}
+                          onSelect={(e) => {
+                            field.onChange(e);
+                            hideForm();
+                          }}
                           initialFocus
                         />
                       </PopoverContent>
