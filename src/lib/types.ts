@@ -324,6 +324,7 @@ export type TAdventureBooking = {
   totalPrice: number;
   totalPriceWithCurrency: string;
   isCancelled: boolean;
+  netAmount: number;
 };
 
 export type TConsultationBooking = {
@@ -355,6 +356,7 @@ export type TConsultationBooking = {
   adventureMeaning: string[];
   morningActivity: string;
   isCancelled: boolean;
+  netAmount: number;
 };
 
 export type TPagination = {

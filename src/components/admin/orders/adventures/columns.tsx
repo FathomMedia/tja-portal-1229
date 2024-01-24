@@ -25,6 +25,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { formatePrice } from "@/lib/utils";
 
 export const columns: ColumnDef<TAdventureBooking>[] = [
   {
@@ -38,7 +39,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
         <DisplayTranslatedText text="name" translation="Adventures" />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.customer.name}</p>,
+    cell: ({ row }) => <Name adventureBooking={row.original} />,
   },
   {
     accessorKey: "email",
@@ -210,6 +211,7 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
         />
       </div>
     ),
+    cell: ({ row }) => <NetTotal adventureBooking={row.original} />,
   },
   {
     id: "actions",
@@ -254,5 +256,35 @@ const Actions = ({
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+export const Name = ({
+  adventureBooking,
+}: {
+  adventureBooking: TAdventureBooking;
+}) => {
+  const locale = useLocale();
+  return (
+    <Link
+      className="group-hover:text-secondary group-hover:underline"
+      href={`/${locale}/admin/orders/adventures/${adventureBooking.id}`}
+    >
+      {adventureBooking.customer.name}
+    </Link>
+  );
+};
+
+const NetTotal = ({
+  adventureBooking,
+}: {
+  adventureBooking: TAdventureBooking;
+}) => {
+  const locale = useLocale();
+
+  return (
+    <p className="">
+      {formatePrice({ locale, price: adventureBooking.netAmount })}
+    </p>
   );
 };

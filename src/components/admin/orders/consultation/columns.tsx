@@ -23,7 +23,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, formatePrice } from "@/lib/utils";
 
 export const columns: ColumnDef<TConsultationBooking>[] = [
   {
@@ -134,7 +134,7 @@ export const columns: ColumnDef<TConsultationBooking>[] = [
         />
       </div>
     ),
-    cell: ({ row }) => <p>{row.original.consultation.priceWithCurrency}</p>,
+    cell: ({ row }) => <NetTotal consultationBooking={row.original} />,
   },
   {
     accessorKey: "isCancelled",
@@ -225,10 +225,24 @@ const ConsultationName = ({
 
   return (
     <Link
-      className="group-hover:text-secondary"
+      className="group-hover:text-secondary group-hover:underline"
       href={`/${locale}/admin/orders/consultation/${consultationBooking.id}`}
     >
       {consultationBooking.customer.name}
     </Link>
+  );
+};
+
+const NetTotal = ({
+  consultationBooking,
+}: {
+  consultationBooking: TConsultationBooking;
+}) => {
+  const locale = useLocale();
+
+  return (
+    <p className="">
+      {formatePrice({ locale, price: consultationBooking.netAmount })}
+    </p>
   );
 };
