@@ -31,8 +31,13 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       className="max-w-4xl flex flex-col gap-10 pb-20"
     >
       {isFetchingAdventureBooking && <Skeleton className="w-full h-96" />}
-      {adventureBooking && (
+      {adventureBooking && !isFetchingAdventureBooking && (
         <ViewAdventureOrderForm adventureBooking={adventureBooking} />
+      )}
+      {!adventureBooking && !isFetchingAdventureBooking && (
+        <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-72 flex flex-col justify-center items-center">
+          <p>{t("nothingFound")}</p>
+        </div>
       )}
     </DashboardSection>
   );

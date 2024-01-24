@@ -178,7 +178,15 @@
     "restoreAdventureBooking": "Restore Adventure Booking",
     "areYouSureYouWantToRestore": "Are you sure you want to restore this booking?",
     "restoreBooking": "Restore Booking",
-    "pleaseUploadAtLeastOneDocuments": "Please Upload At Least One Documents."
+    "pleaseUploadAtLeastOneDocuments": "Please Upload At Least One Documents.",
+    "netTotal": "Net Total",
+    "amountDue": "Amount Due",
+    "yourChosenAddons": "Your chosen addons.",
+    "chosenAddons": "Chosen Addons",
+    "feedbackFormLink": "Feedback Form Link",
+    "yourBookingWasCancelled": "Your booking has been cancelled. Please contact support for more information.",
+    "here": "here",
+    "coupon": "Coupon"
   },
   "Auth": {
     "OTP": "OTP",
@@ -405,7 +413,15 @@
     "startDateMustBeInTheFuture": "Start date must be in the future.",
     "endDateCannotBeBeforeStartDate": "End date cannot be earlier than start date.",
     "ifYouWakeUp": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?",
-    "noteMorePeopleMoreMoney": "Please note: For groups larger than 8 individuals, additional charges may be applicable."
+    "noteMorePeopleMoreMoney": "Please note: For groups larger than 8 individuals, additional charges may be applicable.",
+    "amount": "Amount",
+    "vat": "VAT",
+    "isPaid": "Paid",
+    "date": "Booking Date",
+    "invoice": "Invoice",
+    "receipt": "Receipt",
+    "singleCoupon": "Coupon",
+    "ifYouHad": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
   },
   "Consultations": {
     "actions": "Actions",
@@ -655,7 +671,8 @@
     "cancelled": "Cancelled",
     "error": "Error",
     "availablePoints": "Available Points",
-    "bookYourAdventure": "Book Your Adventure"
+    "bookYourAdventure": "Book Your Adventure",
+    "netTotal": "Net Total"
   },
   "Index": {
     "title": "Hello world!"

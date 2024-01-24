@@ -75,6 +75,7 @@ export type TAdventure = {
   fitnessGuide: string | null;
   travelGuide: string | null;
   packingList: string | null;
+  feedbackForm: string | null;
   continentImage: string | null;
   giftPoints: number;
   gender: string;
@@ -162,8 +163,9 @@ export type TAdventureBookingOrder = {
   dateBooked: Date;
   isFullyPaid: boolean;
   isPartiallyPaid: boolean;
-  addOns: any[];
+  addOns: TAddon[];
   totalPrice: number;
+  netAmount: number;
   totalPriceWithCurrency: string;
   partialInvoice: TInvoice | null;
   fullInvoice: TInvoice | null;
@@ -192,6 +194,7 @@ export type TInvoice = {
   amountDue: number;
   priceBeforeDiscount: number;
   receipt: TReceipt;
+  coupon: string;
 };
 
 export type TReceipt = {
@@ -231,6 +234,7 @@ export type TOrder = {
     phone: string;
   };
   isCancelled: boolean;
+  netAmount: number;
 };
 
 export type TAchievements = {

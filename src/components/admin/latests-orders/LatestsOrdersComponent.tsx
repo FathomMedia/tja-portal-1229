@@ -48,7 +48,7 @@ export const LatestsOrdersComponent = () => {
         </>
       )}
 
-      {!isFetching && orders && orders.data?.length === 0 && (
+      {!isFetching && orders && (!orders.data || orders.data?.length === 0) && (
         <div className="p-4 bg-muted text-muted-foreground text-sm rounded-md h-20 flex flex-col justify-center items-center">
           <p>{t("nothingFound")}</p>
         </div>
@@ -56,6 +56,7 @@ export const LatestsOrdersComponent = () => {
 
       {!isFetching &&
         orders &&
+        orders.data &&
         orders.data.map((order, i) => {
           const isAdventure = order.type === "adventure";
           const consultation: TConsultation = order.details as TConsultation;
@@ -133,82 +134,84 @@ export const LatestsOrdersComponent = () => {
                   </div>
                 </Link>
               </HoverCardTrigger>
-              <HoverCardContent className="isolate ">
-                {isAdventure && (
-                  <div className="flex flex-col gap-4">
-                    <Link
-                      className="w-full aspect-video overflow-clip group relative rounded-md max-w-xs"
-                      href={`/${locale}/admin/products/adventures/bookings/${adventure.slug}`}
-                    >
-                      <div className="flex flex-col h-full p-4 justify-between">
-                        <div className="text-sm flex items-center gap-3 uppercase text-muted">
-                          <Avatar className="w-12  h-12 min-w-fit">
-                            {adventure.continentImage && (
-                              <AvatarImage
-                                className="object-cover"
-                                src={adventure.continentImage}
-                              />
-                            )}
-                            <AvatarFallback className=" text-muted rounded-full bg-transparent border">
-                              {adventure.continent.slice(0, 2)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <p>{adventure.continent}</p>
-                        </div>
-                        <div className="flex flex-col flex-1 gap-3 justify-end">
-                          {adventure.isFull && (
-                            <Badge
-                              variant={"outline"}
-                              size={"sm"}
-                              className="text-muted w-fit text-xs"
-                            >
-                              {t("fullyBooked")}
-                            </Badge>
-                          )}
-                          {!adventure.isFull &&
-                            adventure.availableSeats <= 5 && (
+              {isAdventure && (
+                <HoverCardContent className="isolate ">
+                  {isAdventure && (
+                    <div className="flex flex-col gap-4">
+                      <Link
+                        className="w-full aspect-video overflow-clip group relative rounded-md max-w-xs"
+                        href={`/${locale}/admin/products/adventures/bookings/${adventure.slug}`}
+                      >
+                        <div className="flex flex-col h-full p-4 justify-between">
+                          <div className="text-sm flex items-center gap-3 uppercase text-muted">
+                            <Avatar className="w-12  h-12 min-w-fit">
+                              {adventure.continentImage && (
+                                <AvatarImage
+                                  className="object-cover"
+                                  src={adventure.continentImage}
+                                />
+                              )}
+                              <AvatarFallback className=" text-muted rounded-full bg-transparent border">
+                                {adventure.continent.slice(0, 2)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <p>{adventure.continent}</p>
+                          </div>
+                          <div className="flex flex-col flex-1 gap-3 justify-end">
+                            {adventure.isFull && (
                               <Badge
                                 variant={"outline"}
                                 size={"sm"}
                                 className="text-muted w-fit text-xs"
                               >
-                                {adventure.availableSeats} {t("seatsLeft")}
+                                {t("fullyBooked")}
                               </Badge>
                             )}
+                            {!adventure.isFull &&
+                              adventure.availableSeats <= 5 && (
+                                <Badge
+                                  variant={"outline"}
+                                  size={"sm"}
+                                  className="text-muted w-fit text-xs"
+                                >
+                                  {adventure.availableSeats} {t("seatsLeft")}
+                                </Badge>
+                              )}
 
-                          <div className="flex items-center gap-2 flex-wrap text-muted text-sm">
-                            <p>{adventure.startDate}</p>
-                            <span>{"->"}</span>
-                            <p>{adventure.endDate}</p>
+                            <div className="flex items-center gap-2 flex-wrap text-muted text-sm">
+                              <p>{adventure.startDate}</p>
+                              <span>{"->"}</span>
+                              <p>{adventure.endDate}</p>
+                            </div>
                           </div>
                         </div>
+                        <div className="absolute -z-10 inset-0 bg-gradient-to-t from-black to-primary  group-hover:scale-105 duration-500">
+                          <Image
+                            className="h-full w-full object-cover group-hover:opacity-60 opacity-40 duration-500"
+                            width={440}
+                            height={240}
+                            alt={adventure.title}
+                            src={
+                              adventure.image ?? "/assets/images/adventure.jpg"
+                            }
+                          />
+                        </div>
+                      </Link>
+                      <div className="flex flex-col gap-2">
+                        <h5 className="text-lg font-semibold text-primary">
+                          <p>{adventure.title}</p>
+                        </h5>
+                        <div>
+                          <Badge variant={"outline"}>{adventure.gender}</Badge>
+                        </div>
+                        <h5 className="text-xl text-primary font-bold font-helveticaNeue">
+                          <p>{adventure.priceWithCurrency}</p>
+                        </h5>
                       </div>
-                      <div className="absolute -z-10 inset-0 bg-gradient-to-t from-black to-primary  group-hover:scale-105 duration-500">
-                        <Image
-                          className="h-full w-full object-cover group-hover:opacity-60 opacity-40 duration-500"
-                          width={440}
-                          height={240}
-                          alt={adventure.title}
-                          src={
-                            adventure.image ?? "/assets/images/adventure.jpg"
-                          }
-                        />
-                      </div>
-                    </Link>
-                    <div className="flex flex-col gap-2">
-                      <h5 className="text-lg font-semibold text-primary">
-                        <p>{adventure.title}</p>
-                      </h5>
-                      <div>
-                        <Badge variant={"outline"}>{adventure.gender}</Badge>
-                      </div>
-                      <h5 className="text-xl text-primary font-bold font-helveticaNeue">
-                        <p>{adventure.priceWithCurrency}</p>
-                      </h5>
                     </div>
-                  </div>
-                )}
-              </HoverCardContent>
+                  )}
+                </HoverCardContent>
+              )}
             </HoverCard>
           );
         })}

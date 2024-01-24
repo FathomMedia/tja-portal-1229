@@ -98,16 +98,35 @@ export const PayRemaining: FC<TPayRemaining> = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="link"
-          size={"sm"}
-          className={cn(
-            "text-secondary underline hover:text-secondary hover:bg-secondary/10 px-1 py-0",
-            className
+        <div className="flex flex-col gap-1 items-start">
+          <Button
+            variant="link"
+            size={"sm"}
+            className={cn(
+              "text-secondary underline hover:text-secondary hover:bg-secondary/10 px-1 py-0",
+              className
+            )}
+          >
+            {text ?? t("completePayment")}
+          </Button>
+          {booking.partialInvoice && (
+            <p
+              className={cn(
+                "text-xs flex items-center gap-1 ",
+                text ? "text-current" : "text-muted-foreground"
+              )}
+            >
+              {t("amountDue")}
+
+              <span>
+                {formatePrice({
+                  locale,
+                  price: booking.partialInvoice.amountDue,
+                })}
+              </span>
+            </p>
           )}
-        >
-          {text ?? t("completePayment")}
-        </Button>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
         <Form {...form}>
@@ -119,11 +138,18 @@ export const PayRemaining: FC<TPayRemaining> = ({
               <DialogTitle>{t("completePayment")}</DialogTitle>
               <DialogDescription className="gap-1 flex flex-wrap">
                 {t("payTheRemainingAmountOf")}
-                <span>
+                {/* <span>
                   {booking.remainingInvoice &&
                     formatePrice({
                       locale,
                       price: booking.remainingInvoice?.totalAmount,
+                    })}
+                </span> */}
+                <span>
+                  {booking.partialInvoice &&
+                    formatePrice({
+                      locale,
+                      price: booking.partialInvoice.amountDue,
                     })}
                 </span>
               </DialogDescription>

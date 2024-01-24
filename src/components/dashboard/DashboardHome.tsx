@@ -162,9 +162,9 @@ const Consultation = ({ order }: { order: TOrder }) => {
   return (
     <Link
       href={`/${locale}/dashboard/consultations/bookings/${order.id}`}
-      className="relative hover:shadow-xl h-full flex flex-col  duration-200 group md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white"
+      className="relative hover:shadow-xl h-fit flex flex-col  duration-200 group md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3  mx-auto border border-white bg-white"
     >
-      <div className="w-full md:w-1/3 aspect-video bg-white relative grid place-items-center">
+      <div className="w-full md:w-1/3 aspect-video overflow-clip rounded-md md:aspect-square bg-white relative grid place-items-center">
         <Image
           width={200}
           height={100}
@@ -200,21 +200,24 @@ const Consultation = ({ order }: { order: TOrder }) => {
               )}
             </div>
           </div>
-          <div className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
-            <p className="group-hover:underline">{consultation.tier}</p>
-          </div>
-          <div className=" flex">
-            {t("days")}:<p>{consultation.numberOfDays}</p>
-          </div>
-          <div className="text-xs font-medium text-foreground flex gap-1">
+          <p className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
+            {consultation.tier}{" "}
+            <span>
+              <Globe className="mb-2" />
+            </span>
+          </p>
+          <div className="text-xs mt-1 text-muted-foreground font-light flex gap-1">
             {t("bookedAt")}:<p>{order.dateBooked}</p>
+          </div>
+          <div className=" text-sm text-primary gap-1 flex py-6">
+            {t("days")}:<p>{consultation.numberOfDays}</p>
           </div>
         </div>
 
         <div className="flex items-baseline gap-2 justify-end">
-          <p className="text-sm text-muted-foreground">{t("total")}</p>
+          <p className="text-sm text-muted-foreground">{t("netTotal")}</p>
           <p className="text-xl font-black text-primary ">
-            {formatePrice({ locale, price: consultation.price })}
+            {formatePrice({ locale, price: order.netAmount })}
           </p>
         </div>
       </div>
@@ -229,7 +232,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
   return (
     <Link
       href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
-      className="relative h-full flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white"
+      className="relative h-fit flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4  mx-auto duration-200 border hover:shadow-xl border-white bg-white"
     >
       <div className="w-full md:w-1/3 aspect-video overflow-clip rounded-md md:aspect-square bg-white relative grid place-items-center">
         <Image
@@ -326,9 +329,9 @@ const Adventure = ({ order }: { order: TOrder }) => {
           )}
 
           <div className="flex items-baseline gap-2">
-            <p className="text-sm text-muted-foreground">{t("total")}</p>
+            <p className="text-sm text-muted-foreground">{t("netTotal")}</p>
             <p className="text-xl font-black text-primary ">
-              {formatePrice({ locale, price: adventure.price })}
+              {formatePrice({ locale, price: order.netAmount })}
             </p>
           </div>
         </div>

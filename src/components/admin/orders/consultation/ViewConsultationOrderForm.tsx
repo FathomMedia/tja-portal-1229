@@ -273,7 +273,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
             <div>
               <Label>{t("whatIsTheBestTravelExperience")}</Label>
               <div className=" p-2 rounded-md border text-sm">
-                <p>{consultationBooking.bestTravelExperience}</p>
+                <p>{consultationBooking.bestTravelExperience ?? noValue}</p>
               </div>
             </div>
             <div>
@@ -282,20 +282,20 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                 <p>{consultationBooking.phobias ?? noValue}</p>
               </div>
             </div>
-            <div className=" grid @lg:grid-cols-2 gap-6">
+            {/* <div className=" grid @lg:grid-cols-2 gap-6">
               <div>
                 <Label>Coupon Used</Label>
                 <div className=" p-2 rounded-md border text-sm">
                   <p>{consultationBooking.coupon?.code ?? noValue}</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div>
-              <Label>{t("coupon")}</Label>
+              {/* <Label>{t("coupon")}</Label>
               <Input
                 disabled
                 value={consultationBooking.coupon?.code ?? "N/A"}
-              />
+              /> */}
               <Label>Invoice</Label>
               <div className="rounded-md overflow-clip border">
                 <Table className="">
@@ -306,6 +306,9 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                         {t("amount")}
                       </TableHead>
                       <TableHead className=" text-start ">{t("vat")}</TableHead>
+                      <TableHead className=" text-start ">
+                        {t("singleCoupon")}
+                      </TableHead>
                       <TableHead className=" text-start ">
                         {t("isPaid")}
                       </TableHead>
@@ -336,6 +339,9 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                           {consultationBooking.invoice.vat}
                         </TableCell>
                         <TableCell className="font-medium">
+                          {consultationBooking.invoice.coupon}
+                        </TableCell>
+                        <TableCell className="font-medium">
                           {consultationBooking.invoice.isPaid ? (
                             <CheckCircle2 className="text-primary" />
                           ) : (
@@ -354,6 +360,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                                 buttonVariants({ variant: "ghost" })
                               )}
                               href={consultationBooking.invoice.path}
+                              target="_blank"
                             >
                               {t("download")}
                               <span>
@@ -371,6 +378,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                                 buttonVariants({ variant: "ghost" })
                               )}
                               href={consultationBooking.invoice.receipt.path}
+                              target="_blank"
                             >
                               {t("download")}
                               <span>

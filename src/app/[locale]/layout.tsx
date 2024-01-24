@@ -1,8 +1,8 @@
+import "@/app/globals.css";
 import { availableLocales, timezone } from "@/config";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/app/globals.css";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";

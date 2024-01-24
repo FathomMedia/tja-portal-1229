@@ -176,7 +176,15 @@
     "restoreAdventureBooking": "استعادة حجز المغامرة",
     "areYouSureYouWantToRestore": "هل أنت متأكد أنك تريد استعادة هذا الحجز؟",
     "restoreBooking": "استعادة الحجز",
-    "pleaseUploadAtLeastOneDocuments": "يرجى تحميل مستند واحد على الأقل."
+    "pleaseUploadAtLeastOneDocuments": "يرجى تحميل مستند واحد على الأقل.",
+    "netTotal": "صافي المجموع",
+    "amountDue": "المبلغ المستحق",
+    "yourChosenAddons": "الإضافات التي اخترتها.",
+    "chosenAddons": "الإضافات المختارة",
+    "feedbackFormLink": "رابط الملاحظات",
+    "yourBookingWasCancelled": "لقد تم إلغاء الحجز الخاص بك. \nيرجى التواصل بالدعم لمزيد من المعلومات.",
+    "here": "هنا",
+    "coupon": "قسيمة"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -399,7 +407,15 @@
     "endDateCannotBeBeforeStartDate": "لا يمكن أن يكون تاريخ الانتهاء أقدم من تاريخ البدء.",
     "ifYouWakeUp": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟",
     "moreDiscovering": "المزيد من الاكتشافات والتنقل بين المدن مع بعض أنشطة المغامرات",
-    "noteMorePeopleMoreMoney": "يرجى ملاحظة: قد يتم تطبيق تكاليف إضافية للمجموعات التي يزيد عدد أفرادها عن 8 أفراد."
+    "noteMorePeopleMoreMoney": "يرجى ملاحظة: قد يتم تطبيق تكاليف إضافية للمجموعات التي يزيد عدد أفرادها عن 8 أفراد.",
+    "amount": "كمية",
+    "vat": "ضريبة القيمة المضافة",
+    "isPaid": "مدفوع",
+    "date": "تاريخ الحجز",
+    "invoice": "فاتورة",
+    "receipt": "إيصال",
+    "singleCoupon": "قسيمة",
+    "ifYouHad": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟"
   },
   "Consultations": {
     "actions": "الإجراءات",
@@ -650,7 +666,8 @@
     "cancelled": "ألغيت",
     "error": "خطأ فني",
     "availablePoints": "النقاط المتاحة",
-    "bookYourAdventure": "احجز مغامرتك"
+    "bookYourAdventure": "احجز مغامرتك",
+    "netTotal": "صافي المجموع"
   },
   "Index": {
     "title": "اهلا بالعالم"

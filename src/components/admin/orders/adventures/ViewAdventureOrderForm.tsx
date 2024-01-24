@@ -24,9 +24,9 @@ import { toast } from "sonner";
 import { AdventureInvoices } from "@/components/booking/AdventureInvoices";
 import { format } from "date-fns";
 import { Icons } from "@/components/ui/icons";
-import { parseDateFromAPI } from "@/lib/utils";
+import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, Blocks, CheckCircle2 } from "lucide-react";
 
 type TAdventureBookingForm = {
   adventureBooking: TAdventureBookingOrder;
@@ -161,7 +161,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         </div>
       </div>
 
-      {/* Consultation Details */}
+      {/* Adventure Details */}
       <div>
         <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 my-4">
           {/* Adventure Details */}
@@ -199,6 +199,45 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             </div>
           </div>
         </div>
+        {adventureBooking.addOns && adventureBooking.addOns.length > 0 && (
+          <div className="flex flex-col items-start my-4 gap-4">
+            <div className="flex flex-col gap-1">
+              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                <span>
+                  <Blocks className="w-4 h-4 text-primary" />
+                </span>{" "}
+                {t("addons")}
+              </h3>
+              <p className="text-muted-foreground text-sm">
+                {t("chosenAddons")}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4 gap-3 w-full ">
+              {adventureBooking.addOns.map((add, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "p-4 rounded-md select-none w-full min-h-[5rem] bg-background gap-3 text-foreground  flex justify-between border-2 border-secondary"
+                  )}
+                >
+                  <div className="flex flex-col gap-3 justify-between">
+                    <div>
+                      <p className="text-sm font-medium">{add.name}</p>
+                    </div>
+                    <p className="text-sm font-bold text-secondary">
+                      {formatePrice({ locale, price: add.price })}
+                    </p>
+                  </div>
+                  {/* select icon */}
+                  <div className={cn("duration-150 h-fit")}>
+                    <CheckCircle2 className="w-5 h-5  bg-secondary text-secondary-foreground rounded-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Separator className="my-4 @4xl:col-span-2" />
+          </div>
+        )}
       </div>
 
       {/* Form Details */}

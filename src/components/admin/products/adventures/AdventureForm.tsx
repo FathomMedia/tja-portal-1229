@@ -76,6 +76,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
       .string()
       .url("Link is invalid")
       .min(1, "Wordpress link is required"),
+    feedbackForm: z.string().url("Link is invalid").optional(),
     title: z.string().min(1, "Title is required"),
     arabic_title: z.string().min(1, "Arabic title is required"),
     description: z.string().min(1, "Description is required"),
@@ -139,14 +140,13 @@ export const AdventureForm: FC<TAdventureForm> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       link: adventure?.link ?? "",
+      feedbackForm: adventure?.feedbackForm ?? undefined,
       title: adventure?.englishTitle ?? "",
       arabic_title: adventure?.arabicTitle ?? "",
       description: adventure?.englishDescription ?? "",
       arabic_description: adventure?.arabicDescription ?? "",
       country_id: adventure?.countryId ?? 0,
       price: adventure?.price ?? 0,
-      // start_date: defaultStartDate,
-      // end_date: defaultEndDate,
       dateRange: {
         from: defaultStartDate,
         to: defaultEndDate,
@@ -166,12 +166,12 @@ export const AdventureForm: FC<TAdventureForm> = ({
 
       // Append all text-based fields
       formData.append("link", values.link);
+      values.feedbackForm &&
+        formData.append("feedback_form", values.feedbackForm);
       formData.append("title", values.title);
       formData.append("arabic_title", values.arabic_title);
       formData.append("description", values.description);
       formData.append("arabic_description", values.arabic_description);
-      // formData.append("package", values.package);
-      // formData.append("arabic_package", values.arabic_package);
       formData.append("country_id", String(values.country_id));
       formData.append("price", String(values.price));
       formData.append("capacity", String(values.capacity));
@@ -263,12 +263,30 @@ export const AdventureForm: FC<TAdventureForm> = ({
           control={form.control}
           name="link"
           render={({ field }) => (
-            <FormItem className=" w-full sm:col-span-2">
+            <FormItem className=" w-full">
               <FormLabel>{t("wordpressLink")}</FormLabel>
               <FormControl>
                 <Input
                   dir="ltr"
                   placeholder={t("wordpressLink")}
+                  className=" border-primary"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="feedbackForm"
+          render={({ field }) => (
+            <FormItem className=" w-full">
+              <FormLabel>{t("feedbackFormLink")}</FormLabel>
+              <FormControl>
+                <Input
+                  dir="ltr"
+                  placeholder={t("feedbackFormLink")}
                   className=" border-primary"
                   {...field}
                 />
@@ -674,6 +692,50 @@ export const AdventureForm: FC<TAdventureForm> = ({
             <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
               <FormField
                 control={form.control}
+                name="travel_guide"
+                render={({ field }) => (
+                  <FormItem className=" w-full">
+                    <div className="flex items-center justify-between">
+                      <FormLabel>
+                        {t("travel_guide")}{" "}
+                        <span className="text-destructive">*</span>
+                      </FormLabel>
+                      {adventure?.travelGuide && (
+                        <Link
+                          href={adventure?.travelGuide}
+                          target="_blank"
+                          className={cn(
+                            buttonVariants({ variant: "info", size: "xs" })
+                          )}
+                        >
+                          {t("view")}
+                        </Link>
+                      )}
+                    </div>
+                    <FormControl>
+                      <Input
+                        dir="ltr"
+                        className=" border-primary"
+                        {...field}
+                        value={undefined}
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+
+                          if (file) {
+                            field.onChange(file);
+                          }
+                        }}
+                        type="file"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+              <FormField
+                control={form.control}
                 name="fitness_guide"
                 render={({ field }) => (
                   <FormItem className=" w-full">
@@ -712,47 +774,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                 )}
               />
             </div>
-            <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
-              <FormField
-                control={form.control}
-                name="travel_guide"
-                render={({ field }) => (
-                  <FormItem className=" w-full">
-                    <div className="flex items-center justify-between">
-                      <FormLabel>{t("travel_guide")}</FormLabel>
-                      {adventure?.travelGuide && (
-                        <Link
-                          href={adventure?.travelGuide}
-                          target="_blank"
-                          className={cn(
-                            buttonVariants({ variant: "info", size: "xs" })
-                          )}
-                        >
-                          {t("view")}
-                        </Link>
-                      )}
-                    </div>
-                    <FormControl>
-                      <Input
-                        dir="ltr"
-                        className=" border-primary"
-                        {...field}
-                        value={undefined}
-                        onChange={(event) => {
-                          const file = event.target.files?.[0];
 
-                          if (file) {
-                            field.onChange(file);
-                          }
-                        }}
-                        type="file"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
               <FormField
                 control={form.control}

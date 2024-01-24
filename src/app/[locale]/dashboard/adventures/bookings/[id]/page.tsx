@@ -18,6 +18,7 @@ import {
   ArrowRightCircleIcon,
   File,
   AlertCircleIcon,
+  Blocks,
 } from "lucide-react";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -313,15 +314,56 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                 {!booking.isFullyPaid && <PayRemaining booking={booking} />}
 
                 <div className="flex items-baseline gap-2">
-                  <p className="text-sm text-muted-foreground">{t("total")}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("netTotal")}
+                  </p>
                   <p className="text-xl font-black text-primary ">
-                    {formatePrice({ locale, price: booking.adventure.price })}
+                    {formatePrice({ locale, price: booking.netAmount })}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-
+          {/* Addons */}
+          {booking.addOns && booking.addOns.length > 0 && (
+            <div className="flex flex-col items-start gap-4">
+              <div className="flex flex-col gap-1">
+                <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                  <span>
+                    <Blocks className="w-4 h-4 text-primary" />
+                  </span>{" "}
+                  {t("addons")}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  {t("yourChosenAddons")}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4 gap-3 w-full ">
+                {booking.addOns.map((add, i) => (
+                  <div
+                    key={i}
+                    className={cn(
+                      "p-4 rounded-md select-none w-full min-h-[5rem] bg-background gap-3 text-foreground  flex justify-between border-2 border-secondary"
+                    )}
+                  >
+                    <div className="flex flex-col gap-3 justify-between">
+                      <div>
+                        <p className="text-sm font-medium">{add.name}</p>
+                      </div>
+                      <p className="text-sm font-bold text-secondary">
+                        {formatePrice({ locale, price: add.price })}
+                      </p>
+                    </div>
+                    {/* select icon */}
+                    <div className={cn("duration-150 h-fit")}>
+                      <CheckCircle2 className="w-5 h-5  bg-secondary text-secondary-foreground rounded-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Separator className="my-4 @4xl:col-span-2" />
+            </div>
+          )}
           {/* Trip Toolkit */}
           <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
             <div className="flex flex-col gap-1">
@@ -343,6 +385,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
                   )}
                   href={booking.adventure.travelGuide}
+                  target="_blank"
                 >
                   {t("travelGuide")}{" "}
                   <span>
@@ -357,6 +400,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
                   )}
                   href={booking.adventure.fitnessGuide}
+                  target="_blank"
                 >
                   {t("fitnessGuide")}{" "}
                   <span>
@@ -371,6 +415,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
                   )}
                   href={booking.adventure.packingList}
+                  target="_blank"
                 >
                   {t("packingList")}{" "}
                   <span>
@@ -569,25 +614,29 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   buttonVariants({ variant: "default", size: "xs" }),
                   " flex items-center gap-1 text-xs ps-3 font-normal rounded-full"
                 )}
-                href={"#"}
+                target="_blank"
+                href={"https://wa.me/0097338377700"}
               >
                 {t("whatsApp")}{" "}
                 <span>
                   <ArrowRightCircleIcon className="w-4 h-4 text-center rtl:rotate-180" />
                 </span>
               </Link>
-              <Link
-                className={cn(
-                  buttonVariants({ variant: "default", size: "xs" }),
-                  " flex items-center gap-1 text-xs ps-3 font-normal rounded-full"
-                )}
-                href={"#"}
-              >
-                {t("feedbackForm")}{" "}
-                <span>
-                  <ArrowRightCircleIcon className="w-4 h-4 text-center rtl:rotate-180" />
-                </span>
-              </Link>
+              {booking.adventure.feedbackForm && (
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: "default", size: "xs" }),
+                    " flex items-center gap-1 text-xs ps-3 font-normal rounded-full"
+                  )}
+                  href={booking.adventure.feedbackForm}
+                  target="_blank"
+                >
+                  {t("feedbackForm")}{" "}
+                  <span>
+                    <ArrowRightCircleIcon className="w-4 h-4 text-center rtl:rotate-180" />
+                  </span>
+                </Link>
+              )}
             </div>
           </div>
           <Separator className="my-4" />
