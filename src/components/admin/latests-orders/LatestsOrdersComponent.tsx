@@ -26,6 +26,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { formatePrice } from "@/lib/utils";
 
 export const LatestsOrdersComponent = () => {
   const locale = useLocale();
@@ -205,7 +206,9 @@ export const LatestsOrdersComponent = () => {
                           <Badge variant={"outline"}>{adventure.gender}</Badge>
                         </div>
                         <h5 className="text-xl text-primary font-bold font-helveticaNeue">
-                          <p>{adventure.priceWithCurrency}</p>
+                          <p>
+                            {formatePrice({ locale, price: order.netAmount })}
+                          </p>
                         </h5>
                       </div>
                     </div>
