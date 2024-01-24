@@ -179,11 +179,12 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
           </div>
           <div>
             <Label>
-              {t("price")}
+              {t("netTotal")}
               {/* Price */}
             </Label>
             <div className="p-2 rounded-md border text-sm">
-              {adventureBooking.totalPriceWithCurrency ?? noValue}
+              {formatePrice({ locale, price: adventureBooking.netAmount }) ??
+                noValue}
             </div>
           </div>
           <div>
