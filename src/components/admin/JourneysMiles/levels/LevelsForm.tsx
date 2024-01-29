@@ -62,8 +62,8 @@ export const LevelsForm: FC<TLevelsForm> = ({ level }) => {
     defaultValues: {
       name: level?.englishName ?? "",
       arabic_name: level?.arabicName ?? "",
-      minDays: level?.minDays ?? 0,
-      maxDays: level?.maxDays ?? 0,
+      minDays: level?.minDays ?? undefined,
+      maxDays: level?.maxDays ?? undefined,
     },
   });
 

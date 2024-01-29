@@ -34,7 +34,7 @@ import { toast } from "sonner";
 import { cn, parseDateFromAPI } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
-import { Check, ChevronsUpDown, ImageOff } from "lucide-react";
+import { Check, ChevronsUpDown, ClipboardCopy, ImageOff } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { TAddon, TAdventure, TCountry } from "@/lib/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -146,13 +146,13 @@ export const AdventureForm: FC<TAdventureForm> = ({
       description: adventure?.englishDescription ?? "",
       arabic_description: adventure?.arabicDescription ?? "",
       country_id: adventure?.countryId ?? 0,
-      price: adventure?.price ?? 0,
+      price: adventure?.price ?? undefined,
       dateRange: {
         from: defaultStartDate,
         to: defaultEndDate,
       },
-      capacity: adventure?.capacity ?? 0,
-      gift_points: adventure?.giftPoints ?? 0,
+      capacity: adventure?.capacity ?? undefined,
+      gift_points: adventure?.giftPoints ?? undefined,
       gender: (adventure?.genderValue ?? "A") as any,
       add_ons: adventure?.addOns ?? [],
     },
@@ -255,6 +255,19 @@ export const AdventureForm: FC<TAdventureForm> = ({
               height={160}
               alt="adventure image"
               className="w-full h-full rounded-md shadow-md object-cover"
+            />
+          </div>
+        )}
+        {adventure && adventure.slug && (
+          <div className="flex">
+            <CopyValue title={t("slug")} value={adventure.slug} />
+          </div>
+        )}
+        {adventure && adventure.slug && (
+          <div className="flex">
+            <CopyValue
+              title={t("portalLink")}
+              value={`https://portal.thejourneyadventures.com/${locale}/dashboard/checkout/adventures/${adventure.slug}`}
             />
           </div>
         )}
@@ -612,7 +625,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                                   return checked
                                     ? field.onChange([
                                         ...field.value,
-                                        { id: item.id, price: 0 },
+                                        { id: item.id, price: undefined },
                                       ])
                                     : field.onChange(
                                         field.value?.filter(
@@ -651,7 +664,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                               value={
                                 field.value?.filter(
                                   (value) => value.id === item.id
-                                )?.[0]?.price ?? 0
+                                )?.[0]?.price ?? undefined
                               }
                               onChange={(event) => {
                                 const current = field.value?.filter(
@@ -677,9 +690,31 @@ export const AdventureForm: FC<TAdventureForm> = ({
                   />
                 ))}
               </div>
-              <p className="text-sm font-medium text-destructive">
-                {(fieldState.error as any)?.[0].price.message}
-              </p>
+
+              <div className="text-sm flex flex-col gap-1 font-medium text-destructive">
+                {(fieldState.error as any)?.map(
+                  (
+                    err: {
+                      price: {
+                        message:
+                          | string
+                          | number
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | Iterable<React.ReactNode>
+                          | React.ReactPortal
+                          | React.PromiseLikeOfReactNode
+                          | null
+                          | undefined;
+                      };
+                    },
+                    i: React.Key | null | undefined
+                  ) => err && <p key={i}>{err.price.message}</p>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -833,5 +868,30 @@ export const AdventureForm: FC<TAdventureForm> = ({
         </div>
       </form>
     </Form>
+  );
+};
+
+const CopyValue = ({ title, value }: { title: string; value: string }) => {
+  return (
+    <div className="flex flex-col gap-2  overflow-ellipsis w-full">
+      <p className="font-medium text-sm">{title}</p>
+      <Button
+        variant={"outline"}
+        size={"sm"}
+        type="button"
+        className="flex items-center overflow-x-scroll justify-start gap-1 text-xs w-full hover:cursor-copy group"
+        onClick={() => {
+          toast.message(`${title} copied to your clipboard.`, {
+            icon: <ClipboardCopy className="w-3 h-3" />,
+          });
+          navigator.clipboard.writeText(value);
+        }}
+      >
+        {value}
+        <span>
+          <ClipboardCopy className="w-3 h-3 sm:opacity-0 group-hover:opacity-100 duration-100" />
+        </span>
+      </Button>
+    </div>
   );
 };

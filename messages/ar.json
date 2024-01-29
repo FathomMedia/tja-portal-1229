@@ -184,7 +184,8 @@
     "feedbackFormLink": "رابط الملاحظات",
     "yourBookingWasCancelled": "لقد تم إلغاء الحجز الخاص بك. \nيرجى التواصل بالدعم لمزيد من المعلومات.",
     "here": "هنا",
-    "coupon": "قسيمة"
+    "coupon": "قسيمة",
+    "portalLink": "رابط الخروج من موقع البوابة"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -626,7 +627,8 @@
     "theJourneyAdventures": "ذا جورني ادفينتجرز",
     "fullyBooked": "محجوز بالكامل",
     "seatsLeft": "مقاعد خالية",
-    "cancelled": "ألغيت"
+    "cancelled": "ألغيت",
+    "maxDaysLow": "يجب أن يكون الحد الأقصى للأيام أكثر من الحد الأدنى للأيام"
   },
   "DeleteProfile": {
     "cancel": "إلغاء",

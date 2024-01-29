@@ -186,7 +186,8 @@
     "feedbackFormLink": "Feedback Form Link",
     "yourBookingWasCancelled": "Your booking has been cancelled. Please contact support for more information.",
     "here": "here",
-    "coupon": "Coupon"
+    "coupon": "Coupon",
+    "portalLink": "Portal website checkout link"
   },
   "Auth": {
     "OTP": "OTP",
@@ -631,7 +632,8 @@
     "theJourneyAdventures": "The Journey Adventures",
     "fullyBooked": "Fully Booked",
     "seatsLeft": "Seats Left",
-    "cancelled": "Cancelled"
+    "cancelled": "Cancelled",
+    "maxDaysLow": "Max days should be more than min days"
   },
   "DeleteProfile": {
     "cancel": "Cancel",
