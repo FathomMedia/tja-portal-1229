@@ -78,7 +78,7 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
           customerId: customer.customerId,
           dataToSend: {
             points: Number(values.points),
-            level: Number(values.level),
+            level_id: Number(values.level),
             daysTravelled: Number(values.daysTravelled),
           },
         }),
