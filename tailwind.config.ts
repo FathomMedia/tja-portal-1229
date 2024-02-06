@@ -67,10 +67,16 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        holographicShine: {
+          "0%": { backgroundPosition: "left" },
+          "50%": { backgroundPosition: "right" },
+          "100%": { backgroundPosition: "left" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "holographic-shine": "holographicShine 8s infinite linear",
       },
       fontFamily: {
         sans: ["var(--font-inter)"],
