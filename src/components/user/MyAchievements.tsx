@@ -31,9 +31,9 @@ export const MyAchievements: FC = () => {
     <div className="grid grid-cols-1 gap-4">
       {isFetchingAchievements && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center">
-          <Skeleton className="w-full h-40 max-w-xs" />
-          <Skeleton className="w-full h-40 max-w-xs" />
-          <Skeleton className="w-full h-40 max-w-xs" />
+          <Skeleton className="w-full h-64 max-w-xs" />
+          <Skeleton className="w-full h-64 max-w-xs" />
+          <Skeleton className="w-full h-64 max-w-xs" />
         </div>
       )}
       {achievements && !isFetchingAchievements && (
@@ -60,7 +60,7 @@ export const MyAchievements: FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-holographic-shine bg-[length:200%_100%]"></div>
 
                   {/* Your existing content */}
-                  <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16 z-10">
+                  <Avatar className="w-24 h-24 max-sm:w-16 max-sm:h-16 z-10">
                     {ach.badge && (
                       <AvatarImage className="object-cover" src={ach.badge} />
                     )}
@@ -142,7 +142,7 @@ export const MyAchievements: FC = () => {
                     !ach.achieved && "bg-muted opacity-80"
                   )}
                 >
-                  <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16">
+                  <Avatar className="w-24 h-24 min-w-fit max-sm:w-16 max-sm:h-16">
                     {ach.badge && (
                       <AvatarImage className="object-cover" src={ach.badge} />
                     )}
