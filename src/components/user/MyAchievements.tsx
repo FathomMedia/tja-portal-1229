@@ -57,7 +57,7 @@ export const MyAchievements: FC = () => {
                   )}
                 >
                   {/* Shine Effect Overlay */}
-                  {/* <div className="absolute inset-0 bg-gradient-to-r from-transparent via-info to-transparent opacity-10 animate-holographic-shine bg-[length:200%_100%]"></div> */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-holographic-shine bg-[length:200%_100%]"></div>
 
                   {/* Your existing content */}
                   <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16 z-10">
