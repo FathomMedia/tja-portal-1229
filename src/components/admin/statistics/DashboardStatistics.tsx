@@ -93,11 +93,11 @@ export const DashboardStatistics = () => {
       {/* grid of chart and recent orders */}
       <div className="grid grid-cols-1 xl:grid-cols-7 gap-4 xl:gap-6">
         {/* chart */}
-        <div className="gap-3 col-span-1 xl:col-span-4 flex flex-col ">
+        <div className="gap-3 col-span-1 xl:col-span-4  flex flex-col ">
           <p className="text-lg  font-semibold text-primary">
             {t("monthlyRevenue")}
           </p>
-          <div className="rounded-lg border-border border flex flex-col p-6 bg-white/50">
+          <div className="rounded-lg border-border border h-full flex flex-col p-6 bg-white/50">
             <RevenueChart />
             <p className="text-xs text-muted-foreground">
               {t("valuesAreInBHD")}

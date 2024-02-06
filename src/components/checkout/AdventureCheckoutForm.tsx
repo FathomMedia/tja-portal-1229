@@ -136,7 +136,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
         minPoints: z.number(),
         maxPoints: z.number(),
         applyTo: z.string(),
-        isUsed: z.number(),
+        isUsed: z.boolean(),
       })
       .nullable(),
     isPartialPayment: z.boolean(),
@@ -494,6 +494,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                           />
                         </FormControl>
                       )}
+                    <FormMessage />
                     {/* if user have no redeemed coupons  */}
                     {!myCoupons ||
                       (myCoupons.length === 0 && (
@@ -503,7 +504,6 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                           </p>
                         </div>
                       ))}
-                    <FormMessage />
                   </FormItem>
                 )}
               />

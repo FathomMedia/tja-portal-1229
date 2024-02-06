@@ -62,6 +62,7 @@ export const columns: ColumnDef<TCustomer>[] = [
         <DisplayTranslatedText text="Name" translation="SignUp" />
       </div>
     ),
+    cell: ({ row }) => <Title customer={row.original} />,
   },
   {
     accessorKey: "email",
@@ -489,5 +490,18 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+const Title = ({ customer }: { customer: TCustomer }) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary"
+      href={`/${locale}/admin/members/customers/edit/${customer.customerId}`}
+    >
+      {customer.name}
+    </Link>
   );
 };

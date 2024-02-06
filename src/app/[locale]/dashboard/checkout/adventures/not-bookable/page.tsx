@@ -8,7 +8,7 @@ export default function Page() {
   const t = useTranslations("Checkout");
   const locale = useLocale();
   return (
-    <div className="flex flex-col grow justify-center items-center">
+    <div className="flex flex-col grow justify-center lg:items-start items-center">
       <div className="max-w-md py-4 px-8 bg-white shadow-lg rounded-2xl my-20">
         <div className="flex justify-center md:justify-end -mt-16">
           <Image

@@ -6,7 +6,6 @@ import { columns } from "./columns";
 import { TCustomers } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
-import { locale } from "dayjs";
 import { useLocale, useTranslations } from "next-intl";
 import { DashboardSection } from "@/components/DashboardSection";
 

@@ -42,7 +42,7 @@ export type TCoupon = {
   minPoints: number;
   maxPoints: number;
   applyTo: string;
-  isUsed?: number;
+  isUsed?: boolean;
 };
 export type TCoupons = {
   data: TCoupon[];

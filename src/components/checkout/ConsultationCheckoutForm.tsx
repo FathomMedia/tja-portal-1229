@@ -91,7 +91,7 @@ export const ConsultationCheckoutForm: FC<TConsultationCheckoutForm> = ({
         minPoints: z.number(),
         maxPoints: z.number(),
         applyTo: z.string(),
-        isUsed: z.number(),
+        isUsed: z.boolean(),
       })
       .nullable(),
 
