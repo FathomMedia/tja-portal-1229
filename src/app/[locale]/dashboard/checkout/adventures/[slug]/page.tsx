@@ -36,7 +36,7 @@ export default async function Page({
   /* Checking if the adventure is full or not upcoming.
   If either of these conditions is true,
   it will redirect the user to the not-bookable page. */
-  if (adventure.isFull || !adventure.isUpcoming) {
+  if (adventure.isFull || !adventure.isUpcoming || adventure.isBooked) {
     redirect(`/${locale}/dashboard/checkout/adventures/not-bookable`);
   }
 

@@ -93,6 +93,7 @@ export type TAdventure = {
   arabicPackage: string | null;
   priceWithCurrency: string;
   isPartialAllowed: boolean;
+  isBooked?: boolean;
   partialPrice: number;
   partialPriceWithCurrency: string;
   partialRemaining: string;

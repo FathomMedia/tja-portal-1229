@@ -187,7 +187,8 @@
     "yourBookingWasCancelled": "Your booking has been cancelled. Please contact support for more information.",
     "here": "here",
     "coupon": "Coupon",
-    "portalLink": "Portal website checkout link"
+    "portalLink": "Portal website checkout link",
+    "booked": "Booked"
   },
   "Auth": {
     "OTP": "OTP",
@@ -232,7 +233,7 @@
     "price": "Price",
     "remaining": "Remaining",
     "startDate": "Start Date",
-    "thisAdventureIsNotAvailable": "This adventure is not available",
+    "thisAdventureIsNotAvailable": "This adventure is not available for booking.",
     "toBePaidLater": "(To be paid later)",
     "total": "Total",
     "why": {
@@ -244,7 +245,13 @@
     "youDontHaveAnyRedeemedCoupons": "You don't have any redeemed coupons",
     "paymentType": "Payment type",
     "checkout": "Checkout",
-    "whyDidYouChooseThisDistentionDescription": "Enter your reason..."
+    "whyDidYouChooseThisDistentionDescription": "Enter your reason...",
+    "adventureNotAvailable": "Adventure Not Available",
+    "theAdventureIsFullyBooked": "The adventure is fully booked.",
+    "theAdventureDateHasPassed": "The adventure date has passed.",
+    "youHaveAlreadyBookedThisAdventure": "You have already booked this adventure.",
+    "weAreSorry": "We're sorry, but this adventure is not available for booking at the moment. This could be because:",
+    "returnToAdventures": "Return to Adventures"
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",

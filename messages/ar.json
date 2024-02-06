@@ -185,7 +185,8 @@
     "yourBookingWasCancelled": "لقد تم إلغاء الحجز الخاص بك. \nيرجى التواصل بالدعم لمزيد من المعلومات.",
     "here": "هنا",
     "coupon": "قسيمة",
-    "portalLink": "رابط الخروج من موقع البوابة"
+    "portalLink": "رابط الخروج من موقع البوابة",
+    "booked": "محجوزة"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -226,7 +227,7 @@
     "price": "السعر",
     "remaining": "المتبقي",
     "startDate": "تاريخ البدء",
-    "thisAdventureIsNotAvailable": "هذه المغامرة غير متوفرة",
+    "thisAdventureIsNotAvailable": "هذه المغامرة غير متاحة للحجز.",
     "toBePaidLater": "(تُدفع لاحقًا)",
     "total": "الإجمالي",
     "whyDidYouChooseThisDistention": "لماذا أخترت هذه الوجهة؟",
@@ -238,7 +239,13 @@
       }
     },
     "checkout": "الدفع",
-    "whyDidYouChooseThisDistentionDescription": "أدخل السبب..."
+    "whyDidYouChooseThisDistentionDescription": "أدخل السبب...",
+    "adventureNotAvailable": "المغامرة غير متوفرة",
+    "theAdventureIsFullyBooked": "المغامرة محجوزة بالكامل.",
+    "theAdventureDateHasPassed": "لقد مر تاريخ المغامرة.",
+    "youHaveAlreadyBookedThisAdventure": "لقد قمت بالفعل بحجز هذه المغامرة.",
+    "weAreSorry": "نحن آسفون، ولكن هذه المغامرة غير متاحة للحجز في الوقت الحالي. قد يكون ذلك بسبب:",
+    "returnToAdventures": "العودة إلى المغامرات"
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",
@@ -686,7 +693,7 @@
   },
   "Pagination": {
     "next": "التالي",
-    "previous": "سابق"
+    "previous": "السابق"
   },
   "Products": {
     "addOns": "إضافات",

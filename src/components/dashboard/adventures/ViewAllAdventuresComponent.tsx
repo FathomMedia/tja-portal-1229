@@ -116,6 +116,16 @@ export const ViewAllAdventuresComponent = () => {
                       {t("fullyBooked")}
                     </Badge>
                   )}
+
+                  {adventure.isBooked && (
+                    <Badge
+                      variant={"destructive"}
+                      size={"sm"}
+                      className=" w-fit text-xs"
+                    >
+                      {t("booked")}
+                    </Badge>
+                  )}
                   {!adventure.isFull && adventure.availableSeats <= 5 && (
                     <Badge
                       variant={"outline"}
