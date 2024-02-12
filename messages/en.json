@@ -25,13 +25,20 @@
   "AdminInvite": {
     "Invite": "New invite",
     "emailAddress": "Email Address ",
-    "enterYourName": "Enter your name",
+    "enterYourName": "Enter admin name",
     "female": "Female",
     "gender": "Gender",
     "inviteAnAdmin": "Invite an admin",
     "male": "Male",
     "name": "Name",
-    "selectGender": "Select gender"
+    "selectGender": "Select gender",
+    "email": {
+      "errors": {
+        "invalid": "Invalid email",
+        "required": "required"
+      }
+    },
+    "sendInvite": "Send Invite"
   },
   "Adventures": {
     "actions": "Actions",
@@ -117,7 +124,7 @@
     "ladiesOnly": "Ladies Only",
     "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip": "Make sure to upload all the required documents to ensure a smooth trip.",
     "male": "Male",
-    "maleOnly": "Male Only",
+    "maleOnly": "Gents Only",
     "markAsPaid": "Mark As Paid",
     "mixed": "Mixed",
     "name": "Name",
@@ -429,7 +436,13 @@
     "invoice": "Invoice",
     "receipt": "Receipt",
     "singleCoupon": "Coupon",
-    "ifYouHad": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?"
+    "ifYouHad": "If you had to wake up at 5 am to chase a program/activity, which one would you wake up that early for?",
+    "dangerArea": "Danger Area",
+    "cancelConsultationBooking": "Cancel Consultation Booking",
+    "areYouSureYouWantToCancel": "Are you sure you want to cancel this booking?",
+    "close": "Close",
+    "cancelConsultation": "Cancel Consultation",
+    "viewConsultation": "View Consultation"
   },
   "Consultations": {
     "actions": "Actions",
@@ -518,7 +531,9 @@
     "unsuspend": "Unsuspend",
     "update": "Update",
     "updateCustomer": "Update Customer",
-    "view": "View"
+    "view": "View",
+    "positive": "The number should be a positive",
+    "actions": "Actions"
   },
   "Dashboard": {
     "70points": "70 Points",

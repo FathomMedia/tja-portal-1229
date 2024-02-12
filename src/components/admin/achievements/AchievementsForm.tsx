@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ImageOff } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { MAX_IMAGE_SIZE } from "@/config";
+import { useRouter } from "next/navigation";
 
 type TAchievementsForm = {
   achievement?: TAchievement;
@@ -32,6 +33,7 @@ type TAchievementsForm = {
 export const AchievementsForm: FC<TAchievementsForm> = ({ achievement }) => {
   const locale = useLocale();
   const t = useTranslations("Dashboard");
+  const { push } = useRouter();
 
   const formSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -96,13 +98,18 @@ export const AchievementsForm: FC<TAchievementsForm> = ({ achievement }) => {
     },
     async onSuccess(data) {
       if (data.ok) {
-        const { message } = await data.json();
+        const { data: ach, message } = await data.json();
         toast.success(message, { duration: 6000 });
         queryClient.invalidateQueries({ queryKey: ["/achievements"] });
-        achievement &&
+        if (achievement) {
           queryClient.invalidateQueries({
             queryKey: [`/achievements/${achievement.id}`],
           });
+        } else {
+          // push to created page
+          const newAchievement: TAchievement = ach;
+          push(`/${locale}/admin/achievements/edit/${newAchievement.id}`);
+        }
       } else {
         const { message } = await data.json();
         toast.error(message, { duration: 6000 });

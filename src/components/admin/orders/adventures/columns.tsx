@@ -113,7 +113,10 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
       return (
         <Avatar className="w-10 h-10">
           {row.original.adventure.image && (
-            <AvatarImage src={row.original.adventure.image} />
+            <AvatarImage
+              className="object-cover"
+              src={row.original.adventure.image}
+            />
           )}
           <AvatarFallback>
             {<X className="w-4 h-4 text-muted-foreground" />}

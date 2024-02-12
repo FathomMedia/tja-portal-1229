@@ -37,6 +37,7 @@ export const columns: ColumnDef<TAchievement>[] = [
         <DisplayTranslatedText text="title" translation="Dashboard" />
       </div>
     ),
+    cell: ({ row }) => <Title achievement={row.original} />,
   },
   {
     accessorKey: "badge",
@@ -110,5 +111,18 @@ const Actions = ({ achievement }: { achievement: TAchievement }) => {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+  );
+};
+
+const Title = ({ achievement }: { achievement: TAchievement }) => {
+  const locale = useLocale();
+
+  return (
+    <Link
+      className="group-hover:text-secondary group-hover:underline"
+      href={`/${locale}/admin/achievements/edit/${achievement.id}`}
+    >
+      {achievement.title}
+    </Link>
   );
 };

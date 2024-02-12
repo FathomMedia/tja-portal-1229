@@ -79,7 +79,7 @@ module.exports = {
         "holographic-shine": "holographicShine 8s infinite linear",
       },
       fontFamily: {
-        sans: ["var(--font-inter)"],
+        sans: ["var(--font-open_Sans)"],
         helveticaNeue: ["var(--font-helveticaNeue)"],
       },
     },

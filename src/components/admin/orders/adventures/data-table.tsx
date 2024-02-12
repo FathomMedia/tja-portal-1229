@@ -114,9 +114,9 @@ export function DataTable<TData, TValue>({
           <Button
             variant={"outline"}
             className="ml-auto rounded-lg flex items-center gap-1"
-            onClick={() =>
+            onClick={() => {
               apiReqQuery({
-                endpoint: `/adventure-bookings${slug && `/${slug}`}/export`,
+                endpoint: `/adventure-bookings${slug ? `/${slug}` : ""}/export`,
                 method: "GET",
                 locale,
               }).then(async (res) => {
@@ -127,8 +127,8 @@ export function DataTable<TData, TValue>({
                 a.download = "adventure-bookings.csv";
                 a.click();
                 window.URL.revokeObjectURL(url);
-              })
-            }
+              });
+            }}
           >
             <span className="hidden sm:inline-block">{t("download")}</span>
             <span className="">{"CSV"}</span>

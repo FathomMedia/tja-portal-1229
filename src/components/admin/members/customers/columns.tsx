@@ -49,6 +49,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { isRtlLang } from "rtl-detect";
 
 export const columns: ColumnDef<TCustomer>[] = [
   {
@@ -302,9 +303,10 @@ const Actions = ({ customer }: { customer: TCustomer }) => {
             <Dialog>
               <DialogTrigger asChild>
                 <Button
+                  dir={isRtlLang(locale) ? "rtl" : "ltr"}
                   variant={"ghost"}
-                  size={"sm"}
-                  className="relative w-full flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                  size={"xs"}
+                  className="relative justify-start w-full flex cursor-default select-none items-center rounded-sm py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                 >
                   {t("loyaltyPoints")}
                 </Button>

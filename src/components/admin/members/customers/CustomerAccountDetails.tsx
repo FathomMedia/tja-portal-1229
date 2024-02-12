@@ -50,18 +50,21 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
   });
 
   const formSchema = z.object({
-    points: z.string().min(1, t("pointsAreRequired")),
+    points: z.number().positive(t("positive")).min(0, t("pointsAreRequired")),
     level: z.string().min(1, t("levelIsRequired")),
-    daysTravelled: z.string().min(1, t("daysTravelledAreRequired")),
+    days_travelled: z
+      .number()
+      .positive(t("positive"))
+      .min(0, t("daysTravelledAreRequired")),
   });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      points: customer.points.toString(),
+      points: customer.points ?? undefined,
+      days_travelled: customer.daysTravelled ?? undefined,
       level: customer.level.id.toString(),
-      daysTravelled: customer.daysTravelled.toString(),
     },
   });
 
@@ -79,7 +82,7 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
           dataToSend: {
             points: Number(values.points),
             level_id: Number(values.level),
-            daysTravelled: Number(values.daysTravelled),
+            days_travelled: Number(values.days_travelled),
           },
         }),
       });
@@ -126,6 +129,7 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
                     className=" border-primary"
                     type="number"
                     {...field}
+                    onChange={(val) => field.onChange(Number(val.target.value))}
                   />
                 </FormControl>
                 <FormMessage />
@@ -134,7 +138,7 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
           />
           <FormField
             control={form.control}
-            name="daysTravelled"
+            name="days_travelled"
             render={({ field }) => (
               <FormItem className=" w-full">
                 <FormLabel>{t("daysTravelled")}</FormLabel>
@@ -144,6 +148,7 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
                     className=" border-primary"
                     type="number"
                     {...field}
+                    onChange={(val) => field.onChange(Number(val.target.value))}
                   />
                 </FormControl>
                 <FormMessage />

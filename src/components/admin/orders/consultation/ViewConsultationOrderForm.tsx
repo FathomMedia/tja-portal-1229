@@ -89,7 +89,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
   });
 
   return (
-    <DashboardSection title={"View Consultation"}>
+    <DashboardSection title={t("viewConsultation")}>
       <div className=" flex flex-col gap-12 @container p-4 rounded-sm">
         {/* Checkout Details */}
         <div className="">
@@ -296,7 +296,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                 disabled
                 value={consultationBooking.coupon?.code ?? "N/A"}
               /> */}
-              <Label>Invoice</Label>
+              <Label>{t("invoice")}</Label>
               <div className="rounded-md overflow-clip border">
                 <Table className="">
                   <TableHeader className="">
@@ -426,7 +426,7 @@ export const ViewConsultationOrderForm: FC<TConsultationBookingForm> = ({
                           <DialogContent className="sm:max-w-lg">
                             <DialogHeader className="gap-1">
                               <DialogTitle>
-                                {t("deleteAchievement")}
+                                {t("cancelConsultationBooking")}
                               </DialogTitle>
                               <DialogDescription className="gap-1 flex flex-wrap">
                                 {t("areYouSureYouWantToCancel")}

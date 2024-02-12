@@ -25,13 +25,20 @@
   "AdminInvite": {
     "Invite": "ارسال دعوة",
     "emailAddress": "البريد الإلكتروني",
-    "enterYourName": "ادخل اسمك",
+    "enterYourName": "أدخل اسم المسؤول",
     "female": "أنثى",
     "gender": "الجنس",
     "inviteAnAdmin": "ارسال دعوة لمنصب مسؤول",
     "male": "ذكر",
     "name": "الإسم",
-    "selectGender": "إختر الجنس"
+    "selectGender": "إختر الجنس",
+    "email": {
+      "errors": {
+        "invalid": "بريد إلكتروني خاطئ",
+        "required": "مطلوب"
+      }
+    },
+    "sendInvite": "ارسل دعوة"
   },
   "Adventures": {
     "actions": "الإجراءات",
@@ -115,7 +122,7 @@
     "ladiesOnly": "سيدات فقط",
     "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip": "تأكد من تحميل جميع المستندات المطلوبة لضمان رحلة سلسة.",
     "male": "ذكر",
-    "maleOnly": "الذكور فقط",
+    "maleOnly": "للرجال فقط",
     "markAsPaid": "وضع علامة على أنه مدفوع",
     "mixed": "مختلط",
     "name": "الإسم",
@@ -423,7 +430,13 @@
     "invoice": "فاتورة",
     "receipt": "إيصال",
     "singleCoupon": "قسيمة",
-    "ifYouHad": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟"
+    "ifYouHad": "إذا كان عليك أن تستيقظ في الخامسة صباحًا لمتابعة برنامج/نشاط ما، فما هو البرنامج الذي ستستيقظ فيه مبكرًا؟",
+    "dangerArea": "منطقة الخطر",
+    "cancelConsultationBooking": "إلغاء حجز الاستشارة",
+    "areYouSureYouWantToCancel": "هل أنت متأكد أنك تريد إلغاء هذا الحجز؟",
+    "close": "إغلاق",
+    "cancelConsultation": "إلغاء الاستشارة",
+    "viewConsultation": "عرض الاستشارة"
   },
   "Consultations": {
     "actions": "الإجراءات",
@@ -513,7 +526,8 @@
     "unsuspend": "إلغاء التعليق",
     "update": "تحديث",
     "updateCustomer": "تحديث العميل",
-    "view": "التفاصيل"
+    "view": "التفاصيل",
+    "positive": "يجب أن يكون الرقم موجبًا"
   },
   "Dashboard": {
     "70points": "70 نقطة",

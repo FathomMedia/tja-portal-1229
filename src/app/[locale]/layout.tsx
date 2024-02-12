@@ -2,7 +2,7 @@ import "@/app/globals.css";
 import { availableLocales, timezone } from "@/config";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { NextIntlClientProvider, useMessages } from "next-intl";
 import { isRtlLang } from "rtl-detect";
 import { cn } from "@/lib/utils";
@@ -35,7 +35,10 @@ const helveticaNeue = localFont({
   variable: "--font-helveticaNeue",
 });
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const open_Sans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open_Sans",
+});
 
 export const metadata: Metadata = {
   title: "The Journey Adventures",
@@ -62,7 +65,7 @@ export default function RootLayout({
     <html
       dir={isRtlLang(locale) ? "rtl" : "ltr"}
       lang={locale}
-      className={cn(inter.variable, helveticaNeue.variable)}
+      className={cn(helveticaNeue.variable, open_Sans.variable)}
     >
       <body>
         <ReCaptchaProvider language={locale}>

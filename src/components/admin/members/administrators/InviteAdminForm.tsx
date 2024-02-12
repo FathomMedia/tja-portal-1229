@@ -179,6 +179,7 @@ export const InviteAdminForm: FC<TInviteAdminForm> = ({ adminInvitation }) => {
                   <FormItem className=" w-full mb-2">
                     <FormLabel>{t("gender")}</FormLabel>
                     <Select
+                      dir={isRtlLang(locale) ? "rtl" : "ltr"}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -203,11 +204,7 @@ export const InviteAdminForm: FC<TInviteAdminForm> = ({ adminInvitation }) => {
                   variant={"secondary"}
                   type="submit"
                 >
-                  {" "}
-                  {/* {mutation.isPending && (
-                              <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                            )} */}
-                  {"Send Invite"}
+                  {t("sendInvite")}
                 </Button>
               </div>
               {/* </div> */}
