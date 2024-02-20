@@ -19,7 +19,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname();
   const locale = useLocale();
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const t = useTranslations("Home");
   const queryClient = useQueryClient();
 
@@ -31,9 +31,9 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
     });
     const data = await res.json();
     if (res.ok) {
-      toast.success(data.message);
       queryClient.invalidateQueries();
-      push(`/${locale}/authentication`);
+      toast.success(data.message);
+      replace(`/${locale}/authentication`);
     } else {
       toast.error(data.message);
     }

@@ -1,7 +1,6 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { DeleteProfile } from "@/components/user/DeleteUserProfile";
-import { UserAccountDetails } from "@/components/user/UserAccountDetails";
 import { UserUpdateEmail } from "@/components/user/UserUpdateEmail";
 import { UpdatePassword } from "@/components/user/UserUpdatePassword";
 

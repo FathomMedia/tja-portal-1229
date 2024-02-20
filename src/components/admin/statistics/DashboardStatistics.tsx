@@ -7,13 +7,12 @@ import { useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
+import { cn, formatePrice } from "@/lib/utils";
 import {
   ArrowDown,
   ArrowRight,
   BookHeartIcon,
   ImageOff,
-  Map,
   Plane,
   Users,
 } from "lucide-react";

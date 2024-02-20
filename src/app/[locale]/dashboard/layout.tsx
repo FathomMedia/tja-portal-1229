@@ -1,5 +1,4 @@
 import { SidebarNav } from "@/components/SideNav";
-import { ResizablePanelGroup } from "@/components/ui/resizable";
 import { Separator } from "@/components/ui/separator";
 import { UserProfilePreview } from "@/components/user/UserProfilePreview";
 import { useLocale, useTranslations } from "next-intl";

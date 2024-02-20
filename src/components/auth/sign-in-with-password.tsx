@@ -18,16 +18,16 @@ import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { apiReq } from "@/lib/apiHelpers";
-import { cookies } from "next/headers";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const SignInWithPassword = () => {
   const { push } = useRouter();
   const locale = useLocale();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const queryClient = useQueryClient();
   const t = useTranslations("SignInWithPassword");
 
   const createQueryString = useCallback(
@@ -87,6 +87,7 @@ export const SignInWithPassword = () => {
     const res = await response.json();
 
     if (response.ok) {
+      queryClient.invalidateQueries();
       const isAdmin = res.data.role === "Admin";
       toast.success(res.message);
       const redirectTo = pathname.includes("authentication")

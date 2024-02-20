@@ -4,7 +4,7 @@ import { TAddon, TCountry } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 
 import { apiReqQuery } from "@/lib/apiHelpers";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DashboardSection } from "@/components/DashboardSection";
 

@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 
-import { TAddon, TAdventure, TCountry, TCoupon } from "@/lib/types";
+import { TCoupon } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 
 import { apiReqQuery } from "@/lib/apiHelpers";

@@ -1,6 +1,6 @@
 import { DashboardSection } from "@/components/DashboardSection";
 import { MyAchievements } from "@/components/user/MyAchievements";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 export default function Page() {
   const t = useTranslations("Dashboard");

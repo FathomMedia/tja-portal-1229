@@ -28,7 +28,7 @@ export function MobileNav({
 }: MobileNavProps) {
   const pathname = usePathname();
   const locale = useLocale();
-  const { push } = useRouter();
+  const { replace } = useRouter();
   const t = useTranslations("Home");
   const queryClient = useQueryClient();
 
@@ -42,7 +42,7 @@ export function MobileNav({
     if (res.ok) {
       toast.success(data.message);
       queryClient.invalidateQueries();
-      push(`/${locale}/authentication`);
+      replace(`/${locale}/authentication`);
     } else {
       toast.error(data.message);
     }

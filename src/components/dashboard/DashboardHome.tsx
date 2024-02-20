@@ -10,8 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { LoadingComp } from "../LoadingComp";
 import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
-import { CheckCircle, Download, Globe } from "lucide-react";
-import { Button, buttonVariants } from "../ui/button";
+import { CheckCircle, Globe } from "lucide-react";
+import { buttonVariants } from "../ui/button";
 import { cn, formatePrice } from "@/lib/utils";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -41,6 +41,7 @@ export const DashboardHome = () => {
         (order: any) => order.type === "adventure" && order.details.isUpcoming
       )
     : [];
+
   const t = useTranslations("Home");
   return (
     <DashboardSection hideBack title={t("myAccount")}>

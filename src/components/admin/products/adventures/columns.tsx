@@ -1,16 +1,14 @@
 "use client";
 
-import { TAdventure, TAdventureBooking } from "@/lib/types";
+import { TAdventure } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import {
   CheckCircle2,
   ClipboardCopy,
-  LucideMinusCircle,
   MoreHorizontal,
   ArrowUpDown,
   Circle,
   PlusCircle,
-  X,
   ImageOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

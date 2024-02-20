@@ -1,15 +1,8 @@
 "use client";
-import { TAdventure } from "@/lib/types";
-import { apiReqQuery } from "@/lib/apiHelpers";
 import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon, CheckCircle2, Globe } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { cn, formatePrice } from "@/lib/utils";
+import { AlertCircleIcon } from "lucide-react";
 
 export default function Page() {
   const locale = useLocale();

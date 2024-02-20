@@ -7,7 +7,6 @@ import { TAdventureBookings } from "@/lib/types";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { useQuery } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
-import { DashboardSection } from "@/components/DashboardSection";
 
 export const AdventureBookingsOrdersComponent = ({
   slug,

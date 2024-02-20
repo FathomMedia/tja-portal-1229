@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,18 +17,15 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Icons } from "@/components/ui/icons";
-import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { apiReq } from "@/lib/apiHelpers";
-import { cookies } from "next/headers";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export const AdminResetPasswordForm = () => {
   const { push } = useRouter();
   const locale = useLocale();
-  const pathname = usePathname();
+
   const searchParams = useSearchParams();
   const t = useTranslations("SignInWithPassword");
 

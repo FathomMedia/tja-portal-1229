@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon, CheckCircle2, Globe } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { AlertCircleIcon, Globe } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { cn, formatePrice } from "@/lib/utils";
 
 export default function Page({

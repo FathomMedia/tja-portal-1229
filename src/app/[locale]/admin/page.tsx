@@ -1,4 +1,3 @@
-import { DashboardSection } from "@/components/DashboardSection";
 import { DashboardStatistics } from "@/components/admin/statistics/DashboardStatistics";
 import { useTranslations } from "next-intl";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 
 import { CouponsForm } from "@/components/admin/JourneysMiles/coupons/CouponsForm";
 

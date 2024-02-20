@@ -2,13 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 
-import {
-  TAddon,
-  TAdventure,
-  TCountry,
-  TAchievement,
-  TAchievements,
-} from "@/lib/types";
+import { TAchievement } from "@/lib/types";
 import { useLocale, useTranslations } from "next-intl";
 
 import { apiReqQuery } from "@/lib/apiHelpers";

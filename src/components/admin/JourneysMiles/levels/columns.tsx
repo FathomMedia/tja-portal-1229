@@ -1,14 +1,8 @@
 "use client";
 
-import { TCoupon, TLevel } from "@/lib/types";
+import { TLevel } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ClipboardCopy,
-  MoreHorizontal,
-  ArrowUpDown,
-  PlusCircle,
-  ImageOff,
-} from "lucide-react";
+import { MoreHorizontal, PlusCircle, ImageOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -17,12 +11,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<TLevel>[] = [
