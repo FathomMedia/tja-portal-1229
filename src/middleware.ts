@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 import { availableLocales } from "./config";
+import { error } from "console";
 
 const authPath = `authentication`;
 
@@ -68,7 +69,9 @@ export async function middleware(request: NextRequest) {
           },
           body: JSON.stringify({ token: token.value }),
         }
-      );
+      ).catch((error) => {
+        throw new Error(error);
+      });
       // check if there is a user with the provided token
       if (resUserProfile.ok) {
         const jsonData = await resUserProfile.json();

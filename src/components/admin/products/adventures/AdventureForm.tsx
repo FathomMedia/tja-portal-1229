@@ -185,6 +185,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
       formData.append("end_date", format(values.dateRange.to, "dd/MM/yyyy"));
       if (adventure) {
         formData.append("slug", adventure.slug);
+        formData.append("_method", "PUT");
       }
 
       // Append the files if exists
@@ -201,21 +202,50 @@ export const AdventureForm: FC<TAdventureForm> = ({
         formData.append("packing_list", values.packing_list);
       }
 
+      const userToken = await fetch("/api/user/get-current-user-token", {
+        method: "GET",
+      });
+
+      const token = await userToken.json();
+
       return adventure
-        ? fetch(`/api/adventure/update-adventure`, {
-            method: "PUT",
-            headers: {
-              "Accept-Language": locale,
-            },
-            body: formData,
-          })
-        : fetch(`/api/adventure/new-adventure`, {
+        ? fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/adventures/${adventure.slug}`,
+            {
+              method: "POST",
+              headers: {
+                "Accept-Language": locale,
+                Accept: "application/json",
+                ...(token && { Authorization: `Bearer ${token}` }),
+              },
+              body: formData,
+            }
+          )
+        : fetch(`${process.env.NEXT_PUBLIC_API_URL}/adventures`, {
             method: "POST",
             headers: {
               "Accept-Language": locale,
+              Accept: "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
             },
             body: formData,
           });
+
+      // return adventure
+      //   ? fetch(`/api/adventure/update-adventure`, {
+      //       method: "PUT",
+      //       headers: {
+      //         "Accept-Language": locale,
+      //       },
+      //       body: formData,
+      //     })
+      //   : fetch(`/api/adventure/new-adventure`, {
+      //       method: "POST",
+      //       headers: {
+      //         "Accept-Language": locale,
+      //       },
+      //       body: formData,
+      //     });
     },
     async onSuccess(data) {
       if (data.ok) {

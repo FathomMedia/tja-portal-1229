@@ -120,6 +120,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       const formData = new FormData();
 
       booking && formData.append("id", booking.id.toString());
+      formData.append("_method", "PUT");
 
       if (values.passport_id) {
         formData.append("passport_id", values.passport_id);
@@ -131,13 +132,25 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         formData.append("other_document", values.other_document);
       }
 
-      return fetch(`/api/adventure/update-booking-documents`, {
-        method: "PUT",
-        headers: {
-          "Accept-Language": locale,
-        },
-        body: formData,
+      const userToken = await fetch("/api/user/get-current-user-token", {
+        method: "GET",
       });
+
+      const token = await userToken.json();
+      console.log("🚀 ~ mutationFn: ~ token:", token);
+
+      return fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/adventure-bookings/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Accept-Language": locale,
+            Accept: "application/json",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+          body: formData,
+        }
+      );
     },
     async onSuccess(data) {
       if (data.ok) {

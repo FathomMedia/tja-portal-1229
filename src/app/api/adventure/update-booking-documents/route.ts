@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+// ! NOT USED ANY MORE, CLIENT CALL THE SERVER DIRECTLY CUZ OF THE UPLOAD SIZE LIMIT FROM VERCEL
+// ! SERVERLESS BODY SIZE LIMITATION OF 4.5MB
+
 export async function PUT(request: NextRequest) {
   const cookieStore = cookies();
   const token = cookieStore.get("authToken");
