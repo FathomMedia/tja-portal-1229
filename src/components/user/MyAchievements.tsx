@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { FC } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
@@ -52,8 +51,6 @@ export const MyAchievements: FC = () => {
                   className={cn(
                     " flex flex-col justify-center items-center gap-4 bg-[linear-gradient(45deg,transparent_25%,white_50%,transparent_75%,transparent_100%)]  relative max-w-md overflow-hidden rounded-xl border border-muted bg-[length:250%_250%,100%_100%] bg-[position:-100%_0,0_0] bg-no-repeat px-8 py-16 shadow-xl  hover:bg-[position:200%_0,0_0] shadow-info/5 hover:duration-1000",
                     !ach.achieved && "bg-muted border-muted opacity-80"
-                    // "hover:shadow-white hover:shadow-2xl"
-                    // "hover:shadow-lg transform hover:-translate-y-1 "
                   )}
                 >
                   {/* Shine Effect Overlay */}
@@ -108,7 +105,7 @@ export const MyAchievements: FC = () => {
                     !ach.achieved && "bg-muted opacity-80"
                   )}
                 >
-                  <Avatar className="w-24 h-24 min-w-fit max-sm:w-16 max-sm:h-16">
+                  <Avatar className="w-24 h-24 max-sm:w-16 max-sm:h-16">
                     {ach.badge && (
                       <AvatarImage className="object-cover" src={ach.badge} />
                     )}
@@ -120,7 +117,7 @@ export const MyAchievements: FC = () => {
                 </PopoverTrigger>
                 <PopoverContent className="rounded-xl">
                   <div className="flex gap-4 items-center">
-                    <Avatar className="w-20 h-20 min-w-fit max-sm:w-16 max-sm:h-16">
+                    <Avatar className="w-20 h-20 max-sm:w-16 max-sm:h-16">
                       {ach.badge && (
                         <AvatarImage className="object-cover" src={ach.badge} />
                       )}
