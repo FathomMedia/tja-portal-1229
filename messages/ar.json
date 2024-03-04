@@ -193,7 +193,11 @@
     "here": "هنا",
     "coupon": "قسيمة",
     "portalLink": "رابط الخروج من موقع البوابة",
-    "booked": "محجوزة"
+    "booked": "محجوزة",
+    "bookingFailed": "فشل الحجز",
+    "failedToConfirmYourBooking": "فشل تأكيد حجزك، يرجى المحاولة مرة أخرى",
+    "goToAdventures": "اذهب إلى المغامرات",
+    "tryAgain": "حاول ثانية"
   },
   "Auth": {
     "OTP": "رمز التحقق",

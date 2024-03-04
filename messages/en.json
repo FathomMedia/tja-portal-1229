@@ -195,7 +195,11 @@
     "here": "here",
     "coupon": "Coupon",
     "portalLink": "Portal website checkout link",
-    "booked": "Booked"
+    "booked": "Booked",
+    "bookingFailed": "Booking Failed",
+    "failedToConfirmYourBooking": "Failed to confirm your booking, please try again",
+    "goToAdventures": "Go to Adventures",
+    "tryAgain": "Try Again"
   },
   "Auth": {
     "OTP": "OTP",
