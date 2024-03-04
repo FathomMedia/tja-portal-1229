@@ -79,7 +79,7 @@ export const DashboardStatistics = () => {
           <StatisticsCard className="@container justify-between">
             <div className="flex items-start gap-3 justify-between">
               <StatisticsHeader>
-                {t("totalConseltationBookings")}
+                {t("totalConsultationBookings")}
               </StatisticsHeader>
               <BookHeartIcon className="w-4 h-4 text-muted-foreground" />
             </div>
