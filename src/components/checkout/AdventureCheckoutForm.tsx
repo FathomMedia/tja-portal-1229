@@ -41,6 +41,17 @@ import { toast } from "sonner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiReqQuery } from "@/lib/apiHelpers";
 import { Skeleton } from "../ui/skeleton";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 type TAdventureCheckoutForm = {
   initAdventure: TAdventure;
@@ -78,15 +89,46 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       });
     },
     async onSuccess(data) {
-      const paymentSession = await data.json();
+      const resData: {
+        type: "session" | "banktransfer" | "error";
+        session?: {
+          PaymentURL: string | null;
+        };
+        banktransfer?: {
+          orderId: string;
+        };
+        message: string;
+      } = await data.json();
+      console.log("resData", resData);
       if (data.ok) {
-        if (paymentSession?.session?.PaymentURL) {
-          push(paymentSession?.session?.PaymentURL);
+        // switch based on resData.type
+        if (resData) {
+          switch (resData.type) {
+            case "banktransfer":
+              if (resData.banktransfer) {
+                push(
+                  `/${locale}/dashboard/checkout/banktransfer/adventures/${resData.banktransfer.orderId}`
+                );
+              }
+              break;
+            case "session":
+              if (resData.session?.PaymentURL) {
+                push(resData.session?.PaymentURL);
+              } else {
+                toast.error(t("CouldntCreateAPaymentSession"), {
+                  duration: 6000,
+                });
+              }
+              break;
+            default:
+              toast.error(resData?.message, { duration: 6000 });
+              break;
+          }
         } else {
-          toast.error(t("CouldntCreateAPaymentSession"), { duration: 6000 });
+          toast.error(t("somethingWentWrong"));
         }
       } else {
-        toast.error(paymentSession?.message, { duration: 6000 });
+        toast.error(resData?.message, { duration: 6000 });
       }
     },
     async onError(error) {
@@ -141,7 +183,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
       .nullable(),
     isPartialPayment: z.boolean(),
 
-    paymentMethod: z.enum(["benefitpay", "applepay", "card"]),
+    paymentMethod: z.enum(["benefitpay", "applepay", "card", "banktransfer"]),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -161,6 +203,8 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
   const [totalFullPrice, setTotalFullPrice] = useState(0);
   const [partialPrice, setPartialPrice] = useState(0);
   const [partialRemaining, setPartialRemaining] = useState(0);
+  const [alertDialogIsOpen, setAlertDialogIsOpen] = useState(false);
+  const [values, setValues] = useState<z.infer<typeof formSchema>>();
 
   useEffect(() => {
     setTotalAdventureWithAddons(adventure?.price + addonsTotal);
@@ -181,7 +225,9 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
   ]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    mutation.mutate(values);
+    // mutation.mutate(values);
+    setValues(values);
+    setAlertDialogIsOpen(true);
   }
 
   return (
@@ -291,6 +337,22 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                                 {t("benefitPay")}
                               </Label>
                             </div>
+                            <div>
+                              <RadioGroupItem
+                                value="banktransfer"
+                                id="banktransfer"
+                                className="peer sr-only"
+                              />
+                              <Label
+                                htmlFor="banktransfer"
+                                className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                              >
+                                <div className="mb-3">
+                                  <Icons.banktransfer className="h-6 w-6" />
+                                </div>
+                                {t("banktransfer")}
+                              </Label>
+                            </div>
                             {/* <div>
                               <RadioGroupItem
                                 value="applepay"
@@ -318,6 +380,31 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                   />
                 </CardContent>
                 <CardFooter>
+                  <AlertDialog
+                    open={alertDialogIsOpen}
+                    onOpenChange={setAlertDialogIsOpen}
+                  >
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Agree on the terms and conditions?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          By placing an order you are agreeing on the terms and
+                          conditions of the journeys adventures
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => values && mutation.mutate(values)}
+                        >
+                          Agree
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
                   <Button type="submit" className="w-full mt-4">
                     {mutation.isPending && (
                       <Icons.spinner className="me-2 h-4 w-4 animate-spin" />

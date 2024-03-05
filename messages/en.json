@@ -262,7 +262,9 @@
     "theAdventureDateHasPassed": "The adventure date has passed.",
     "youHaveAlreadyBookedThisAdventure": "You have already booked this adventure.",
     "weAreSorry": "We're sorry, but this adventure is not available for booking at the moment. This could be because:",
-    "returnToAdventures": "Return to Adventures"
+    "returnToAdventures": "Return to Adventures",
+    "banktransfer": "Bank Transfer",
+    "somethingWentWrong": "Something went wrong."
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",

@@ -1,3 +1,5 @@
+import { Landmark } from "lucide-react";
+
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
@@ -160,6 +162,7 @@ export const Icons = {
       <path d="M2 10h20" />
     </svg>
   ),
+  banktransfer: (props: IconProps) => <Landmark {...props} />,
   benefitPay: (props: IconProps) => (
     <svg
       width="24"

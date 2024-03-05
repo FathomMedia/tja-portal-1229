@@ -176,6 +176,8 @@ export type TAdventureBookingOrder = {
   otherDocument: string | null;
   reason: string;
   isCancelled: boolean;
+  isReserved: boolean;
+  status: string;
 };
 export type TInvoice = {
   id: number;

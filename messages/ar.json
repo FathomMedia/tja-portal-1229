@@ -256,7 +256,9 @@
     "theAdventureDateHasPassed": "لقد مر تاريخ المغامرة.",
     "youHaveAlreadyBookedThisAdventure": "لقد قمت بالفعل بحجز هذه المغامرة.",
     "weAreSorry": "نحن آسفون، ولكن هذه المغامرة غير متاحة للحجز في الوقت الحالي. قد يكون ذلك بسبب:",
-    "returnToAdventures": "العودة إلى المغامرات"
+    "returnToAdventures": "العودة إلى المغامرات",
+    "banktransfer": "التحويل المصرفي",
+    "somethingWentWrong": "هناك خطأ ما."
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",
