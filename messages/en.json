@@ -211,7 +211,24 @@
     "completeBankTransfer": "Please complete the bank transfer within 48 hours using the           information sent to your email.",
     "adventureName": "Adventure Name",
     "dueDateForBankTransfer": "Due Date for Bank Transfer",
-    "goToBooking": "Go to booking"
+    "goToBooking": "Go to booking",
+    "reservation": "Reservation",
+    "reservedBooking": "Reserved booking",
+    "reservedStatus": "Reserved status",
+    "bookingMadeByBankTransfer": "This booking payment method is bank transfer",
+    "theAmountToBePaid": "The amount to be paid by the user is",
+    "partialPayment": "Partial payment",
+    "fullPayment": "Full payment",
+    "rejectReservation": "Reject reservation",
+    "confirmReceivingThePayment": "Confirm receiving the payment",
+    "of": "of",
+    "confirmReceiving": "Confirm receiving",
+    "fromTheCustomer": "from the customer.",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "rejectReservationDescription": "Are you certain you wish to reject this reservation? This action will permanently delete the reservation and cancel the booking.",
+    "back": "Back",
+    "forBankTransferSeeEmail": "For bank transfer please see the details sent to your email."
   },
   "Auth": {
     "OTP": "OTP",
@@ -877,5 +894,7 @@
     "uh-oh": "Uh-oh!",
     "pageNotFound": "We can't find that page.",
     "goToHome": "Go to home page"
-  }
+  },
+  "no-data": "No Data Available",
+  "noDataDescription": "We currently don't have any estimated revenue data to display. This could be because the data is still being processed or there hasn't been any revenue activity yet."
 }

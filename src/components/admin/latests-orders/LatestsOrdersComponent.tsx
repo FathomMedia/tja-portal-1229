@@ -62,7 +62,35 @@ export const LatestsOrdersComponent = () => {
           const isAdventure = order.type === "adventure";
           const consultation: TConsultation = order.details as TConsultation;
           const adventure: TAdventure = order.details as TAdventure;
+          var variant:
+            | "info"
+            | "default"
+            | "secondary"
+            | "destructive"
+            | "outline"
+            | null
+            | undefined;
 
+          switch (order?.statusEnum) {
+            case "reserved":
+              variant = "info";
+              break;
+            case "partiallyPaid":
+              variant = "secondary";
+              break;
+            case "fullyPaid":
+              variant = "default";
+              break;
+            case "cancelled":
+              variant = "destructive";
+              break;
+            case "notPaid":
+              variant = "outline";
+              break;
+            default:
+              variant = "outline";
+              break;
+          }
           return (
             <HoverCard key={i}>
               <HoverCardTrigger>
@@ -100,6 +128,7 @@ export const LatestsOrdersComponent = () => {
                   </div>
                   <div className="flex flex-wrap text-sm @md:items-end gap-1 @md:flex-col w-fit">
                     <div className="flex items-center gap-2">
+                      {/* TODO: status */}
                       {order.isCancelled && (
                         <Badge variant={"destructive"} className="font-light">
                           {t("cancelled")}
@@ -112,7 +141,12 @@ export const LatestsOrdersComponent = () => {
                         </Badge>
                       )}
 
-                      {isAdventure &&
+                      {isAdventure && (
+                        <Badge variant={variant}>
+                          {order.status ?? "Unknown"}
+                        </Badge>
+                      )}
+                      {/* {isAdventure &&
                         (order.isFullyPaid ? (
                           <Badge className="bg-teal-400/40 w-fit text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
                             {t("paid")}
@@ -122,7 +156,7 @@ export const LatestsOrdersComponent = () => {
                           <Badge className="bg-secondary/40 w-fit text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
                             {t("pendingPayment")}
                           </Badge>
-                        ))}
+                        ))} */}
                     </div>
                     <Badge
                       className="w-fit font-light bg-background text-ellipsis"

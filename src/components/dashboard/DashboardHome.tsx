@@ -230,6 +230,36 @@ const Adventure = ({ order }: { order: TOrder }) => {
   const adventure = order.details as TAdventure;
   const t = useTranslations("Home");
   const locale = useLocale();
+
+  var variant:
+    | "info"
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | null
+    | undefined;
+
+  switch (order?.statusEnum) {
+    case "reserved":
+      variant = "info";
+      break;
+    case "partiallyPaid":
+      variant = "secondary";
+      break;
+    case "fullyPaid":
+      variant = "default";
+      break;
+    case "cancelled":
+      variant = "destructive";
+      break;
+    case "notPaid":
+      variant = "outline";
+      break;
+    default:
+      variant = "outline";
+      break;
+  }
   return (
     <Link
       href={`/${locale}/dashboard/adventures/bookings/${order.id}`}
@@ -267,7 +297,9 @@ const Adventure = ({ order }: { order: TOrder }) => {
               {t("adventure")}
             </p>
             <div className=" flex gap-2">
-              {!order.isCancelled ? (
+              {/* TODO: status */}
+              <Badge variant={variant}>{order.status ?? "Unknown"}</Badge>
+              {/* {!order.isCancelled ? (
                 <div></div>
               ) : (
                 <Badge className="bg-destructive/40 text-destructive hover:bg-destructive/30 hover:text-destructive font-light uppercase">
@@ -283,7 +315,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
                 <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
                   {t("pendingPayment")}
                 </Badge>
-              )}
+              )} */}
             </div>
           </div>
           <p className="font-black flex group-hover:underline items-center gap-1 font-helveticaNeue text-primary md:text-3xl text-xl">
@@ -318,7 +350,7 @@ const Adventure = ({ order }: { order: TOrder }) => {
               </span>
             </p>
           )}
-          {!order.isFullyPaid && (
+          {!order.isFullyPaid && order.isPartiallyPaid && !order.isReserved && (
             <p
               className={
                 (cn(buttonVariants({ variant: "ghost", size: "sm" })),
@@ -326,6 +358,19 @@ const Adventure = ({ order }: { order: TOrder }) => {
               }
             >
               {t("completePayment")}
+            </p>
+          )}
+          {order.isReserved && (
+            <p
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "flex items-center gap-1"
+              )}
+            >
+              {t("viewBooking")}
+              <span>
+                <Globe className="w-4 h-5" />
+              </span>
             </p>
           )}
 

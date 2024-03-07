@@ -117,7 +117,7 @@ export const ViewAllAdventuresComponent = () => {
                     </Badge>
                   )}
 
-                  {adventure.isBooked && (
+                  {(adventure.isBooked || adventure.isReserved) && (
                     <Badge
                       variant={"destructive"}
                       size={"sm"}

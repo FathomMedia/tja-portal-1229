@@ -103,6 +103,50 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
     cell: ({ row }) => <p>{row.original.adventure.title}</p>,
   },
   {
+    accessorKey: "statusEnum",
+    header: ({ column }) => {
+      return <DisplayTranslatedText text="status" translation="Adventures" />;
+    },
+
+    cell: ({ row }) => {
+      var variant:
+        | "info"
+        | "default"
+        | "secondary"
+        | "destructive"
+        | "outline"
+        | null
+        | undefined;
+
+      switch (row.original.statusEnum) {
+        case "reserved":
+          variant = "info";
+          break;
+        case "partiallyPaid":
+          variant = "secondary";
+          break;
+        case "fullyPaid":
+          variant = "default";
+          break;
+        case "cancelled":
+          variant = "destructive";
+          break;
+        case "notPaid":
+          variant = "outline";
+          break;
+        default:
+          variant = "outline";
+          break;
+      }
+
+      return (
+        <Badge className="whitespace-nowrap" variant={variant}>
+          {row.original.status}
+        </Badge>
+      );
+    },
+  },
+  {
     accessorKey: "image",
     header: () => (
       <div className="min-w-[2.5rem]">

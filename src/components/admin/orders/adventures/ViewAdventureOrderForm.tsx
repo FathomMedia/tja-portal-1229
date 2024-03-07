@@ -7,7 +7,7 @@ import { TAdventureBookingOrder } from "@/lib/types";
 
 import { Label } from "@/components/ui/label";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
@@ -27,6 +27,18 @@ import { Icons } from "@/components/ui/icons";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon, Blocks, CheckCircle2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 type TAdventureBookingForm = {
   adventureBooking: TAdventureBookingOrder;
@@ -40,6 +52,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
   const locale = useLocale();
   const t = useTranslations("Adventures");
   const queryClient = useQueryClient();
+  const { push } = useRouter();
 
   const cancelMutation = useMutation({
     mutationFn: () => {
@@ -62,6 +75,9 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         });
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/statistics`],
         });
         toast.success(message);
       } else {
@@ -99,6 +115,89 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings`],
         });
+        queryClient.invalidateQueries({
+          queryKey: [`/statistics`],
+        });
+        toast.success(message);
+      } else {
+        console.log(data);
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  const acceptReservationMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/book/accept-reservation`, {
+        method: "POST",
+        body: JSON.stringify({
+          id: adventureBooking.id,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      if (data.ok) {
+        const { message } = await data.json();
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/statistics`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/bookings`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings`],
+        });
+        toast.success(message);
+      } else {
+        console.log(data);
+        const { message } = await data.json();
+        toast.error(message, { duration: 6000 });
+      }
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
+
+  const rejectReservationMutation = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/book/reject-reservation`, {
+        method: "POST",
+        body: JSON.stringify({
+          id: adventureBooking.id,
+        }),
+        headers: {
+          "Accept-Language": locale,
+          "Content-Type": "application/json",
+        },
+      });
+    },
+    async onSuccess(data) {
+      console.log(adventureBooking);
+      console.log(adventureBooking.id);
+      if (data.ok) {
+        const { message } = await data.json();
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/statistics`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings`],
+        });
+        push(`/${locale}`);
         toast.success(message);
       } else {
         console.log(data);
@@ -167,6 +266,104 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
           {/* Adventure Details */}
           {t("adventureDetails")}
         </h2>
+        {adventureBooking.isReserved && (
+          <div className="p-4 rounded-md flex flex-col gap-3 border-muted border mb-2">
+            <div className="flex flex-col">
+              <p className="text-lg text-info font-helveticaNeue font-black border-info">
+                {t("reservedStatus")}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {`${t("bookingMadeByBankTransfer")} (${
+                  adventureBooking.partialInvoice ? t("partialPayment") : ""
+                }${adventureBooking.fullInvoice ? t("fullPayment") : ""})`}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {`${t("theAmountToBePaid")} ${formatePrice({
+                  locale,
+                  price:
+                    adventureBooking.partialInvoice?.totalAmount ??
+                    adventureBooking.fullInvoice?.totalAmount ??
+                    0,
+                })}`}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="w-fit"
+                    disabled={acceptReservationMutation.isPending}
+                    variant={"info"}
+                  >
+                    {acceptReservationMutation.isPending && (
+                      <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                    )}
+                    {t("confirmReceivingThePayment")}
+                    {/* Confirm receiving the payment */}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      {t("confirmReceivingThePayment")}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {`${t("confirmReceiving")} ${formatePrice({
+                        locale,
+                        price:
+                          adventureBooking.partialInvoice?.totalAmount ??
+                          adventureBooking.fullInvoice?.totalAmount ??
+                          0,
+                      })} ${t("fromTheCustomer")}`}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => acceptReservationMutation.mutate()}
+                    >
+                      {t("confirm")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="w-fit"
+                    disabled={rejectReservationMutation.isPending}
+                    variant={"destructive"}
+                  >
+                    {rejectReservationMutation.isPending && (
+                      <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                    )}
+                    {t("rejectReservation")}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      {t("rejectReservation")}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t("rejectReservationDescription")}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t("back")}</AlertDialogCancel>
+                    <AlertDialogAction
+                      className={cn(buttonVariants({ variant: "destructive" }))}
+                      onClick={() => rejectReservationMutation.mutate()}
+                    >
+                      {t("confirm")}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          </div>
+        )}
         <div className=" grid grid-cols-1 @lg:grid-cols-2 gap-8">
           <div>
             <Label>
@@ -253,6 +450,15 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               parseDateFromAPI(adventureBooking.dateBooked.toString()),
               "dd/MM/yyyy"
             ) ?? noValue}
+          </div>
+        </div>
+        <div>
+          <Label>
+            {t("status")}
+            {/* Date Booked */}
+          </Label>
+          <div className="p-2 rounded-md border text-sm">
+            {adventureBooking.status ?? noValue}
           </div>
         </div>
         <div>

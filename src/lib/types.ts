@@ -94,6 +94,7 @@ export type TAdventure = {
   priceWithCurrency: string;
   isPartialAllowed: boolean;
   isBooked?: boolean;
+  isReserved?: boolean;
   partialPrice: number;
   partialPriceWithCurrency: string;
   partialRemaining: string;
@@ -183,6 +184,7 @@ export type TAdventureBookingOrder = {
   isFullyPaid: boolean;
   isPartiallyPaid: boolean;
   isReserved: boolean;
+  isReservation: boolean;
   isCancelled: boolean;
 };
 export type TInvoice = {

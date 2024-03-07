@@ -101,7 +101,11 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
           break;
       }
 
-      return <Badge variant={variant}>{row.original.status}</Badge>;
+      return (
+        <Badge className="whitespace-nowrap" variant={variant}>
+          {row.original.status}
+        </Badge>
+      );
     },
   },
   {

@@ -111,6 +111,21 @@ export const ReservedBookingCard: FC<TReservedBookingCard> = ({ booking }) => {
               </p>
             </div>
           )}
+          {booking.fullInvoice && (
+            <div>
+              <div className="font-semibold">{t("price")}</div>
+
+              <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                {t("totalAmountDue")}
+                <span className="font-medium">
+                  {formatePrice({
+                    locale,
+                    price: booking.fullInvoice.totalAmount,
+                  })}
+                </span>
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="flex items-start gap-3">

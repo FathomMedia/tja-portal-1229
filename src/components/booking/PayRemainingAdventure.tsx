@@ -132,7 +132,7 @@ export const PayRemaining: FC<TPayRemaining> = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-10"
+            className="flex flex-col gap-5"
           >
             <DialogHeader className="gap-1">
               <DialogTitle>{t("completePayment")}</DialogTitle>
@@ -200,15 +200,23 @@ export const PayRemaining: FC<TPayRemaining> = ({
                       </div>
                     </RadioGroup>
                   </FormControl>
+
                   {field.value === "benefitpay" && (
                     <p className="text-muted-foreground text-sm">
                       {t("benefitPay-debit-card-for-Bahraini-only")}
                     </p>
                   )}
+
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {booking.isReservation && (
+              <div className="bg-muted/50 text-muted-foreground w-fit px-3 py-2 rounded-md flex gap-2 items-center">
+                <Icons.banktransfer className="w-4 h-4 text" />
+                <p className=" text-sm">{t("forBankTransferSeeEmail")}</p>
+              </div>
+            )}
 
             <DialogFooter className="sm:justify-start">
               <DialogClose asChild>

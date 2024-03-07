@@ -326,6 +326,17 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         </span>
                       </p>
                     )}
+                    {booking.fullInvoice && (
+                      <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                        {t("totalAmountDue")}
+                        <span className="font-medium">
+                          {formatePrice({
+                            locale,
+                            price: booking.fullInvoice.totalAmount,
+                          })}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 )}
 
