@@ -17,6 +17,10 @@ module.exports = {
         ring: "#1B1B1B",
         background: "#F4F3F0",
         foreground: "#1B1B1B",
+        lightPrimary: {
+          DEFAULT: "#2F9D83",
+          foreground: "#FBFBFB",
+        },
         primary: {
           DEFAULT: "#1E473F",
           foreground: "#FBFBFB",

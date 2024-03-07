@@ -50,12 +50,9 @@ export const CustomerAccountDetails: FC<TCustomerAccountDetails> = ({
   });
 
   const formSchema = z.object({
-    points: z.number().positive(t("positive")).min(0, t("pointsAreRequired")),
+    points: z.number().min(0, t("pointsAreRequired")),
     level: z.string().min(1, t("levelIsRequired")),
-    days_travelled: z
-      .number()
-      .positive(t("positive"))
-      .min(0, t("daysTravelledAreRequired")),
+    days_travelled: z.number().min(0, t("daysTravelledAreRequired")),
   });
 
   // 1. Define your form.

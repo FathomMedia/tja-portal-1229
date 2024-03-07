@@ -197,7 +197,19 @@
     "bookingFailed": "فشل الحجز",
     "failedToConfirmYourBooking": "فشل تأكيد حجزك، يرجى المحاولة مرة أخرى",
     "goToAdventures": "اذهب إلى المغامرات",
-    "tryAgain": "حاول ثانية"
+    "tryAgain": "حاول ثانية",
+    "status": "حالة",
+    "pendingBankTransferConfirmation": "في انتظار تأكيد التحويل البنكي",
+    "bankTransferEmailDetails": "يرجى إكمال التحويل البنكي باستخدام المعلومات المرسلة إلى بريدك الإلكتروني",
+    "totalAmountDue": "إجمالي المبلغ المستحق",
+    "or": "أو",
+    "contactUs": "اتصل بنا",
+    "forMoreHelp": "لمزيد من المساعدة",
+    "reservationConfirmed": "تم تأكيد الحجز",
+    "completeBankTransfer": "يرجى إكمال التحويل البنكي خلال 48 ساعة باستخدام المعلومات المرسلة إلى بريدك الإلكتروني.",
+    "adventureName": "اسم المغامرة",
+    "dueDateForBankTransfer": "تاريخ استحقاق التحويل البنكي",
+    "goToBooking": "اذهب إلى الحجز"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -258,7 +270,11 @@
     "weAreSorry": "نحن آسفون، ولكن هذه المغامرة غير متاحة للحجز في الوقت الحالي. قد يكون ذلك بسبب:",
     "returnToAdventures": "العودة إلى المغامرات",
     "banktransfer": "التحويل المصرفي",
-    "somethingWentWrong": "هناك خطأ ما."
+    "somethingWentWrong": "هناك خطأ ما.",
+    "agreeOnTheTermsAndConditions": "هل توافق على الشروط والأحكام؟",
+    "termsAndConditionDescription": "من خلال تقديم الطلب فإنك توافق على شروط وأحكام ذا جورني ادفنشرس",
+    "cancel": "إلغاء",
+    "agree": "أوافق"
   },
   "Consultation": {
     "BeachesAndWaterSports": "الشواطئ والرياضات المائية",
@@ -651,7 +667,7 @@
     "pendingPayment": "في انتظار الدفع",
     "totalAdventureBookings": "إجمالي حجوزات المغامرة",
     "totalConsultationBookings": "إجمالي حجوزات الإستشارة",
-    "theJourneyAdventures": "ذا جورني ادفينتجرز",
+    "theJourneyAdventures": "ذا جورني ادفنشرس",
     "fullyBooked": "محجوز بالكامل",
     "seatsLeft": "مقاعد خالية",
     "cancelled": "ألغيت",
@@ -847,5 +863,10 @@
     "resendIn": "إعادة الإرسال في",
     "seconds": " ثانية",
     "resend": "إعادة إرسال"
+  },
+  "NotFound": {
+    "uh-oh": "اه أوه!",
+    "pageNotFound": "لا يمكننا العثور على تلك الصفحة.",
+    "goToHome": "اذهب إلى الصفحة الرئيسية"
   }
 }

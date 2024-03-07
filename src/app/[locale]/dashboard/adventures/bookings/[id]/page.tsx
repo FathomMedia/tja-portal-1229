@@ -64,6 +64,36 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
         ),
     });
 
+  var variant:
+    | "info"
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | null
+    | undefined;
+
+  switch (booking?.statusEnum) {
+    case "reserved":
+      variant = "info";
+      break;
+    case "partiallyPaid":
+      variant = "secondary";
+      break;
+    case "fullyPaid":
+      variant = "default";
+      break;
+    case "cancelled":
+      variant = "destructive";
+      break;
+    case "notPaid":
+      variant = "outline";
+      break;
+    default:
+      variant = "outline";
+      break;
+  }
+
   const formSchema = z
     .object({
       passport_id: z
@@ -198,57 +228,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       {booking && !isFetchingAdventure && (
         <div className="flex flex-col w-full gap-6">
           {/* Alerts */}
-          <div className="flex flex-col w-full gap-4">
-            {isRedirected && (
-              <Alert className="text-primary-foreground border-primary-foreground bg-primary">
-                <CheckCircle2 className="h-4 w-4 !text-primary-foreground " />
-                <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
-                <AlertDescription className="text-xs">
-                  {t("yourBookingIsConfirmd")}
-                </AlertDescription>
-              </Alert>
-            )}
-            {booking.isCancelled && (
-              <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
-                <AlertCircleIcon className="h-4 w-4 !text-primary-foreground" />
-                <AlertTitle>{t("bookingCancelled")}</AlertTitle>
-                <AlertDescription className="text-xs">
-                  {`${t("yourBookingWasCancelled")} `}
-                  {/* Your booking has been cancelled. Please contact support for more information.*/}
-                  <span>
-                    {
-                      <Link href="https://thejourneyadventures.com/get-in-touch/">
-                        {t("here")}
-                      </Link>
-                    }
-                  </span>
-                </AlertDescription>
-              </Alert>
-            )}
-            {!booking.isFullyPaid && (
-              <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
-                <DollarSign className="h-4 w-4 !text-primary-foreground" />
-                <AlertTitle>{t("pendingPayment")}</AlertTitle>
-                <AlertDescription className="text-xs">
-                  {`${t("completeYourPayment")} ${booking.adventure.title} ${t(
-                    "before"
-                  )} ${dayjs(parseDateFromAPI(booking.adventure.startDate))
-                    .subtract(40, "days")
-                    .format("DD-MM-YYYY")} ${t("toSecureSpot")}`}
+          <AlertBanner booking={booking} isRedirected={isRedirected} />
 
-                  <span>
-                    {
-                      <PayRemaining
-                        text={t("clickHereToCompletePayment")}
-                        booking={booking}
-                        className="text-current text-xs font-normal hover:text-current hover:bg-white/10"
-                      />
-                    }
-                  </span>
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
           <div className="relative flex flex-col md:flex-row md:gap-5 space-y-3 md:space-y-0 rounded-xl p-4 border border-white bg-white">
             <div className="w-full md:w-1/3 aspect-video rounded-md overflow-clip md:aspect-square bg-white relative grid place-items-center">
               <Image
@@ -279,16 +260,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   <p className="text-gray-500 font-light hidden md:block">
                     {t("adventure")}
                   </p>
-                  {booking.isFullyPaid ? (
-                    <Badge className="bg-teal-400/40 text-ebg-teal-400 hover:bg-teal-400/30 hover:text-ebg-teal-400 font-light">
-                      {t("paid")}
-                      <CheckCircle className="ms-1 w-[0.65rem] h-[0.65rem]" />
-                    </Badge>
-                  ) : (
-                    <Badge className="bg-secondary/40 text-secondary hover:bg-secondary/30 hover:text-secondary font-light">
-                      {t("pendingPayment")}
-                    </Badge>
-                  )}
+                  <Badge variant={variant}>{booking.status}</Badge>
                 </div>
                 <Link
                   href={booking.adventure.link ?? "#"}
@@ -312,6 +284,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   </p>
                 </div>
               </div>
+
               <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
                 {booking.isFullyPaid && (
                   <Link
@@ -324,7 +297,37 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     {t("viewMore")}
                   </Link>
                 )}
-                {!booking.isFullyPaid && <PayRemaining booking={booking} />}
+                {!booking.isCancelled &&
+                  !booking.isReserved &&
+                  !booking.isFullyPaid &&
+                  booking.isPartiallyPaid && <PayRemaining booking={booking} />}
+
+                {booking.isReserved && (
+                  <div className="flex flex-col px-3 py-2 rounded-md bg-lightPrimary/20 text-lightPrimary">
+                    {booking.partialInvoice && (
+                      <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                        {t("partialPrice")}
+                        <span className="font-medium">
+                          {formatePrice({
+                            locale,
+                            price: booking.partialInvoice.totalAmount,
+                          })}
+                        </span>
+                      </p>
+                    )}
+                    {booking.partialInvoice && (
+                      <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                        {t("totalAmountDue")}
+                        <span className="font-medium">
+                          {formatePrice({
+                            locale,
+                            price: booking.netAmount,
+                          })}
+                        </span>
+                      </p>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex items-baseline gap-2">
                   <p className="text-sm text-muted-foreground">
@@ -378,235 +381,242 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             </div>
           )}
           {/* Trip Toolkit */}
-          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
-            <div className="flex flex-col gap-1">
-              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
-                <span>
-                  <Plane className="w-4 h-4 fill-primary" />
-                </span>{" "}
-                {t("tripToolkit")}
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                {t("importantResourcesForASeamlessAndUnforgettableJourney")}
-              </p>
-            </div>
-            <div className="flex items-center gap-3 flex-wrap">
-              {booking.adventure.travelGuide && (
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "xs" }),
-                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+          {!booking.isReserved &&
+            (booking.adventure.packingList ||
+              booking.adventure.travelGuide ||
+              booking.adventure.fitnessGuide) && (
+              <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
+                <div className="flex flex-col gap-1">
+                  <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                    <span>
+                      <Plane className="w-4 h-4 fill-primary" />
+                    </span>{" "}
+                    {t("tripToolkit")}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {t("importantResourcesForASeamlessAndUnforgettableJourney")}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  {booking.adventure.travelGuide && (
+                    <Link
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "xs" }),
+                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                      )}
+                      href={booking.adventure.travelGuide}
+                      target="_blank"
+                    >
+                      {t("travelGuide")}{" "}
+                      <span>
+                        <Download className="w-4 h-4 text-center" />
+                      </span>
+                    </Link>
                   )}
-                  href={booking.adventure.travelGuide}
-                  target="_blank"
-                >
-                  {t("travelGuide")}{" "}
-                  <span>
-                    <Download className="w-4 h-4 text-center" />
-                  </span>
-                </Link>
-              )}
-              {booking.adventure.fitnessGuide && (
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "xs" }),
-                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                  {booking.adventure.fitnessGuide && (
+                    <Link
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "xs" }),
+                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                      )}
+                      href={booking.adventure.fitnessGuide}
+                      target="_blank"
+                    >
+                      {t("fitnessGuide")}{" "}
+                      <span>
+                        <Download className="w-4 h-4 text-center" />
+                      </span>
+                    </Link>
                   )}
-                  href={booking.adventure.fitnessGuide}
-                  target="_blank"
-                >
-                  {t("fitnessGuide")}{" "}
-                  <span>
-                    <Download className="w-4 h-4 text-center" />
-                  </span>
-                </Link>
-              )}
-              {booking.adventure.packingList && (
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "xs" }),
-                    "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                  {booking.adventure.packingList && (
+                    <Link
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "xs" }),
+                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                      )}
+                      href={booking.adventure.packingList}
+                      target="_blank"
+                    >
+                      {t("packingList")}{" "}
+                      <span>
+                        <Download className="w-4 h-4 text-center" />
+                      </span>
+                    </Link>
                   )}
-                  href={booking.adventure.packingList}
-                  target="_blank"
-                >
-                  {t("packingList")}{" "}
-                  <span>
-                    <Download className="w-4 h-4 text-center" />
-                  </span>
-                </Link>
-              )}
-            </div>
-          </div>
-          <Separator className="my-4" />
+                </div>
+              </div>
+            )}
+          {!booking.isReserved && <Separator className="my-4" />}
           {/* Upload Documents */}
-          <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
-            <div className="flex flex-col gap-1">
-              <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
-                <span>
-                  <File className="w-4 h-4 fill-primary " />
-                </span>{" "}
-                {t("uploadYourDocuments")}
-              </h3>
-              <p className="text-muted-foreground text-sm">
-                {t(
-                  "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip"
-                )}
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="grid gap-6 grid-cols-1 items-end"
-                >
-                  {/* fields */}
-                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
-                    <FormField
-                      control={form.control}
-                      name="passport_id"
-                      render={({ field }) => (
-                        <FormItem className=" w-full">
-                          <div className="flex items-center justify-between">
-                            <FormLabel>{t("passport_id")}</FormLabel>
-                            {booking?.passportId && (
-                              <Link
-                                href={booking.passportId}
-                                target="_blank"
-                                className={cn(
-                                  buttonVariants({
-                                    variant: "info",
-                                    size: "xs",
-                                  })
-                                )}
-                              >
-                                {t("view")}
-                              </Link>
-                            )}
-                          </div>
-                          <FormControl>
-                            <Input
-                              dir="ltr"
-                              className=" border-primary"
-                              {...field}
-                              value={undefined}
-                              onChange={(event) => {
-                                const file = event.target.files?.[0];
-
-                                if (file) {
-                                  field.onChange(file);
-                                }
-                              }}
-                              type="file"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
-                    <FormField
-                      control={form.control}
-                      name="ticket"
-                      render={({ field }) => (
-                        <FormItem className=" w-full">
-                          <div className="flex items-center justify-between">
-                            <FormLabel>{t("ticket")}</FormLabel>
-                            {booking?.ticket && (
-                              <Link
-                                href={booking.ticket}
-                                target="_blank"
-                                className={cn(
-                                  buttonVariants({
-                                    variant: "info",
-                                    size: "xs",
-                                  })
-                                )}
-                              >
-                                {t("view")}
-                              </Link>
-                            )}
-                          </div>
-                          <FormControl>
-                            <Input
-                              dir="ltr"
-                              className=" border-primary"
-                              {...field}
-                              value={undefined}
-                              onChange={(event) => {
-                                const file = event.target.files?.[0];
-
-                                if (file) {
-                                  field.onChange(file);
-                                }
-                              }}
-                              type="file"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
-                    <FormField
-                      control={form.control}
-                      name="other_document"
-                      render={({ field }) => (
-                        <FormItem className=" w-full">
-                          <div className="flex items-center justify-between">
-                            <FormLabel>{t("other_document")}</FormLabel>
-                            {booking?.otherDocument && (
-                              <Link
-                                href={booking.otherDocument}
-                                target="_blank"
-                                className={cn(
-                                  buttonVariants({
-                                    variant: "info",
-                                    size: "xs",
-                                  })
-                                )}
-                              >
-                                {t("view")}
-                              </Link>
-                            )}
-                          </div>
-                          <FormControl>
-                            <Input
-                              dir="ltr"
-                              className=" border-primary"
-                              {...field}
-                              value={undefined}
-                              onChange={(event) => {
-                                const file = event.target.files?.[0];
-
-                                if (file) {
-                                  field.onChange(file);
-                                }
-                              }}
-                              type="file"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <Button
-                    className="w-full max-w-[268px] mt-5"
-                    variant={"secondary"}
-                    type="submit"
+          {!booking.isReserved && (
+            <div className="grid grid-cols-1 @4xl:grid-cols-2 items-start gap-4">
+              <div className="flex flex-col gap-1">
+                <h3 className=" text-primary font-semibold text-xl flex items-center gap-1">
+                  <span>
+                    <File className="w-4 h-4 fill-primary " />
+                  </span>{" "}
+                  {t("uploadYourDocuments")}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  {t(
+                    "makeSureToUploadAllTheRequiredDocumentsToEnsureASmoothTrip"
+                  )}
+                </p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="grid gap-6 grid-cols-1 items-end"
                   >
-                    {mutation.isPending && (
-                      <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
-                    )}
-                    {t("update")}
-                  </Button>
-                </form>
-              </Form>
+                    {/* fields */}
+                    <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                      <FormField
+                        control={form.control}
+                        name="passport_id"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            <div className="flex items-center justify-between">
+                              <FormLabel>{t("passport_id")}</FormLabel>
+                              {booking?.passportId && (
+                                <Link
+                                  href={booking.passportId}
+                                  target="_blank"
+                                  className={cn(
+                                    buttonVariants({
+                                      variant: "info",
+                                      size: "xs",
+                                    })
+                                  )}
+                                >
+                                  {t("view")}
+                                </Link>
+                              )}
+                            </div>
+                            <FormControl>
+                              <Input
+                                dir="ltr"
+                                className=" border-primary"
+                                {...field}
+                                value={undefined}
+                                onChange={(event) => {
+                                  const file = event.target.files?.[0];
+
+                                  if (file) {
+                                    field.onChange(file);
+                                  }
+                                }}
+                                type="file"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                      <FormField
+                        control={form.control}
+                        name="ticket"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            <div className="flex items-center justify-between">
+                              <FormLabel>{t("ticket")}</FormLabel>
+                              {booking?.ticket && (
+                                <Link
+                                  href={booking.ticket}
+                                  target="_blank"
+                                  className={cn(
+                                    buttonVariants({
+                                      variant: "info",
+                                      size: "xs",
+                                    })
+                                  )}
+                                >
+                                  {t("view")}
+                                </Link>
+                              )}
+                            </div>
+                            <FormControl>
+                              <Input
+                                dir="ltr"
+                                className=" border-primary"
+                                {...field}
+                                value={undefined}
+                                onChange={(event) => {
+                                  const file = event.target.files?.[0];
+
+                                  if (file) {
+                                    field.onChange(file);
+                                  }
+                                }}
+                                type="file"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="flex gap-3 items-end bg-muted/30 rounded-2xl border p-3">
+                      <FormField
+                        control={form.control}
+                        name="other_document"
+                        render={({ field }) => (
+                          <FormItem className=" w-full">
+                            <div className="flex items-center justify-between">
+                              <FormLabel>{t("other_document")}</FormLabel>
+                              {booking?.otherDocument && (
+                                <Link
+                                  href={booking.otherDocument}
+                                  target="_blank"
+                                  className={cn(
+                                    buttonVariants({
+                                      variant: "info",
+                                      size: "xs",
+                                    })
+                                  )}
+                                >
+                                  {t("view")}
+                                </Link>
+                              )}
+                            </div>
+                            <FormControl>
+                              <Input
+                                dir="ltr"
+                                className=" border-primary"
+                                {...field}
+                                value={undefined}
+                                onChange={(event) => {
+                                  const file = event.target.files?.[0];
+
+                                  if (file) {
+                                    field.onChange(file);
+                                  }
+                                }}
+                                type="file"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <Button
+                      className="w-full max-w-[268px] mt-5"
+                      variant={"secondary"}
+                      type="submit"
+                    >
+                      {mutation.isPending && (
+                        <Icons.spinner className="me-2 h-4 w-4 animate-spin" />
+                      )}
+                      {t("update")}
+                    </Button>
+                  </form>
+                </Form>
+              </div>
             </div>
-          </div>
+          )}
           <Separator className="my-4" />
           {/* Get In Touch */}
           <div className="grid grid-cols-1 @4xl:grid-cols-2 items-center gap-4">
@@ -676,6 +686,101 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
             />
           </div>
         </div>
+      )}
+    </div>
+  );
+}
+
+type TAlertBanner = {
+  booking: TAdventureBookingOrder;
+  isRedirected: boolean;
+};
+function AlertBanner({ isRedirected, booking }: TAlertBanner) {
+  const locale = useLocale();
+  const t = useTranslations("Adventures");
+
+  return (
+    <div className="flex flex-col w-full gap-4">
+      {isRedirected && (
+        <Alert className="text-primary-foreground border-primary-foreground bg-primary">
+          <CheckCircle2 className="h-4 w-4 !text-primary-foreground " />
+          <AlertTitle>{t("bookingConfirmed")}</AlertTitle>
+          <AlertDescription className="text-xs">
+            {t("yourBookingIsConfirmd")}
+          </AlertDescription>
+        </Alert>
+      )}
+      {booking.isCancelled && (
+        <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
+          <AlertCircleIcon className="h-4 w-4 !text-primary-foreground" />
+          <AlertTitle>{t("bookingCancelled")}</AlertTitle>
+          <AlertDescription className="text-xs">
+            {`${t("yourBookingWasCancelled")} `}
+            {/* Your booking has been cancelled. Please contact support for more information.*/}
+            <span>
+              {
+                <Link href="https://thejourneyadventures.com/get-in-touch/">
+                  {t("here")}
+                </Link>
+              }
+            </span>
+          </AlertDescription>
+        </Alert>
+      )}
+      {!booking.isFullyPaid && booking.isPartiallyPaid && (
+        <Alert className="text-secondary-foreground border-secondary-foreground bg-secondary">
+          <DollarSign className="h-4 w-4 !text-primary-foreground" />
+          <AlertTitle>{t("pendingPayment")}</AlertTitle>
+          <AlertDescription className="text-xs">
+            {`${t("completeYourPayment")} ${booking.adventure.title} ${t(
+              "before"
+            )} ${dayjs(parseDateFromAPI(booking.adventure.startDate))
+              .subtract(40, "days")
+              .format("DD-MM-YYYY")} ${t("toSecureSpot")}`}
+
+            <span>
+              {
+                <PayRemaining
+                  text={t("clickHereToCompletePayment")}
+                  booking={booking}
+                  className="text-current text-xs font-normal hover:text-current hover:bg-white/10"
+                />
+              }
+            </span>
+          </AlertDescription>
+        </Alert>
+      )}
+      {booking.isReserved && (
+        <Alert className="text-info-foreground border-info-foreground/40 bg-info">
+          {/* <DollarSign className="h-4 w-4 !text-info-foreground" /> */}
+          <Icons.banktransfer className="h-4 w-4" />
+          <AlertTitle>{t("pendingBankTransferConfirmation")}</AlertTitle>
+          <AlertDescription className="text-xs flex flex-col gap-2">
+            {`${t("completeYourPayment")} ${booking.adventure.title} ${t(
+              "before"
+            )} ${dayjs(parseDateFromAPI(booking.dateBooked.toString()))
+              .add(2, "days")
+              .format("DD-MM-YYYY")} ${t("toSecureSpot")}`}
+
+            <p className="bg-white/20 px-3 py-2 rounded-md w-fit flex flex-wrap items-baseline gap-1">
+              {`${t("bankTransferEmailDetails")}`}{" "}
+              <span className="lowercase">{t("or")}</span>{" "}
+              {
+                <span>
+                  {
+                    <Link
+                      className="lowercase underline"
+                      href="https://thejourneyadventures.com/get-in-touch/"
+                    >
+                      {t("contactUs")}
+                    </Link>
+                  }
+                </span>
+              }
+              <span>{t("forMoreHelp")}</span>
+            </p>
+          </AlertDescription>
+        </Alert>
       )}
     </div>
   );

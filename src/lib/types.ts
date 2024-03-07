@@ -162,22 +162,28 @@ export type TAdventureBookingOrder = {
   customer: TCustomer;
   adventure: TAdventure;
   dateBooked: Date;
-  isFullyPaid: boolean;
-  isPartiallyPaid: boolean;
   addOns: TAddon[];
-  totalPrice: number;
-  netAmount: number;
-  totalPriceWithCurrency: string;
   partialInvoice: TInvoice | null;
   fullInvoice: TInvoice | null;
   remainingInvoice: TInvoice | null;
+  status: string;
+  statusEnum:
+    | "fullyPaid"
+    | "partiallyPaid"
+    | "cancelled"
+    | "reserved"
+    | "notPaid";
+  totalPrice: number;
+  netAmount: number;
+  totalPriceWithCurrency: string;
   passportId: string | null;
   ticket: string | null;
   otherDocument: string | null;
   reason: string;
-  isCancelled: boolean;
+  isFullyPaid: boolean;
+  isPartiallyPaid: boolean;
   isReserved: boolean;
-  status: string;
+  isCancelled: boolean;
 };
 export type TInvoice = {
   id: number;
@@ -237,6 +243,14 @@ export type TOrder = {
     phone: string;
   };
   isCancelled: boolean;
+  status: string;
+  statusEnum:
+    | "fullyPaid"
+    | "partiallyPaid"
+    | "cancelled"
+    | "reserved"
+    | "notPaid";
+  isReserved: boolean;
   netAmount: number;
 };
 
@@ -326,8 +340,16 @@ export type TAdventureBooking = {
   addOns: any[];
   totalPrice: number;
   totalPriceWithCurrency: string;
+  isReserved: boolean;
   isCancelled: boolean;
   netAmount: number;
+  status: string;
+  statusEnum:
+    | "fullyPaid"
+    | "partiallyPaid"
+    | "cancelled"
+    | "reserved"
+    | "notPaid";
 };
 
 export type TConsultationBooking = {

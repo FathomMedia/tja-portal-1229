@@ -199,7 +199,19 @@
     "bookingFailed": "Booking Failed",
     "failedToConfirmYourBooking": "Failed to confirm your booking, please try again",
     "goToAdventures": "Go to Adventures",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "status": "Status",
+    "pendingBankTransferConfirmation": "Pending bank transfer confirmation",
+    "bankTransferEmailDetails": "Please complete the bank transfer using the information sent to your email",
+    "totalAmountDue": "Total amount due",
+    "or": "Or",
+    "contactUs": "Contact Us",
+    "forMoreHelp": "for more help",
+    "reservationConfirmed": "Reservation confirmed",
+    "completeBankTransfer": "Please complete the bank transfer within 48 hours using the           information sent to your email.",
+    "adventureName": "Adventure Name",
+    "dueDateForBankTransfer": "Due Date for Bank Transfer",
+    "goToBooking": "Go to booking"
   },
   "Auth": {
     "OTP": "OTP",
@@ -264,7 +276,11 @@
     "weAreSorry": "We're sorry, but this adventure is not available for booking at the moment. This could be because:",
     "returnToAdventures": "Return to Adventures",
     "banktransfer": "Bank Transfer",
-    "somethingWentWrong": "Something went wrong."
+    "somethingWentWrong": "Something went wrong.",
+    "agreeOnTheTermsAndConditions": "Agree on the terms and conditions?",
+    "termsAndConditionDescription": "By placing an order you are agreeing on the terms and                           conditions of the journeys adventures",
+    "cancel": "Cancel",
+    "agree": "Agree"
   },
   "Consultation": {
     "BeachesAndWaterSports": "Beaches & water sports",
@@ -856,5 +872,10 @@
     "resend": "Resend",
     "resendIn": "Resend in",
     "seconds": "s"
+  },
+  "NotFound": {
+    "uh-oh": "Uh-oh!",
+    "pageNotFound": "We can't find that page.",
+    "goToHome": "Go to home page"
   }
 }

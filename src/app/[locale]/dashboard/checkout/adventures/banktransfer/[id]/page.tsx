@@ -35,7 +35,7 @@ export default async function Page({
 
   // TODO: show the customer that the booking is reserved
   return (
-    <div>
+    <div className="flex">
       <ReservedBookingCard booking={adventureBooking} />
     </div>
   );

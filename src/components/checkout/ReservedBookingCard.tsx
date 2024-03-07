@@ -15,8 +15,10 @@ import { TAdventureBookingOrder } from "@/lib/types";
 import { format } from "date-fns";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import dayjs from "dayjs";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
+import { ar, enUS } from "date-fns/locale";
+import { Icons } from "../ui/icons";
 
 type TReservedBookingCard = {
   booking: TAdventureBookingOrder;
@@ -24,59 +26,61 @@ type TReservedBookingCard = {
 
 export const ReservedBookingCard: FC<TReservedBookingCard> = ({ booking }) => {
   const locale = useLocale();
-  console.log("🚀 ~ booking:", booking);
+  const t = useTranslations("Adventures");
+
   return (
-    <Card key="1" className="w-full max-w-lg mx-auto">
-      <CardHeader className="flex flex-col items-center space-y-2">
-        <CardTitle>Reservation confirmed</CardTitle>
-        <CardDescription>
-          Please complete the bank transfer within 48 hours using the
-          information sent to your email.
-        </CardDescription>
+    <Card key="1" className="w-full max-w-lg">
+      <CardHeader className="flex flex-col items-start space-y-2 border-b">
+        <CardTitle>{t("reservationConfirmed")}</CardTitle>
+        <CardDescription>{t("completeBankTransfer")}</CardDescription>
       </CardHeader>
-      <CardContent className="gap-3 flex flex-col">
-        <div className="flex items-center gap-2">
-          <PackageIcon className="w-6 h-6" />
+      <CardContent className="gap-3 flex flex-col pt-6">
+        <div className="flex items-start gap-3">
+          <PackageIcon className="w-6 h-6 mt-1" />
           <div>
-            <div className="font-semibold">Adventure Name</div>
+            <div className="font-semibold">{t("adventureName")}</div>
             <div>{booking.adventure.title}</div>
-            {/* <div>Cozy and Charming Mountain Retreat with Hot Tub</div> */}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <CalendarCheckIcon className="w-6 h-6" />
+
+        <div className="flex items-start gap-3">
+          <CalendarCheckIcon className="w-6 h-6 mt-1" />
           <div>
-            <div className="font-semibold">Date Booked</div>
+            <div className="font-semibold">{t("dateBooked")}</div>
             <div>
               {format(
                 parseDateFromAPI(booking.dateBooked.toString()),
-                "MMM d, yyyy"
+                "MMM d, yyyy",
+                { locale: locale === "ar" ? ar : enUS }
               )}
             </div>
-            {/* <div>June 1, 2024</div> */}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <CalendarMinusIcon className="w-6 h-6" />
+
+        <div className="flex items-start gap-3">
+          <CalendarMinusIcon className="w-6 h-6 mt-1" />
           <div>
-            <div className="font-semibold">Due Date for Bank Transfer</div>
+            <div className="font-semibold">{t("dueDateForBankTransfer")}</div>
             <div>
               {format(
                 dayjs(parseDateFromAPI(booking.dateBooked.toString()))
                   .add(2, "days")
                   .toDate(),
-                "MMM d, yyyy"
+                "MMM d, yyyy",
+                { locale: locale === "ar" ? ar : enUS }
               )}
             </div>
-            {/* <div>June 5, 2024</div> */}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <CurrencyIcon className="w-6 h-6" />
-          <div>
-            <div className="font-semibold">Price</div>
+
+        <div className="flex items-start gap-3">
+          {/* <CurrencyIcon className="w-6 h-6 mt-1" /> */}
+          <Icons.banktransfer className="w-6 h-6 mt-1" />
+          {booking.partialInvoice && (
             <div>
-              {booking.partialInvoice &&
+              <div className="font-semibold">{t("price")}</div>
+              {/* <div>
+              {
                 formatePrice({
                   locale,
                   price: booking.partialInvoice.totalAmount,
@@ -86,30 +90,50 @@ export const ReservedBookingCard: FC<TReservedBookingCard> = ({ booking }) => {
                   locale,
                   price: booking.fullInvoice.totalAmount,
                 })}
+            </div> */}
+              <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                {t("partialPrice")}
+                <span className="font-medium">
+                  {formatePrice({
+                    locale,
+                    price: booking.partialInvoice.totalAmount,
+                  })}
+                </span>
+              </p>
+              <p className="flex items-baseline gap-1 flex-wrap text-sm">
+                {t("totalAmountDue")}
+                <span className="font-medium">
+                  {formatePrice({
+                    locale,
+                    price: booking.netAmount,
+                  })}
+                </span>
+              </p>
             </div>
-            {/* <div>$XXX</div> */}
-          </div>
+          )}
         </div>
-        <div className="flex items-center gap-2">
-          <CheckIcon className="w-6 h-6" />
+
+        <div className="flex items-start gap-3">
+          <CheckIcon className="w-6 h-6 mt-1" />
           <div>
-            <div className="font-semibold">Status</div>
+            <div className="font-semibold">{t("status")}</div>
             <div>{booking.status}</div>
           </div>
         </div>
       </CardContent>
-      <CardFooter className="gap-2">
+
+      <CardFooter className="gap-3 border-t pt-6">
         <Link
           href={"https://thejourneyadventures.com/get-in-touch"}
           className={cn(buttonVariants({ variant: "ghost" }), "w-full")}
         >
-          Contact Us
+          {t("contactUs")}
         </Link>
         <Link
           href={`/${locale}/dashboard/adventures/bookings/${booking.id}`}
           className={cn(buttonVariants({ variant: "default" }), "w-full")}
         >
-          Go to booking
+          {t("goToBooking")}
         </Link>
       </CardFooter>
     </Card>

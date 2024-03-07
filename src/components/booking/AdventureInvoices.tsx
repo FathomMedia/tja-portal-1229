@@ -73,7 +73,7 @@ export const AdventureInvoices: FC<TAdventureInvoices> = ({ invoices }) => {
                     {item.invoice.vat}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {item.invoice.coupon}
+                    {item.invoice.coupon ?? "-"}
                   </TableCell>
                   <TableCell className="font-medium">
                     {item.invoice.isPaid ? (

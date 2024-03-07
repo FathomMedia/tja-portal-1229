@@ -28,6 +28,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { DisplayTranslatedText } from "@/components/Helper";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TAdventureBooking>[] = [
   {
@@ -61,6 +62,46 @@ export const columns: ColumnDef<TAdventureBooking>[] = [
           </AvatarFallback>
         </Avatar>
       );
+    },
+  },
+  {
+    accessorKey: "statusEnum",
+    header: ({ column }) => {
+      return <DisplayTranslatedText text="status" translation="Adventures" />;
+    },
+
+    cell: ({ row }) => {
+      var variant:
+        | "info"
+        | "default"
+        | "secondary"
+        | "destructive"
+        | "outline"
+        | null
+        | undefined;
+
+      switch (row.original.statusEnum) {
+        case "reserved":
+          variant = "info";
+          break;
+        case "partiallyPaid":
+          variant = "secondary";
+          break;
+        case "fullyPaid":
+          variant = "default";
+          break;
+        case "cancelled":
+          variant = "destructive";
+          break;
+        case "notPaid":
+          variant = "outline";
+          break;
+        default:
+          variant = "outline";
+          break;
+      }
+
+      return <Badge variant={variant}>{row.original.status}</Badge>;
     },
   },
   {

@@ -14,7 +14,7 @@ export function formatePrice({
   locale: string;
   price: number;
 }) {
-  return Intl.NumberFormat(locale, {
+  return Intl.NumberFormat(locale === "ar" ? "ar-BH" : locale, {
     currency: "BHD",
     style: "currency",
   }).format(price);

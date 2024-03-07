@@ -50,8 +50,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "../ui/alert-dialog";
+import { ScrollArea } from "../ui/scroll-area";
+import { TermsAndConditions } from "./TermsAndConditions";
 
 type TAdventureCheckoutForm = {
   initAdventure: TAdventure;
@@ -107,7 +108,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
             case "banktransfer":
               if (resData.banktransfer) {
                 push(
-                  `/${locale}/dashboard/checkout/banktransfer/adventures/${resData.banktransfer.orderId}`
+                  `/${locale}/dashboard/checkout/adventures/banktransfer/${resData.banktransfer.orderId}`
                 );
               }
               break;
@@ -305,7 +306,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                               field.onChange(val);
                             }}
                             defaultValue={field.value}
-                            className="grid @sm/paymentMethod:grid-cols-2 grid-cols-1 gap-4"
+                            className="grid @sm/paymentMethod:grid-cols-2 @xl/paymentMethod:grid-cols-3 grid-cols-1 gap-4"
                           >
                             <div>
                               <RadioGroupItem
@@ -387,19 +388,24 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          Agree on the terms and conditions?
+                          {t("agreeOnTheTermsAndConditions")}
                         </AlertDialogTitle>
+
                         <AlertDialogDescription>
-                          By placing an order you are agreeing on the terms and
-                          conditions of the journeys adventures
+                          {t("termsAndConditionDescription")}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
+                      <div className="w-full h-full max-h-[calc(min(24rem,50svh))] bg-muted/50 border border-muted rounded-md p-3">
+                        <ScrollArea className="h-full">
+                          <TermsAndConditions />
+                        </ScrollArea>
+                      </div>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => values && mutation.mutate(values)}
                         >
-                          Agree
+                          {t("agree")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -476,7 +482,7 @@ export const AdventureCheckoutForm: FC<TAdventureCheckoutForm> = ({
                     </p>
                     <p className="text-muted mb-4">
                       <span className="font-bold">{t("price")}:</span>{" "}
-                      {adventure.priceWithCurrency}
+                      {`${adventure.priceWithCurrency}`}
                     </p>
                   </div>
                 )}
