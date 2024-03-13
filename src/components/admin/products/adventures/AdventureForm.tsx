@@ -52,6 +52,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { MAX_ADMIN_FILE_SIZE, MAX_IMAGE_SIZE } from "@/config";
+import { useRouter } from "next/navigation";
 
 type TAdventureForm = {
   adventure?: TAdventure;
@@ -66,6 +67,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
 }) => {
   const locale = useLocale();
   const t = useTranslations("Adventures");
+  const { push } = useRouter();
 
   const [preview, setPreview] = useState<string | null>(
     adventure?.image ?? null
@@ -247,17 +249,20 @@ export const AdventureForm: FC<TAdventureForm> = ({
       //       body: formData,
       //     });
     },
-    async onSuccess(data) {
-      if (data.ok) {
-        const { message } = await data.json();
+    async onSuccess(res) {
+      if (res.ok) {
+        const { message, data } = await res.json();
         toast.success(message, { duration: 6000 });
         queryClient.invalidateQueries({ queryKey: ["/adventures"] });
         adventure &&
           queryClient.invalidateQueries({
             queryKey: [`/adventures/${adventure.slug}`],
           });
+        if (adventure === undefined) {
+          push(`/${locale}/admin/products/adventures/edit/${data.slug}`);
+        }
       } else {
-        const { message } = await data.json();
+        const { message } = await res.json();
         toast.error(message, { duration: 6000 });
       }
     },
@@ -659,7 +664,7 @@ export const AdventureForm: FC<TAdventureForm> = ({
                                           id: item.id,
                                           price:
                                             adventure?.addOns.find(
-                                              (ccc) => ccc.id === item.id
+                                              (add) => add.id === item.id
                                             )?.price ?? 0,
                                         },
                                       ])

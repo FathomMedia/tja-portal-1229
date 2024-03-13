@@ -19,6 +19,7 @@ import {
   File,
   AlertCircleIcon,
   Blocks,
+  Timer,
 } from "lucide-react";
 import { cn, formatePrice, parseDateFromAPI } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -283,6 +284,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                     {t("endDate")} {booking.adventure.endDate}
                   </p>
                 </div>
+                <div className="flex items-center gap-2 text-primary bg-lightPrimary/10 p-2 rounded-sm w-fit flex-wrap">
+                  <Timer size={18} />
+                  <p>
+                    {t("startsIn")}: {booking.adventure.startsIn}
+                  </p>
+                </div>
               </div>
 
               <div className="w-full flex gap-3 flex-col @sm:flex-row  justify-between items-start @sm:items-end">
@@ -412,8 +419,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   {booking.adventure.travelGuide && (
                     <Link
                       className={cn(
-                        buttonVariants({ variant: "outline", size: "xs" }),
-                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                        buttonVariants({ variant: "default", size: "xs" }),
+                        "px-3 flex items-center gap-1 text-sm rounded-full"
                       )}
                       href={booking.adventure.travelGuide}
                       target="_blank"
@@ -427,8 +434,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   {booking.adventure.fitnessGuide && (
                     <Link
                       className={cn(
-                        buttonVariants({ variant: "outline", size: "xs" }),
-                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                        buttonVariants({ variant: "default", size: "xs" }),
+                        "px-3 flex items-center gap-1 text-sm rounded-full"
                       )}
                       href={booking.adventure.fitnessGuide}
                       target="_blank"
@@ -442,8 +449,8 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                   {booking.adventure.packingList && (
                     <Link
                       className={cn(
-                        buttonVariants({ variant: "outline", size: "xs" }),
-                        "text-primary border-primary hover:text-primary flex items-center gap-1 text-sm rounded-full"
+                        buttonVariants({ variant: "default", size: "xs" }),
+                        "px-3 flex items-center gap-1 text-sm rounded-full"
                       )}
                       href={booking.adventure.packingList}
                       target="_blank"
@@ -508,7 +515,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                                     })
                                   )}
                                 >
-                                  {t("view")}
+                                  {t("viewDocument")}
                                 </Link>
                               )}
                             </div>
@@ -560,7 +567,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                                     })
                                   )}
                                 >
-                                  {t("view")}
+                                  {t("viewDocument")}
                                 </Link>
                               )}
                             </div>
@@ -604,7 +611,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                                     })
                                   )}
                                 >
-                                  {t("view")}
+                                  {t("viewDocument")}
                                 </Link>
                               )}
                             </div>

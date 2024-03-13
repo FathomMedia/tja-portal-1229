@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { LoadingComp } from "../LoadingComp";
 import { Skeleton } from "../ui/skeleton";
 import { Badge } from "../ui/badge";
-import { CheckCircle, Globe } from "lucide-react";
+import { CheckCircle, Globe, Timer } from "lucide-react";
 import { buttonVariants } from "../ui/button";
 import { cn, formatePrice } from "@/lib/utils";
 import Link from "next/link";
@@ -333,6 +333,12 @@ const Adventure = ({ order }: { order: TOrder }) => {
             </p>
             <p>
               {t("endDate")}: {adventure.endDate}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-primary bg-lightPrimary/10 p-2 rounded-sm w-fit flex-wrap">
+            <Timer size={18} />
+            <p>
+              {t("startsIn")}: {adventure.startsIn}
             </p>
           </div>
         </div>

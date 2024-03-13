@@ -230,7 +230,8 @@
     "back": "Back",
     "forBankTransferSeeEmail": "For bank transfer please see the details sent to your email.",
     "notUploaded": "Not Uploaded",
-    "viewDocument": "View Document"
+    "viewDocument": "View Document",
+    "startsIn": "Starts in"
   },
   "Auth": {
     "OTP": "OTP",
@@ -737,7 +738,8 @@
     "error": "Error",
     "availablePoints": "Available Points",
     "bookYourAdventure": "Book Your Adventure",
-    "netTotal": "Net Total"
+    "netTotal": "Net Total",
+    "startsIn": "Starts in"
   },
   "Index": {
     "title": "Hello world!"

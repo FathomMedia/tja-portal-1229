@@ -55,7 +55,7 @@ export const ViewAllAdventuresComponent = () => {
     queryKey: ["/adventures", page, search],
     queryFn: () =>
       apiReqQuery({
-        endpoint: `/adventures?page=${page}&search=${search}`,
+        endpoint: `/adventures?per_page=9&page=${page}&search=${search}`,
         locale,
       }).then((res) =>
         res.json().then((resData) => {

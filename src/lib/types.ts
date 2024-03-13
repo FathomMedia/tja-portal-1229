@@ -98,6 +98,7 @@ export type TAdventure = {
   partialPrice: number;
   partialPriceWithCurrency: string;
   partialRemaining: string;
+  startsIn: string;
 };
 
 export type TAddon = {

@@ -229,7 +229,8 @@
     "creditCard": "بطاقة إئتمان",
     "forBankTransferSeeEmail": "للتحويل البنكي يرجى الاطلاع على التفاصيل المرسلة إلى بريدك الإلكتروني.",
     "notUploaded": "لم يتم الرفع",
-    "viewDocument": "عرض المستند"
+    "viewDocument": "عرض المستند",
+    "startsIn": "تبدأ في"
   },
   "Auth": {
     "OTP": "رمز التحقق",
@@ -732,7 +733,8 @@
     "error": "خطأ فني",
     "availablePoints": "النقاط المتاحة",
     "bookYourAdventure": "احجز مغامرتك",
-    "netTotal": "صافي المجموع"
+    "netTotal": "صافي المجموع",
+    "startsIn": "تبدأ في"
   },
   "Index": {
     "title": "اهلا بالعالم"
