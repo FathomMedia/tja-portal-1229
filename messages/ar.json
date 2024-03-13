@@ -88,7 +88,7 @@
     "deleteAdventure": "حذف المغامرة",
     "description": "وصف",
     "discover": "إكتشف",
-    "documents": "وثائق",
+    "documents": "الوثائق",
     "download": "تحميل",
     "downloadCSV": "قم بتنزيل ملف CSV",
     "editAdventure": "تحرير المغامرة",
@@ -227,7 +227,9 @@
     "rejectReservationDescription": "هل أنت متأكد من رغبتك في رفض هذا الحجز؟ \nسيؤدي هذا الإجراء إلى حذف الحجز نهائيًا وإلغاء الحجز.",
     "back": "الرجوع",
     "creditCard": "بطاقة إئتمان",
-    "forBankTransferSeeEmail": "للتحويل البنكي يرجى الاطلاع على التفاصيل المرسلة إلى بريدك الإلكتروني."
+    "forBankTransferSeeEmail": "للتحويل البنكي يرجى الاطلاع على التفاصيل المرسلة إلى بريدك الإلكتروني.",
+    "notUploaded": "لم يتم الرفع",
+    "viewDocument": "عرض المستند"
   },
   "Auth": {
     "OTP": "رمز التحقق",

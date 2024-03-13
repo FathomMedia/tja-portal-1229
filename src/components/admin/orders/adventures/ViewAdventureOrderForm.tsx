@@ -39,6 +39,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type TAdventureBookingForm = {
   adventureBooking: TAdventureBookingOrder;
@@ -70,11 +71,15 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
     async onSuccess(data) {
       if (data.ok) {
         const { message } = await data.json();
+
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings/${adventureBooking.id}`],
         });
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/bookings`],
         });
         queryClient.invalidateQueries({
           queryKey: [`/statistics`],
@@ -114,6 +119,9 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         });
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`/bookings`],
         });
         queryClient.invalidateQueries({
           queryKey: [`/statistics`],
@@ -184,20 +192,26 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
       });
     },
     async onSuccess(data) {
-      console.log(adventureBooking);
-      console.log(adventureBooking.id);
       if (data.ok) {
         const { message } = await data.json();
+        // queryClient.invalidateQueries({
+        //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+        // });
+
+        push(`/${locale}`);
         queryClient.invalidateQueries({
           queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [`/adventure-bookings`],
         });
         queryClient.invalidateQueries({
           queryKey: [`/statistics`],
         });
         queryClient.invalidateQueries({
-          queryKey: [`/adventure-bookings`],
+          queryKey: [`/bookings`],
         });
-        push(`/${locale}`);
         toast.success(message);
       } else {
         console.log(data);
@@ -206,6 +220,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
       }
     },
     async onError(error) {
+      console.log("🚀 ~ onError ~ error:", error);
       toast.error(error.message, { duration: 6000 });
     },
   });
@@ -469,9 +484,88 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
             {adventureBooking.reason}
           </div>
         </div>
+        {/* TODO: */}
+        <div>
+          <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 my-4">
+            {/* Adventure Details */}
+            {t("documents")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 border rounded-lg">
+            <div
+              className={cn(
+                "flex flex-col gap-3 bg-lightPrimary/20 border-lightPrimary border p-3 rounded-md",
+                adventureBooking.passportId
+                  ? "bg-lightPrimary/20 border-lightPrimary"
+                  : "bg-secondary/20 border-secondary"
+              )}
+            >
+              <p className="text-lg font-medium title">{t("passport_id")}</p>
+              {adventureBooking.passportId ? (
+                <Link
+                  href={adventureBooking.passportId}
+                  className={cn(buttonVariants())}
+                >
+                  {t("viewDocument")}
+                </Link>
+              ) : (
+                <p className="text-secondary text-center px-3 py-2 rounded-sm bg-secondary/10">
+                  {t("notUploaded")}
+                </p>
+              )}
+            </div>
+            <div
+              className={cn(
+                "flex flex-col gap-3 bg-lightPrimary/20 border-lightPrimary border p-3 rounded-md",
+                adventureBooking.ticket
+                  ? "bg-lightPrimary/20 border-lightPrimary"
+                  : "bg-secondary/20 border-secondary"
+              )}
+            >
+              <p className="text-lg font-medium title">{t("ticket")}</p>
+              {adventureBooking.ticket ? (
+                <Link
+                  href={adventureBooking.ticket}
+                  className={cn(buttonVariants())}
+                >
+                  {t("viewDocument")}
+                </Link>
+              ) : (
+                <p className="text-secondary text-center px-3 py-2 rounded-sm bg-secondary/10">
+                  {t("notUploaded")}
+                </p>
+              )}
+            </div>
+            <div
+              className={cn(
+                "flex flex-col gap-3 bg-lightPrimary/20 border-lightPrimary border p-3 rounded-md",
+                adventureBooking.otherDocument
+                  ? "bg-lightPrimary/20 border-lightPrimary"
+                  : "bg-muted border-muted-foreground"
+              )}
+            >
+              <p className="text-lg font-medium title">{t("other_document")}</p>
+              {adventureBooking.otherDocument ? (
+                <Link
+                  href={adventureBooking.otherDocument}
+                  className={cn(buttonVariants())}
+                >
+                  {t("viewDocument")}
+                </Link>
+              ) : (
+                <p className="text-muted-foreground text-center px-3 py-2 rounded-sm bg-muted-foreground/10">
+                  {t("notUploaded")}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
 
         <div>
-          <Label>{t("invoice")}</Label>
+          {/* <Label>{t("invoice")}</Label> */}
+          <h2 className="text-lg text-primary font-semibold border-s-4 border-primary ps-2 my-4">
+            {/* Adventure Details */}
+            {t("invoice")}
+          </h2>
           <div className="rounded-md overflow-clip border">
             <AdventureInvoices
               invoices={[
@@ -487,7 +581,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
         </div>
 
         {/* markAsPaidMutation */}
-        {
+        {!adventureBooking.isReserved && (
           <div className="flex flex-col gap-6">
             <Separator />
             <h2 className="text-2xl text-destructive font-helveticaNeue font-black border-s-4 border-destructive ps-2">
@@ -616,7 +710,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     </div>
   );

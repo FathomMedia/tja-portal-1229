@@ -20,9 +20,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       queryFn: () =>
         apiReqQuery({ endpoint: `/adventure-bookings/${id}`, locale }).then(
           (res) =>
-            res.json().then((resData) => {
-              return resData.data;
-            })
+            res
+              .json()
+              .then((resData) => {
+                return resData?.data;
+              })
+              .catch((error) => {
+                console.log(error);
+                return null;
+              })
         ),
     });
   return (

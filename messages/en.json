@@ -228,7 +228,9 @@
     "cancel": "Cancel",
     "rejectReservationDescription": "Are you certain you wish to reject this reservation? This action will permanently delete the reservation and cancel the booking.",
     "back": "Back",
-    "forBankTransferSeeEmail": "For bank transfer please see the details sent to your email."
+    "forBankTransferSeeEmail": "For bank transfer please see the details sent to your email.",
+    "notUploaded": "Not Uploaded",
+    "viewDocument": "View Document"
   },
   "Auth": {
     "OTP": "OTP",

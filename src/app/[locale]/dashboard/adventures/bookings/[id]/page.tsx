@@ -488,7 +488,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         render={({ field }) => (
                           <FormItem className=" w-full">
                             <div className="flex items-center justify-between">
-                              <FormLabel>{t("passport_id")}</FormLabel>
+                              <div className="flex flex-wrap gap-3 items-center">
+                                <FormLabel>{t("passport_id")}</FormLabel>
+                                {booking?.passportId && (
+                                  <CheckCircle
+                                    size={18}
+                                    className="text-lightPrimary-foreground bg-lightPrimary p-1 rounded-full aspect-square"
+                                  />
+                                )}
+                              </div>
                               {booking?.passportId && (
                                 <Link
                                   href={booking.passportId}
@@ -532,7 +540,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
                         render={({ field }) => (
                           <FormItem className=" w-full">
                             <div className="flex items-center justify-between">
-                              <FormLabel>{t("ticket")}</FormLabel>
+                              <div className="flex flex-wrap gap-3 items-center">
+                                <FormLabel>{t("ticket")}</FormLabel>
+                                {booking?.ticket && (
+                                  <CheckCircle
+                                    size={18}
+                                    className="text-lightPrimary-foreground bg-lightPrimary p-1 rounded-full aspect-square"
+                                  />
+                                )}
+                              </div>
                               {booking?.ticket && (
                                 <Link
                                   href={booking.ticket}
