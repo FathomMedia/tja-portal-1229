@@ -502,13 +502,14 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               <p className="text-lg font-medium title">{t("passport_id")}</p>
               {adventureBooking.passportId ? (
                 <Link
+                  target="_blank"
                   href={adventureBooking.passportId}
-                  className={cn(buttonVariants())}
+                  className={cn(buttonVariants({ size: "sm" }))}
                 >
                   {t("viewDocument")}
                 </Link>
               ) : (
-                <p className="text-secondary text-center px-3 py-2 rounded-sm bg-secondary/10">
+                <p className="text-secondary text-center px-2 py-2 rounded-sm bg-secondary/10">
                   {t("notUploaded")}
                 </p>
               )}
@@ -524,13 +525,14 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               <p className="text-lg font-medium title">{t("ticket")}</p>
               {adventureBooking.ticket ? (
                 <Link
+                  target="_blank"
                   href={adventureBooking.ticket}
-                  className={cn(buttonVariants())}
+                  className={cn(buttonVariants({ size: "sm" }))}
                 >
                   {t("viewDocument")}
                 </Link>
               ) : (
-                <p className="text-secondary text-center px-3 py-2 rounded-sm bg-secondary/10">
+                <p className="text-secondary text-center px-2 py-2 rounded-sm bg-secondary/10">
                   {t("notUploaded")}
                 </p>
               )}
@@ -546,13 +548,14 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
               <p className="text-lg font-medium title">{t("other_document")}</p>
               {adventureBooking.otherDocument ? (
                 <Link
+                  target="_blank"
                   href={adventureBooking.otherDocument}
-                  className={cn(buttonVariants())}
+                  className={cn(buttonVariants({ size: "sm" }))}
                 >
                   {t("viewDocument")}
                 </Link>
               ) : (
-                <p className="text-muted-foreground text-center px-3 py-2 rounded-sm bg-muted-foreground/10">
+                <p className="text-muted-foreground text-center px-2 py-2 rounded-sm bg-muted-foreground/10">
                   {t("notUploaded")}
                 </p>
               )}

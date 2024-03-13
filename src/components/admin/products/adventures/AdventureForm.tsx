@@ -655,7 +655,13 @@ export const AdventureForm: FC<TAdventureForm> = ({
                                   return checked
                                     ? field.onChange([
                                         ...field.value,
-                                        { id: item.id, price: undefined },
+                                        {
+                                          id: item.id,
+                                          price:
+                                            adventure?.addOns.find(
+                                              (ccc) => ccc.id === item.id
+                                            )?.price ?? 0,
+                                        },
                                       ])
                                     : field.onChange(
                                         field.value?.filter(
@@ -692,25 +698,27 @@ export const AdventureForm: FC<TAdventureForm> = ({
                               }
                               type="number"
                               value={
-                                field.value?.filter(
+                                field.value?.find(
                                   (value) => value.id === item.id
-                                )?.[0]?.price ?? undefined
+                                )?.price ?? 0
                               }
                               onChange={(event) => {
-                                const current = field.value?.filter(
+                                const current = field.value?.find(
                                   (value) => value.id === item.id
-                                )?.[0];
-
-                                const temp = {
-                                  id: current.id,
-                                  price: Number(event.target.value),
-                                };
-
-                                const withoutTheOld = field.value?.filter(
-                                  (value) => value.id !== item.id
                                 );
 
-                                field.onChange([...withoutTheOld, temp]);
+                                if (current) {
+                                  const temp = {
+                                    id: current.id,
+                                    price: Number(event.target.value),
+                                  };
+
+                                  const withoutTheOld = field.value?.filter(
+                                    (value) => value.id !== item.id
+                                  );
+
+                                  field.onChange([...withoutTheOld, temp]);
+                                }
                               }}
                             />
                           </div>
