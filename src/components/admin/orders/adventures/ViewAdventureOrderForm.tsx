@@ -192,31 +192,34 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
       });
     },
     async onSuccess(data) {
-      if (data.ok) {
+      try {
         const { message } = await data.json();
-        // queryClient.invalidateQueries({
-        //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
-        // });
+        if (data.ok) {
+          // queryClient.invalidateQueries({
+          //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+          // });
 
-        push(`/${locale}`);
-        queryClient.invalidateQueries({
-          queryKey: [`/adventure-bookings/${adventureBooking.id}`],
-        });
+          push(`/${locale}`);
+          // queryClient.invalidateQueries({
+          //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
+          // });
 
-        queryClient.invalidateQueries({
-          queryKey: [`/adventure-bookings`],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [`/statistics`],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [`/bookings`],
-        });
-        toast.success(message);
-      } else {
-        console.log(data);
-        const { message } = await data.json();
-        toast.error(message, { duration: 6000 });
+          queryClient.invalidateQueries({
+            queryKey: [`/adventure-bookings`],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [`/statistics`],
+          });
+          queryClient.invalidateQueries({
+            queryKey: [`/bookings`],
+          });
+          toast.success(message);
+        } else {
+          console.log(data);
+          toast.error(message, { duration: 6000 });
+        }
+      } catch (error) {
+        toast.error(`${JSON.stringify(error)}`, { duration: 6000 });
       }
     },
     async onError(error) {
