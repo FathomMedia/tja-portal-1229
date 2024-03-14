@@ -199,7 +199,7 @@ export const ViewAdventureOrderForm: FC<TAdventureBookingForm> = ({
           //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
           // });
 
-          push(`/${locale}`);
+          push(`/${locale}/admin/orders`);
           // queryClient.invalidateQueries({
           //   queryKey: [`/adventure-bookings/${adventureBooking.id}`],
           // });
